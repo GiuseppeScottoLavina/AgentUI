@@ -44,28 +44,50 @@ export class AuElement extends HTMLElement {
      * Returns full metadata when catalog is loaded (via discoverAll()),
      * or minimal info (name + props) as fallback — zero bundle cost.
      * 
-     * @returns {Object} Component descriptor
+     * ENRICHED with runtime-only info that static docs cannot provide:
+     * - registered: is the component actually registered?
+     * - instanceCount: how many instances exist in the DOM?
+     * - instances: current state of first 5 instances (id, value, checked, visible)
+     * - composition: gotchas when used inside other components (e.g., dropdown in modal)
+     * 
+     * @returns {Object} Component descriptor with runtime info
      * @example
      * await AgentUI.discoverAll(); // loads catalog once
      * customElements.get('au-button').describe()
-     * // { name: 'au-button', description: '...', props: {...}, events: [...], ... }
+     * // { name, description, props, events, runtime: { registered, instanceCount, ... }, ... }
      */
     static describe() {
         const tag = this.baseClass
             || this.name.replace(/^Au/, 'au-').replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 
-        // Return full metadata from lazy-loaded catalog
-        if (AuElement._describeCatalog?.[tag]) {
-            return AuElement._describeCatalog[tag];
-        }
-
-        // Minimal fallback (before catalog is loaded)
-        return {
+        // Get catalog data (full metadata) or minimal fallback
+        const base = AuElement._describeCatalog?.[tag]
+            || {
             name: tag,
             props: this.observedAttributes || [],
             baseClass: this.baseClass || '',
-            cssFile: this.cssFile || null,
-            version: '0.1.116'
+            cssFile: this.cssFile || null
+        };
+
+        // Enrich with RUNTIME info — this is what makes describe() valuable vs reading docs
+        const instances = typeof document !== 'undefined'
+            ? Array.from(document.querySelectorAll(tag))
+            : [];
+
+        return {
+            ...base,
+            runtime: {
+                registered: typeof customElements !== 'undefined' && !!customElements.get(tag),
+                version: '0.1.129',
+                instanceCount: instances.length,
+                instances: instances.slice(0, 5).map(el => {
+                    const info = { id: el.id || null };
+                    if ('value' in el && el.value !== undefined) info.value = el.value;
+                    if ('checked' in el && el.checked !== undefined) info.checked = el.checked;
+                    if (typeof el.offsetParent !== 'undefined') info.visible = el.offsetParent !== null;
+                    return info;
+                })
+            }
         };
     }
 

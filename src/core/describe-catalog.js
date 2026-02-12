@@ -211,7 +211,16 @@ export const catalog = {
             "Use data-i18n attribute for internationalization",
             "Add disabled attribute while processing async actions",
             "Icon-only buttons MUST have aria-label for accessibility, e.g. <au-button aria-label=\"Edit\"><au-icon name=\"edit\"></au-icon></au-button>"
-        ]
+        ],
+        "composition": {
+            "au-modal": {
+                "works": true,
+                "gotchas": [
+                    "Event listeners on buttons inside au-modal are LOST — the modal clones innerHTML into a native <dialog>",
+                    "Use event delegation on the au-modal element: modal.addEventListener('click', e => { if (e.target.closest('#save-btn')) ... })"
+                ]
+            }
+        }
     },
     "au-callout": {
         "name": "au-callout",
@@ -323,7 +332,16 @@ export const catalog = {
             "Use .checked property to get/set state",
             "indeterminate is visual only, cleared on user interaction",
             "Listen to au-change for state updates"
-        ]
+        ],
+        "composition": {
+            "dynamic-render": {
+                "works": true,
+                "gotchas": [
+                    "In loops, use document.createElement('au-checkbox') instead of innerHTML to avoid re-triggering connectedCallback",
+                    "Use a _isRendering guard when updating lists inside au-change handlers to prevent infinite loops"
+                ]
+            }
+        }
     },
     "au-chip": {
         "name": "au-chip",
@@ -724,8 +742,19 @@ export const catalog = {
         "tips": [
             "Use au-option or standard option children",
             "Listen to au-select for selection changes",
-            "Use .value property to get/set selection"
-        ]
+            "Use .value property to get/set selection",
+            ".value = 'x' sets the attribute but does NOT update the displayed label — use .select(value, label) instead"
+        ],
+        "composition": {
+            "au-modal": {
+                "works": true,
+                "gotchas": [
+                    "Event listeners on dropdown inside au-modal are LOST — use event delegation on au-modal",
+                    "After modal.open(), use dropdown.select(value, label) to pre-populate — .value = does NOT update displayed text",
+                    "Listen to au-select events via delegation: modal.addEventListener('au-select', e => { ... })"
+                ]
+            }
+        }
     },
     "au-error-boundary": {
         "name": "au-error-boundary",
@@ -1014,7 +1043,16 @@ export const catalog = {
             "Use .clear() to reset input (e.g. after adding a todo)",
             "Listen to au-input for keystroke-level changes, au-change for committed value",
             "Always provide label for accessibility"
-        ]
+        ],
+        "composition": {
+            "au-modal": {
+                "works": true,
+                "gotchas": [
+                    "Event listeners on inputs inside au-modal are LOST — use event delegation on au-modal",
+                    "Read values via modal.querySelector('#my-input').value after the modal is open"
+                ]
+            }
+        }
     },
     "au-layout": {
         "name": "au-layout",

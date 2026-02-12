@@ -4,6 +4,40 @@
 
 > AGENT: This file is your primary reference. For full API docs see AGENTS.md
 
+## 🤖 AGENT WORKFLOW (read this FIRST)
+
+Before writing ANY code with AgentUI, follow this exact workflow:
+
+1. **Load the framework** — add CSS + JS to your HTML (see QUICK START below)
+2. **Wait for readiness** — listen for `au-ready` event (see Initialization below)
+3. **Discover ALL components** — in the browser console or your script:
+   ```javascript
+   const allAPIs = AgentUI.discoverAll();
+   // Returns: { 'au-button': { props, events, methods, examples, tips, composition, runtime }, ... }
+   ```
+4. **Inspect each component you plan to use:**
+   ```javascript
+   const schema = customElements.get('au-button').describe();
+   // Returns: { name, description, props, events, examples, tips, composition, runtime }
+   ```
+5. **Check the `runtime` field** — exclusive info NOT in this document:
+   - `runtime.registered` — is the component actually loaded? (catches import errors)
+   - `runtime.instanceCount` — how many exist on page? (debugging)
+   - `runtime.instances` — current values of first 5 instances (state inspection)
+6. **Check `composition`** — gotchas when combining components:
+   - e.g., `au-dropdown` inside `au-modal` → event delegation required
+7. **Only then write your code** — using describe() output for props/events/methods
+
+> **This document is a reference. `describe()` is the source of truth.**
+> It gives you runtime info this document cannot: registered status,
+> instance count, current values, and composition warnings.
+
+**⚠️ NEVER assume standard HTML events (click, input, change) on au-* components.**
+AgentUI components emit custom events (au-input, au-change, au-close, etc.).
+Always call `.describe()` and read the `events` field first.
+
+---
+
 ## QUICK START (no npm needed)
 
 ```html
@@ -49,44 +83,6 @@ await customElements.whenDefined('au-button');
 
 // ❌ WRONG: Magic timeout — fragile and unreliable
 setTimeout(initApp, 100); // DON'T DO THIS
-```
-
----
-
-## ⚠️ MANDATORY: DESCRIBE BEFORE USE
-
-**NEVER assume standard HTML events (click, input, change) on au-* components.**
-AgentUI components emit custom events (au-input, au-change, au-close, etc.).
-
-**Before using ANY au-* component, call .describe() and read the output:**
-
-```javascript
-const schema = customElements.get('au-button').describe();
-// → { name, description, props, events, methods, examples, tips }
-```
-
-**Checklist for every component:**
-1. Call .describe() or AgentUI.discoverAll()
-2. Read `events` — use ONLY declared events, not standard HTML events
-3. Read `props` — use ONLY declared attributes
-4. Read `tips` — contains critical usage warnings
-
----
-
-## RUNTIME DISCOVERY (RECOMMENDED FIRST STEP)
-
-```javascript
-// Get ALL component schemas at once:
-const allAPIs = AgentUI.discoverAll();
-// Returns: { 'au-button': { props, events, methods, examples, tips }, ... }
-
-// Single component introspection:
-const schema = customElements.get('au-button').describe();
-// Returns: { name, description, props, events, examples, tips }
-
-// DOM tree analysis:
-const tree = AgentUI.getAuComponentTree();
-// Returns nested tree of all au-* components on page
 ```
 
 ---
@@ -745,6 +741,53 @@ renderList();
 </script>
 ```
 KEY: Use `document.createElement` (not innerHTML) for au-checkbox in loops. The framework has a built-in initialization guard that prevents clicks from being processed during element creation, so no manual `_isRendering` flag is needed.
+
+### Pattern 7: Drag & Drop Sortable List (HTML5 API)
+AgentUI does not include a DnD component. Use the HTML5 Drag and Drop API with au-* components:
+```html
+<au-stack id="sortable-list" gap="sm">
+  <au-card draggable="true" data-id="1" style="cursor:grab">Task 1</au-card>
+  <au-card draggable="true" data-id="2" style="cursor:grab">Task 2</au-card>
+  <au-card draggable="true" data-id="3" style="cursor:grab">Task 3</au-card>
+</au-stack>
+
+<script>
+  const list = document.getElementById('sortable-list');
+  let draggedEl = null;
+
+  list.addEventListener('dragstart', (e) => {
+    draggedEl = e.target.closest('au-card');
+    if (!draggedEl) return;
+    draggedEl.style.opacity = '0.4';
+    e.dataTransfer.effectAllowed = 'move';
+  });
+
+  list.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    const target = e.target.closest('au-card');
+    if (target && target !== draggedEl) {
+      const rect = target.getBoundingClientRect();
+      const mid = rect.top + rect.height / 2;
+      if (e.clientY < mid) {
+        list.insertBefore(draggedEl, target);
+      } else {
+        list.insertBefore(draggedEl, target.nextSibling);
+      }
+    }
+  });
+
+  list.addEventListener('dragend', () => {
+    if (draggedEl) {
+      draggedEl.style.opacity = '1';
+      draggedEl = null;
+    }
+    // Read new order
+    const order = [...list.querySelectorAll('au-card')].map(c => c.dataset.id);
+    console.log('New order:', order);
+  });
+</script>
+```
+KEY: `draggable="true"` works on any au-* component. Use `au-stack` or `au-grid` as the container. The native DnD API is reliable across all browsers.
 
 ---
 

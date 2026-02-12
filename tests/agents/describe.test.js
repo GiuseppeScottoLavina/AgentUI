@@ -35,7 +35,12 @@ describe('Component describe() Method', () => {
 
         expect(desc).toBeDefined();
         expect(desc.name).toBe('au-element');
-        expect(desc.version).toBe('0.1.116');
+        // version is now in runtime (enriched describe)
+        expect(desc.runtime).toBeDefined();
+        expect(desc.runtime.version).toBeDefined();
+        expect(typeof desc.runtime.registered).toBe('boolean');
+        expect(typeof desc.runtime.instanceCount).toBe('number');
+        expect(Array.isArray(desc.runtime.instances)).toBe(true);
         expect(Array.isArray(desc.props)).toBe(true);
     });
 
@@ -129,6 +134,38 @@ describe('Component describe() Method', () => {
             expect(iconDesc.bundledIcons.length).toBeGreaterThan(40);
             expect(iconDesc.bundledIcons).toContain('home');
             expect(iconDesc.bundledIcons).toContain('settings');
+        });
+
+        // v0.1.129: describe() enriched with runtime info
+        test('describe() includes runtime info when catalog is loaded', () => {
+            const desc = AuButton.describe();
+            expect(desc.runtime).toBeDefined();
+            expect(typeof desc.runtime.registered).toBe('boolean');
+            expect(typeof desc.runtime.instanceCount).toBe('number');
+            expect(Array.isArray(desc.runtime.instances)).toBe(true);
+            expect(desc.runtime.version).toBeDefined();
+        });
+
+        // v0.1.129: composition gotchas in catalog
+        test('components with interaction gotchas have composition data', () => {
+            const { catalog } = require('../../src/core/describe-catalog.js');
+
+            // au-button should have au-modal composition
+            expect(catalog['au-button'].composition).toBeDefined();
+            expect(catalog['au-button'].composition['au-modal']?.works).toBe(true);
+            expect(catalog['au-button'].composition['au-modal']?.gotchas.length).toBeGreaterThan(0);
+
+            // au-dropdown should have au-modal composition
+            expect(catalog['au-dropdown'].composition).toBeDefined();
+            expect(catalog['au-dropdown'].composition['au-modal']?.gotchas.length).toBeGreaterThan(0);
+
+            // au-checkbox should have dynamic-render composition
+            expect(catalog['au-checkbox'].composition).toBeDefined();
+            expect(catalog['au-checkbox'].composition['dynamic-render']?.gotchas.length).toBeGreaterThan(0);
+
+            // au-input should have au-modal composition
+            expect(catalog['au-input'].composition).toBeDefined();
+            expect(catalog['au-input'].composition['au-modal']?.gotchas.length).toBeGreaterThan(0);
         });
     });
 });
