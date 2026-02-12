@@ -101,7 +101,7 @@ Every architecture involves trade-offs. Here's what AgentUI optimizes for and wh
 | **XSS Protection** | Auto-escape `html` tagged template | Custom template syntax, not JSX |
 | **Dependencies** | Zero — nothing in `node_modules` | No ecosystem — you build what you need |
 | **DOM Model** | Light DOM (no Shadow DOM) | Full access, but no style encapsulation |
-| **Standard** | W3C Web Components | Smaller community than React/Vue/Svelte |
+| **Standard** | W3C Web Components | Newer ecosystem, smaller community |
 
 ---
 
