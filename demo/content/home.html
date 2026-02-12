@@ -1,0 +1,161 @@
+<div style="text-align: center; margin-bottom: 32px;">
+    <picture>
+        <source srcset="../assets/banner-400.webp 1x, ../assets/banner-800.webp 2x" type="image/webp"><img
+            src="../assets/banner-400.jpg" loading="eager" fetchpriority="high" decoding="async"
+            alt="AgentUI - AI First Web Components" width="400" height="400"
+            style="max-width: 100%; height: auto; aspect-ratio: 1/1; object-fit: contain; border-radius: var(--md-sys-shape-corner-large); box-shadow: var(--md-sys-elevation-2);">
+    </picture>
+</div>
+
+<h1 class="page-title" style="text-align: center;">AgentUI</h1>
+<p class="page-subtitle" style="text-align: center; font-size: 1.25rem; max-width: 600px; margin: 0 auto;">The only
+    AI-First
+    UI framework. 50 components. 1670+ tests. Zero config.</p>
+
+<!-- Agent-First Hero Badge with pulse animation -->
+<div style="display: flex; justify-content: center; gap: 16px; margin: 16px 0; flex-wrap: wrap;">
+    <div class="ai-badge-pulse"
+        style="background: linear-gradient(135deg, #7C4DFF, #536DFE); color: white; padding: 10px 24px; border-radius: 100px; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 16px rgba(124, 77, 255, 0.4); animation: pulse-glow 2s ease-in-out infinite;">
+        🤖 Optimized for AI Agents
+    </div>
+    <div
+        style="background: linear-gradient(135deg, #00897B, #00695C); color: white; padding: 10px 24px; border-radius: 100px; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 16px rgba(0, 137, 123, 0.4);">
+        🛡️ No Migration Hell
+    </div>
+    <a href="#buttons" style="text-decoration: none;">
+        <div style="background: linear-gradient(135deg, #6750A4, #4F378B); color: white; padding: 10px 24px; border-radius: 100px; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 16px rgba(103, 80, 164, 0.4); cursor: pointer; transition: transform 0.2s;"
+            onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
+            🚀 Get Started
+        </div>
+    </a>
+</div>
+<style>
+    @keyframes pulse-glow {
+
+        0%,
+        100% {
+            transform: scale(1);
+            filter: brightness(1);
+        }
+
+        50% {
+            transform: scale(1.02);
+            filter: brightness(1.1);
+        }
+    }
+</style>
+
+<!-- Lighthouse Scores Highlight -->
+<div style="display: flex; justify-content: center; gap: 12px; margin: 24px 0; flex-wrap: wrap;">
+    <div
+        style="background: linear-gradient(135deg, #4CAF50, #2E7D32); color: white; padding: 14px 20px; border-radius: 16px; text-align: center; min-width: 100px; box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);">
+        <div style="font-size: 28px; font-weight: 700;">100%</div>
+        <div style="font-size: 11px; opacity: 0.9;">Lighthouse</div>
+    </div>
+    <div
+        style="background: linear-gradient(135deg, #2196F3, #1565C0); color: white; padding: 14px 20px; border-radius: 16px; text-align: center; min-width: 100px; box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);">
+        <div style="font-size: 28px; font-weight: 700;">1670+</div>
+        <div style="font-size: 11px; opacity: 0.9;">Tests Passing</div>
+    </div>
+    <div
+        style="background: linear-gradient(135deg, #9C27B0, #6A1B9A); color: white; padding: 14px 20px; border-radius: 16px; text-align: center; min-width: 100px; box-shadow: 0 4px 12px rgba(156, 39, 176, 0.4);">
+        <div style="font-size: 28px; font-weight: 700;">50</div>
+        <div style="font-size: 11px; opacity: 0.9;">Components</div>
+    </div>
+    <div
+        style="background: linear-gradient(135deg, #FF5722, #E64A19); color: white; padding: 14px 20px; border-radius: 16px; text-align: center; min-width: 100px; box-shadow: 0 4px 12px rgba(255, 87, 34, 0.4);">
+        <div style="font-size: 28px; font-weight: 700;">20KB</div>
+        <div style="font-size: 11px; opacity: 0.9;">Initial Load</div>
+    </div>
+    <div
+        style="background: linear-gradient(135deg, #00BCD4, #00838F); color: white; padding: 14px 20px; border-radius: 16px; text-align: center; min-width: 100px; box-shadow: 0 4px 12px rgba(0, 188, 212, 0.4);">
+        <div style="font-size: 28px; font-weight: 700;">A</div>
+        <div style="font-size: 11px; opacity: 0.9;">Security Grade</div>
+    </div>
+</div>
+
+<!-- Agent-First Feature Highlight -->
+<div class="component-section"
+    style="background: linear-gradient(135deg, rgba(124, 77, 255, 0.15), rgba(83, 109, 254, 0.1)); border: 2px solid rgba(124, 77, 255, 0.3);">
+    <h2 class="section-title" style="display: flex; align-items: center; gap: 12px;">
+        🤖 Designed for AI Agents
+    </h2>
+    <p style="margin-bottom: 16px; color: var(--md-sys-color-on-surface-variant); line-height: 1.6;">
+        AgentUI is the first UI framework specifically optimized to be used by <strong>AI Coding
+            Agents</strong>.
+        AI agents can introspect components, read state, and generate code
+        efficiently.
+    </p>
+    <au-stack direction="row" gap="md" wrap>
+        <au-card variant="elevated" style="flex: 1; min-width: 200px;">
+            <strong>🔍 Agent API</strong>
+            <p style="font-size: 14px; color: var(--md-sys-color-on-surface); margin-top: 4px; font-weight: 500;">
+                <code>getAuComponentTree()</code> for structured parsing
+            </p>
+        </au-card>
+        <au-card variant="elevated" style="flex: 1; min-width: 200px;">
+            <strong>📋 AGENTS.md</strong>
+            <p style="font-size: 14px; color: var(--md-sys-color-on-surface); margin-top: 4px; font-weight: 500;">
+                LLM-optimized documentation
+            </p>
+        </au-card>
+        <au-card variant="elevated" style="flex: 1; min-width: 200px;">
+            <strong>🏗️ Enterprise Scale</strong>
+            <p style="font-size: 14px; color: var(--md-sys-color-on-surface); margin-top: 4px; font-weight: 500;">
+                Feature Registry, Namespaced Stores
+            </p>
+        </au-card>
+    </au-stack>
+</div>
+
+<div class="component-section">
+    <h2 class="section-title">Features</h2>
+    <au-stack gap="md">
+        <au-card variant="outlined"
+            style="background: linear-gradient(90deg, rgba(124, 77, 255, 0.08), transparent); border-left: 4px solid #7C4DFF;">
+            <au-stack direction="row" gap="md" align="center">
+                <au-icon name="smart_toy" style="color: #7C4DFF;"></au-icon>
+                <div><strong>🤖 Agent-Optimized</strong> - Introspection API, DOM parsing, natural
+                    language descriptions</div>
+            </au-stack>
+        </au-card>
+        <au-card variant="outlined">
+            <au-stack direction="row" gap="md" align="center">
+                <au-icon name="check" style="color: var(--md-sys-color-primary)"></au-icon>
+                <div><strong>50 Components</strong> - Complete production UI toolkit</div>
+            </au-stack>
+        </au-card>
+        <au-card variant="outlined">
+            <au-stack direction="row" gap="md" align="center">
+                <au-icon name="check" style="color: var(--md-sys-color-primary)"></au-icon>
+                <div><strong>20KB Initial Load</strong> - Route-based code splitting</div>
+            </au-stack>
+        </au-card>
+        <au-card variant="outlined">
+            <au-stack direction="row" gap="md" align="center">
+                <au-icon name="check" style="color: var(--md-sys-color-primary)"></au-icon>
+                <div><strong>MD3 Compliant</strong> - Material Design 3</div>
+            </au-stack>
+        </au-card>
+        <au-card variant="outlined">
+            <au-stack direction="row" gap="md" align="center">
+                <au-icon name="check" style="color: var(--md-sys-color-primary)"></au-icon>
+                <div><strong>Zero Dependencies</strong> - Native Web Components</div>
+            </au-stack>
+        </au-card>
+        <au-card variant="outlined"
+            style="background: linear-gradient(90deg, rgba(0, 137, 123, 0.08), transparent); border-left: 4px solid #00897B;">
+            <au-stack direction="row" gap="md" align="center">
+                <au-icon name="shield" style="color: #00897B;"></au-icon>
+                <div><strong>🛡️ Future-Proof</strong> - W3C standard, no React 18→19 migrations, works today and in 5
+                    years</div>
+            </au-stack>
+        </au-card>
+        <au-card variant="outlined">
+            <au-stack direction="row" gap="md" align="center">
+                <au-icon name="check" style="color: var(--md-sys-color-primary)"></au-icon>
+                <div><strong>100% Lighthouse</strong> - Perfect scores across all categories</div>
+            </au-stack>
+        </au-card>
+    </au-stack>
+</div>

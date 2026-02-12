@@ -1,0 +1,188 @@
+<!-- Buttons Content Fragment -->
+<div id="page-buttons" class="page active">
+    <h1 class="page-title">Button</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-button&gt;</code> is an interactive element that triggers an action.
+        Material Design 3 defines 5 button types for different emphasis levels.
+    </p>
+
+    <!-- Documentation Tabs -->
+    <au-tabs active="0" id="button-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>STYLING</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <!-- OVERVIEW Tab Content -->
+    <div id="button-overview" class="doc-tab-content">
+        <au-example title="MD3 Button Types">
+            <div slot="demo">
+                <au-button variant="filled">Filled</au-button>
+                <au-button variant="elevated">Elevated</au-button>
+                <au-button variant="tonal">Tonal</au-button>
+                <au-button variant="outlined">Outlined</au-button>
+                <au-button variant="text">Text</au-button>
+            </div>
+
+        </au-example>
+
+        <au-example title="Button sizes">
+            <div slot="demo">
+                <au-button variant="filled" size="sm">Small</au-button>
+                <au-button variant="filled" size="md">Medium</au-button>
+                <au-button variant="filled" size="lg">Large</au-button>
+            </div>
+        </au-example>
+
+        <div class="component-section">
+            <h2 class="section-title">Choosing a button type</h2>
+            <au-stack gap="md">
+                <au-card variant="outlined">
+                    <au-stack direction="row" gap="md" align="center">
+                        <au-button variant="filled" size="sm">Filled</au-button>
+                        <span>High emphasis - primary actions (Save, Submit, Confirm)</span>
+                    </au-stack>
+                </au-card>
+                <au-card variant="outlined">
+                    <au-stack direction="row" gap="md" align="center">
+                        <au-button variant="tonal" size="sm">Tonal</au-button>
+                        <span>Medium emphasis - secondary actions (Add, Edit)</span>
+                    </au-stack>
+                </au-card>
+                <au-card variant="outlined">
+                    <au-stack direction="row" gap="md" align="center">
+                        <au-button variant="outlined" size="sm">Outlined</au-button>
+                        <span>Medium emphasis - alternative to tonal</span>
+                    </au-stack>
+                </au-card>
+                <au-card variant="outlined">
+                    <au-stack direction="row" gap="md" align="center">
+                        <au-button variant="text" size="sm">Text</au-button>
+                        <span>Low emphasis - tertiary actions (Cancel, Learn more)</span>
+                    </au-stack>
+                </au-card>
+            </au-stack>
+        </div>
+
+        <div class="component-section"
+            style="background: var(--md-sys-color-primary-container); border-left: 4px solid var(--md-sys-color-primary);">
+            <h2 class="section-title" style="color: var(--md-sys-color-on-primary-container);">Accessibility
+            </h2>
+            <p style="color: var(--md-sys-color-on-primary-container); line-height: 1.6;">
+                <code>&lt;au-button&gt;</code> uses <code>role="button"</code> and manages
+                <code>tabindex</code> automatically. Keyboard navigation with Enter/Space is built-in.
+                The ripple effect provides visual feedback for all interactions.
+            </p>
+        </div>
+    </div>
+
+    <!-- API Tab Content -->
+    <div id="button-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Selector</h2>
+            <div class="code-block" style="display: inline-block;">&lt;au-button&gt;</div>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Attributes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="variant" type="string" default="primary">Button style: 'filled' |
+                    'elevated' | 'tonal' | 'outlined' | 'text' | 'danger'</au-api-row>
+                <au-api-row name="size" type="string" default="md">Button size: 'sm' | 'md' |
+                    'lg'</au-api-row>
+                <au-api-row name="disabled" type="boolean" default="false">Whether the button is
+                    disabled</au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Events</h2>
+            <au-api-table type="events">
+                <au-api-row name="click" detail="MouseEvent">Native click event (works with disabled
+                    state)</au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">CSS Classes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="au-button" type="class">Base class for all buttons</au-api-row>
+                <au-api-row name="au-button--filled" type="class">Filled variant styling</au-api-row>
+                <au-api-row name="au-button--elevated" type="class">Elevated variant with
+                    shadow</au-api-row>
+                <au-api-row name="au-button--tonal" type="class">Tonal (secondary container)
+                    styling</au-api-row>
+                <au-api-row name="au-button--outlined" type="class">Outlined variant styling</au-api-row>
+                <au-api-row name="au-button--text" type="class">Text-only variant styling</au-api-row>
+                <au-api-row name="is-disabled" type="class">Applied when button is disabled</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <!-- STYLING Tab Content -->
+    <div id="button-styling" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">CSS Custom Properties</h2>
+            <p style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 16px;">
+                Customize buttons using MD3 design tokens.
+            </p>
+            <au-api-table type="tokens">
+                <au-api-row name="--md-sys-color-primary" default="#6750a4">Filled button
+                    background</au-api-row>
+                <au-api-row name="--md-sys-color-on-primary" default="#ffffff">Filled button text
+                    color</au-api-row>
+                <au-api-row name="--md-sys-color-secondary-container" default="#e8def8">Tonal button
+                    background</au-api-row>
+                <au-api-row name="--md-sys-color-on-secondary-container" default="#1d192b">Tonal button text
+                    color</au-api-row>
+                <au-api-row name="--md-sys-color-outline" default="#79747e">Outlined button
+                    border</au-api-row>
+                <au-api-row name="--md-sys-shape-corner-full" default="9999px">Button border
+                    radius</au-api-row>
+                <au-api-row name="--md-sys-elevation-1" default="0 1px 3px...">Elevated button
+                    shadow</au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Theming Example</h2>
+            <div class="code-block">/* Custom button theme */
+                au-button {
+                --md-sys-color-primary: #006d3b;
+                --md-sys-color-on-primary: #ffffff;
+                --md-sys-shape-corner-full: 8px; /* Less rounded */
+                }</div>
+        </div>
+    </div>
+
+    <!-- EXAMPLES Tab Content -->
+    <div id="button-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="Disabled buttons">
+            <div slot="demo">
+                <au-button variant="filled" disabled>Disabled Filled</au-button>
+                <au-button variant="outlined" disabled>Disabled Outlined</au-button>
+            </div>
+        </au-example>
+
+        <au-example title="Danger button">
+            <div slot="demo">
+                <au-button variant="danger">Delete Account</au-button>
+            </div>
+
+        </au-example>
+
+        <au-example title="Button group">
+            <div slot="demo">
+                <au-button variant="text">Cancel</au-button>
+                <au-button variant="filled">Confirm</au-button>
+            </div>
+        </au-example>
+
+        <au-example title="Full width button">
+            <div slot="demo">
+                <au-button variant="filled" style="width: 100%;">Full Width Button</au-button>
+            </div>
+        </au-example>
+    </div>
+</div>

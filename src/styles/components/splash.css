@@ -1,0 +1,50 @@
+/**
+ * au-splash.css - Splash Screen Styles
+ * 
+ * Note: Critical CSS is injected inline by the component for instant render.
+ * This file contains optional extended styles.
+ */
+
+/* Extended splash styles (loaded async) */
+.au-splash--with-message {
+    gap: 16px;
+}
+
+.au-splash__message {
+    font-family: var(--md-sys-typescale-body-large-font, system-ui);
+    font-size: var(--md-sys-typescale-body-large-size, 16px);
+    color: var(--md-sys-color-on-surface, #1D1B20);
+    opacity: 0.7;
+}
+
+/* Progress bar variant */
+.au-splash__progress {
+    width: 200px;
+    height: 4px;
+    background: var(--md-sys-color-surface-variant, #E7E0EC);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.au-splash__progress-bar {
+    height: 100%;
+    background: var(--md-sys-color-primary, #6750A4);
+    animation: au-splash-progress 2s ease-in-out infinite;
+}
+
+@keyframes au-splash-progress {
+    0% {
+        width: 0%;
+        margin-left: 0%;
+    }
+
+    50% {
+        width: 30%;
+        margin-left: 35%;
+    }
+
+    100% {
+        width: 0%;
+        margin-left: 100%;
+    }
+}

@@ -1,0 +1,1020 @@
+# AgentUI — AI-First Web Components Framework
+# https://github.com/GiuseppeScottoLavina/AgentUI
+# 50 MD3 Components • Light DOM • Zero Build • Zero Dependencies
+
+> AGENT: This file is your primary reference. For full API docs see AGENTS.md
+
+## QUICK START (no npm needed)
+
+```html
+<!-- CSS: preload + async (non-render-blocking) -->
+<link rel="preload" as="style" href="https://unpkg.com/agentui-wc@latest/dist/agentui.css">
+<link rel="stylesheet" href="https://unpkg.com/agentui-wc@latest/dist/agentui.css"
+      media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://unpkg.com/agentui-wc@latest/dist/agentui.css"></noscript>
+<!-- JS -->
+<script type="module" src="https://unpkg.com/agentui-wc@latest/dist/agentui.esm.js" async></script>
+<!-- Font: MD3 default -->
+<style>
+  @font-face { font-family: 'Roboto'; font-display: swap; src: url('https://fonts.gstatic.com/s/roboto/v47/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWubEbVmUiA8.woff2') format('woff2'); }
+  body { font-family: var(--md-sys-typescale-font); margin: 0; }
+</style>
+```
+
+Or via npm:
+```bash
+npm install agentui-wc
+```
+
+### Initialization: Wait for `au-ready`
+
+**Do NOT use `setTimeout` to wait for components.** AgentUI fires an `au-ready` event when all components are registered:
+
+```javascript
+// ✅ CORRECT: Wait for framework readiness
+document.addEventListener('au-ready', () => {
+  // All au-* components are registered and ready to use
+  initApp();
+});
+
+// ✅ ALSO WORKS: Synchronous check (for late-loading scripts)
+if (window.AgentUI?.ready) {
+  initApp(); // Already initialized
+} else {
+  document.addEventListener('au-ready', () => initApp());
+}
+
+// ✅ ALTERNATIVE: Per-component readiness
+await customElements.whenDefined('au-button');
+
+// ❌ WRONG: Magic timeout — fragile and unreliable
+setTimeout(initApp, 100); // DON'T DO THIS
+```
+
+---
+
+## ⚠️ MANDATORY: DESCRIBE BEFORE USE
+
+**NEVER assume standard HTML events (click, input, change) on au-* components.**
+AgentUI components emit custom events (au-input, au-change, au-close, etc.).
+
+**Before using ANY au-* component, call .describe() and read the output:**
+
+```javascript
+const schema = customElements.get('au-button').describe();
+// → { name, description, props, events, methods, examples, tips }
+```
+
+**Checklist for every component:**
+1. Call .describe() or AgentUI.discoverAll()
+2. Read `events` — use ONLY declared events, not standard HTML events
+3. Read `props` — use ONLY declared attributes
+4. Read `tips` — contains critical usage warnings
+
+---
+
+## RUNTIME DISCOVERY (RECOMMENDED FIRST STEP)
+
+```javascript
+// Get ALL component schemas at once:
+const allAPIs = AgentUI.discoverAll();
+// Returns: { 'au-button': { props, events, methods, examples, tips }, ... }
+
+// Single component introspection:
+const schema = customElements.get('au-button').describe();
+// Returns: { name, description, props, events, examples, tips }
+
+// DOM tree analysis:
+const tree = AgentUI.getAuComponentTree();
+// Returns nested tree of all au-* components on page
+```
+
+---
+
+## SAFE RENDERING (USE THIS FOR DYNAMIC HTML)
+
+```javascript
+import { html, safe } from 'agentui-wc';
+
+// ✅ SAFE: html`` auto-escapes all interpolated values
+const userInput = '<script>alert("xss")</script>';
+element.innerHTML = html`<h2>${userInput}</h2>`;
+// → <h2>&lt;script&gt;...&lt;/script&gt;</h2>
+
+// ✅ SAFE: Use safe() only for HTML YOU control
+element.innerHTML = html`<div>${safe('<au-icon name="home"></au-icon>')}</div>`;
+
+// ✅ SAFE: Nested templates compose correctly
+const items = ['A', 'B', '<C>'];
+element.innerHTML = html`<ul>${items.map(i => html`<li>${i}</li>`)}</ul>`;
+
+// ❌ UNSAFE: Raw template literals — never use with dynamic data
+element.innerHTML = `<h2>${userInput}</h2>`; // XSS RISK!
+```
+
+---
+
+## CORE DESIGN RULES (read these to avoid mistakes)
+
+1. **Light DOM only** — no Shadow DOM. Standard CSS selectors work everywhere.
+2. **Attributes drive declarative config** (variant, label, disabled) — use setAttribute/getAttribute.
+   **Properties drive runtime state** (.value, .checked) — use direct property access for reading/writing dynamic values.
+3. **Events use au- prefix** — listen for 'au-submit', 'au-change', 'au-tab-change', etc.
+4. **All tags are au- prefixed** — `<au-button>`, `<au-input>`, `<au-card>`, etc.
+5. **No build step needed** — works from CDN with just HTML + CSS import.
+6. **Material Design 3** — all components follow MD3 specs with built-in theming.
+
+---
+
+## ALL 50 COMPONENTS — QUICK REFERENCE
+
+### Layout & Structure
+| Component | Purpose | Key Props |
+|-----------|---------|-----------|
+| `au-layout` | App shell (drawer + header + content). Content area has `padding: 16px` (8px on mobile). Use `full-bleed` attribute for edge-to-edge layouts (all padding zeroed; bottom-nav compensation is automatic). Children using `height: 100%` get the correct visible height even with `au-bottom-nav`. | full-bleed |
+| `au-container` | Centered content wrapper | size: sm/md/lg/xl/full |
+| `au-stack` | Flexbox row/column | direction, gap, align, justify |
+| `au-grid` | CSS Grid | cols, gap |
+| `au-divider` | Separator line | vertical, inset |
+| `au-page` | Route container | route, title |
+
+### Navigation
+| Component | Purpose | Key Props |
+|-----------|---------|-----------|
+| `au-navbar` | Top app bar | sticky, variant |
+| `au-drawer` | Side navigation (responsive) | mode: auto/permanent/temporary/rail |
+| `au-drawer-item` | Nav item inside drawer | icon, label, href, active |
+| `au-sidebar` | Collapsible sidebar | open, width |
+| `au-sidebar-item` | Nav item inside sidebar | icon, active |
+| `au-bottom-nav` | Mobile bottom nav | — |
+| `au-tabs` | Tab navigation | active (index) |
+| `au-tab` | Tab item (child of au-tabs) | — |
+| `au-router` | Hash-based SPA router | base, default |
+
+### Form Controls
+| Component | Purpose | Key Props |
+|-----------|---------|-----------|
+| `au-button` | Interactive button | variant: filled/outlined/text/danger, size, disabled |
+| `au-input` | Text input with label. **Supported types**: text (default), email, password, search, number, tel, url, date, time, datetime-local, month, week. Passes `type` to native `<input>`. | type, label, value, required, error |
+| `au-textarea` | Multi-line text | label, rows, maxlength |
+| `au-checkbox` | Checkbox | checked, label |
+| `au-radio` | Radio button | name, value, checked |
+| `au-switch` | Toggle switch | checked, label |
+| `au-dropdown` | Select dropdown | label, value, multiple |
+| `au-form` | Form with validation | action, method |
+| `au-schema-form` | ⭐ AUTO-FORM FROM JSON SCHEMA | submit-label, inline, disabled |
+| `au-chip` | Filter/action chip | variant, selected, removable |
+
+### Data Display
+| Component | Purpose | Key Props |
+|-----------|---------|-----------|
+| `au-card` | Content card | variant: elevated/outlined/filled |
+| `au-table` | Static HTML table | striped, hover |
+| `au-datatable` | ⭐ Smart table (sort/filter/paginate) | columns, page-size, sortable, filterable |
+| `au-avatar` | User avatar | src, initials, size |
+| `au-badge` | Status indicator | variant, size |
+| `au-icon` | Material icon (54 bundled as SVG; others auto-load Google Fonts) | name, size, filled |
+| `au-tooltip` | Hover tooltip | content, position |
+| `au-code` | Code block | language |
+| `au-skeleton` | Loading placeholder | variant: rect/text/circle |
+| `au-virtual-list` | Virtualized list (10K+ items) | item-height, buffer |
+
+### Feedback & Overlays
+| Component | Purpose | Key Props |
+|-----------|---------|-----------|
+| `au-modal` | Dialog overlay | open, title, size |
+| `au-confirm` | Confirm dialog (Promise API) | title, message, variant |
+| `au-toast` | Notification toast | — (use showToast(); container auto-created if missing) |
+| `au-alert` | Inline alert banner | severity: info/success/warning/error |
+| `au-callout` | Highlighted content block | variant, title |
+| `au-progress` | Progress bar | value, max, variant |
+| `au-spinner` | Loading spinner | size |
+| `au-splash` | Full-screen loading | — |
+
+### Utility
+| Component | Purpose | Key Props |
+|-----------|---------|-----------|
+| `au-fetch` | Declarative data fetching | url, method, auto, interval |
+| `au-lazy` | Lazy-load wrapper | root-margin, threshold |
+| `au-repeat` | Template repeater | — (use setItems()) |
+| `au-error-boundary` | Error catch wrapper | fallback |
+| `au-theme-toggle` | Dark/light mode toggle | — |
+| `au-prompt-ui` | AI chat prompt input | — |
+
+### Documentation (internal)
+| Component | Purpose |
+|-----------|---------|
+| `au-doc-page` | Auto-generated docs page |
+| `au-api-table` | API reference table |
+| `au-example` | Live example + code toggle |
+
+---
+
+## WHEN TO USE WHAT (Component Selection Guide)
+
+| Need | Use | NOT |
+|------|-----|-----|
+| **Dropdown select in a form** | `au-dropdown` + `au-option` children | ~~au-select~~ (doesn't exist) |
+| **Single choice (visible options)** | `au-radio-group` + `au-radio` | au-dropdown (overkill for few options) |
+| **On/off toggle** | `au-switch` | au-checkbox (different UX semantics) |
+| **Multiple selections** | `au-checkbox` (one per option) | au-dropdown with `multiple` (for short lists) |
+| **Tab navigation** | `au-tabs` + `au-tab` | au-dropdown (tabs are for navigation, not selection) |
+| **Tag/filter chips** | `au-chip` with `selected` + `removable` | au-checkbox (chips are compact inline filters) |
+| **Confirm yes/no** | `auConfirm()` (Promise API) | au-modal (overkill for simple confirmations) |
+| **Complex dialog with form** | `au-modal` with form inside | auConfirm (limited to message + buttons) |
+| **Notification** | `showToast()` | au-alert (toasts auto-dismiss, alerts are persistent) |
+| **Persistent inline message** | `au-alert` with severity | showToast (toasts disappear) |
+
+> **Common confusion**: `au-dropdown` emits `au-select` events (not `au-change`). Check the EVENT DETAIL REFERENCE section for each component's events.
+
+---
+
+## AGENT WORKFLOW PATTERNS
+
+### Pattern 1: Build a Form (most common)
+```html
+<au-form>
+  <au-input name="email" label="Email" type="email" required></au-input>
+  <au-input name="name" label="Full Name" required></au-input>
+  <au-dropdown name="role" label="Role">
+    <au-option value="admin">Admin</au-option>
+    <au-option value="user">User</au-option>
+  </au-dropdown>
+  <au-button variant="filled">Submit</au-button>
+</au-form>
+
+<script>
+  document.querySelector('au-form').addEventListener('au-submit', e => {
+    console.log(e.detail.data); // { email: '...', name: '...', role: '...' }
+  });
+</script>
+```
+
+### Pattern 2: Form from JSON Schema (KILLER AGENT FEATURE)
+```javascript
+const form = document.querySelector('au-schema-form');
+form.schema = {
+  type: 'object',
+  properties: {
+    name: { type: 'string', title: 'Name', minLength: 2 },
+    email: { type: 'string', format: 'email', title: 'Email' },
+    role: { type: 'string', enum: ['user', 'admin', 'editor'], title: 'Role' },
+    active: { type: 'boolean', title: 'Active', default: true }
+  },
+  required: ['name', 'email']
+};
+form.addEventListener('au-submit', e => console.log(e.detail));
+```
+
+### Pattern 3: Data Table
+```html
+<au-datatable columns='[
+  {"field":"name","label":"Name","sortable":true},
+  {"field":"email","label":"Email"},
+  {"field":"role","label":"Role","sortable":true}
+]' page-size="10" sortable filterable selectable></au-datatable>
+
+<script>
+  document.querySelector('au-datatable').setData([
+    { name: 'Alice', email: 'alice@co.com', role: 'Admin' },
+    { name: 'Bob', email: 'bob@co.com', role: 'User' }
+  ]);
+</script>
+```
+
+### Pattern 4: PWA App Shell (Built-In, Fully Responsive)
+AgentUI includes a complete app shell system — no custom CSS or JS needed.
+
+**Components:** au-layout (shell container with 5 slots: header, drawer, main, footer, bottom),
+au-drawer (responsive sidebar: mode=auto|permanent|temporary|rail), au-bottom-nav (mobile nav).
+
+**Responsive behavior with mode="auto" (zero config):**
+- Desktop (≥840px): Drawer expanded, bottom-nav hidden
+- Tablet (600-839px): Drawer rail (icons only), bottom-nav hidden
+- Mobile (<600px): Drawer hidden (overlay), bottom-nav visible
+
+**Dashboard template (copy this):**
+```html
+<au-layout>
+  <au-navbar slot="header" sticky>
+    <au-navbar-brand>My App</au-navbar-brand>
+    <au-navbar-actions>
+      <au-theme-toggle></au-theme-toggle>
+    </au-navbar-actions>
+  </au-navbar>
+
+  <au-drawer slot="drawer" mode="auto" expand-on-hover>
+    <au-drawer-item icon="dashboard" href="#home" active>Home</au-drawer-item>
+    <au-drawer-item icon="people" href="#users">Users</au-drawer-item>
+    <au-drawer-item icon="settings" href="#settings">Settings</au-drawer-item>
+  </au-drawer>
+
+  <au-container>
+    <main id="content"><!-- Page content --></main>
+  </au-container>
+
+  <au-bottom-nav slot="bottom">
+    <au-bottom-nav-item icon="dashboard" label="Home" active></au-bottom-nav-item>
+    <au-bottom-nav-item icon="people" label="Users"></au-bottom-nav-item>
+    <au-bottom-nav-item icon="settings" label="Settings"></au-bottom-nav-item>
+  </au-bottom-nav>
+</au-layout>
+```
+KEY: au-layout orchestrates visibility — drawer and bottom-nav coordinate automatically across breakpoints. No media queries needed.
+
+> [!CAUTION]
+> **NEVER** override `padding` on `.au-layout-content` with `!important` or with
+> the `padding` shorthand — it silently defeats bottom-nav compensation and
+> content will be hidden behind the navigation bar.
+> For zero-padding layouts, use the `full-bleed` attribute:
+> ```html
+> <au-layout full-bleed>
+> ```
+> If you only need to adjust specific sides, override `padding-top`, `padding-left`,
+> or `padding-right` individually — never the shorthand.
+> The framework emits a `console.warn` at runtime if it detects the override.
+>
+> **`height: 100%` with bottom-nav**: Children of `.au-layout-content` that use
+> `height: 100%` automatically get the correct visible height (viewport − navbar − bottom-nav).
+> No `calc(100dvh - ...)` workaround needed.
+
+### Pattern 5: Confirm Dialog (one-liner)
+```javascript
+import { auConfirm } from 'agentui-wc';
+const ok = await auConfirm('Delete this item?', { variant: 'danger', title: 'Confirm Delete' });
+if (ok) deleteItem();
+```
+
+### Pattern 6: Declarative Data Fetch
+```html
+<au-fetch url="/api/users" auto></au-fetch>
+<script>
+  document.querySelector('au-fetch').addEventListener('au-success', e => {
+    document.querySelector('au-datatable').setData(e.detail.data);
+  });
+</script>
+```
+
+---
+
+## 🚀 PERFORMANCE (Lighthouse 100)
+
+### CLS Prevention (Built-In — Zero Config)
+
+`agentui.css` includes `:not(:defined)` rules for ALL components. These pre-define
+`display` and `min-height` before JS registers the custom elements, preventing
+Cumulative Layout Shift (CLS). **No action needed — just import the CSS.**
+
+If you need additional CLS prevention for dynamic content:
+
+```css
+/* Reserve space for content loaded async */
+#main-content {
+    contain: layout style;
+    min-height: 500px;
+}
+
+/* Lazy-render off-screen sections (SOTA 2026) */
+.card-list > au-card {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 200px;
+}
+```
+
+### Optimized HTML Head Template
+
+Use this `<head>` template for Lighthouse 100:
+
+```html
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Your app description here">
+  <title>My App</title>
+
+  <!-- CSS: preload + async load (non-render-blocking) -->
+  <link rel="preload" as="style" href="https://unpkg.com/agentui-wc@latest/dist/agentui.css">
+  <link rel="stylesheet" href="https://unpkg.com/agentui-wc@latest/dist/agentui.css"
+        media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://unpkg.com/agentui-wc@latest/dist/agentui.css"></noscript>
+
+  <!-- JS: async prevents render-blocking -->
+  <script type="module" src="https://unpkg.com/agentui-wc@latest/dist/agentui.esm.js" async></script>
+
+  <!-- Font: always use font-display: swap -->
+  <style>
+    @font-face {
+      font-family: 'Roboto';
+      font-display: swap;
+      src: url('https://fonts.gstatic.com/s/roboto/v47/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWubEbVmUiA8.woff2') format('woff2');
+    }
+    body { font-family: var(--md-sys-typescale-font); margin: 0; }
+  </style>
+</head>
+```
+
+> **Why `media="print" onload`?** A regular `<link rel="stylesheet">` blocks rendering.
+> The `media="print"` trick loads the CSS without blocking, then `onload` applies it.
+> Combined with built-in `:not(:defined)` CLS prevention, this gives zero layout shift.
+
+### Accessibility Checklist (Lighthouse 100)
+
+1. `<html lang="en">` — ALWAYS set language
+2. `<meta name="description">` — ALWAYS include
+3. `aria-label` on icon-only buttons: `<au-button aria-label="Close">✕</au-button>`
+4. Single `<h1>` per page, correct heading hierarchy
+5. Color contrast ≥ 4.5:1 (MD3 tokens handle this by default)
+6. `alt` on all `<img>` tags
+
+### Per-Component Imports (Reduce Bundle Size)
+
+The full bundle is ~181KB JS + ~94KB CSS. For smaller apps, import individual components:
+
+```javascript
+// Per-component (only loads what you use):
+import 'agentui-wc/dist/components/au-button.js';
+import 'agentui-wc/dist/components/au-input.js';
+import 'agentui-wc/dist/components/au-card.js';
+
+// Or use chunks (grouped by feature):
+import 'agentui-wc/dist/chunks/core.js';    // Theme, bus, icons
+import 'agentui-wc/dist/chunks/forms.js';   // Button, input, dropdown, etc.
+import 'agentui-wc/dist/chunks/layout.js';  // Layout, drawer, navbar, etc.
+import 'agentui-wc/dist/chunks/display.js'; // Card, chip, avatar, tabs, etc.
+import 'agentui-wc/dist/chunks/feedback.js';// Toast, alert, modal, progress
+import 'agentui-wc/dist/chunks/advanced.js';// Datatable, virtual-list, router
+```
+
+> **Note:** The CSS (`agentui.css`) is monolithic. Unused CSS rules have zero runtime cost.
+
+### Server Recommendations (Optional)
+
+For production deployments, configure your server to:
+- Serve gzip/brotli for `.js` and `.css` files (saves ~60-70% transfer size)
+- Set `Cache-Control: public, max-age=31536000` for versioned assets
+- Use versioned URLs (`?v=1.0.0`) for cache-busting
+
+Minimal Bun server example with gzip:
+```javascript
+Bun.serve({
+  port: 3000,
+  async fetch(req) {
+    const url = new URL(req.url);
+    const path = '.' + (url.pathname === '/' ? '/index.html' : url.pathname);
+    const file = Bun.file(path);
+    if (!await file.exists()) return new Response('Not found', { status: 404 });
+    const headers = { 'Cache-Control': 'public, max-age=3600' };
+    // Bun auto-negotiates gzip for Response(file)
+    if (path.endsWith('.css') || path.endsWith('.js')) {
+      headers['Content-Type'] = path.endsWith('.css') ? 'text/css' : 'application/javascript';
+    }
+    return new Response(file, { headers });
+  }
+});
+```
+> **Tip**: Use `bunx serve` or `npx serve` for instant static servers with gzip built-in.
+
+---
+
+## PWA BLUEPRINTS (Copy-Paste Starters)
+
+
+### Blueprint 1: Dashboard PWA
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="My Dashboard — built with AgentUI">
+  <title>My Dashboard</title>
+  <!-- CSS: non-render-blocking -->
+  <link rel="preload" as="style" href="https://unpkg.com/agentui-wc@latest/dist/agentui.css">
+  <link rel="stylesheet" href="https://unpkg.com/agentui-wc@latest/dist/agentui.css"
+        media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://unpkg.com/agentui-wc@latest/dist/agentui.css"></noscript>
+  <!-- JS -->
+  <script type="module" src="https://unpkg.com/agentui-wc@latest/dist/agentui.esm.js" async></script>
+  <!-- Font: MD3 default -->
+  <style>
+    @font-face { font-family: 'Roboto'; font-display: swap; src: url('https://fonts.gstatic.com/s/roboto/v47/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWubEbVmUiA8.woff2') format('woff2'); }
+    body { font-family: var(--md-sys-typescale-font); margin: 0; }
+  </style>
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <au-layout>
+    <au-navbar slot="header" sticky>
+      <au-navbar-brand>My App</au-navbar-brand>
+      <au-navbar-actions><au-theme-toggle></au-theme-toggle></au-navbar-actions>
+    </au-navbar>
+    <au-drawer slot="drawer" mode="auto" expand-on-hover>
+      <au-drawer-item icon="dashboard" href="#home" active>Home</au-drawer-item>
+      <au-drawer-item icon="people" href="#users">Users</au-drawer-item>
+      <au-drawer-item icon="settings" href="#settings">Settings</au-drawer-item>
+    </au-drawer>
+    <au-container><main id="app"></main></au-container>
+    <au-bottom-nav slot="bottom">
+      <au-bottom-nav-item icon="dashboard" label="Home" active></au-bottom-nav-item>
+      <au-bottom-nav-item icon="people" label="Users"></au-bottom-nav-item>
+      <au-bottom-nav-item icon="settings" label="Settings"></au-bottom-nav-item>
+    </au-bottom-nav>
+  </au-layout>
+  <au-toast-container></au-toast-container>
+
+  <script type="module">
+    import { showToast, Theme, bus } from 'agentui-wc';
+    Theme.init();
+    let currentPage = 'home';
+    const pages = {
+      home: () => `<au-stack gap="md"><h1>Dashboard</h1><au-grid cols="3" gap="md"><au-card variant="elevated">Widget 1</au-card><au-card variant="elevated">Widget 2</au-card><au-card variant="elevated">Widget 3</au-card></au-grid></au-stack>`,
+      users: () => `<h1>Users</h1><p>User list here</p>`,
+      settings: () => `<h1>Settings</h1><p>Settings here</p>`
+    };
+
+    function renderPage() {
+      const renderFn = pages[currentPage] || pages.home;
+      document.getElementById('app').innerHTML = renderFn();
+    }
+    renderPage();
+
+    // Navigation via hashchange
+    window.addEventListener('hashchange', () => {
+      currentPage = location.hash.slice(1) || 'home';
+      renderPage();
+    });
+
+    // Conditional rendering via bus events
+    let isLoggedIn = false;
+    bus.on('auth:change', (data) => {
+      isLoggedIn = data.authenticated;
+      const nav = document.querySelector('au-drawer');
+      if (nav) {
+        nav.innerHTML = isLoggedIn
+          ? '<au-drawer-item icon="person">Profile</au-drawer-item>'
+          : '<au-drawer-item icon="login">Login</au-drawer-item>';
+      }
+    });
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');
+  </script>
+</body>
+</html>
+```
+
+### Blueprint 2: CRUD App (Schema Form + DataTable)
+```html
+<au-stack gap="lg">
+  <!-- CREATE/EDIT -->
+  <au-card variant="outlined">
+    <h2>Add Item</h2>
+    <au-schema-form id="item-form"></au-schema-form>
+  </au-card>
+  <!-- LIST -->
+  <au-datatable id="items-table"></au-datatable>
+</au-stack>
+<au-toast-container></au-toast-container>
+
+<script type="module">
+// npm/bundler:
+import { showToast, auConfirm } from 'agentui-wc';
+// Zero-Build (no bundler):
+// import { showToast, auConfirm } from '/node_modules/agentui-wc/dist/agentui.esm.js';
+
+const form = document.getElementById('item-form');
+form.schema = {
+  required: ['name', 'email'],
+  properties: {
+    name:  { type: 'string', title: 'Name', minLength: 2 },
+    email: { type: 'string', title: 'Email', format: 'email' },
+    role:  { type: 'string', title: 'Role', enum: ['user','admin'], enumLabels: ['User','Admin'] }
+  }
+};
+
+let items = [];
+const table = document.getElementById('items-table');
+table.columns = [
+  { key: 'name', label: 'Name', sortable: true },
+  { key: 'email', label: 'Email', sortable: true },
+  { key: 'role', label: 'Role' },
+  { key: 'actions', label: '', render: (row) => `<au-button variant="text" size="sm" data-action="delete" data-id="${row.id}"><au-icon name="delete"></au-icon></au-button>` }
+];
+
+form.addEventListener('au-submit', (e) => {
+  items.push({ ...e.detail, id: Date.now() });
+  table.data = items;
+  form.reset();
+  showToast('Item added', { severity: 'success' });
+});
+
+table.addEventListener('click', async (e) => {
+  const btn = e.target.closest('[data-action="delete"]');
+  if (!btn) return;
+  const ok = await auConfirm('Delete this item?', { variant: 'danger' });
+  if (ok) {
+    items = items.filter(i => i.id !== Number(btn.dataset.id));
+    table.data = items;
+    showToast('Deleted', { severity: 'success' });
+  }
+});
+</script>
+```
+
+### Blueprint 3: Auth Flow (Login + Token + Route Guard)
+```javascript
+// npm/bundler:
+import { showToast, bus } from 'agentui-wc';
+// Zero-Build (no bundler):
+// import { showToast, bus } from '/node_modules/agentui-wc/dist/agentui.esm.js';
+
+// State
+let user = JSON.parse(localStorage.getItem('user') || 'null');
+const isAuthenticated = () => user !== null;
+
+function setUser(newUser) {
+  user = newUser;
+  user ? localStorage.setItem('user', JSON.stringify(user)) : localStorage.removeItem('user');
+  bus.emit('auth:change', { user, authenticated: isAuthenticated() });
+}
+
+// Login form
+const loginForm = document.getElementById('login-form');
+loginForm.schema = {
+  required: ['email', 'password'],
+  properties: {
+    email:    { type: 'string', title: 'Email', format: 'email' },
+    password: { type: 'string', title: 'Password', minLength: 8 }
+  }
+};
+
+loginForm.addEventListener('au-submit', async (e) => {
+  try {
+    const res = await fetch('/api/login', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(e.detail)
+    });
+    if (!res.ok) throw new Error('Invalid credentials');
+    setUser(await res.json());
+    showToast('Welcome!', { severity: 'success' });
+    location.hash = '#home';
+  } catch (err) {
+    showToast(err.message, { severity: 'error' });
+  }
+});
+
+// Route guard
+function requireAuth() {
+  if (!isAuthenticated()) { location.hash = '#login'; return false; }
+  return true;
+}
+
+// Logout
+function logout() { setUser(null); location.hash = '#login'; }
+```
+
+### Blueprint 4: Dynamic Checklist (Todo / Task List)
+```html
+<au-card variant="outlined">
+  <au-stack direction="row" align="center" gap="sm">
+    <au-input id="new-item" label="New item" style="flex:1"></au-input>
+    <au-button variant="filled" id="add-btn">Add</au-button>
+  </au-stack>
+</au-card>
+<au-stack id="item-list" gap="sm"></au-stack>
+<au-toast-container></au-toast-container>
+
+<script type="module">
+// npm/bundler:
+import { showToast, auConfirm } from 'agentui-wc';
+// Zero-Build (no bundler):
+// import { showToast, auConfirm } from '/node_modules/agentui-wc/dist/agentui.esm.js';
+
+let items = JSON.parse(localStorage.getItem('checklist') || '[]');
+
+function save() { localStorage.setItem('checklist', JSON.stringify(items)); }
+
+function renderList() {
+  const list = document.getElementById('item-list');
+  list.innerHTML = '';
+
+  items.forEach((item, i) => {
+    const row = document.createElement('au-stack');
+    row.setAttribute('direction', 'row');
+    row.setAttribute('align', 'center');
+    row.setAttribute('gap', 'sm');
+
+    const cb = document.createElement('au-checkbox');
+    cb.textContent = item.text;
+    if (item.done) cb.setAttribute('checked', '');
+    cb.style.flex = '1';
+    cb.addEventListener('au-change', (e) => {
+      items[i].done = e.detail.checked;
+      save();
+    });
+
+    const del = document.createElement('au-button');
+    del.setAttribute('variant', 'text');
+    del.setAttribute('size', 'sm');
+    del.innerHTML = '<au-icon name="delete"></au-icon>';
+    del.addEventListener('click', async () => {
+      if (await auConfirm('Delete this item?', { variant: 'danger' })) {
+        items.splice(i, 1);
+        save();
+        renderList();
+        showToast('Deleted', { severity: 'success' });
+      }
+    });
+
+    row.appendChild(cb);
+    row.appendChild(del);
+    list.appendChild(row);
+  });
+}
+
+document.getElementById('add-btn').addEventListener('click', () => {
+  const input = document.getElementById('new-item');
+  const text = input.value.trim();
+  if (!text) return;
+  items.push({ text, done: false });
+  save();
+  input.clear();
+  renderList();
+  showToast('Added!', { severity: 'success' });
+});
+
+renderList();
+</script>
+```
+KEY: Use `document.createElement` (not innerHTML) for au-checkbox in loops. The framework has a built-in initialization guard that prevents clicks from being processed during element creation, so no manual `_isRendering` flag is needed.
+
+---
+
+## QUICK GOTCHAS
+
+| ❌ Wrong | ✅ Right | Why |
+|----------|----------|-----|
+| `<au-button>Click</au-button>` | `<au-button variant="filled">` | Always specify variant (default: primary) |
+| `<au-input placeholder="Email">` | `<au-input label="Email">` | label for a11y |
+| `addEventListener('change',...)` | `addEventListener('au-change',...)` | au- prefix |
+| `modal.open = true` | `modal.open()` | method, not property |
+| `<au-input value="x" />` | `<au-input value="x"></au-input>` | closing tag required |
+| `<au-icon name="task_alt">` (no icon) | Use bundled names (see BUNDLED ICON NAMES below) or wait for auto-load | 54 icons are SVG; others need Google Fonts (auto-injected) |
+| re-render to clear input | `inputEl.clear()` or `inputEl.value = ''` | au-input exposes `.value` getter/setter and `.clear()` |
+| `align-items: flex-end` with au-input + au-button | `align-items: center` or `<au-stack direction="row" align="center">` | au-input includes floating label — flex-end pushes button below the field |
+| `saveBtn.addEventListener('click',...)` inside `au-modal` | Event delegation on `au-modal` element | `au-modal` copies innerHTML into a native `<dialog>` — direct listeners on children are lost. Use `modal.addEventListener('click', e => { if (e.target.closest('#save')) ... })` |
+| re-render list via `innerHTML` in `au-change` handler | Imperative DOM (`createElement`) + `_isRendering` guard | Replacing DOM re-triggers connectedCallback → potential event loop. See Blueprint 4 |
+| `.au-layout-content { padding: 0; }` | `<au-layout full-bleed>` | `padding: 0` defeats bottom-nav compensation — content hidden behind nav bar. Use `full-bleed` attribute instead |
+| ignore `e.detail.source` in `au-change` handler | Check `e.detail.source === 'user'` to filter programmatic | `toggle()`/`select()` set `source: 'user'`; property setters don't emit events |
+| `dropdown.value = 'high'` | `dropdown.select('high', 'High')` | `.value =` sets the attribute but does **NOT** update the displayed label text. The trigger still shows the placeholder. Use `.select(value, label)` to update both attribute AND visible text |
+
+---
+
+## EVENT DETAIL REFERENCE
+
+All events use `au-` prefix. Access via `e.detail`.
+
+| Event | Component(s) | `e.detail` |
+|-------|-------------|------------|
+| `au-input` | au-input, au-textarea | `{ value: string }` |
+| `au-change` | au-checkbox, au-switch | `{ checked: boolean, source: 'user' }` |
+| `au-change` | au-radio | `{ value: string, source: 'user' }` |
+| `au-change` | au-chip | `{ selected: boolean }` |
+| `au-change` | au-bottom-nav | `{ value: string, item }` |
+| `au-change` | au-schema-form | `{ field, value, values }` |
+| `au-select` | au-dropdown | `{ value: string, label: string }` |
+| `au-submit` | au-form | `{ data: object, isValid: boolean }` |
+| `au-submit` | au-schema-form | `{ ...formValues }` |
+| `au-invalid` | au-form | `{ data, errors }` |
+| `au-tab-change` | au-tabs | `{ index: number }` |
+| `au-route-change` | au-router | `{ route: string }` |
+| `au-page-loaded` | au-router | `{ route: string }` |
+| `au-page-error` | au-router | `{ route, error }` |
+| `au-data` | au-fetch | `{ data: any }` |
+| `au-success` | au-fetch | `{ data: any }` |
+| `au-error` | au-fetch, au-error-boundary | `{ error }` |
+| `au-open` | au-modal | _(no detail)_ |
+| `au-close` | au-modal | _(no detail)_ |
+| `au-dismiss` | au-toast, au-alert | _(no detail)_ |
+| `au-confirm` | au-confirm | _(no detail)_ |
+| `au-cancel` | au-confirm | _(no detail)_ |
+| `au-remove` | au-chip | _(no detail)_ |
+| `au-focus` | au-input | _(no detail)_ |
+| `au-blur` | au-input | _(no detail)_ |
+| `au-reset` | au-form | _(no detail)_ |
+| `au-nav-select` | au-drawer-item | `{ href, item }` |
+| `au-sidebar-toggle` | au-sidebar | `{ open: boolean }` |
+| `au-sidebar-select` | au-sidebar-item | `{ item: Element }` |
+| `au-data-change` | au-datatable | `{ data, count }` |
+| `au-page-change` | au-datatable | `{ page, pageSize, total, totalPages }` |
+| `au-sort-change` | au-datatable | `{ column, direction }` |
+| `au-selection-change` | au-datatable | `{ selected: any[] }` |
+| `au-loaded` | au-lazy | _(no detail)_ |
+| `au-recover` | au-error-boundary | _(no detail)_ |
+| `au-ready` | document (framework) | `{ timestamp: number }` — fires when ALL components are registered. Listen with `document.addEventListener('au-ready', cb)`. Also sets `window.AgentUI.ready = true`. |
+
+---
+
+## BUNDLED ICON NAMES (54 SVG — instant, no network)
+
+**Actions:** check, close, add, remove, edit, delete, search
+**Navigation:** menu, chevron_right, chevron_left, expand_more, expand_less, home, arrow_back, arrow_forward
+**Status:** info, warning, error, check_circle, cancel, success
+**UI:** settings, person, light_mode, dark_mode, visibility, visibility_off, notifications, open_in_new, hourglass_empty, account_circle, fiber_manual_record, label, emoji_emotions, business, input, category, widgets, smart_toy, notification_important
+**Drawer/Nav:** download, smart_button, text_fields, check_box, toggle_on, radio_button_checked, arrow_drop_down_circle, view_carousel, grid_view, tab
+**Enterprise:** folder_managed, shield, apps, monitoring
+**Aliases:** `sun`→light_mode, `moon`→dark_mode, `user`→person, `plus`→add, `minus`→remove, `success`→check_circle
+
+Any name NOT in this list triggers auto-load from Google Material Symbols (requires network on first load).
+
+---
+
+## COMPONENT METHODS REFERENCE
+
+Methods you can call on component instances. Use `document.querySelector()` or `document.getElementById()` to get the element.
+
+| Component | Method | Description |
+|-----------|--------|-------------|
+| `au-input` | `.value` | Get/set input value (property) |
+| `au-input` | `.clear()` | Clear input and reset has-value state |
+| `au-input` | `.focus()` | Focus the internal input element |
+| `au-textarea` | `.value` | Get/set textarea value (property) |
+| `au-textarea` | `.focus()` | Focus the internal textarea element |
+| `au-checkbox` | `.checked` | Get/set checked state (property, no event) |
+| `au-checkbox` | `.indeterminate` | Get/set indeterminate state (property) |
+| `au-checkbox` | `.toggle()` | Toggle checked + emit au-change |
+| `au-switch` | `.checked` | Get/set checked state (property, no event) |
+| `au-switch` | `.toggle()` | Toggle checked + emit au-change |
+| `au-radio-group` | `.value` | Get/set selected value (property, no event) |
+| `au-radio-group` | `.select(value)` | Select option + emit au-change |
+| `au-dropdown` | `.value` (getter) | Read the currently selected value (string). Returns `''` if nothing selected |
+| `au-dropdown` | `.value = 'x'` (setter) | ⚠️ Sets the attribute ONLY — does **NOT** update the displayed label. Prefer `.select()` |
+| `au-dropdown` | `.select(value, label)` | ✅ **Use this to set value programmatically.** Updates attribute + displayed label + emits `au-select` |
+| `au-dropdown` | `.toggle()` | Toggle open/close |
+| `au-dropdown` | `.open()` | Open dropdown |
+| `au-dropdown` | `.close()` | Close dropdown |
+| `au-modal` | `.open()` | Open modal + emit au-open |
+| `au-modal` | `.close()` | Close modal + emit au-close |
+| `au-form` | `.reset()` | Reset all form fields |
+| `au-schema-form` | `.reset()` | Reset all schema form fields |
+| `au-drawer` | `.toggle()` | Toggle drawer open/close |
+| `au-sidebar` | `.toggle()` | Toggle sidebar open/close |
+| `au-chip` | `.toggle()` | Toggle chip selected state |
+
+KEY: Properties (`.value`, `.checked`) set state **without emitting events**. Methods (`.toggle()`, `.select()`) set state **and emit events** with `source: 'user'`.
+
+> **⚠️ au-modal LIFECYCLE — READ THIS CAREFULLY**:
+> `au-modal` captures innerHTML as a raw string during `connectedCallback()`,
+> BEFORE child custom elements render. It injects this string into a native `<dialog>` element.
+> Custom elements inside (au-input, au-dropdown, etc.) **re-initialize correctly** from the serialized HTML.
+>
+> **🚨 CRITICAL**: Event listeners attached directly to children **ARE LOST**.
+> `document.getElementById('save-btn').addEventListener('click', ...)` **WILL NOT WORK** inside a modal.
+> You **MUST** use event delegation on the `au-modal` element itself:
+>
+> **Pattern: Modal with Form (Declarative)**
+> ```html
+> <au-modal id="task-modal" size="md">
+>   <au-input id="task-title" label="Title"></au-input>
+>   <au-dropdown id="task-priority" label="Priority">
+>     <au-option value="low">Low</au-option>
+>     <au-option value="medium" selected>Medium</au-option>
+>     <au-option value="high">High</au-option>
+>   </au-dropdown>
+>   <au-button id="save-btn" variant="filled">Save</au-button>
+>   <au-button id="cancel-btn" variant="text">Cancel</au-button>
+> </au-modal>
+> ```
+> ```javascript
+> const modal = document.getElementById('task-modal');
+>
+> // ✅ CORRECT: Event delegation on the modal — events bubble up through <dialog>
+> modal.addEventListener('click', (e) => {
+>   const btn = e.target.closest('au-button');
+>   if (btn?.id === 'save-btn') {
+>     const title = modal.querySelector('#task-title').value;
+>     const priority = modal.querySelector('#task-priority').value;
+>     console.log({ title, priority });
+>     modal.close();
+>   }
+>   if (btn?.id === 'cancel-btn') modal.close();
+> });
+>
+> // ❌ WRONG: Direct listener on child — WILL NOT WORK (element is cloned into <dialog>)
+> // document.getElementById('save-btn').addEventListener('click', ...) // BROKEN!
+>
+> // Listen for dropdown selection via bubbling custom event
+> modal.addEventListener('au-select', (e) => {
+>   console.log('Selected:', e.detail.value, e.detail.label);
+> });
+>
+> modal.open();
+> ```
+>
+> **Pattern: Pre-populate dropdown in edit mode**
+> ```javascript
+> // After modal.open(), use .select(value, label) to pre-set a dropdown value:
+> modal.addEventListener('au-open', () => {
+>   const dropdown = modal.querySelector('#task-priority');
+>   dropdown.select('high', 'High'); // Pre-selects "High" programmatically
+> });
+> ```
+>
+> **Pattern: Modal with Dynamic Content (JS-built)**
+> ```javascript
+> const modal = document.getElementById('dynamic-modal');
+> modal.addEventListener('au-open', () => {
+>   const body = modal.querySelector('.au-modal__body');
+>   body.innerHTML = `
+>     <au-input id="name" label="Name" value="${escapeHTML(currentName)}"></au-input>
+>     <au-button id="save" variant="filled">Save</au-button>
+>   `;
+> });
+> ```
+
+---
+
+## BUS API REFERENCE
+
+All inter-component communication uses `bus`. Import: `import { bus, UIEvents, showToast } from 'agentui-wc';`
+
+```javascript
+// Subscribe (returns unsubscribe fn)
+const unsub = bus.on('event', (data) => {});
+unsub();  // cleanup
+
+// Subscribe once
+bus.once('event', (data) => {});
+
+// Emit (synchronous)
+bus.emit('event', { key: 'value' });
+
+// Wildcard — matches all events with prefix
+bus.on('ui:*', (data) => {});  // catches ui:toast:show, ui:modal:open, etc.
+
+// Check listeners exist
+bus.hasListeners('event');  // boolean
+
+// RPC (request/response)
+bus.handle('service:method', async (payload) => { return result; });
+const result = await bus.request('agentui', 'service:method', payload);
+bus.unhandle('service:method');
+```
+
+UIEvents constants (use instead of hardcoded strings):
+```
+TOAST_SHOW='ui:toast:show'  TOAST_DISMISS='ui:toast:dismiss'
+MODAL_OPEN='ui:modal:open'  MODAL_CLOSE='ui:modal:close'
+THEME_CHANGE='ui:theme:change'  TAB_CHANGE='ui:tab:change'
+DROPDOWN_SELECT='ui:dropdown:select'
+FORM_SUBMIT='ui:form:submit'  FORM_VALIDATE='ui:form:validate'
+```
+
+Toast shortcut: `showToast('msg', { severity: 'success', duration: 3000 })`
+Severity: `info` | `success` | `warning` | `error`
+NOTE: `<au-toast-container>` is auto-created in DOM if missing. Place one explicitly to control position: `<au-toast-container position="bottom-center"></au-toast-container>`. Valid positions: top-left, top-center, top-right, bottom-left, bottom-center (default), bottom-right.
+
+Custom events: use `domain:action` naming → `cart:item-added`, `auth:login`
+
+## GLOBAL APIs
+
+```javascript
+AgentUI.discoverAll()             // All component schemas
+AgentUI.getAuComponentTree()      // DOM tree of au-* components
+AgentUI.showToast('Saved!', {     // Toast notifications
+  severity: 'success',             //   info|success|warning|error
+  duration: 3000                  //   auto-dismiss ms
+})
+AgentUI.Theme.set('dark')         // Set theme: 'light'|'dark'|'auto'
+AgentUI.Theme.current             // Get current theme
+AgentUI.bus.emit('event', data)   // LightBus event bus
+AgentUI.bus.on('event', handler)  // Listen for events
+```
+
+---
+
+## SEMANTIC ATTRIBUTES (for agent DOM analysis)
+
+Components auto-add semantic HTML attributes:
+- `data-au-action="submit|cancel|delete"` — action buttons
+- `data-au-role="navigation|form|dialog"` — semantic roles
+- `role="..."` — ARIA roles on all interactive elements
+
+---
+
+## FILE STRUCTURE
+
+```
+dist/agentui.esm.js    — ESM bundle (tree-shakeable)
+dist/agentui.min.js    — IIFE bundle (global AgentUI)
+dist/agentui.css       — All component styles
+dist/agentui.d.ts      — TypeScript definitions
+src/components/        — Individual component sources
+src/core/AuElement.js  — Base class (extend for custom)
+AGENTS.md              — Consumer reference (using components)
+AGENTS_DEV.md          — Developer reference (extending framework)
+```
+
+## LINKS
+
+- Demo: https://giuseppescottolavina.github.io/AgentUI/
+- npm: https://www.npmjs.com/package/agentui-wc
+- GitHub: https://github.com/GiuseppeScottoLavina/AgentUI

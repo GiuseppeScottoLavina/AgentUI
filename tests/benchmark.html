@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgentUI v0.1.0 - Performance Benchmarks</title>
+    <link rel="stylesheet" href="../src/styles/tokens.css">
+    <link rel="stylesheet" href="../src/styles/components.css">
+    <style>
+        body {
+            font-family: var(--md-sys-typescale-font);
+            background: var(--md-sys-color-surface);
+            color: var(--md-sys-color-on-surface);
+            padding: 24px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .benchmark-card {
+            background: var(--md-sys-color-surface-container);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .result {
+            font-family: monospace;
+            background: var(--md-sys-color-surface-container-highest);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 12px;
+        }
+
+        .pass {
+            color: var(--md-sys-color-primary);
+        }
+
+        .warn {
+            color: var(--md-sys-color-tertiary);
+        }
+
+        .fail {
+            color: var(--md-sys-color-error);
+        }
+
+        button {
+            background: var(--md-sys-color-primary);
+            color: var(--md-sys-color-on-primary);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 8px 4px 8px 0;
+        }
+
+        #test-container {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>⚡ AgentUI Performance Benchmarks</h1>
+
+    <div class="benchmark-card">
+        <h2>1. Component Creation Speed</h2>
+        <p>Measures time to create 1000 components</p>
+        <button onclick="runCreationBenchmark()">Run Test</button>
+        <div id="creation-result" class="result">Click to run...</div>
+    </div>
+
+    <div class="benchmark-card">
+        <h2>2. DOM Update Speed</h2>
+        <p>Measures time for 1000 attribute updates</p>
+        <button onclick="runUpdateBenchmark()">Run Test</button>
+        <div id="update-result" class="result">Click to run...</div>
+    </div>
+
+    <div class="benchmark-card">
+        <h2>3. Render Cycle</h2>
+        <p>Measures time for 1000 render calls</p>
+        <button onclick="runRenderBenchmark()">Run Test</button>
+        <div id="render-result" class="result">Click to run...</div>
+    </div>
+
+    <div class="benchmark-card">
+        <h2>4. Event Bus Performance</h2>
+        <p>Measures 10000 event emissions</p>
+        <button onclick="runEventBenchmark()">Run Test</button>
+        <div id="event-result" class="result">Click to run...</div>
+    </div>
+
+    <div class="benchmark-card">
+        <h2>5. Memory Usage</h2>
+        <p>Checks memory after creating 5000 components</p>
+        <button onclick="runMemoryBenchmark()">Run Test</button>
+        <div id="memory-result" class="result">Click to run...</div>
+    </div>
+
+    <div class="benchmark-card">
+        <h2>📊 Run All Benchmarks</h2>
+        <button onclick="runAll()">Run All Tests</button>
+        <div id="all-result" class="result">Click to run all benchmarks...</div>
+    </div>
+
+    <div id="test-container"></div>
+
+    <script type="module">
+        import { AuButton, AuInput, AuCard, bus } from '../src/index.js';
+
+        const container = document.getElementById('test-container');
+
+        function formatTime(ms) {
+            if (ms < 1) return `${(ms * 1000).toFixed(2)}µs`;
+            if (ms < 1000) return `${ms.toFixed(2)}ms`;
+            return `${(ms / 1000).toFixed(2)}s`;
+        }
+
+        function classify(ms, good, ok) {
+            if (ms <= good) return 'pass';
+            if (ms <= ok) return 'warn';
+            return 'fail';
+        }
+
+        // 1. Creation Benchmark
+        window.runCreationBenchmark = () => {
+            const count = 1000;
+            container.innerHTML = '';
+
+            const start = performance.now();
+            for (let i = 0; i < count; i++) {
+                const btn = document.createElement('au-button');
+                btn.textContent = `Button ${i}`;
+                container.appendChild(btn);
+            }
+            const end = performance.now();
+            const total = end - start;
+            const perOp = total / count;
+
+            const cls = classify(perOp, 0.1, 0.5);
+            document.getElementById('creation-result').innerHTML =
+                `<span class="${cls}">✓ Created ${count} components in ${formatTime(total)}</span><br>
+                 Per component: ${formatTime(perOp)}`;
+
+            container.innerHTML = '';
+            return { name: 'Creation', total, perOp };
+        };
+
+        // 2. Update Benchmark
+        window.runUpdateBenchmark = () => {
+            const count = 1000;
+            container.innerHTML = '';
+
+            // Create buttons first
+            const buttons = [];
+            for (let i = 0; i < 100; i++) {
+                const btn = document.createElement('au-button');
+                container.appendChild(btn);
+                buttons.push(btn);
+            }
+
+            const start = performance.now();
+            for (let i = 0; i < count; i++) {
+                const btn = buttons[i % 100];
+                btn.setAttribute('variant', i % 2 === 0 ? 'primary' : 'secondary');
+            }
+            const end = performance.now();
+            const total = end - start;
+            const perOp = total / count;
+
+            const cls = classify(perOp, 0.01, 0.1);
+            document.getElementById('update-result').innerHTML =
+                `<span class="${cls}">✓ ${count} attribute updates in ${formatTime(total)}</span><br>
+                 Per update: ${formatTime(perOp)}`;
+
+            container.innerHTML = '';
+            return { name: 'Update', total, perOp };
+        };
+
+        // 3. Render Benchmark
+        window.runRenderBenchmark = () => {
+            const count = 1000;
+            container.innerHTML = '';
+
+            const cards = [];
+            for (let i = 0; i < 100; i++) {
+                const card = document.createElement('au-card');
+                card.innerHTML = `<h3>Card ${i}</h3><p>Content</p>`;
+                container.appendChild(card);
+                cards.push(card);
+            }
+
+            const start = performance.now();
+            for (let i = 0; i < count; i++) {
+                cards[i % 100].render?.();
+            }
+            const end = performance.now();
+            const total = end - start;
+            const perOp = total / count;
+
+            const cls = classify(perOp, 0.05, 0.2);
+            document.getElementById('render-result').innerHTML =
+                `<span class="${cls}">✓ ${count} render cycles in ${formatTime(total)}</span><br>
+                 Per render: ${formatTime(perOp)}`;
+
+            container.innerHTML = '';
+            return { name: 'Render', total, perOp };
+        };
+
+        // 4. Event Bus Benchmark
+        window.runEventBenchmark = () => {
+            const count = 10000;
+            let received = 0;
+
+            const handler = () => received++;
+            bus.on('bench:test', handler);
+
+            const start = performance.now();
+            for (let i = 0; i < count; i++) {
+                bus.emit('bench:test', { i });
+            }
+            const end = performance.now();
+            const total = end - start;
+            const perOp = total / count;
+
+            bus.off('bench:test', handler);
+
+            const cls = classify(perOp, 0.001, 0.01);
+            document.getElementById('event-result').innerHTML =
+                `<span class="${cls}">✓ ${count} events in ${formatTime(total)}</span><br>
+                 Per event: ${formatTime(perOp)} | Received: ${received}`;
+
+            return { name: 'Events', total, perOp };
+        };
+
+        // 5. Memory Benchmark
+        window.runMemoryBenchmark = async () => {
+            const count = 5000;
+            container.innerHTML = '';
+
+            // Force GC if available
+            if (window.gc) window.gc();
+
+            const before = performance.memory?.usedJSHeapSize || 0;
+
+            for (let i = 0; i < count; i++) {
+                const btn = document.createElement('au-button');
+                btn.textContent = `Button ${i}`;
+                container.appendChild(btn);
+            }
+
+            await new Promise(r => setTimeout(r, 100));
+
+            const after = performance.memory?.usedJSHeapSize || 0;
+            const diff = after - before;
+            const perComponent = diff / count;
+
+            const result = document.getElementById('memory-result');
+            if (performance.memory) {
+                const cls = classify(perComponent / 1024, 1, 5); // KB per component
+                result.innerHTML =
+                    `<span class="${cls}">✓ Created ${count} components</span><br>
+                     Memory used: ${(diff / 1024 / 1024).toFixed(2)}MB<br>
+                     Per component: ~${(perComponent / 1024).toFixed(2)}KB`;
+            } else {
+                result.innerHTML = `⚠️ Memory API not available in this browser`;
+            }
+
+            container.innerHTML = '';
+            return { name: 'Memory', total: diff, perOp: perComponent };
+        };
+
+        // Run All
+        window.runAll = async () => {
+            const results = [];
+            results.push(runCreationBenchmark());
+            results.push(runUpdateBenchmark());
+            results.push(runRenderBenchmark());
+            results.push(runEventBenchmark());
+            results.push(await runMemoryBenchmark());
+
+            const summary = results.map(r =>
+                `${r.name}: ${formatTime(r.total)} (${formatTime(r.perOp)}/op)`
+            ).join('<br>');
+
+            document.getElementById('all-result').innerHTML =
+                `<strong>📊 Summary</strong><br>${summary}`;
+        };
+
+        console.log('🔬 Benchmark page ready');
+    </script>
+</body>
+
+</html>

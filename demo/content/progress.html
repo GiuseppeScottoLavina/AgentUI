@@ -1,0 +1,119 @@
+<!-- Progress Content Fragment -->
+<div id="page-progress" class="page active">
+    <h1 class="page-title">Progress Bar</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-progress&gt;</code>
+        communicates loading states with linear progress animations.
+    </p>
+
+    <au-tabs active="0" id="progress-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>STYLING</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <div id="progress-overview" class="doc-tab-content">
+        <au-example title="Linear progress bar">
+            <div slot="demo">
+                <au-stack gap="md" style="width: 100%;">
+                    <au-progress value="25"></au-progress>
+                    <au-progress value="50"></au-progress>
+                    <au-progress value="75"></au-progress>
+                    <au-progress value="100"></au-progress>
+                </au-stack>
+            </div>
+        </au-example>
+
+        <!-- When to use - UNIFIED CARD with list items -->
+        <div class="component-section">
+            <h3 class="section-title">When to use</h3>
+            <au-card variant="outlined">
+                <au-stack gap="md">
+                    <au-stack direction="row" gap="sm" align="start">
+                        <au-icon name="check_circle" size="20"
+                            style="color: var(--md-sys-color-primary); margin-top: 2px;"></au-icon>
+                        <div>
+                            <strong>File uploads or downloads</strong>
+                            <div style="font-size: 13px; color: var(--md-sys-color-on-surface-variant);">When you can
+                                calculate progress percentage</div>
+                        </div>
+                    </au-stack>
+                    <au-stack direction="row" gap="sm" align="start">
+                        <au-icon name="check_circle" size="20"
+                            style="color: var(--md-sys-color-primary); margin-top: 2px;"></au-icon>
+                        <div>
+                            <strong>Multi-step processes</strong>
+                            <div style="font-size: 13px; color: var(--md-sys-color-on-surface-variant);">Wizards,
+                                onboarding flows, form completion</div>
+                        </div>
+                    </au-stack>
+                </au-stack>
+            </au-card>
+        </div>
+
+        <!-- When NOT to use -->
+        <div class="component-section">
+            <h3 class="section-title">When NOT to use</h3>
+            <au-stack gap="md">
+                <au-alert severity="warning">Don't use for <strong>indeterminate loading</strong> where duration is
+                    unknown — use <code>&lt;au-spinner&gt;</code> instead</au-alert>
+                <au-alert severity="warning">Don't use for <strong>button loading states</strong> — use inline spinner
+                    or button disabled state</au-alert>
+            </au-stack>
+        </div>
+    </div>
+
+    <div id="progress-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Attributes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="value" type="number" default="0">Progress value (0-100)</au-api-row>
+                <au-api-row name="indeterminate" type="boolean" default="false">Infinite animation
+                    mode</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="progress-styling" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">CSS Custom Properties</h2>
+            <au-api-table type="tokens">
+                <au-api-row name="--md-sys-color-primary" default="#6750a4">Progress fill color</au-api-row>
+                <au-api-row name="--md-sys-color-surface-container-highest" default="#e6e0e9">Track
+                    background</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="progress-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="Indeterminate progress">
+            <div slot="demo">
+                <au-progress indeterminate></au-progress>
+            </div>
+        </au-example>
+
+        <au-example title="Different values">
+            <div slot="demo">
+                <au-stack gap="sm" style="width: 100%;">
+                    <div style="display: flex; justify-content: space-between; font-size: 13px;">
+                        <span>0%</span>
+                        <au-progress value="0" style="flex: 1; margin: 0 12px;"></au-progress>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 13px;">
+                        <span>33%</span>
+                        <au-progress value="33" style="flex: 1; margin: 0 12px;"></au-progress>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 13px;">
+                        <span>66%</span>
+                        <au-progress value="66" style="flex: 1; margin: 0 12px;"></au-progress>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 13px;">
+                        <span>100%</span>
+                        <au-progress value="100" style="flex: 1; margin: 0 12px;"></au-progress>
+                    </div>
+                </au-stack>
+            </div>
+        </au-example>
+    </div>
+</div>

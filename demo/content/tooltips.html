@@ -1,0 +1,107 @@
+<div class="page active">
+    <h1 class="page-title">Tooltip</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-tooltip&gt;</code> displays contextual information
+        when users hover or focus on an element.
+    </p>
+
+    <au-tabs active="0" id="tooltip-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>STYLING</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <div id="tooltip-overview" class="doc-tab-content">
+        <au-example title="Position options">
+            <div slot="demo">
+                <au-tooltip content="Tooltip on top" position="top">
+                    <au-button>Top</au-button>
+                </au-tooltip>
+                <au-tooltip content="Tooltip on bottom" position="bottom">
+                    <au-button>Bottom</au-button>
+                </au-tooltip>
+                <au-tooltip content="Tooltip on left" position="left">
+                    <au-button>Left</au-button>
+                </au-tooltip>
+                <au-tooltip content="Tooltip on right" position="right">
+                    <au-button>Right</au-button>
+                </au-tooltip>
+            </div>
+            <div slot="code">&lt;au-tooltip content="Help text" position="top"&gt;
+                &lt;au-button&gt;Hover me&lt;/au-button&gt;
+                &lt;/au-tooltip&gt;</div>
+        </au-example>
+
+        <au-example title="Icon with tooltip">
+            <div slot="demo">
+                <au-stack direction="row" gap="md" align="center">
+                    <au-tooltip content="Edit document">
+                        <au-icon name="edit" style="cursor: pointer;"></au-icon>
+                    </au-tooltip>
+                    <au-tooltip content="Delete item">
+                        <au-icon name="delete" style="cursor: pointer;"></au-icon>
+                    </au-tooltip>
+                    <au-tooltip content="Settings">
+                        <au-icon name="settings" style="cursor: pointer;"></au-icon>
+                    </au-tooltip>
+                </au-stack>
+            </div>
+            <div slot="code">&lt;au-tooltip content="Edit document"&gt;
+                &lt;au-icon name="edit"&gt;&lt;/au-icon&gt;
+                &lt;/au-tooltip&gt;</div>
+        </au-example>
+
+        <div class="component-section">
+            <h2 class="section-title">When to use</h2>
+            <p style="color: var(--md-sys-color-on-surface-variant); line-height: 1.6;">
+                Use tooltips to provide additional context for icon buttons, truncated text,
+                or any element where a brief explanation improves usability. Keep tooltip
+                text concise—one or two words is ideal.
+            </p>
+        </div>
+    </div>
+
+    <div id="tooltip-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Attributes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="content" type="string" default="">The tooltip text to display</au-api-row>
+                <au-api-row name="position" type="string" default="top">'top' | 'bottom' | 'left' | 'right'</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="tooltip-styling" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">CSS Custom Properties</h2>
+            <au-api-table type="tokens">
+                <au-api-row name="--md-sys-color-inverse-surface" default="#1c1b1f">Tooltip background</au-api-row>
+                <au-api-row name="--md-sys-color-inverse-on-surface" default="#f4eff4">Tooltip text color</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="tooltip-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="Button bar with tooltips">
+            <div slot="demo">
+                <au-card variant="filled" style="display: inline-block; padding: 8px 12px;">
+                    <au-stack direction="row" gap="sm">
+                        <au-tooltip content="Bold (Ctrl+B)">
+                            <au-button variant="text" size="sm">B</au-button>
+                        </au-tooltip>
+                        <au-tooltip content="Italic (Ctrl+I)">
+                            <au-button variant="text" size="sm">I</au-button>
+                        </au-tooltip>
+                        <au-tooltip content="Underline (Ctrl+U)">
+                            <au-button variant="text" size="sm">U</au-button>
+                        </au-tooltip>
+                    </au-stack>
+                </au-card>
+            </div>
+            <div slot="code">&lt;au-tooltip content="Bold (Ctrl+B)"&gt;
+                &lt;au-button variant="text"&gt;B&lt;/au-button&gt;
+                &lt;/au-tooltip&gt;</div>
+        </au-example>
+    </div>
+</div>

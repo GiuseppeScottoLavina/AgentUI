@@ -1,0 +1,85 @@
+<!-- Tabs Content Fragment -->
+<div id="page-tabs" class="page active">
+    <h1 class="page-title">Tabs</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-tabs&gt;</code> organizes content across different views.
+        Active tab is indicated with an underline animation.
+    </p>
+
+    <au-tabs active="0" id="tabs-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>STYLING</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <div id="tabs-overview" class="doc-tab-content">
+        <au-example title="Basic tabs">
+            <div slot="demo">
+                <au-tabs active="0" id="demo-tabs">
+                    <au-tab>Overview</au-tab>
+                    <au-tab>Details</au-tab>
+                    <au-tab>Settings</au-tab>
+                </au-tabs>
+                <div id="tabs-content"
+                    style="padding: 16px; background: var(--md-sys-color-surface-container-low); border-radius: 0 0 8px 8px;">
+                    Content for Overview</div>
+            </div>
+
+        </au-example>
+
+        <div class="component-section"
+            style="background: var(--md-sys-color-primary-container); border-left: 4px solid var(--md-sys-color-primary);">
+            <h2 class="section-title" style="color: var(--md-sys-color-on-primary-container);">Accessibility
+            </h2>
+            <p style="color: var(--md-sys-color-on-primary-container); line-height: 1.6;">
+                Uses <code>role="tablist"</code> with arrow key navigation.
+                Active tab is indicated with <code>aria-selected</code>.
+            </p>
+        </div>
+    </div>
+
+    <div id="tabs-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Attributes (au-tabs)</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="active" type="number" default="0">Index of initially active
+                    tab</au-api-row>
+            </au-api-table>
+        </div>
+        <div class="component-section">
+            <h2 class="section-title">Events</h2>
+            <au-api-table type="events">
+                <au-api-row name="au-tab-change" detail="{ index: number }">Emitted when active tab
+                    changes</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="tabs-styling" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">CSS Custom Properties</h2>
+            <au-api-table type="tokens">
+                <au-api-row name="--md-sys-color-primary" default="#6750a4">Active indicator
+                    color</au-api-row>
+                <au-api-row name="--md-sys-color-on-surface" default="#1d1b20">Tab text color</au-api-row>
+                <au-api-row name="--md-sys-color-on-surface-variant" default="#49454f">Inactive tab
+                    color</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="tabs-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="Scrollable tabs">
+            <div slot="demo">
+                <au-tabs active="0" style="max-width: 400px;">
+                    <au-tab>Tab 1</au-tab>
+                    <au-tab>Tab 2</au-tab>
+                    <au-tab>Tab 3</au-tab>
+                    <au-tab>Tab 4</au-tab>
+                    <au-tab>Tab 5</au-tab>
+                </au-tabs>
+            </div>
+        </au-example>
+    </div>
+</div>

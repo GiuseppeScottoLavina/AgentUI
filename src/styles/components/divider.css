@@ -1,0 +1,49 @@
+/**
+ * AgentUI divider Component Styles
+ * Auto-extracted from components.css
+ */
+
+/* ============================================================================
+   SKELETON - MD3 Skeleton Loader
+   ============================================================================ */
+
+.au-skeleton {
+    display: block;
+    background: var(--md-sys-color-surface-container-highest);
+    border-radius: var(--md-sys-shape-corner-extra-small);
+    animation: au-skeleton-pulse var(--md-sys-motion-duration-extra-long4) var(--md-sys-motion-easing-standard) infinite;
+}
+
+.au-skeleton--circle {
+    border-radius: 50%;
+}
+
+.au-skeleton--text {
+    height: 16px;
+    margin-bottom: 8px;
+}
+
+.au-skeleton--text:last-child {
+    width: 70%;
+}
+
+.au-skeleton__line {
+    height: 16px;
+    margin-bottom: 8px;
+    background: var(--md-sys-color-surface-container-highest);
+    border-radius: var(--md-sys-shape-corner-extra-small);
+    animation: au-skeleton-pulse var(--md-sys-motion-duration-extra-long4) var(--md-sys-motion-easing-standard) infinite;
+}
+
+@keyframes au-skeleton-pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+}
+

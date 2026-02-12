@@ -1,0 +1,115 @@
+<div class="page active">
+    <h1 class="page-title">Confirm Dialog</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-confirm&gt;</code> is a Promise-based confirmation dialog.
+        Use <code>auConfirm()</code> for one-line confirm prompts.
+    </p>
+
+    <au-tabs active="0" id="confirm-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>STYLING</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <div id="confirm-overview" class="doc-tab-content">
+        <au-example title="Basic confirm dialog">
+            <div slot="demo">
+                <au-button variant="filled" onclick="testConfirm()">Delete Item</au-button>
+                <script>
+                    async function testConfirm() {
+                        const { auConfirm } = await import('../dist/components/au-confirm.js');
+                        const ok = await auConfirm('Are you sure you want to delete this item?', {
+                            title: 'Confirm Delete',
+                            confirmText: 'Delete',
+                            cancelText: 'Cancel',
+                            variant: 'danger'
+                        });
+                        if (ok) {
+                            window.showToast?.('Item deleted', { severity: 'success' });
+                        }
+                    }
+                </script>
+            </div>
+            <div slot="code">import { auConfirm } from 'agentui-wc';
+
+                const ok = await auConfirm('Delete this item?', {
+                title: 'Confirm Delete',
+                confirmText: 'Delete',
+                variant: 'danger'
+                });
+                if (ok) deleteItem();</div>
+        </au-example>
+
+        <div class="component-section">
+            <h2 class="section-title">Promise-based API</h2>
+            <p style="color: var(--md-sys-color-on-surface-variant); line-height: 1.6;">
+                <code>auConfirm()</code> returns a Promise that resolves to <code>true</code> when confirmed,
+                or <code>false</code> when cancelled. Use with <code>async/await</code> for clean one-liner
+                confirmations.
+            </p>
+        </div>
+    </div>
+
+    <div id="confirm-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Function Signature</h2>
+            <div class="code-block">auConfirm(message: string, options?: ConfirmOptions): Promise&lt;boolean&gt;</div>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Options</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="title" type="string" default="'Confirm'">Dialog title</au-api-row>
+                <au-api-row name="confirmText" type="string" default="'Confirm'">Confirm button text</au-api-row>
+                <au-api-row name="cancelText" type="string" default="'Cancel'">Cancel button text</au-api-row>
+                <au-api-row name="variant" type="string" default="'primary'">'primary' | 'danger' |
+                    'warning'</au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Events</h2>
+            <au-api-table type="events">
+                <au-api-row name="au-confirm" detail="void">Emitted when user confirms</au-api-row>
+                <au-api-row name="au-cancel" detail="void">Emitted when user cancels (or presses ESC)</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="confirm-styling" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">CSS Classes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="au-confirm__overlay" type="class">Backdrop overlay</au-api-row>
+                <au-api-row name="au-confirm__dialog" type="class">Dialog container</au-api-row>
+                <au-api-row name="au-confirm__title" type="class">Title element</au-api-row>
+                <au-api-row name="au-confirm__message" type="class">Message text</au-api-row>
+                <au-api-row name="au-confirm__actions" type="class">Button container</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="confirm-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="Danger variant">
+            <div slot="demo">
+                <au-button variant="danger" onclick="testDangerConfirm()">Delete Account</au-button>
+                <script>
+                    async function testDangerConfirm() {
+                        const { auConfirm } = await import('../dist/components/au-confirm.js');
+                        await auConfirm('This action cannot be undone.', {
+                            title: 'Delete Account?',
+                            confirmText: 'Delete Forever',
+                            variant: 'danger'
+                        });
+                    }
+                </script>
+            </div>
+            <div slot="code">await auConfirm('This action cannot be undone.', {
+                title: 'Delete Account?',
+                confirmText: 'Delete Forever',
+                variant: 'danger'
+                });</div>
+        </au-example>
+    </div>
+</div>

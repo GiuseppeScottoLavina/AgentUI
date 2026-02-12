@@ -1,0 +1,83 @@
+/**
+ * AgentUI avatar Component Styles
+ * Auto-extracted from components.css
+ */
+
+/* ============================================================================
+   THEME TOGGLE - Light/Dark Mode Switch
+   ============================================================================ */
+
+.au-theme-toggle {
+    display: inline-flex;
+}
+
+.au-theme-toggle__button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg,
+            var(--md-sys-color-primary-container) 0%,
+            var(--md-sys-color-secondary-container) 100%);
+    border: 2px solid var(--md-sys-color-outline-variant);
+    border-radius: var(--md-sys-shape-corner-full);
+    cursor: pointer;
+    overflow: hidden;
+    transition:
+        transform var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized),
+        box-shadow var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+        border-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+.au-theme-toggle__button:hover {
+    transform: scale(1.1);
+    box-shadow:
+        0 4px 16px rgba(0, 0, 0, 0.2),
+        0 0 24px var(--md-sys-color-primary);
+    border-color: var(--md-sys-color-primary);
+}
+
+.au-theme-toggle__button:active {
+    transform: scale(0.95);
+}
+
+.au-theme-toggle__icon {
+    font-size: 22px;
+    transition: transform var(--md-sys-motion-duration-medium3) var(--md-sys-motion-easing-emphasized-decelerate);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.au-theme-toggle__button:hover .au-theme-toggle__icon {
+    transform: rotate(20deg) scale(1.1);
+}
+
+/* Dark mode specific glow */
+[data-theme="dark"] .au-theme-toggle__button {
+    background: linear-gradient(135deg,
+            rgba(255, 200, 50, 0.15) 0%,
+            rgba(255, 150, 0, 0.1) 100%);
+    border-color: rgba(255, 200, 50, 0.3);
+}
+
+[data-theme="dark"] .au-theme-toggle__button:hover {
+    box-shadow:
+        0 4px 16px rgba(0, 0, 0, 0.4),
+        0 0 32px rgba(255, 200, 50, 0.4);
+    border-color: rgba(255, 200, 50, 0.6);
+}
+
+/* Light mode specific glow */
+[data-theme="light"] .au-theme-toggle__button {
+    background: linear-gradient(135deg,
+            rgba(100, 100, 200, 0.1) 0%,
+            rgba(50, 50, 150, 0.05) 100%);
+}
+
+[data-theme="light"] .au-theme-toggle__button:hover {
+    box-shadow:
+        0 4px 16px rgba(0, 0, 0, 0.15),
+        0 0 24px rgba(100, 100, 200, 0.3);
+}
+

@@ -1,0 +1,115 @@
+<!-- Alerts Content Fragment -->
+<div id="page-alerts" class="page active">
+    <h1 class="page-title">Alert</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-alert&gt;</code> displays contextual feedback messages
+        to users. Supports 4 severity levels with semantic colors.
+    </p>
+
+    <au-tabs active="0" id="alert-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>STYLING</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <div id="alert-overview" class="doc-tab-content">
+        <au-example title="Alert severities">
+            <div slot="demo">
+                <au-stack gap="md">
+                    <au-alert severity="success">Operation completed successfully</au-alert>
+                    <au-alert severity="info">Here is some helpful information</au-alert>
+                    <au-alert severity="warning">Warning: Please review before proceeding</au-alert>
+                    <au-alert severity="error">Error: Something went wrong</au-alert>
+                </au-stack>
+            </div>
+
+        </au-example>
+
+        <div class="component-section">
+            <h2 class="section-title">When to use</h2>
+            <au-card variant="outlined">
+                <au-stack gap="md">
+                    <au-stack direction="row" gap="sm" align="start">
+                        <au-icon name="check_circle" size="20"
+                            style="color: var(--md-sys-color-primary); margin-top: 2px;"></au-icon>
+                        <div>
+                            <strong>Form validation errors</strong>
+                            <div style="font-size: 13px; color: var(--md-sys-color-on-surface-variant);">Errors that
+                                user must fix before proceeding — always visible</div>
+                        </div>
+                    </au-stack>
+                    <au-stack direction="row" gap="sm" align="start">
+                        <au-icon name="check_circle" size="20"
+                            style="color: var(--md-sys-color-primary); margin-top: 2px;"></au-icon>
+                        <div>
+                            <strong>Important contextual information</strong>
+                            <div style="font-size: 13px; color: var(--md-sys-color-on-surface-variant);">Warnings about
+                                data, requirements, or status that must stay visible</div>
+                        </div>
+                    </au-stack>
+                    <au-stack direction="row" gap="sm" align="start">
+                        <au-icon name="check_circle" size="20"
+                            style="color: var(--md-sys-color-primary); margin-top: 2px;"></au-icon>
+                        <div>
+                            <strong>Page-level status</strong>
+                            <div style="font-size: 13px; color: var(--md-sys-color-on-surface-variant);">"Feature is
+                                beta", "System maintenance soon", "Premium feature"</div>
+                        </div>
+                    </au-stack>
+                </au-stack>
+            </au-card>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">When NOT to use</h2>
+            <au-stack gap="md">
+                <au-alert severity="warning">Don't use for <strong>success feedback after actions</strong> — use
+                    <code>showToast()</code> instead (disappears automatically)</au-alert>
+                <au-alert severity="warning">Don't use for <strong>confirmations before actions</strong> — use
+                    <code>&lt;au-confirm&gt;</code> which blocks until user responds</au-alert>
+            </au-stack>
+        </div>
+    </div>
+
+    <div id="alert-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Attributes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="severity" type="string" default="info">Alert type: 'success' | 'info' |
+                    'warning' | 'error'</au-api-row>
+                <au-api-row name="dismissible" type="boolean" default="false">Whether alert can be
+                    dismissed</au-api-row>
+            </au-api-table>
+        </div>
+        <div class="component-section">
+            <h2 class="section-title">Events</h2>
+            <au-api-table type="events">
+                <au-api-row name="au-dismiss" detail="{}">Emitted when alert is dismissed</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="alert-styling" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">CSS Custom Properties</h2>
+            <au-api-table type="tokens">
+                <au-api-row name="--md-sys-color-success" default="#4caf50">Success background</au-api-row>
+                <au-api-row name="--md-sys-color-info" default="#2196f3">Info background</au-api-row>
+                <au-api-row name="--md-sys-color-warning" default="#ff9800">Warning background</au-api-row>
+                <au-api-row name="--md-sys-color-error" default="#f44336">Error background</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="alert-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="Inline alert in form">
+            <div slot="demo">
+                <au-stack gap="md" style="max-width: 320px;">
+                    <au-input label="Email" type="email"></au-input>
+                    <au-alert severity="error">Please enter a valid email address</au-alert>
+                </au-stack>
+            </div>
+        </au-example>
+    </div>
+</div>

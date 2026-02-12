@@ -1,0 +1,135 @@
+<!-- Inputs Content Fragment -->
+<div id="page-inputs" class="page active">
+    <h1 class="page-title">Text Field</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-input&gt;</code> and <code>&lt;au-textarea&gt;</code> allow users to enter and edit
+        text.
+        Both support MD3 variants with floating labels and focus animations.
+    </p>
+
+    <!-- Documentation Tabs -->
+    <au-tabs active="0" id="input-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>STYLING</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <!-- OVERVIEW Tab Content -->
+    <div id="input-overview" class="doc-tab-content">
+        <au-example title="Input variants">
+            <div slot="demo">
+                <au-stack gap="md" style="width: 300px;">
+                    <au-input label="Outlined" placeholder="Enter text..."></au-input>
+                    <au-input variant="filled" label="Filled"></au-input>
+                </au-stack>
+            </div>
+
+        </au-example>
+
+        <au-example title="Input types">
+            <div slot="demo">
+                <au-stack gap="md" style="width: 300px;">
+                    <au-input type="email" label="Email"></au-input>
+                    <au-input type="password" label="Password"></au-input>
+                    <au-input type="number" label="Amount"></au-input>
+                </au-stack>
+            </div>
+        </au-example>
+
+        <au-example title="Textarea">
+            <div slot="demo">
+                <au-textarea placeholder="Write your message here..." style="width: 100%;"></au-textarea>
+            </div>
+
+        </au-example>
+
+        <div class="component-section"
+            style="background: var(--md-sys-color-primary-container); border-left: 4px solid var(--md-sys-color-primary);">
+            <h2 class="section-title" style="color: var(--md-sys-color-on-primary-container);">Accessibility
+            </h2>
+            <p style="color: var(--md-sys-color-on-primary-container); line-height: 1.6;">
+                Always provide a <code>label</code> attribute for screen readers.
+                The floating label animates when focused, providing clear visual feedback.
+                Focus states use box-shadow instead of border-width to prevent layout shifts.
+            </p>
+        </div>
+    </div>
+
+    <!-- API Tab Content -->
+    <div id="input-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Selectors</h2>
+            <au-stack direction="row" gap="md">
+                <div class="code-block" style="display: inline-block;">&lt;au-input&gt;</div>
+                <div class="code-block" style="display: inline-block;">&lt;au-textarea&gt;</div>
+            </au-stack>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Attributes (au-input)</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="type" type="string" default="text">Input type: 'text' | 'email' |
+                    'password' | 'number' | 'tel' | 'url'</au-api-row>
+                <au-api-row name="variant" type="string" default="outlined">Input style: 'outlined' |
+                    'filled'</au-api-row>
+                <au-api-row name="label" type="string" default="">Floating label text</au-api-row>
+                <au-api-row name="placeholder" type="string" default="">Placeholder text</au-api-row>
+                <au-api-row name="value" type="string" default="">Current input value</au-api-row>
+                <au-api-row name="disabled" type="boolean" default="false">Whether input is
+                    disabled</au-api-row>
+                <au-api-row name="required" type="boolean" default="false">Whether input is
+                    required</au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Events</h2>
+            <au-api-table type="events">
+                <au-api-row name="au-input" detail="{ value: string }">Emitted on each
+                    keystroke</au-api-row>
+                <au-api-row name="au-change" detail="{ value: string }">Emitted on blur with final
+                    value</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <!-- STYLING Tab Content -->
+    <div id="input-styling" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">CSS Custom Properties</h2>
+            <au-api-table type="tokens">
+                <au-api-row name="--md-sys-color-primary" default="#6750a4">Focus border/label
+                    color</au-api-row>
+                <au-api-row name="--md-sys-color-outline" default="#79747e">Default border
+                    color</au-api-row>
+                <au-api-row name="--md-sys-color-on-surface" default="#1d1b20">Text color</au-api-row>
+                <au-api-row name="--md-sys-color-surface-container-highest" default="#e6e0e9">Filled variant
+                    background</au-api-row>
+                <au-api-row name="--md-sys-shape-corner-small" default="4px">Border radius</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <!-- EXAMPLES Tab Content -->
+    <div id="input-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="Form with validation">
+            <div slot="demo">
+                <au-form>
+                    <au-stack gap="md" style="width: 300px;">
+                        <au-input label="Username" required></au-input>
+                        <au-input type="email" label="Email" required></au-input>
+                        <au-input type="password" label="Password" required></au-input>
+                        <au-button variant="filled" style="width: 100%;">Sign Up</au-button>
+                    </au-stack>
+                </au-form>
+            </div>
+        </au-example>
+
+        <au-example title="Disabled state">
+            <div slot="demo">
+                <au-input label="Disabled input" disabled value="Can't edit this"></au-input>
+            </div>
+        </au-example>
+    </div>
+</div>

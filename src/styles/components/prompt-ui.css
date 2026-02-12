@@ -1,0 +1,286 @@
+/**
+ * AgentUI prompt-ui Component Styles
+ * Auto-extracted from components.css
+ */
+
+/* ============================================================================
+   PROMPT UI COMPONENTS - AI Agent Interface Components
+   ============================================================================ */
+
+/* --- AU-PROMPT-INPUT --- */
+au-prompt-input {
+    display: block;
+    font-family: var(--md-sys-typescale-font);
+}
+
+.au-prompt-input-container {
+    display: flex;
+    gap: 8px;
+    background: var(--md-sys-color-surface-container);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: var(--md-sys-shape-corner-large);
+    padding: 12px 16px;
+    transition: border-color 0.2s var(--md-sys-motion-easing-standard);
+}
+
+.au-prompt-input-container:focus-within {
+    border-color: var(--md-sys-color-primary);
+    box-shadow: 0 0 0 1px var(--md-sys-color-primary);
+}
+
+.au-prompt-input-loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.au-prompt-input-field {
+    flex: 1;
+    border: none;
+    background: transparent;
+    color: var(--md-sys-color-on-surface);
+    font-size: var(--md-sys-typescale-body-large-size);
+    font-family: inherit;
+    resize: none;
+    outline: none;
+    min-height: 24px;
+}
+
+textarea.au-prompt-input-field {
+    min-height: 80px;
+}
+
+.au-prompt-input-field::placeholder {
+    color: var(--md-sys-color-on-surface-variant);
+}
+
+.au-prompt-input-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    flex-shrink: 0;
+    align-self: flex-end;
+}
+
+.au-prompt-input-submit:hover:not(:disabled) {
+    background: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+}
+
+.au-prompt-input-submit:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+.au-prompt-input-submit:disabled {
+    background: var(--md-sys-color-surface-container-high);
+    color: var(--md-sys-color-on-surface-variant);
+    cursor: not-allowed;
+}
+
+.au-prompt-input-submit svg {
+    width: 20px;
+    height: 20px;
+}
+
+.au-prompt-input-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid transparent;
+    border-top-color: currentColor;
+    border-radius: 50%;
+    animation: au-prompt-spin 0.8s linear infinite;
+}
+
+@keyframes au-prompt-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* --- AU-CODE-BLOCK --- */
+au-code-block {
+    display: block;
+    margin: 12px 0;
+    font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+}
+
+.au-code-block-container {
+    background: var(--md-sys-color-surface-container-highest);
+    border-radius: var(--md-sys-shape-corner-medium);
+    overflow: hidden;
+}
+
+.au-code-block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: var(--md-sys-color-surface-container-high);
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.au-code-block-language {
+    font-size: 12px;
+    color: var(--md-sys-color-on-surface-variant);
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.au-code-block-filename {
+    font-size: 12px;
+    color: var(--md-sys-color-on-surface);
+}
+
+.au-code-block-copy-btn {
+    font-size: 12px;
+    padding: 4px 8px;
+    border: none;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--md-sys-color-primary);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.au-code-block-copy-btn:hover {
+    background: var(--md-sys-color-primary-container);
+}
+
+.au-code-block-pre {
+    margin: 0;
+    padding: 16px;
+    overflow-x: auto;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--md-sys-color-on-surface);
+}
+
+.au-code-block-pre code {
+    font-family: inherit;
+}
+
+/* --- AU-AGENT-TOOLBAR --- */
+au-agent-toolbar {
+    display: flex;
+    gap: 4px;
+    margin-top: 8px;
+}
+
+.au-agent-toolbar-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    cursor: pointer;
+    font-size: 16px;
+    opacity: 0.6;
+    transition: opacity 0.2s, background 0.2s;
+}
+
+.au-agent-toolbar-btn:hover {
+    opacity: 1;
+    background: var(--md-sys-color-surface-container-high);
+}
+
+.au-agent-toolbar-btn:active {
+    transform: scale(0.95);
+}
+
+/* --- AU-MESSAGE-BUBBLE --- */
+au-message-bubble {
+    display: block;
+    margin: 16px 0;
+    font-family: var(--md-sys-typescale-font);
+}
+
+.au-message-bubble-message {
+    display: flex;
+    gap: 12px;
+}
+
+.au-message-bubble-message.au-message-bubble-user {
+    flex-direction: row-reverse;
+}
+
+.au-message-bubble-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.au-message-bubble-avatar.au-message-bubble-user {
+    background: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+}
+
+.au-message-bubble-avatar.au-message-bubble-assistant {
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+}
+
+.au-message-bubble-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.au-message-bubble-content {
+    flex: 1;
+    max-width: 80%;
+}
+
+.au-message-bubble-header {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.au-message-bubble-header.au-message-bubble-user {
+    flex-direction: row-reverse;
+}
+
+.au-message-bubble-name {
+    font-size: var(--md-sys-typescale-label-medium-size);
+    font-weight: 600;
+    color: var(--md-sys-color-on-surface);
+}
+
+.au-message-bubble-timestamp {
+    font-size: var(--md-sys-typescale-label-small-size);
+    color: var(--md-sys-color-on-surface-variant);
+}
+
+.au-message-bubble-bubble {
+    padding: 12px 16px;
+    line-height: 1.5;
+}
+
+.au-message-bubble-bubble.au-message-bubble-user {
+    border-radius: 16px 16px 4px 16px;
+    background: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+}
+
+.au-message-bubble-bubble.au-message-bubble-assistant {
+    border-radius: 16px 16px 16px 4px;
+    background: var(--md-sys-color-surface-container);
+    color: var(--md-sys-color-on-surface);
+}

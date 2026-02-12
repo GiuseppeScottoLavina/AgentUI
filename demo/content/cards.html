@@ -1,0 +1,121 @@
+<!-- Cards Content Fragment -->
+<div id="page-cards" class="page active">
+    <h1 class="page-title">Card</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-card&gt;</code> is a surface container that holds related content.
+        MD3 defines 3 card variants with different elevation and emphasis levels.
+    </p>
+
+    <au-tabs active="0" id="card-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>STYLING</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <div id="card-overview" class="doc-tab-content">
+        <au-example title="Card variants">
+            <div slot="demo">
+                <au-card variant="elevated" style="min-width: 160px; flex: 1;">
+                    <h3>Elevated</h3>
+                    <p>With shadow for depth.</p>
+                </au-card>
+                <au-card variant="filled" style="min-width: 160px; flex: 1;">
+                    <h3>Filled</h3>
+                    <p>Surface container color.</p>
+                </au-card>
+                <au-card variant="outlined" style="min-width: 160px; flex: 1;">
+                    <h3>Outlined</h3>
+                    <p>With border, no shadow.</p>
+                </au-card>
+            </div>
+        </au-example>
+
+        <div class="component-section">
+            <h2 class="section-title">Choosing a card variant</h2>
+            <au-stack gap="lg">
+                <au-card variant="outlined">
+                    <au-stack direction="row" gap="md" align="center">
+                        <strong>Elevated</strong>
+                        <span>High emphasis - main content, hero sections</span>
+                    </au-stack>
+                </au-card>
+                <au-card variant="outlined">
+                    <au-stack direction="row" gap="md" align="center">
+                        <strong>Filled</strong>
+                        <span>Medium emphasis - grouped items, list items</span>
+                    </au-stack>
+                </au-card>
+                <au-card variant="outlined">
+                    <au-stack direction="row" gap="md" align="center">
+                        <strong>Outlined</strong>
+                        <span>Low emphasis - subtle containers, nested cards</span>
+                    </au-stack>
+                </au-card>
+            </au-stack>
+        </div>
+    </div>
+
+    <div id="card-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Attributes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="variant" type="string" default="elevated">Card style: 'elevated' |
+                    'filled' | 'outlined'</au-api-row>
+                <au-api-row name="clickable" type="boolean" default="false">Whether card is clickable with
+                    hover state</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="card-styling" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">CSS Custom Properties</h2>
+            <au-api-table type="tokens">
+                <au-api-row name="--md-sys-color-surface" default="#fef7ff">Card background</au-api-row>
+                <au-api-row name="--md-sys-color-outline-variant" default="#cac4d0">Outlined
+                    border</au-api-row>
+                <au-api-row name="--md-sys-shape-corner-medium" default="12px">Border radius</au-api-row>
+                <au-api-row name="--md-sys-elevation-1" default="0 1px 3px...">Elevated shadow</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="card-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="Product card">
+            <div slot="demo">
+                <au-card variant="elevated" style="max-width: 320px;">
+                    <au-stack gap="md">
+                        <div
+                            style="background: var(--md-sys-color-secondary-container); height: 140px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                            <au-icon name="image" style="font-size: 48px; opacity: 0.5;"></au-icon>
+                        </div>
+                        <h3 style="margin: 0;">Product Title</h3>
+                        <p style="margin: 0; color: var(--md-sys-color-on-surface-variant);">A brief
+                            description of the product.</p>
+                        <au-stack direction="row" gap="sm">
+                            <au-button variant="filled">Buy Now</au-button>
+                            <au-button variant="outlined">Learn More</au-button>
+                        </au-stack>
+                    </au-stack>
+                </au-card>
+            </div>
+        </au-example>
+
+        <au-example title="Nested cards">
+            <div slot="demo">
+                <au-card variant="filled">
+                    <h3>Parent Card</h3>
+                    <au-stack gap="sm">
+                        <au-card variant="outlined">
+                            <p>Nested child 1</p>
+                        </au-card>
+                        <au-card variant="outlined">
+                            <p>Nested child 2</p>
+                        </au-card>
+                    </au-stack>
+                </au-card>
+            </div>
+        </au-example>
+    </div>
+</div>

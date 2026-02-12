@@ -1,0 +1,158 @@
+<div class="page active">
+    <h1 class="page-title">DataTable</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-datatable&gt;</code> is an AI-First smart data table with
+        built-in sorting, pagination, filtering, and row selection.
+    </p>
+
+    <au-tabs active="0" id="datatable-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>STYLING</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <div id="datatable-overview" class="doc-tab-content">
+        <au-example title="Sortable DataTable with pagination">
+            <div slot="demo">
+                <au-datatable id="demo-datatable" columns='[
+                        {"field": "name", "label": "Name", "sortable": true},
+                        {"field": "email", "label": "Email"},
+                        {"field": "role", "label": "Role", "sortable": true}
+                    ]' page-size="5" sortable filterable>
+                </au-datatable>
+            </div>
+            <div slot="code">&lt;au-datatable
+                columns='[{"field":"name","label":"Name","sortable":true},...]'
+                page-size="5"
+                sortable
+                filterable&gt;
+                &lt;/au-datatable&gt;
+
+                &lt;script&gt;
+                document.querySelector('au-datatable').setData(usersArray);
+                &lt;/script&gt;</div>
+        </au-example>
+
+        <script>
+            // Initialize DataTable demo data after component is defined
+            customElements.whenDefined('au-datatable').then(() => {
+                // Ensure DOM is ready with a microtask
+                requestAnimationFrame(() => {
+                    const usersData = [
+                        { name: 'John Doe', email: 'john@example.com', role: 'Admin' },
+                        { name: 'Jane Smith', email: 'jane@example.com', role: 'Editor' },
+                        { name: 'Bob Johnson', email: 'bob@example.com', role: 'Viewer' },
+                        { name: 'Alice Brown', email: 'alice@example.com', role: 'Admin' },
+                        { name: 'Charlie Wilson', email: 'charlie@example.com', role: 'Editor' },
+                        { name: 'Diana Ross', email: 'diana@example.com', role: 'Viewer' },
+                        { name: 'Edward King', email: 'edward@example.com', role: 'Editor' },
+                        { name: 'Fiona Green', email: 'fiona@example.com', role: 'Admin' },
+                        { name: 'George Martin', email: 'george@example.com', role: 'Viewer' },
+                        { name: 'Hannah White', email: 'hannah@example.com', role: 'Editor' },
+                        { name: 'Ivan Cole', email: 'ivan@example.com', role: 'Admin' },
+                        { name: 'Julia Torres', email: 'julia@example.com', role: 'Viewer' }
+                    ];
+                    const productsData = [
+                        { product: 'Widget Pro', price: '$99.00', stock: 42 },
+                        { product: 'Gadget Max', price: '$149.00', stock: 18 },
+                        { product: 'Tool Kit', price: '$79.00', stock: 56 },
+                        { product: 'Device X', price: '$199.00', stock: 7 },
+                        { product: 'Sensor Hub', price: '$249.00', stock: 23 }
+                    ];
+                    const dt1 = document.getElementById('demo-datatable');
+                    const dt2 = document.getElementById('demo-datatable-selectable');
+                    if (dt1 && typeof dt1.setData === 'function') dt1.setData(usersData);
+                    if (dt2 && typeof dt2.setData === 'function') dt2.setData(productsData);
+                });
+            });
+        </script>
+
+        <div class="component-section">
+            <h2 class="section-title">Key Features</h2>
+            <au-stack gap="sm">
+                <p style="color: var(--md-sys-color-on-surface-variant); line-height: 1.6;">
+                    <strong>Sorting:</strong> Click column headers to sort ascending/descending
+                </p>
+                <p style="color: var(--md-sys-color-on-surface-variant); line-height: 1.6;">
+                    <strong>Pagination:</strong> Automatic page navigation with configurable page size
+                </p>
+                <p style="color: var(--md-sys-color-on-surface-variant); line-height: 1.6;">
+                    <strong>Filtering:</strong> Real-time search across all columns
+                </p>
+                <p style="color: var(--md-sys-color-on-surface-variant); line-height: 1.6;">
+                    <strong>Selection:</strong> Checkbox selection with "select all" support
+                </p>
+            </au-stack>
+        </div>
+    </div>
+
+    <div id="datatable-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Attributes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="columns" type="JSON string" default="[]">Array of column definitions with field,
+                    label, sortable</au-api-row>
+                <au-api-row name="page-size" type="number" default="10">Rows per page</au-api-row>
+                <au-api-row name="sortable" type="boolean" default="false">Enable column sorting</au-api-row>
+                <au-api-row name="filterable" type="boolean" default="false">Enable search filtering</au-api-row>
+                <au-api-row name="selectable" type="boolean" default="false">Enable row selection</au-api-row>
+                <au-api-row name="empty-message" type="string" default="'No data available'">Message when table is
+                    empty</au-api-row>
+            </au-api-table>
+        </div>
+        <div class="component-section">
+            <h2 class="section-title">Methods</h2>
+            <au-api-table type="methods">
+                <au-api-row name="setData(array)" type="void">Set table data programmatically</au-api-row>
+                <au-api-row name="getData()" type="Array">Get current data</au-api-row>
+                <au-api-row name="sortBy(field, dir)" type="void">Sort by field ('asc' or 'desc')</au-api-row>
+                <au-api-row name="filter(query)" type="void">Filter data by search query</au-api-row>
+                <au-api-row name="goToPage(n)" type="void">Navigate to page n</au-api-row>
+                <au-api-row name="getSelectedRows()" type="Array">Get selected row objects</au-api-row>
+                <au-api-row name="getPageInfo()" type="Object">Get {page, pageSize, totalPages, totalRows}</au-api-row>
+            </au-api-table>
+        </div>
+        <div class="component-section">
+            <h2 class="section-title">Events</h2>
+            <au-api-table type="events">
+                <au-api-row name="au-sort-change" type="CustomEvent">Fired when sort state changes</au-api-row>
+                <au-api-row name="au-page-change" type="CustomEvent">Fired when page changes</au-api-row>
+                <au-api-row name="au-selection-change" type="CustomEvent">Fired when selection changes</au-api-row>
+                <au-api-row name="au-data-change" type="CustomEvent">Fired when data is set</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="datatable-styling" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">CSS Classes</h2>
+            <au-api-table type="tokens">
+                <au-api-row name=".au-datatable-wrapper" default="">Main container</au-api-row>
+                <au-api-row name=".au-datatable-table" default="">Table element</au-api-row>
+                <au-api-row name=".au-datatable-sortable" default="">Sortable header cell</au-api-row>
+                <au-api-row name=".au-datatable-sorted" default="">Currently sorted column</au-api-row>
+                <au-api-row name=".au-datatable-selected" default="">Selected row</au-api-row>
+                <au-api-row name=".au-datatable-pagination" default="">Pagination container</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="datatable-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="With row selection">
+            <div slot="demo">
+                <au-datatable id="demo-datatable-selectable" columns='[
+                        {"field": "product", "label": "Product"},
+                        {"field": "price", "label": "Price", "sortable": true},
+                        {"field": "stock", "label": "Stock", "sortable": true}
+                    ]' page-size="3" sortable selectable>
+                </au-datatable>
+            </div>
+            <div slot="code">&lt;au-datatable
+                columns='[...]'
+                sortable
+                selectable&gt;
+                &lt;/au-datatable&gt;</div>
+        </au-example>
+    </div>
+</div>

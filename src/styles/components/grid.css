@@ -1,0 +1,189 @@
+/**
+ * AgentUI grid Component Styles
+ * Auto-extracted from components.css
+ */
+
+/* ============================================================================
+   GRID - CSS Grid Layout
+   ============================================================================ */
+
+/* Base element - CSS fallback for before JS upgrade */
+au-grid {
+    display: grid;
+    gap: var(--md-sys-spacing-md, 16px);
+}
+
+/* Attribute-based selectors for columns */
+au-grid[cols="1"] {
+    grid-template-columns: repeat(1, 1fr);
+}
+
+au-grid[cols="2"] {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+au-grid[cols="3"] {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+au-grid[cols="4"] {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+au-grid[cols="6"] {
+    grid-template-columns: repeat(6, 1fr);
+}
+
+au-grid[cols="12"] {
+    grid-template-columns: repeat(12, 1fr);
+}
+
+/* Attribute-based selectors for gap */
+au-grid[gap="none"] {
+    gap: 0;
+}
+
+au-grid[gap="xs"] {
+    gap: var(--md-sys-spacing-xs, 4px);
+}
+
+au-grid[gap="sm"] {
+    gap: var(--md-sys-spacing-sm, 8px);
+}
+
+au-grid[gap="md"] {
+    gap: var(--md-sys-spacing-md, 16px);
+}
+
+au-grid[gap="lg"] {
+    gap: var(--md-sys-spacing-lg, 24px);
+}
+
+au-grid[gap="xl"] {
+    gap: var(--md-sys-spacing-xl, 32px);
+}
+
+/* Responsive: collapse to single column on compact screens (MD3 < 600px) */
+/* !important is needed to override inline styles set by JS component */
+@media (max-width: 599px) {
+
+    au-grid[cols="2"],
+    au-grid[cols="3"],
+    au-grid[cols="4"],
+    au-grid[cols="6"] {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Legacy class-based selectors (for compatibility) */
+.au-stack {
+    display: flex;
+}
+
+.au-stack--row {
+    flex-direction: row;
+}
+
+.au-stack--column {
+    flex-direction: column;
+}
+
+.au-stack--row-reverse {
+    flex-direction: row-reverse;
+}
+
+.au-stack--column-reverse {
+    flex-direction: column-reverse;
+}
+
+.au-stack--gap-0 {
+    gap: 0;
+}
+
+.au-stack--gap-1 {
+    gap: 4px;
+}
+
+.au-stack--gap-2 {
+    gap: 8px;
+}
+
+.au-stack--gap-3 {
+    gap: 12px;
+}
+
+.au-stack--gap-4 {
+    gap: 16px;
+}
+
+.au-stack--gap-5 {
+    gap: 20px;
+}
+
+.au-stack--gap-6 {
+    gap: 24px;
+}
+
+.au-stack--gap-8 {
+    gap: 32px;
+}
+
+.au-stack--gap-10 {
+    gap: 40px;
+}
+
+.au-stack--gap-12 {
+    gap: 48px;
+}
+
+.au-stack--gap-16 {
+    gap: 64px;
+}
+
+.au-stack--align-start {
+    align-items: flex-start;
+}
+
+.au-stack--align-center {
+    align-items: center;
+}
+
+.au-stack--align-end {
+    align-items: flex-end;
+}
+
+.au-stack--align-stretch {
+    align-items: stretch;
+}
+
+.au-stack--align-baseline {
+    align-items: baseline;
+}
+
+.au-stack--justify-start {
+    justify-content: flex-start;
+}
+
+.au-stack--justify-center {
+    justify-content: center;
+}
+
+.au-stack--justify-end {
+    justify-content: flex-end;
+}
+
+.au-stack--justify-between {
+    justify-content: space-between;
+}
+
+.au-stack--justify-around {
+    justify-content: space-around;
+}
+
+.au-stack--justify-evenly {
+    justify-content: space-evenly;
+}
+
+.au-stack--wrap {
+    flex-wrap: wrap;
+}

@@ -1,0 +1,136 @@
+<!-- Layout Content Fragment -->
+<div id="page-layout" class="page active">
+    <h1 class="page-title">Stack & Grid</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-stack&gt;</code> and <code>&lt;au-grid&gt;</code>
+        provide flexible layout primitives for arranging content.
+    </p>
+
+    <au-tabs active="0" id="layout-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>STYLING</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <div id="layout-overview" class="doc-tab-content">
+        <au-example title="Vertical stack">
+            <div slot="demo">
+                <au-stack gap="sm">
+                    <au-card variant="outlined">
+                        <p>Item 1</p>
+                    </au-card>
+                    <au-card variant="outlined">
+                        <p>Item 2</p>
+                    </au-card>
+                    <au-card variant="outlined">
+                        <p>Item 3</p>
+                    </au-card>
+                </au-stack>
+            </div>
+
+        </au-example>
+
+        <au-example title="Horizontal stack">
+            <div slot="demo">
+                <au-stack direction="row" gap="sm">
+                    <au-card variant="outlined">
+                        <p>A</p>
+                    </au-card>
+                    <au-card variant="outlined">
+                        <p>B</p>
+                    </au-card>
+                    <au-card variant="outlined">
+                        <p>C</p>
+                    </au-card>
+                </au-stack>
+            </div>
+        </au-example>
+
+        <au-example title="Grid layout">
+            <div slot="demo">
+                <au-grid cols="4" gap="sm">
+                    <au-card variant="outlined">
+                        <p>1</p>
+                    </au-card>
+                    <au-card variant="outlined">
+                        <p>2</p>
+                    </au-card>
+                    <au-card variant="outlined">
+                        <p>3</p>
+                    </au-card>
+                    <au-card variant="outlined">
+                        <p>4</p>
+                    </au-card>
+                </au-grid>
+            </div>
+        </au-example>
+    </div>
+
+    <div id="layout-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Attributes (au-stack)</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="direction" type="string" default="column">Layout direction: 'column' |
+                    'row'</au-api-row>
+                <au-api-row name="gap" type="string" default="md">Gap size: 'xs' | 'sm' | 'md' | 'lg' |
+                    'xl'</au-api-row>
+                <au-api-row name="align" type="string" default="stretch">Align items: CSS align-items
+                    value</au-api-row>
+                <au-api-row name="justify" type="string" default="flex-start">Justify content: CSS
+                    justify-content value</au-api-row>
+            </au-api-table>
+        </div>
+        <div class="component-section">
+            <h2 class="section-title">Attributes (au-grid)</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="cols" type="number" default="3">Number of columns</au-api-row>
+                <au-api-row name="gap" type="string" default="md">Gap size: 'xs' | 'sm' | 'md' | 'lg' |
+                    'xl'</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="layout-styling" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Gap Sizes</h2>
+            <au-api-table type="tokens">
+                <au-api-row name="xs" default="4px">Extra small gap</au-api-row>
+                <au-api-row name="sm" default="8px">Small gap</au-api-row>
+                <au-api-row name="md" default="16px">Medium gap</au-api-row>
+                <au-api-row name="lg" default="24px">Large gap</au-api-row>
+                <au-api-row name="xl" default="32px">Extra large gap</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="layout-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="Centered content">
+            <div slot="demo">
+                <au-stack align="center" justify="center"
+                    style="height: 100px; background: var(--md-sys-color-surface-container-low); border-radius: 8px;">
+                    <au-button variant="filled">Centered Button</au-button>
+                </au-stack>
+            </div>
+        </au-example>
+
+        <au-example title="Responsive grid">
+            <div slot="demo">
+                <au-grid cols="3" gap="md">
+                    <au-card variant="elevated">
+                        <h4>Card 1</h4>
+                        <p>Content</p>
+                    </au-card>
+                    <au-card variant="elevated">
+                        <h4>Card 2</h4>
+                        <p>Content</p>
+                    </au-card>
+                    <au-card variant="elevated">
+                        <h4>Card 3</h4>
+                        <p>Content</p>
+                    </au-card>
+                </au-grid>
+            </div>
+        </au-example>
+    </div>
+</div>

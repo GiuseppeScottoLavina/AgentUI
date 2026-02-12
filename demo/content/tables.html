@@ -1,0 +1,124 @@
+<div class="page active">
+    <h1 class="page-title">Table</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-table&gt;</code> provides semantic HTML table elements
+        with MD3 styling for displaying tabular data.
+    </p>
+
+    <au-tabs active="0" id="table-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>STYLING</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <div id="table-overview" class="doc-tab-content">
+        <au-example title="Basic table">
+            <div slot="demo">
+                <au-table>
+                    <au-thead>
+                        <au-tr>
+                            <au-th>Name</au-th>
+                            <au-th>Email</au-th>
+                            <au-th>Role</au-th>
+                        </au-tr>
+                    </au-thead>
+                    <au-tbody>
+                        <au-tr>
+                            <au-td>John Doe</au-td>
+                            <au-td>john@example.com</au-td>
+                            <au-td>Admin</au-td>
+                        </au-tr>
+                        <au-tr>
+                            <au-td>Jane Smith</au-td>
+                            <au-td>jane@example.com</au-td>
+                            <au-td>Editor</au-td>
+                        </au-tr>
+                        <au-tr>
+                            <au-td>Bob Johnson</au-td>
+                            <au-td>bob@example.com</au-td>
+                            <au-td>Viewer</au-td>
+                        </au-tr>
+                    </au-tbody>
+                </au-table>
+            </div>
+            <div slot="code">&lt;au-table&gt;
+                &lt;au-thead&gt;
+                &lt;au-tr&gt;&lt;au-th&gt;Name&lt;/au-th&gt;&lt;au-th&gt;Email&lt;/au-th&gt;&lt;/au-tr&gt;
+                &lt;/au-thead&gt;
+                &lt;au-tbody&gt;
+                &lt;au-tr&gt;&lt;au-td&gt;John&lt;/au-td&gt;&lt;au-td&gt;john@example.com&lt;/au-td&gt;&lt;/au-tr&gt;
+                &lt;/au-tbody&gt;
+                &lt;/au-table&gt;</div>
+        </au-example>
+
+        <div class="component-section">
+            <h2 class="section-title">Semantic structure</h2>
+            <p style="color: var(--md-sys-color-on-surface-variant); line-height: 1.6;">
+                Use <code>&lt;au-thead&gt;</code> for headers, <code>&lt;au-tbody&gt;</code> for data,
+                <code>&lt;au-tr&gt;</code> for rows, <code>&lt;au-th&gt;</code> for header cells,
+                and <code>&lt;au-td&gt;</code> for data cells.
+            </p>
+        </div>
+    </div>
+
+    <div id="table-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Elements</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="au-table" type="element">Table container (display: table)</au-api-row>
+                <au-api-row name="au-thead" type="element">Table header group</au-api-row>
+                <au-api-row name="au-tbody" type="element">Table body group</au-api-row>
+                <au-api-row name="au-tr" type="element">Table row</au-api-row>
+                <au-api-row name="au-th" type="element">Header cell (bold, left-aligned)</au-api-row>
+                <au-api-row name="au-td" type="element">Data cell</au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Attributes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="striped" type="boolean" default="false">Alternating row colors</au-api-row>
+                <au-api-row name="hover" type="boolean" default="false">Highlight rows on hover</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="table-styling" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">CSS Custom Properties</h2>
+            <au-api-table type="tokens">
+                <au-api-row name="--md-sys-color-surface-container" default="#f3edf7">Header background</au-api-row>
+                <au-api-row name="--md-sys-color-outline-variant" default="#cac4d0">Row border color</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="table-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="Products table">
+            <div slot="demo">
+                <au-table>
+                    <au-thead>
+                        <au-tr>
+                            <au-th>Product</au-th>
+                            <au-th>Price</au-th>
+                            <au-th>Stock</au-th>
+                        </au-tr>
+                    </au-thead>
+                    <au-tbody>
+                        <au-tr>
+                            <au-td>Widget Pro</au-td>
+                            <au-td>$99.00</au-td>
+                            <au-td>42</au-td>
+                        </au-tr>
+                        <au-tr>
+                            <au-td>Gadget Max</au-td>
+                            <au-td>$149.00</au-td>
+                            <au-td>18</au-td>
+                        </au-tr>
+                    </au-tbody>
+                </au-table>
+            </div>
+        </au-example>
+    </div>
+</div>

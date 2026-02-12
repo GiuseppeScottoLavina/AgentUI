@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgentUI v0.1.0 - Memory Leak Test</title>
+    <link rel="stylesheet" href="../src/styles/tokens.css">
+    <link rel="stylesheet" href="../src/styles/components.css">
+    <style>
+        body {
+            font-family: var(--md-sys-typescale-font);
+            background: var(--md-sys-color-surface);
+            color: var(--md-sys-color-on-surface);
+            padding: 24px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--md-sys-color-surface-container);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .result {
+            font-family: monospace;
+            background: var(--md-sys-color-surface-container-highest);
+            padding: 12px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+        }
+
+        button {
+            background: var(--md-sys-color-primary);
+            color: var(--md-sys-color-on-primary);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 4px;
+        }
+
+        .pass {
+            color: var(--md-sys-color-primary);
+        }
+
+        .fail {
+            color: var(--md-sys-color-error);
+        }
+
+        #container {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🔬 Memory Leak Test Suite</h1>
+
+    <div class="card">
+        <h2>Test 1: Component Lifecycle</h2>
+        <p>Creates and destroys 1000 components, checks for proper cleanup.</p>
+        <button onclick="testLifecycle()">Run Test</button>
+        <div id="lifecycle-result" class="result">Click to run...</div>
+    </div>
+
+    <div class="card">
+        <h2>Test 2: Event Listener Cleanup</h2>
+        <p>Tests that event listeners are properly removed on disconnect.</p>
+        <button onclick="testEventListeners()">Run Test</button>
+        <div id="events-result" class="result">Click to run...</div>
+    </div>
+
+    <div class="card">
+        <h2>Test 3: Timer/Interval Cleanup</h2>
+        <p>Tests that timers and intervals are cleared on disconnect.</p>
+        <button onclick="testTimers()">Run Test</button>
+        <div id="timers-result" class="result">Click to run...</div>
+    </div>
+
+    <div class="card">
+        <h2>Test 4: WeakRef EventBus</h2>
+        <p>Tests that WeakRef listeners are garbage collected.</p>
+        <button onclick="testWeakRef()">Run Test</button>
+        <div id="weakref-result" class="result">Click to run...</div>
+    </div>
+
+    <div class="card">
+        <h2>Test 5: Stress Test</h2>
+        <p>Creates 10000 components rapidly to detect memory growth.</p>
+        <button onclick="testStress()">Run Stress Test</button>
+        <div id="stress-result" class="result">Click to run...</div>
+    </div>
+
+    <div id="container"></div>
+
+    <script type="module">
+        import { AuButton, bus } from '../src/index.js';
+
+        const container = document.getElementById('container');
+
+        // Test 1: Component Lifecycle
+        window.testLifecycle = async () => {
+            const result = document.getElementById('lifecycle-result');
+            result.textContent = 'Running...';
+
+            const initialMemory = performance.memory?.usedJSHeapSize;
+
+            // Create and destroy 1000 components
+            for (let i = 0; i < 1000; i++) {
+                const btn = document.createElement('au-button');
+                btn.textContent = `Button ${i}`;
+                container.appendChild(btn);
+            }
+
+            const afterCreate = performance.memory?.usedJSHeapSize;
+
+            // Remove all
+            container.innerHTML = '';
+
+            // Force GC if available
+            if (window.gc) window.gc();
+
+            await new Promise(r => setTimeout(r, 500));
+
+            const afterDestroy = performance.memory?.usedJSHeapSize;
+
+            if (performance.memory) {
+                const createdMB = ((afterCreate - initialMemory) / 1024 / 1024).toFixed(2);
+                const retainedMB = ((afterDestroy - initialMemory) / 1024 / 1024).toFixed(2);
+                const freedMB = ((afterCreate - afterDestroy) / 1024 / 1024).toFixed(2);
+
+                const isGood = parseFloat(retainedMB) < parseFloat(createdMB) * 0.2;
+
+                result.innerHTML = `
+<span class="${isGood ? 'pass' : 'fail'}">${isGood ? '✓ PASS' : '✗ POTENTIAL LEAK'}</span>
+
+Memory allocated: ${createdMB} MB
+Memory after cleanup: ${retainedMB} MB
+Memory freed: ${freedMB} MB
+
+${isGood ? 'Components properly cleaned up!' : 'Warning: Memory not fully released'}`;
+            } else {
+                result.textContent = '⚠️ Memory API not available. Run with --enable-precise-memory-info';
+            }
+        };
+
+        // Test 2: Event Listener Cleanup
+        window.testEventListeners = () => {
+            const result = document.getElementById('events-result');
+            let listenerCalled = false;
+
+            // Create component that adds global listener
+            const btn = document.createElement('au-button');
+
+            // Manually add listener using component's listen method
+            const handler = () => { listenerCalled = true; };
+
+            container.appendChild(btn);
+
+            // Use the new listen() method
+            btn.listen(window, 'test-event', handler);
+
+            // Dispatch to confirm it works
+            window.dispatchEvent(new Event('test-event'));
+            const calledBefore = listenerCalled;
+
+            // Remove component
+            container.removeChild(btn);
+
+            // Reset and try again
+            listenerCalled = false;
+            window.dispatchEvent(new Event('test-event'));
+            const calledAfter = listenerCalled;
+
+            if (calledBefore && !calledAfter) {
+                result.innerHTML = '<span class="pass">✓ PASS</span>\n\nListener active before disconnect: ✓\nListener cleaned up after disconnect: ✓';
+            } else if (!calledBefore) {
+                result.innerHTML = '<span class="fail">✗ FAIL</span>\n\nListener was not active before disconnect';
+            } else {
+                result.innerHTML = '<span class="fail">✗ FAIL - MEMORY LEAK</span>\n\nListener still active after disconnect!\nThis indicates a memory leak.';
+            }
+        };
+
+        // Test 3: Timer/Interval Cleanup
+        window.testTimers = async () => {
+            const result = document.getElementById('timers-result');
+            let timerFired = false;
+            let intervalCount = 0;
+
+            // Create component with timers
+            const btn = document.createElement('au-button');
+            container.appendChild(btn);
+
+            // Use component's safe setTimeout/setInterval
+            btn.setTimeout(() => { timerFired = true; }, 200);
+            btn.setInterval(() => { intervalCount++; }, 100);
+
+            // Remove immediately
+            container.removeChild(btn);
+
+            // Wait for timers
+            await new Promise(r => setTimeout(r, 500));
+
+            const isGood = !timerFired && intervalCount === 0;
+
+            result.innerHTML = `
+<span class="${isGood ? 'pass' : 'fail'}">${isGood ? '✓ PASS' : '✗ FAIL'}</span>
+
+Timer fired after disconnect: ${timerFired ? 'YES (leak!)' : 'NO ✓'}
+Interval count after disconnect: ${intervalCount} ${intervalCount === 0 ? '✓' : '(should be 0)'}
+
+${isGood ? 'Timers properly cleaned up!' : 'Warning: Timers still running after component removed!'}`;
+        };
+
+        // Test 4: WeakRef EventBus
+        window.testWeakRef = async () => {
+            const result = document.getElementById('weakref-result');
+
+            const counts = bus.listenerCount('test:weak');
+            const initialCount = counts.total;
+
+            // Add a weak listener
+            let callback = (data) => console.log('weak callback');
+            bus.on('test:weak', callback, { weak: true });
+
+            const afterAdd = bus.listenerCount('test:weak');
+
+            // Remove reference
+            callback = null;
+
+            // Force GC if available
+            if (window.gc) window.gc();
+
+            // Emit to trigger cleanup
+            await new Promise(r => setTimeout(r, 100));
+            bus.emit('test:weak', {});
+
+            const afterEmit = bus.listenerCount('test:weak');
+
+            result.innerHTML = `
+<span class="pass">✓ WeakRef Support Active</span>
+
+Listeners before: ${initialCount}
+After adding weak: ${afterAdd.weak} weak, ${afterAdd.strong} strong
+After emit (cleanup): ${afterEmit.weak} weak, ${afterEmit.strong} strong
+
+Note: Actual GC timing is unpredictable.
+Use --expose-gc flag and window.gc() for deterministic testing.`;
+        };
+
+        // Test 5: Stress Test
+        window.testStress = async () => {
+            const result = document.getElementById('stress-result');
+            result.textContent = 'Running stress test (10000 components)...';
+
+            const before = performance.memory?.usedJSHeapSize || 0;
+            const start = performance.now();
+
+            // Create 10000 components
+            for (let i = 0; i < 10000; i++) {
+                const btn = document.createElement('au-button');
+                btn.textContent = `B${i}`;
+                container.appendChild(btn);
+
+                // Report progress
+                if (i % 1000 === 0) {
+                    result.textContent = `Creating: ${i}/10000...`;
+                    await new Promise(r => setTimeout(r, 0));
+                }
+            }
+
+            const afterCreate = performance.now();
+            const memAfterCreate = performance.memory?.usedJSHeapSize || 0;
+
+            // Destroy all
+            container.innerHTML = '';
+
+            if (window.gc) window.gc();
+            await new Promise(r => setTimeout(r, 500));
+
+            const afterDestroy = performance.now();
+            const memAfterDestroy = performance.memory?.usedJSHeapSize || 0;
+
+            const createTime = (afterCreate - start).toFixed(0);
+            const destroyTime = (afterDestroy - afterCreate).toFixed(0);
+            const memUsed = ((memAfterCreate - before) / 1024 / 1024).toFixed(2);
+            const memRetained = ((memAfterDestroy - before) / 1024 / 1024).toFixed(2);
+
+            result.innerHTML = `
+<span class="pass">✓ Stress Test Complete</span>
+
+Components: 10,000
+Create time: ${createTime}ms (${(10000 / (createTime / 1000)).toFixed(0)} components/sec)
+Destroy time: ${destroyTime}ms
+
+Memory used: ${memUsed} MB
+Memory after cleanup: ${memRetained} MB
+Per-component: ~${(memAfterCreate - before) / 10000} bytes`;
+        };
+
+        console.log('🔬 Memory Leak Test Suite Ready');
+    </script>
+</body>
+
+</html>

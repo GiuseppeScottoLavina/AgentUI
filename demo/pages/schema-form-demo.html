@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schema Form Demo - AgentUI</title>
+    <link rel="stylesheet" href="../../dist/agentui.css">
+    <style>
+        body {
+            font-family: var(--md-sys-typescale-font);
+            background: var(--md-sys-color-background);
+            color: var(--md-sys-color-on-background);
+            padding: 24px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--md-sys-color-on-surface-variant);
+            margin-bottom: 32px;
+        }
+
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section h2 {
+            margin-bottom: 16px;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .demo-panel {
+            background: var(--md-sys-color-surface-container);
+            padding: 24px;
+            border-radius: var(--md-sys-shape-corner-large);
+        }
+
+        .demo-panel h3 {
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+
+        pre {
+            background: var(--md-sys-color-surface-container-high);
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 12px;
+            margin: 0;
+        }
+
+        .output {
+            background: var(--md-sys-color-inverse-surface);
+            color: var(--md-sys-color-inverse-on-surface);
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 13px;
+            min-height: 60px;
+            white-space: pre-wrap;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>📝 au-schema-form</h1>
+        <p class="subtitle">Auto-generate forms from JSON Schema – no HTML boilerplate required</p>
+
+        <!-- User Registration Form -->
+        <section class="section">
+            <h2>👤 User Registration Form</h2>
+            <div class="demo-grid">
+                <div class="demo-panel">
+                    <h3>Generated Form</h3>
+                    <au-schema-form id="user-form"></au-schema-form>
+                </div>
+                <div class="demo-panel">
+                    <h3>Schema Definition</h3>
+                    <pre id="schema-display"></pre>
+                </div>
+            </div>
+            <div class="demo-panel" style="margin-top: 16px;">
+                <h3>Form Output</h3>
+                <div id="output" class="output">Submit the form to see the output...</div>
+            </div>
+        </section>
+
+        <!-- Settings Form -->
+        <section class="section">
+            <h2>⚙️ Settings Form (Inline Layout)</h2>
+            <div class="demo-panel">
+                <au-schema-form id="settings-form" inline submit-label="Save Settings"></au-schema-form>
+            </div>
+            <div class="demo-panel" style="margin-top: 16px;">
+                <div id="settings-output" class="output">Change settings to see live updates...</div>
+            </div>
+        </section>
+
+        <!-- API Reference -->
+        <section class="section">
+            <h2>📚 Schema Features</h2>
+            <div class="demo-panel">
+                <pre>// JSON Schema → AgentUI Component Mapping
+
+{
+  "type": "string"                    → &lt;au-input&gt;
+  "type": "string", "format": "email" → &lt;au-input type="email"&gt;
+  "type": "string", "multiline": true → &lt;au-textarea&gt;
+  "type": "string", "enum": [...]     → &lt;au-dropdown&gt;
+  "type": "number"                    → &lt;au-input type="number"&gt;
+  "type": "boolean"                   → &lt;au-switch&gt;
+}
+
+// Validation properties:
+// minLength, maxLength, minimum, maximum, pattern, required
+
+// Custom properties:
+// title (label), description (helper text), placeholder
+// enumLabels (display names for enum values)
+// default (initial value)</pre>
+            </div>
+        </section>
+    </div>
+
+    <script type="module">
+        import '../../dist/agentui.esm.js';
+
+        // User Registration Schema
+        const userSchema = {
+            type: 'object',
+            properties: {
+                name: {
+                    type: 'string',
+                    title: 'Full Name',
+                    placeholder: 'Enter your full name',
+                    minLength: 2,
+                    maxLength: 100
+                },
+                email: {
+                    type: 'string',
+                    format: 'email',
+                    title: 'Email Address',
+                    placeholder: 'user@example.com'
+                },
+                password: {
+                    type: 'string',
+                    format: 'password',
+                    title: 'Password',
+                    minLength: 8,
+                    description: 'At least 8 characters'
+                },
+                role: {
+                    type: 'string',
+                    title: 'Role',
+                    enum: ['user', 'admin', 'moderator'],
+                    enumLabels: ['Regular User', 'Administrator', 'Moderator'],
+                    default: 'user'
+                },
+                age: {
+                    type: 'integer',
+                    title: 'Age',
+                    minimum: 18,
+                    maximum: 120,
+                    description: 'Must be 18 or older'
+                },
+                newsletter: {
+                    type: 'boolean',
+                    title: 'Subscribe to newsletter',
+                    default: true
+                },
+                bio: {
+                    type: 'string',
+                    title: 'Bio',
+                    multiline: true,
+                    placeholder: 'Tell us about yourself...',
+                    maxLength: 500
+                }
+            },
+            required: ['name', 'email', 'password']
+        };
+
+        // Settings Schema
+        const settingsSchema = {
+            type: 'object',
+            properties: {
+                theme: {
+                    type: 'string',
+                    title: 'Theme',
+                    enum: ['light', 'dark', 'auto'],
+                    enumLabels: ['Light', 'Dark', 'System'],
+                    default: 'auto'
+                },
+                notifications: {
+                    type: 'boolean',
+                    title: 'Enable notifications',
+                    default: true
+                },
+                language: {
+                    type: 'string',
+                    title: 'Language',
+                    enum: ['en', 'it', 'es', 'de'],
+                    enumLabels: ['English', 'Italiano', 'Español', 'Deutsch'],
+                    default: 'en'
+                }
+            }
+        };
+
+        // Initialize forms
+        const userForm = document.getElementById('user-form');
+        const settingsForm = document.getElementById('settings-form');
+        const outputEl = document.getElementById('output');
+        const settingsOutputEl = document.getElementById('settings-output');
+        const schemaDisplay = document.getElementById('schema-display');
+
+        // Display schema
+        schemaDisplay.textContent = JSON.stringify(userSchema, null, 2);
+
+        // Set schemas
+        userForm.schema = userSchema;
+        settingsForm.schema = settingsSchema;
+
+        // Event handlers
+        userForm.addEventListener('au-submit', (e) => {
+            outputEl.textContent = '✅ Form submitted!\n\n' + JSON.stringify(e.detail, null, 2);
+        });
+
+        userForm.addEventListener('au-change', (e) => {
+            outputEl.textContent = '📝 Field changed: ' + e.detail.field + '\n\n' +
+                JSON.stringify(e.detail.values, null, 2);
+        });
+
+        settingsForm.addEventListener('au-change', (e) => {
+            settingsOutputEl.textContent = 'Settings updated:\n\n' +
+                JSON.stringify(e.detail.values, null, 2);
+        });
+
+        settingsForm.addEventListener('au-submit', (e) => {
+            settingsOutputEl.textContent = '✅ Settings saved!\n\n' + JSON.stringify(e.detail, null, 2);
+        });
+    </script>
+</body>
+
+</html>

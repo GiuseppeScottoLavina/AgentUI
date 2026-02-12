@@ -1,0 +1,91 @@
+<div class="page active">
+    <h1 class="page-title">Callout</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-callout&gt;</code> is an MD3 styled info box for highlighting
+        important information, tips, warnings, or success messages in documentation.
+    </p>
+
+    <au-tabs active="0" id="callout-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>STYLING</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <div id="callout-overview" class="doc-tab-content">
+        <au-example title="All variants">
+            <div slot="demo">
+                <au-stack gap="md">
+                    <au-callout variant="info">
+                        <strong>Note:</strong> This is an informational callout for general guidance.
+                    </au-callout>
+                    <au-callout variant="tip">
+                        <strong>Tip:</strong> Use keyboard shortcut Ctrl+S to save your work quickly.
+                    </au-callout>
+                    <au-callout variant="warning">
+                        <strong>Warning:</strong> This action cannot be undone. Please proceed with caution.
+                    </au-callout>
+                    <au-callout variant="success">
+                        <strong>Success:</strong> Your changes have been saved successfully.
+                    </au-callout>
+                </au-stack>
+            </div>
+            <div slot="code">&lt;au-callout variant="info"&gt;Info message&lt;/au-callout&gt;
+                &lt;au-callout variant="tip"&gt;Tip message&lt;/au-callout&gt;
+                &lt;au-callout variant="warning"&gt;Warning message&lt;/au-callout&gt;
+                &lt;au-callout variant="success"&gt;Success message&lt;/au-callout&gt;</div>
+        </au-example>
+
+        <div class="component-section">
+            <h2 class="section-title">When to use</h2>
+            <p style="color: var(--md-sys-color-on-surface-variant); line-height: 1.6;">
+                Use callouts to draw attention to important information that should stand out from
+                regular content. Unlike alerts which are for user feedback, callouts are ideal for
+                documentation, tutorials, and static informational content.
+            </p>
+        </div>
+    </div>
+
+    <div id="callout-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Attributes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="variant" type="string" default="info">'info' | 'tip' | 'warning' |
+                    'success'</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="callout-styling" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">CSS Custom Properties</h2>
+            <au-api-table type="tokens">
+                <au-api-row name="--md-sys-color-primary-container" default="#eaddff">Info background</au-api-row>
+                <au-api-row name="--md-sys-color-secondary-container" default="#e8def8">Tip background</au-api-row>
+                <au-api-row name="--md-sys-color-error-container" default="#f9dedc">Warning background</au-api-row>
+                <au-api-row name="--md-sys-color-tertiary-container" default="#ffd8e4">Success background</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="callout-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="Documentation usage">
+            <div slot="demo">
+                <au-stack gap="md">
+                    <p>When implementing authentication, consider the following:</p>
+                    <au-callout variant="info">
+                        Always use HTTPS in production to protect user credentials during transmission.
+                    </au-callout>
+                    <p>For token storage, we recommend using HttpOnly cookies:</p>
+                    <au-callout variant="tip">
+                        HttpOnly cookies prevent XSS attacks from stealing authentication tokens via JavaScript.
+                    </au-callout>
+                </au-stack>
+            </div>
+            <div slot="code">&lt;p&gt;Regular content...&lt;/p&gt;
+                &lt;au-callout variant="info"&gt;
+                Important note here.
+                &lt;/au-callout&gt;</div>
+        </au-example>
+    </div>
+</div>

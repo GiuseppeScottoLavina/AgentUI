@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AgentUI - AI-First Web Components Library with 50 Material Design 3 components">
+    <title>AgentUI - Component Showcase</title>
+
+    <!-- Security: Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; ">
+    <!-- Permissions Policy -->
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#6750A4">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="AgentUI">
+
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+    <link rel="canonical" href="https://agentui.dev/demo/">
+
+    <!-- Preload critical resources -->
+    <link rel="preload" as="image" type="image/webp" href="../assets/banner-400.webp"
+        imagesrcset="../assets/banner-400.webp 1x, ../assets/banner-800.webp 2x" fetchpriority="high">
+    <!-- Self-hosted fonts: Preload Roboto only (icons now use inline SVG) -->
+    <link rel="preload" href="../assets/fonts/roboto-400.woff2" as="font" type="font/woff2" crossorigin>
+
+    <!-- SOTA 2026: Speculation Rules API for predictive prefetching -->
+    <script type="speculationrules">
+    {
+        "prefetch": [
+            {
+                "urls": [
+                    "/dist/routes/home.js",
+                    "/dist/routes/buttons.js",
+                    "/dist/routes/inputs.js",
+                    "/dist/routes/cards.js"
+                ],
+                "eagerness": "moderate"
+            }
+        ]
+    }
+    </script>
+
+    <style>
+        /* Self-hosted Roboto (eliminates render-blocking Google Fonts request) */
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url('../assets/fonts/roboto-400.woff2') format('woff2');
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 500;
+            font-display: swap;
+            src: url('../assets/fonts/roboto-500.woff2') format('woff2');
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 700;
+            font-display: swap;
+            src: url('../assets/fonts/roboto-700.woff2') format('woff2');
+        }
+
+        /* Material Symbols font removed - icons use inline SVG now */
+    </style>
+    <!-- Preload + async CSS: 12KB loads instantly from preload, media trick prevents render-blocking -->
+    <link rel="preload" as="style" href="../dist/agentui.css?v=0.1.153">
+    <link rel="stylesheet" href="../dist/agentui.css?v=0.1.153" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="../dist/agentui.css?v=0.1.153">
+    </noscript>
+    <style>
+        /* Size-adjusted Arial fallback to match Roboto metrics (from Capsize) */
+        @font-face {
+            font-family: 'Roboto-fallback';
+            src: local('Arial');
+            size-adjust: 100.06%;
+            ascent-override: 95.01%;
+            descent-override: 25%;
+            line-gap-override: 0%;
+        }
+
+        /* Critical CSS */
+        :root {
+            --md-sys-typescale-font: 'Roboto', 'Roboto-fallback', system-ui, -apple-system, sans-serif;
+            --md-sys-color-background: #FFFBFE;
+            --md-sys-color-on-background: #1D1B20;
+            --md-sys-color-surface-container: #F3EDF7;
+            --md-sys-color-surface-container-low: #F7F2FA;
+            --md-sys-color-primary: #6750A4;
+            --md-sys-color-primary-container: #EADDFF;
+            --md-sys-color-on-primary-container: #21005D;
+            --md-sys-color-outline-variant: #CAC4D0;
+            --md-sys-shape-corner-small: 8px;
+            --md-sys-shape-corner-large: 16px;
+        }
+
+        [data-theme="dark"] {
+            --md-sys-color-background: #141218;
+            --md-sys-color-on-background: #E6E0E9;
+            --md-sys-color-surface-container: #211F26;
+            --md-sys-color-surface-container-low: #1D1B20;
+            --md-sys-color-primary: #D0BCFF;
+            --md-sys-color-primary-container: #4F378B;
+            --md-sys-color-on-primary-container: #EADDFF;
+            --md-sys-color-outline-variant: #49454F;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-family: var(--md-sys-typescale-font);
+            background: var(--md-sys-color-background);
+            color: var(--md-sys-color-on-background);
+            scroll-behavior: smooth;
+        }
+
+        /* SOTA 2026: Prevent layout shift from scrollbar appearance */
+        /* Applied to .au-layout-main which is the actual scroll container */
+        .au-layout-main {
+            scrollbar-gutter: stable;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* App Header */
+        .app-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            height: 64px;
+            background: var(--md-sys-color-surface-container);
+            border-bottom: 1px solid var(--md-sys-color-outline-variant);
+            transition: box-shadow 0.2s;
+        }
+
+        .app-header.is-scrolled {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .app-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        .menu-btn {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background: transparent;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            color: var(--md-sys-color-on-surface);
+        }
+
+        @media (max-width: 599px) {
+            .app-header {
+                padding: 0 8px;
+            }
+
+            .menu-btn {
+                display: flex;
+            }
+
+            .logo-text {
+                display: none;
+            }
+        }
+
+        /* Main content */
+        .app-main {
+            flex: 1;
+            padding: 32px;
+            max-width: 900px;
+            min-height: calc(100vh - 64px);
+        }
+
+        .app-main:focus {
+            outline: none;
+        }
+
+        @media (max-width: 599px) {
+            .app-main {
+                padding: 16px;
+                padding-bottom: calc(var(--au-bottom-nav-height, 80px) + 16px + env(safe-area-inset-bottom, 0));
+            }
+        }
+
+        /* Footer */
+        .app-footer {
+            background: var(--md-sys-color-surface-container);
+            padding: 24px;
+            text-align: center;
+            border-top: 1px solid var(--md-sys-color-outline-variant);
+            font-size: 0.875rem;
+            color: var(--md-sys-color-on-surface-variant);
+        }
+
+        /* Loading skeleton */
+        .shell-loading {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            animation: pulse 1.5s infinite;
+        }
+
+        .skeleton-block {
+            height: 24px;
+            background: var(--md-sys-color-surface-container);
+            border-radius: 4px;
+        }
+
+        .skeleton-block.title {
+            height: 32px;
+            width: 60%;
+        }
+
+        .skeleton-block.subtitle {
+            height: 18px;
+            width: 80%;
+        }
+
+        .skeleton-block.content {
+            height: 200px;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        /* CLS Prevention: Pre-define bottom-nav dimensions before element registers */
+        au-bottom-nav:not(:defined) {
+            display: block;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: var(--au-bottom-nav-height, 80px);
+            z-index: 1000;
+        }
+
+        /* CLS Prevention: Contain layout for main content */
+        #content-area {
+            contain: layout style;
+            min-height: 500px;
+            /* Prevent height collapse during route transitions */
+            transition: none;
+        }
+
+        /* SOTA 2026: content-visibility for lazy rendering of off-screen examples */
+        /* Dramatically reduces initial rendering work - up to 7x boost */
+        au-example {
+            content-visibility: auto;
+            contain-intrinsic-size: auto 300px;
+        }
+
+        /* View Transitions API: Smooth page-to-page navigation */
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+            animation-duration: 150ms;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            ::view-transition-old(root),
+            ::view-transition-new(root) {
+                animation: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <au-toast-container></au-toast-container>
+
+    <!-- MD3 Responsive Layout (App Shell) -->
+    <au-layout>
+        <!-- Header -->
+        <header slot="header" class="app-header">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <button id="menu-toggle" class="menu-btn" aria-label="Toggle menu"
+                    onclick="document.querySelector('au-drawer').toggle()">
+                    <au-icon name="menu"></au-icon>
+                </button>
+                <div class="app-logo">
+                    <picture>
+                        <source srcset="../assets/logo-icon-64.webp" type="image/webp">
+                        <img src="../assets/logo-icon-64.jpg" alt="AgentUI" width="32" height="32" decoding="async"
+                            style="border-radius: 6px;">
+                    </picture>
+                    <span class="logo-text">AgentUI <span
+                            style="background: var(--md-sys-color-tertiary-container, #FFD8E4); color: var(--md-sys-color-on-tertiary-container, #31111D); padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 500; margin-left: 4px;">EXPERIMENTAL</span></span>
+                </div>
+            </div>
+            <div class="app-nav">
+                <au-theme-toggle></au-theme-toggle>
+            </div>
+        </header>
+
+        <!-- Drawer Navigation -->
+        <au-drawer slot="drawer" mode="auto" expand-on-hover>
+            <div slot="header" style="padding: 16px; display: flex; align-items: center; gap: 12px;">
+                <au-icon name="widgets" style="color: var(--md-sys-color-primary);"></au-icon>
+                <span style="font-weight: 500;">Components</span>
+            </div>
+
+            <!-- Getting Started -->
+            <au-drawer-item icon="home" href="#home" data-page="home" active label="Overview"></au-drawer-item>
+            <au-drawer-item icon="download" href="#installation" data-page="installation"
+                label="Installation"></au-drawer-item>
+
+            <!-- Actions -->
+            <au-drawer-item icon="smart_button" href="#buttons" data-page="buttons" label="Buttons"></au-drawer-item>
+
+            <!-- Inputs -->
+            <au-drawer-item icon="text_fields" href="#inputs" data-page="inputs" label="Text Fields"></au-drawer-item>
+            <au-drawer-item icon="check_box" href="#checkboxes" data-page="checkboxes"
+                label="Checkboxes"></au-drawer-item>
+            <au-drawer-item icon="toggle_on" href="#switches" data-page="switches" label="Switches"></au-drawer-item>
+            <au-drawer-item icon="radio_button_checked" href="#radios" data-page="radios"
+                label="Radio Buttons"></au-drawer-item>
+            <au-drawer-item icon="arrow_drop_down_circle" href="#dropdowns"
+                data-page="dropdowns">Dropdowns</au-drawer-item>
+
+            <!-- Layout -->
+            <au-drawer-item icon="view_carousel" href="#cards" data-page="cards" label="Cards"></au-drawer-item>
+            <au-drawer-item icon="grid_view" href="#layout" data-page="layout" label="Stack & Grid"></au-drawer-item>
+            <au-drawer-item icon="remove" href="#dividers" data-page="dividers" label="Divider"></au-drawer-item>
+
+            <!-- Navigation -->
+            <au-drawer-item icon="tab" href="#tabs" data-page="tabs" label="Tabs"></au-drawer-item>
+            <au-drawer-item icon="menu" href="#navbar" data-page="navbar" label="Navbar"></au-drawer-item>
+
+            <!-- Feedback -->
+            <au-drawer-item icon="warning" href="#alerts" data-page="alerts" label="Alerts"></au-drawer-item>
+            <au-drawer-item icon="info" href="#callouts" data-page="callouts" label="Callout"></au-drawer-item>
+            <au-drawer-item icon="notifications" href="#toasts" data-page="toasts" label="Toasts"></au-drawer-item>
+            <au-drawer-item icon="open_in_new" href="#modals" data-page="modals" label="Modals"></au-drawer-item>
+            <au-drawer-item icon="hourglass_empty" href="#progress" data-page="progress"
+                label="Progress"></au-drawer-item>
+            <au-drawer-item icon="category" href="#skeletons" data-page="skeletons" label="Skeleton"></au-drawer-item>
+            <au-drawer-item icon="widgets" href="#spinners" data-page="spinners" label="Spinner"></au-drawer-item>
+            <au-drawer-item icon="check_circle" href="#confirms" data-page="confirms" label="Confirm"></au-drawer-item>
+
+            <!-- Display -->
+            <au-drawer-item icon="account_circle" href="#avatars" data-page="avatars" label="Avatars"></au-drawer-item>
+            <au-drawer-item icon="fiber_manual_record" href="#badges" data-page="badges"
+                label="Badges"></au-drawer-item>
+            <au-drawer-item icon="label" href="#chips" data-page="chips" label="Chips"></au-drawer-item>
+            <au-drawer-item icon="emoji_emotions" href="#icons" data-page="icons" label="Icons"></au-drawer-item>
+            <au-drawer-item icon="notification_important" href="#tooltips" data-page="tooltips"
+                label="Tooltip"></au-drawer-item>
+
+            <!-- Data -->
+            <au-drawer-item icon="grid_view" href="#tables" data-page="tables" label="Table"></au-drawer-item>
+            <au-drawer-item icon="monitoring" href="#datatables" data-page="datatables"
+                label="DataTable"></au-drawer-item>
+            <au-drawer-item icon="settings" href="#codeblocks" data-page="codeblocks"
+                label="Code Block"></au-drawer-item>
+            <au-drawer-item icon="view_carousel" href="#virtual-lists" data-page="virtual-lists"
+                label="Virtual List"></au-drawer-item>
+
+            <!-- Enterprise -->
+            <au-drawer-item icon="business" href="#enterprise" data-page="enterprise"
+                label="Enterprise"></au-drawer-item>
+        </au-drawer>
+
+        <!-- Bottom Navigation (Mobile Only) -->
+        <au-bottom-nav slot="bottom" hide-on-desktop>
+            <au-nav-item icon="home" href="#home" active>Home</au-nav-item>
+            <au-nav-item icon="smart_button" href="#buttons">Actions</au-nav-item>
+            <au-nav-item icon="input" href="#inputs">Inputs</au-nav-item>
+            <au-nav-item icon="category" href="#cards">Layout</au-nav-item>
+        </au-bottom-nav>
+
+        <!-- Main Content Area (dynamic) -->
+        <!-- Skip link anchors for accessibility (Lighthouse requirement) -->
+        <div id="home" tabindex="-1" aria-hidden="true"></div>
+        <div id="installation" tabindex="-1" aria-hidden="true"></div>
+        <div id="buttons" tabindex="-1" aria-hidden="true"></div>
+        <div id="inputs" tabindex="-1" aria-hidden="true"></div>
+        <div id="checkboxes" tabindex="-1" aria-hidden="true"></div>
+        <div id="switches" tabindex="-1" aria-hidden="true"></div>
+        <div id="radios" tabindex="-1" aria-hidden="true"></div>
+        <div id="dropdowns" tabindex="-1" aria-hidden="true"></div>
+        <div id="cards" tabindex="-1" aria-hidden="true"></div>
+        <div id="layout" tabindex="-1" aria-hidden="true"></div>
+        <div id="dividers" tabindex="-1" aria-hidden="true"></div>
+        <div id="tabs" tabindex="-1" aria-hidden="true"></div>
+        <div id="navbar" tabindex="-1" aria-hidden="true"></div>
+        <div id="alerts" tabindex="-1" aria-hidden="true"></div>
+        <div id="callouts" tabindex="-1" aria-hidden="true"></div>
+        <div id="toasts" tabindex="-1" aria-hidden="true"></div>
+        <div id="modals" tabindex="-1" aria-hidden="true"></div>
+        <div id="progress" tabindex="-1" aria-hidden="true"></div>
+        <div id="skeletons" tabindex="-1" aria-hidden="true"></div>
+        <div id="spinners" tabindex="-1" aria-hidden="true"></div>
+        <div id="confirms" tabindex="-1" aria-hidden="true"></div>
+        <div id="avatars" tabindex="-1" aria-hidden="true"></div>
+        <div id="badges" tabindex="-1" aria-hidden="true"></div>
+        <div id="chips" tabindex="-1" aria-hidden="true"></div>
+        <div id="icons" tabindex="-1" aria-hidden="true"></div>
+        <div id="tooltips" tabindex="-1" aria-hidden="true"></div>
+        <div id="tables" tabindex="-1" aria-hidden="true"></div>
+        <div id="datatables" tabindex="-1" aria-hidden="true"></div>
+        <div id="codeblocks" tabindex="-1" aria-hidden="true"></div>
+        <div id="virtual-lists" tabindex="-1" aria-hidden="true"></div>
+        <div id="enterprise" tabindex="-1" aria-hidden="true"></div>
+        <main id="content-area" class="app-main">
+            <!-- Inline hero: eliminates LCP render delay (image is preloaded in <head>) -->
+            <div style="text-align: center; margin-bottom: 32px;">
+                <picture>
+                    <source srcset="../assets/banner-400.webp 1x, ../assets/banner-800.webp 2x" type="image/webp"><img
+                        src="../assets/banner-400.jpg" loading="eager" fetchpriority="high" decoding="async"
+                        alt="AgentUI - AI First Web Components" width="400" height="400"
+                        style="max-width: 100%; height: auto; aspect-ratio: 1/1; object-fit: contain; border-radius: var(--md-sys-shape-corner-large); box-shadow: var(--md-sys-elevation-2);">
+                </picture>
+            </div>
+            <h1 class="page-title" style="text-align: center;">AgentUI</h1>
+            <p class="page-subtitle" style="text-align: center; font-size: 1.25rem; max-width: 600px; margin: 0 auto;">
+                The only AI-First UI framework. 50 components. 1653+ tests. Zero config.</p>
+        </main>
+
+        <!-- Footer -->
+        <footer slot="footer" class="app-footer">
+            <p>AgentUI • Apache-2.0 • Made with ❤️</p>
+        </footer>
+    </au-layout>
+
+    <script type="module">
+        // =============================================
+        // APP SHELL - Dynamic Content Loading
+        // =============================================
+        const perfStart = performance.now();
+        const loadedRoutes = new Set();
+        const loadedContent = new Map();
+        const contentArea = document.getElementById('content-area');
+
+        // Load JS route bundle
+        async function loadRoute(name) {
+            if (loadedRoutes.has(name)) return;
+            loadedRoutes.add(name);
+            const start = performance.now();
+            await import('../dist/routes/' + name + '.js?v=0.1.153');
+            console.log('[Shell] Route ' + name + '.js loaded in ' + (performance.now() - start).toFixed(0) + 'ms');
+        }
+
+        // Load HTML content fragment
+        async function loadContent(pageId) {
+            if (loadedContent.has(pageId)) {
+                return loadedContent.get(pageId);
+            }
+
+            try {
+                const response = await fetch('content/' + pageId + '.html');
+                if (!response.ok) {
+                    // Fallback: try loading from index.html fragment
+                    console.log('[Shell] Content fragment not found, using inline');
+                    return null;
+                }
+                const html = await response.text();
+                loadedContent.set(pageId, html);
+                return html;
+            } catch (e) {
+                console.error('[Shell] Failed to load content:', e);
+                return null;
+            }
+        }
+
+        // Defer component loading
+        const deferFn = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
+        deferFn(() => loadRoute('shell-critical'), { timeout: 500 });
+        deferFn(() => loadRoute('shell-deferred'), { timeout: 1000 });
+
+        // Initial route
+        const initialRoute = window.location.hash ? window.location.hash.slice(1) : 'home';
+
+        // Show page with dynamic content loading
+        // SOTA 2026: Prefetch content BEFORE View Transition to avoid intermediate states
+        async function showPage(pageId) {
+            // SOTA 2026: Prefetch ALL async content BEFORE starting the transition
+            // This ensures the transition callback is 100% synchronous
+            await loadRoute(pageId);
+            const content = await loadContent(pageId);
+
+            const updateDOM = () => {
+                // Scroll to top INSIDE transition (now synchronous!)
+                const scrollContainer = document.querySelector('.au-layout-main') || window;
+                scrollContainer.scrollTo({ top: 0, behavior: 'instant' });
+
+                if (content) {
+                    contentArea.innerHTML = content;
+                    // Execute inline scripts (innerHTML doesn't run them automatically)
+                    contentArea.querySelectorAll('script').forEach(oldScript => {
+                        const newScript = document.createElement('script');
+                        newScript.textContent = oldScript.textContent;
+                        oldScript.parentNode.replaceChild(newScript, oldScript);
+                    });
+                    // Setup tabs after content injection
+                    setupContentTabs();
+                } else {
+                    contentArea.innerHTML = `
+                        <div class="page active">
+                            <h1 class="page-title">${pageId.charAt(0).toUpperCase() + pageId.slice(1)}</h1>
+                            <p class="page-subtitle">Loading content...</p>
+                        </div>
+                    `;
+                }
+            };
+
+            // Use View Transitions if available (progressive enhancement)
+            if (document.startViewTransition) {
+                await document.startViewTransition(updateDOM).finished;
+            } else {
+                updateDOM();
+            }
+
+            // Update active states
+            document.querySelectorAll('au-drawer-item').forEach(item => {
+                item.toggleAttribute('active', item.dataset.page === pageId);
+            });
+            document.querySelectorAll('au-nav-item').forEach(item => {
+                const href = item.getAttribute('href');
+                item.toggleAttribute('active', href === '#' + pageId);
+            });
+
+            // Interaction: Update title and manage focus for A11y
+            document.title = `AgentUI - ${pageId.charAt(0).toUpperCase() + pageId.slice(1)}`;
+
+            // Move focus to main content (skip navigation)
+            contentArea.setAttribute('tabindex', '-1');
+            contentArea.focus({ preventScroll: true });
+        }
+
+        // Setup documentation tabs (Overview/API/Styling/Examples)
+        function setupDocTabs(tabsId, contentIds) {
+            const tabs = document.getElementById(tabsId);
+            if (tabs) {
+                tabs.addEventListener('au-tab-change', (e) => {
+                    contentIds.forEach((id, i) => {
+                        const el = document.getElementById(id);
+                        if (el) {
+                            el.style.display = i === e.detail.index ? 'block' : 'none';
+                        }
+                    });
+                });
+            }
+        }
+
+        // Setup demo tabs (e.g., tabs within examples)
+        function setupDemoTabs(tabsId, contentId, labels) {
+            const tabs = document.getElementById(tabsId);
+            const contentEl = document.getElementById(contentId);
+            if (tabs && contentEl) {
+                tabs.addEventListener('au-tab-change', (e) => {
+                    contentEl.textContent = `Content for ${labels[e.detail.index]}`;
+                });
+            }
+        }
+
+        // Auto-setup tabs after content is loaded
+        function setupContentTabs() {
+            // Pattern: find all au-tabs with id ending in '-doc-tabs'
+            const docTabGroups = contentArea.querySelectorAll('au-tabs[id$="-doc-tabs"]');
+            docTabGroups.forEach(tabs => {
+                const prefix = tabs.id.replace('-doc-tabs', '');
+                const contentIds = [
+                    `${prefix}-overview`,
+                    `${prefix}-api`,
+                    `${prefix}-styling`,
+                    `${prefix}-examples`
+                ];
+                setupDocTabs(tabs.id, contentIds);
+            });
+
+            // Setup demo tabs (specific to tabs.html)
+            setupDemoTabs('demo-tabs', 'tabs-content', ['Overview', 'Details', 'Settings']);
+        }
+
+        // showToast helper - uses Toast.show() directly
+        window.showToast = async function (message, options = {}) {
+            // Ensure toast component is loaded
+            await loadRoute('toasts');
+
+            // Use the Toast manager directly (more reliable than bus.emit)
+            const position = options.position || 'bottom-center';
+            let container = document.querySelector(`au-toast-container[position="${position}"]`);
+
+            if (!container) {
+                container = document.querySelector('au-toast-container');
+                if (container && position !== 'bottom-center') {
+                    container.setAttribute('position', position);
+                } else if (!container) {
+                    container = document.createElement('au-toast-container');
+                    container.setAttribute('position', position);
+                    document.body.appendChild(container);
+                }
+            }
+
+            const toast = document.createElement('au-toast');
+            toast.textContent = message;
+
+            if (options.severity) {
+                toast.setAttribute('severity', options.severity);
+            }
+            if (options.type) {
+                toast.setAttribute('severity', options.type);
+            }
+            if (options.duration) {
+                toast.setAttribute('duration', options.duration.toString());
+            }
+
+            container.appendChild(toast);
+            return toast;
+        };
+
+        // Navigation event handlers
+        document.querySelectorAll('au-drawer-item').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                const pageId = item.dataset.page;
+                if (pageId && !loadedRoutes.has(pageId)) {
+                    loadRoute(pageId); // Preload on hover
+                }
+            });
+            item.addEventListener('click', async (e) => {
+                e.preventDefault();
+                const pageId = item.dataset.page;
+                if (pageId) {
+                    // Use pushState to avoid browser auto-scrolling to anchor elements
+                    // (the #id skip-link divs cause a visible scroll flicker otherwise)
+                    history.pushState(null, '', '#' + pageId);
+                    showPage(pageId);
+                }
+            });
+        });
+
+        // Hash change handler (for direct URL entry / external links)
+        window.addEventListener('hashchange', () => {
+            const pageId = window.location.hash.slice(1) || 'home';
+            showPage(pageId);
+        });
+
+        // Back/forward browser navigation (pushState doesn't fire hashchange)
+        window.addEventListener('popstate', () => {
+            const pageId = window.location.hash.slice(1) || 'home';
+            showPage(pageId);
+        });
+
+        // Header scroll elevation
+        const appHeader = document.querySelector('.app-header');
+        const scrollContainer = document.querySelector('.au-layout-main');
+        if (appHeader && scrollContainer) {
+            scrollContainer.addEventListener('scroll', () => {
+                appHeader.classList.toggle('is-scrolled', scrollContainer.scrollTop > 0);
+            }, { passive: true });
+        }
+
+        // Initial page load
+        showPage(initialRoute);
+        console.log('[Shell] Initial load: ' + (performance.now() - perfStart).toFixed(0) + 'ms');
+    </script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        window.AgentUICache = {
+            clear: async () => {
+                if (!navigator.serviceWorker?.controller) return false;
+                return new Promise((resolve) => {
+                    const channel = new MessageChannel();
+                    channel.port1.onmessage = (e) => { resolve(e.data.success); location.reload(); };
+                    navigator.serviceWorker.controller.postMessage({ type: 'CLEAR_CACHE' }, [channel.port2]);
+                });
+            },
+            status: async () => {
+                if (!navigator.serviceWorker?.controller) return null;
+                return new Promise((resolve) => {
+                    const channel = new MessageChannel();
+                    channel.port1.onmessage = (e) => resolve(e.data);
+                    navigator.serviceWorker.controller.postMessage({ type: 'GET_CACHE_STATUS' }, [channel.port2]);
+                });
+            },
+            update: async () => {
+                const registration = await navigator.serviceWorker?.getRegistration();
+                if (registration) {
+                    await registration.update();
+                    return true;
+                }
+                return false;
+            },
+            prefetch: async (urls = []) => {
+                if (!navigator.serviceWorker?.controller) return false;
+                return new Promise((resolve) => {
+                    const channel = new MessageChannel();
+                    channel.port1.onmessage = (e) => resolve(e.data.success);
+                    navigator.serviceWorker.controller.postMessage({ type: 'PREFETCH', urls }, [channel.port2]);
+                });
+            }
+        };
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', async () => {
+                try {
+                    const reg = await navigator.serviceWorker.register('sw.js');
+                    console.log('[SW] Registered:', reg.scope);
+                } catch (e) {
+                    console.error('[SW] Registration failed:', e);
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

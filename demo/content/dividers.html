@@ -1,0 +1,119 @@
+<div class="page active">
+    <h1 class="page-title">Divider</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-divider&gt;</code> is a thin line that separates content into clear groups.
+        Supports horizontal and vertical orientations.
+    </p>
+
+    <au-tabs active="0" id="divider-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>STYLING</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <div id="divider-overview" class="doc-tab-content">
+        <!-- Horizontal divider in list context -->
+        <au-example title="List with dividers">
+            <div slot="demo">
+                <au-card variant="outlined" style="max-width: 320px;">
+                    <au-stack gap="0">
+                        <au-stack direction="row" gap="md" align="center" style="padding: 12px 16px;">
+                            <au-icon name="person" style="color: var(--md-sys-color-primary);"></au-icon>
+                            <span>John Doe</span>
+                        </au-stack>
+                        <au-divider inset></au-divider>
+                        <au-stack direction="row" gap="md" align="center" style="padding: 12px 16px;">
+                            <au-icon name="person" style="color: var(--md-sys-color-primary);"></au-icon>
+                            <span>Jane Smith</span>
+                        </au-stack>
+                        <au-divider inset></au-divider>
+                        <au-stack direction="row" gap="md" align="center" style="padding: 12px 16px;">
+                            <au-icon name="person" style="color: var(--md-sys-color-primary);"></au-icon>
+                            <span>Bob Wilson</span>
+                        </au-stack>
+                    </au-stack>
+                </au-card>
+            </div>
+            <div slot="code">&lt;au-stack gap="0"&gt;
+                &lt;div&gt;Item 1&lt;/div&gt;
+                &lt;au-divider inset&gt;&lt;/au-divider&gt;
+                &lt;div&gt;Item 2&lt;/div&gt;
+                &lt;/au-stack&gt;</div>
+        </au-example>
+
+        <!-- Vertical divider in toolbar -->
+        <au-example title="Toolbar with vertical divider">
+            <div slot="demo">
+                <au-card variant="filled" style="display: inline-block; padding: 12px 16px;">
+                    <au-stack direction="row" gap="lg" align="center">
+                        <au-stack direction="row" gap="sm" align="center">
+                            <au-icon name="edit" style="cursor: pointer;"></au-icon>
+                            <au-icon name="delete" style="cursor: pointer;"></au-icon>
+                        </au-stack>
+                        <au-divider vertical></au-divider>
+                        <au-icon name="settings" style="cursor: pointer;"></au-icon>
+                    </au-stack>
+                </au-card>
+            </div>
+            <div slot="code">&lt;au-stack direction="row" align="center"&gt;
+                &lt;au-icon name="edit"&gt;&lt;/au-icon&gt;
+                &lt;au-icon name="delete"&gt;&lt;/au-icon&gt;
+                &lt;au-divider vertical&gt;&lt;/au-divider&gt;
+                &lt;au-icon name="settings"&gt;&lt;/au-icon&gt;
+                &lt;/au-stack&gt;</div>
+        </au-example>
+
+        <div class="component-section">
+            <h2 class="section-title">When to use</h2>
+            <p style="color: var(--md-sys-color-on-surface-variant); line-height: 1.6;">
+                Use dividers to separate content into logical groups. They're ideal for lists,
+                toolbars, and card sections. Add the <code>inset</code> attribute when dividing
+                items with leading icons to align with the content.
+            </p>
+        </div>
+    </div>
+
+    <div id="divider-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Attributes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="vertical" type="boolean" default="false">Renders as vertical divider</au-api-row>
+                <au-api-row name="inset" type="boolean" default="false">Adds padding on sides</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="divider-styling" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">CSS Custom Properties</h2>
+            <au-api-table type="tokens">
+                <au-api-row name="--md-sys-color-outline-variant" default="#cac4d0">Divider color</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="divider-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="Inset divider">
+            <div slot="demo">
+                <au-stack gap="md">
+                    <p>Content above</p>
+                    <au-divider inset></au-divider>
+                    <p>Content below with inset</p>
+                </au-stack>
+            </div>
+            <div slot="code">&lt;au-divider inset&gt;&lt;/au-divider&gt;</div>
+        </au-example>
+
+        <au-example title="Vertical divider">
+            <div slot="demo">
+                <au-stack direction="row" gap="md" align="center" style="height: 50px;">
+                    <span>Left</span>
+                    <au-divider vertical></au-divider>
+                    <span>Right</span>
+                </au-stack>
+            </div>
+            <div slot="code">&lt;au-divider vertical&gt;&lt;/au-divider&gt;</div>
+        </au-example>
+    </div>
+</div>

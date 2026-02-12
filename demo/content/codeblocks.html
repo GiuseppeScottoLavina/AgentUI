@@ -1,0 +1,101 @@
+<div class="page active">
+    <h1 class="page-title">Code Block</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-code&gt;</code> displays code with syntax highlighting
+        and a copy-to-clipboard button.
+    </p>
+
+    <au-tabs active="0" id="codeblock-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>STYLING</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <div id="codeblock-overview" class="doc-tab-content">
+        <au-example title="HTML syntax highlighting">
+            <div slot="demo">
+                <au-code language="html">&lt;au-button variant="filled"&gt;Click me&lt;/au-button&gt;
+                    &lt;au-card variant="elevated"&gt;
+                    &lt;h2&gt;Card Title&lt;/h2&gt;
+                    &lt;p&gt;Card content goes here.&lt;/p&gt;
+                    &lt;/au-card&gt;
+                </au-code>
+            </div>
+        </au-example>
+
+        <au-example title="JavaScript syntax highlighting">
+            <div slot="demo">
+                <au-code language="javascript">import { auConfirm } from 'agentui-wc';
+                    async function deleteItem(id) {
+                    const ok = await auConfirm('Delete this?');
+                    if (ok) {
+                    await fetch(`/api/items/${id}`, { method: 'DELETE' });
+                    }
+                    }
+                </au-code>
+            </div>
+        </au-example>
+
+        <div class="component-section">
+            <h2 class="section-title">Features</h2>
+            <au-stack gap="sm">
+                <p>✓ Syntax highlighting for HTML and JavaScript</p>
+                <p>✓ Copy-to-clipboard button with feedback</p>
+                <p>✓ Language badge</p>
+                <p>✓ Scrollable for long code</p>
+            </au-stack>
+        </div>
+    </div>
+
+    <div id="codeblock-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Selector</h2>
+            <div class="code-block" style="display: inline-block;">&lt;au-code&gt;</div>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Attributes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="language" type="string" default="'html'">'html' | 'javascript' | 'js'</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="codeblock-styling" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">CSS Classes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="au-code__header" type="class">Header with language badge and copy button</au-api-row>
+                <au-api-row name="au-code__language" type="class">Language badge</au-api-row>
+                <au-api-row name="au-code__copy" type="class">Copy button</au-api-row>
+                <au-api-row name="au-code__pre" type="class">Pre element container</au-api-row>
+                <au-api-row name="au-code__content" type="class">Code content</au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Syntax Colors</h2>
+            <au-api-table type="tokens">
+                <au-api-row name="au-code__tag" type="class">HTML tag names (primary color)</au-api-row>
+                <au-api-row name="au-code__attr" type="class">Attributes (tertiary color)</au-api-row>
+                <au-api-row name="au-code__string" type="class">String values (secondary color)</au-api-row>
+                <au-api-row name="au-code__keyword" type="class">JS keywords (primary, bold)</au-api-row>
+                <au-api-row name="au-code__comment" type="class">Comments (outline, italic)</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="codeblock-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="CSS code (default highlighting)">
+            <div slot="demo">
+                <au-code language="css">.au-button {
+                    background: var(--md-sys-color-primary);
+                    color: var(--md-sys-color-on-primary);
+                    border-radius: var(--md-sys-shape-corner-full);
+                    }
+                </au-code>
+            </div>
+        </au-example>
+    </div>
+</div>

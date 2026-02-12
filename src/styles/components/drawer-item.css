@@ -1,0 +1,191 @@
+/**
+ * AgentUI drawer-item Component Styles
+ * Auto-extracted from components.css
+ */
+
+/* ============================================
+   au-drawer-item - Navigation Item Component
+   ============================================ */
+
+au-drawer-item,
+au-nav-item {
+    display: block;
+}
+
+.au-drawer-item-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 24px 0 16px;
+    min-height: 56px;
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: var(--md-sys-color-on-surface-variant);
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 28px;
+    /* MD3: full rounded pill */
+    font-family: var(--md-sys-typescale-font);
+    font-size: var(--md-sys-typescale-label-large-size, 14px);
+    font-weight: var(--md-sys-typescale-label-large-weight, 500);
+    line-height: var(--md-sys-typescale-label-large-line-height, 20px);
+    transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+        color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+    position: relative;
+    box-sizing: border-box;
+}
+
+/* Vertical layout (for bottom-nav) */
+au-drawer-item[layout="vertical"] .au-drawer-item-link,
+au-nav-item .au-drawer-item-link {
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    padding: 12px 16px;
+    border-radius: var(--md-sys-shape-corner-large);
+}
+
+.au-drawer-item-link:hover:not([disabled]):not([aria-disabled="true"]) {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) calc(var(--md-sys-state-hover-opacity, 0.08) * 100%), transparent);
+}
+
+.au-drawer-item-link:focus-visible {
+    outline: 2px solid var(--md-sys-color-primary);
+    outline-offset: 2px;
+}
+
+.au-drawer-item-link:active:not([disabled]):not([aria-disabled="true"]) {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) calc(var(--md-sys-state-pressed-opacity, 0.12) * 100%), transparent);
+}
+
+/* Active state - MD3 pill-shaped background on entire item */
+au-drawer-item[active] .au-drawer-item-link {
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+}
+
+au-drawer-item[active] .au-drawer-item-link:hover {
+    background: color-mix(in srgb, var(--md-sys-color-on-secondary-container) calc(var(--md-sys-state-hover-opacity, 0.08) * 100%), var(--md-sys-color-secondary-container));
+}
+
+/* Vertical layout active - pill on icon only */
+au-drawer-item[layout="vertical"][active] .au-drawer-item-link,
+au-nav-item[active] .au-drawer-item-link {
+    background: transparent;
+    color: var(--md-sys-color-on-secondary-container);
+}
+
+au-drawer-item[layout="vertical"][active] .au-drawer-item-icon,
+au-nav-item[active] .au-drawer-item-icon {
+    background: var(--md-sys-color-secondary-container);
+}
+
+/* Disabled state */
+.au-drawer-item-link[disabled],
+.au-drawer-item-link[aria-disabled="true"] {
+    opacity: 0.38;
+    cursor: not-allowed;
+}
+
+.au-drawer-item-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    position: relative;
+    transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+/* Vertical layout icon container */
+au-drawer-item[layout="vertical"] .au-drawer-item-icon,
+au-nav-item .au-drawer-item-icon {
+    width: 56px;
+    height: 32px;
+    border-radius: var(--md-sys-shape-corner-full);
+}
+
+/* Icon styling for au-icon */
+.au-drawer-item-icon au-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.au-drawer-item-label {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+}
+
+/* Vertical layout label */
+au-drawer-item[layout="vertical"] .au-drawer-item-label,
+au-nav-item .au-drawer-item-label {
+    flex: none;
+    text-align: center;
+    font-size: var(--md-sys-typescale-label-medium-size, 12px);
+    font-weight: var(--md-sys-typescale-label-medium-weight, 500);
+}
+
+/* Hide label in rail mode */
+au-drawer-item[hide-label] .au-drawer-item-label {
+    display: none;
+}
+
+/* Rail mode: compact item with pill on icon only */
+au-drawer-item[hide-label] .au-drawer-item-link {
+    width: auto;
+    padding: 12px;
+    min-width: 48px;
+    min-height: 48px;
+    border-radius: var(--md-sys-shape-corner-full);
+    background: transparent;
+    justify-content: center;
+}
+
+au-drawer-item[hide-label][active] .au-drawer-item-link {
+    background: transparent;
+}
+
+au-drawer-item[hide-label][active] .au-drawer-item-icon {
+    background: var(--md-sys-color-secondary-container);
+    width: 56px;
+    height: 32px;
+    border-radius: var(--md-sys-shape-corner-full);
+}
+
+au-drawer-item[hide-label] .au-drawer-item-link:hover:not([disabled]) {
+    background: transparent;
+}
+
+au-drawer-item[hide-label] .au-drawer-item-icon:hover {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) calc(var(--md-sys-state-hover-opacity, 0.08) * 100%), transparent);
+    border-radius: var(--md-sys-shape-corner-full);
+}
+
+.au-drawer-item-badge {
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    border-radius: var(--md-sys-shape-corner-full);
+    background: var(--md-sys-color-error);
+    color: var(--md-sys-color-on-error);
+    font-size: 11px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* Vertical layout badge */
+au-drawer-item[layout="vertical"] .au-drawer-item-badge,
+au-nav-item .au-drawer-item-badge {
+    position: absolute;
+    top: 0;
+    right: 8px;
+}

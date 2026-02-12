@@ -1,0 +1,6 @@
+# robots.txt for AgentUI
+User-agent: *
+Allow: /
+
+# Sitemap (when available)
+# Sitemap: https://agentui.dev/sitemap.xml

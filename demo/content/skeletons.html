@@ -1,0 +1,109 @@
+<div class="page active">
+    <h1 class="page-title">Skeleton</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-skeleton&gt;</code> displays animated placeholder content
+        while the actual content is loading, improving perceived performance.
+    </p>
+
+    <au-tabs active="0" id="skeleton-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>STYLING</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <div id="skeleton-overview" class="doc-tab-content">
+        <au-example title="Loading card placeholder">
+            <div slot="demo">
+                <au-card variant="outlined" style="max-width: 300px; padding: 16px;">
+                    <au-stack direction="row" gap="md" align="start">
+                        <au-skeleton variant="circle" size="48px"></au-skeleton>
+                        <au-stack gap="sm" style="flex: 1;">
+                            <au-skeleton width="60%" height="16px"></au-skeleton>
+                            <au-skeleton width="40%" height="12px"></au-skeleton>
+                        </au-stack>
+                    </au-stack>
+                    <au-skeleton variant="text" lines="3" style="margin-top: 16px;"></au-skeleton>
+                </au-card>
+            </div>
+            <div slot="code">&lt;au-skeleton variant="circle" size="48px"&gt;&lt;/au-skeleton&gt;
+                &lt;au-skeleton width="60%" height="16px"&gt;&lt;/au-skeleton&gt;
+                &lt;au-skeleton variant="text" lines="3"&gt;&lt;/au-skeleton&gt;</div>
+        </au-example>
+
+        <au-example title="Variant types">
+            <div slot="demo">
+                <au-stack gap="lg">
+                    <au-stack gap="xs">
+                        <strong>Rectangle (default)</strong>
+                        <au-skeleton width="200px" height="100px"></au-skeleton>
+                    </au-stack>
+                    <au-stack gap="xs">
+                        <strong>Circle</strong>
+                        <au-skeleton variant="circle" size="64px"></au-skeleton>
+                    </au-stack>
+                    <au-stack gap="xs">
+                        <strong>Text lines</strong>
+                        <au-skeleton variant="text" lines="3"></au-skeleton>
+                    </au-stack>
+                </au-stack>
+            </div>
+            <div slot="code">&lt;au-skeleton width="200px" height="100px"&gt;&lt;/au-skeleton&gt;
+                &lt;au-skeleton variant="circle" size="64px"&gt;&lt;/au-skeleton&gt;
+                &lt;au-skeleton variant="text" lines="3"&gt;&lt;/au-skeleton&gt;</div>
+        </au-example>
+
+        <div class="component-section">
+            <h2 class="section-title">When to use</h2>
+            <p style="color: var(--md-sys-color-on-surface-variant); line-height: 1.6;">
+                Use skeletons to indicate that content is loading. They reduce perceived waiting time
+                by showing the layout structure upfront. Prefer skeletons over spinners for
+                content-heavy areas.
+            </p>
+        </div>
+    </div>
+
+    <div id="skeleton-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Attributes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="variant" type="string" default="rect">'rect' | 'circle' | 'text'</au-api-row>
+                <au-api-row name="width" type="string" default="100%">Width for rect variant</au-api-row>
+                <au-api-row name="height" type="string" default="20px">Height for rect variant</au-api-row>
+                <au-api-row name="size" type="string" default="40px">Size for circle variant</au-api-row>
+                <au-api-row name="lines" type="number" default="1">Number of lines for text variant</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="skeleton-styling" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">CSS Custom Properties</h2>
+            <au-api-table type="tokens">
+                <au-api-row name="--md-sys-color-surface-container-highest" default="#e6e0e9">Skeleton background
+                    color</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="skeleton-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="Loading profile">
+            <div slot="demo">
+                <au-stack direction="row" gap="md" align="center">
+                    <au-skeleton variant="circle" size="56px"></au-skeleton>
+                    <au-stack gap="xs">
+                        <au-skeleton width="120px" height="18px"></au-skeleton>
+                        <au-skeleton width="80px" height="14px"></au-skeleton>
+                    </au-stack>
+                </au-stack>
+            </div>
+            <div slot="code">&lt;au-stack direction="row" gap="md" align="center"&gt;
+                &lt;au-skeleton variant="circle" size="56px"&gt;&lt;/au-skeleton&gt;
+                &lt;au-stack gap="xs"&gt;
+                &lt;au-skeleton width="120px" height="18px"&gt;&lt;/au-skeleton&gt;
+                &lt;au-skeleton width="80px" height="14px"&gt;&lt;/au-skeleton&gt;
+                &lt;/au-stack&gt;
+                &lt;/au-stack&gt;</div>
+        </au-example>
+    </div>
+</div>

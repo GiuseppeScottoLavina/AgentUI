@@ -1,0 +1,76 @@
+<!-- Chips Content Fragment -->
+<div id="page-chips" class="page active">
+    <h1 class="page-title">Chip</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-chip&gt;</code> compact elements for filters, selections,
+        or tags. Supports selection state and click interactions.
+    </p>
+
+    <au-tabs active="0" id="chip-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>STYLING</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <div id="chip-overview" class="doc-tab-content">
+        <au-example title="Selectable chips">
+            <div slot="demo">
+                <au-chip>React</au-chip>
+                <au-chip selected>Vue</au-chip>
+                <au-chip>Angular</au-chip>
+                <au-chip>Svelte</au-chip>
+            </div>
+
+        </au-example>
+
+        <au-example title="Chip variants">
+            <div slot="demo">
+                <au-chip variant="outlined">Outlined</au-chip>
+                <au-chip variant="filled">Filled</au-chip>
+                <au-chip variant="outlined" selected>Outlined Selected</au-chip>
+                <au-chip variant="filled" selected>Filled Selected</au-chip>
+            </div>
+        </au-example>
+    </div>
+
+    <div id="chip-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Attributes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="selected" type="boolean" default="false">Whether chip is in selected
+                    state</au-api-row>
+                <au-api-row name="removable" type="boolean" default="false">Shows remove (x)
+                    button</au-api-row>
+            </au-api-table>
+        </div>
+        <div class="component-section">
+            <h2 class="section-title">Events</h2>
+            <au-api-table type="events">
+                <au-api-row name="au-remove" detail="{}">Emitted when remove button clicked</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="chip-styling" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">CSS Custom Properties</h2>
+            <au-api-table type="tokens">
+                <au-api-row name="--md-sys-color-secondary-container" default="#e8def8">Selected
+                    background</au-api-row>
+                <au-api-row name="--md-sys-color-outline" default="#79747e">Border color</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="chip-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="Filter chips">
+            <div slot="demo">
+                <au-chip selected>All</au-chip>
+                <au-chip>Music</au-chip>
+                <au-chip>Sports</au-chip>
+                <au-chip>News</au-chip>
+            </div>
+        </au-example>
+    </div>
+</div>

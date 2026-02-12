@@ -1,0 +1,89 @@
+<!-- Dropdowns Content Fragment -->
+<div id="page-dropdowns" class="page active">
+    <h1 class="page-title">Select / Dropdown</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-dropdown&gt;</code> allows users to choose from a predefined list of options.
+        Similar to a native select, with MD3 styling and animations.
+    </p>
+
+    <au-tabs active="0" id="dropdown-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>STYLING</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <div id="dropdown-overview" class="doc-tab-content">
+        <au-example title="Basic dropdown">
+            <div slot="demo">
+                <au-dropdown placeholder="Select a fruit">
+                    <au-option value="apple">Apple</au-option>
+                    <au-option value="banana">Banana</au-option>
+                    <au-option value="cherry">Cherry</au-option>
+                </au-dropdown>
+            </div>
+
+        </au-example>
+
+        <div class="component-section"
+            style="background: var(--md-sys-color-primary-container); border-left: 4px solid var(--md-sys-color-primary);">
+            <h2 class="section-title" style="color: var(--md-sys-color-on-primary-container);">Accessibility
+            </h2>
+            <p style="color: var(--md-sys-color-on-primary-container); line-height: 1.6;">
+                Uses <code>role="listbox"</code> with arrow key navigation.
+                Options have <code>role="option"</code> with proper aria-selected states.
+            </p>
+        </div>
+    </div>
+
+    <div id="dropdown-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Attributes (au-dropdown)</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="placeholder" type="string" default="">Placeholder text when no
+                    selection</au-api-row>
+                <au-api-row name="value" type="string" default="">Currently selected value</au-api-row>
+                <au-api-row name="disabled" type="boolean" default="false">Whether dropdown is
+                    disabled</au-api-row>
+            </au-api-table>
+        </div>
+        <div class="component-section">
+            <h2 class="section-title">Attributes (au-option)</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="value" type="string" default="">Option value</au-api-row>
+            </au-api-table>
+        </div>
+        <div class="component-section">
+            <h2 class="section-title">Events</h2>
+            <au-api-table type="events">
+                <au-api-row name="au-change" detail="{ value: string, label: string }">Emitted when
+                    selection changes</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="dropdown-styling" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">CSS Custom Properties</h2>
+            <au-api-table type="tokens">
+                <au-api-row name="--md-sys-color-surface-container" default="#f3edf7">Dropdown
+                    background</au-api-row>
+                <au-api-row name="--md-sys-color-primary" default="#6750a4">Focus/selected
+                    color</au-api-row>
+                <au-api-row name="--md-sys-color-outline" default="#79747e">Border color</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="dropdown-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="With preselected value">
+            <div slot="demo">
+                <au-dropdown value="medium" placeholder="Size">
+                    <au-option value="small">Small</au-option>
+                    <au-option value="medium">Medium</au-option>
+                    <au-option value="large">Large</au-option>
+                </au-dropdown>
+            </div>
+        </au-example>
+    </div>
+</div>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Prompt UI Demo - AgentUI</title>
+    <link rel="stylesheet" href="../../dist/agentui.css">
+    <style>
+        body {
+            font-family: var(--md-sys-typescale-font);
+            background: var(--md-sys-color-background);
+            color: var(--md-sys-color-on-background);
+            padding: 24px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--md-sys-color-on-surface-variant);
+            margin-bottom: 32px;
+        }
+
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section h2 {
+            margin-bottom: 16px;
+        }
+
+        .chat-container {
+            background: var(--md-sys-color-surface-container);
+            border-radius: var(--md-sys-shape-corner-large);
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+
+        .demo-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .demo-row>* {
+            flex: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🤖 AI Prompt UI Components</h1>
+        <p class="subtitle">Components for building AI agent interfaces - chat bubbles, code blocks, prompt inputs</p>
+
+        <!-- Prompt Input Demo -->
+        <section class="section">
+            <h2>📝 au-prompt-input</h2>
+            <div class="demo-row">
+                <au-prompt-input id="basic-prompt" placeholder="Ask me anything..."></au-prompt-input>
+            </div>
+            <div class="demo-row">
+                <au-prompt-input id="loading-prompt" placeholder="Processing..." loading></au-prompt-input>
+            </div>
+            <div class="demo-row">
+                <au-prompt-input id="multiline-prompt" placeholder="Write a longer message..."
+                    multiline></au-prompt-input>
+            </div>
+        </section>
+
+        <!-- Chat Demo -->
+        <section class="section">
+            <h2>💬 Chat Interface</h2>
+            <div class="chat-container" id="chat-container">
+                <au-message-bubble role="user" timestamp="10:30 AM">
+                    How do I sort an array in JavaScript?
+                </au-message-bubble>
+
+                <au-message-bubble role="assistant" timestamp="10:30 AM">
+                    Here's how to sort an array in JavaScript:
+
+                    <au-code-block language="javascript">
+                        // Sort numbers ascending
+                        const numbers = [3, 1, 4, 1, 5, 9];
+                        const sorted = numbers.sort((a, b) => a - b);
+                        console.log(sorted); // [1, 1, 3, 4, 5, 9]
+
+                        // Sort strings alphabetically
+                        const fruits = ['banana', 'apple', 'cherry'];
+                        fruits.sort();
+                        console.log(fruits); // ['apple', 'banana', 'cherry']
+                    </au-code-block>
+
+                    The default `.sort()` method sorts strings alphabetically. For numbers, you need a compare function.
+
+                    <au-agent-toolbar></au-agent-toolbar>
+                </au-message-bubble>
+
+                <au-message-bubble role="user" timestamp="10:31 AM">
+                    What about sorting objects by property?
+                </au-message-bubble>
+
+                <au-message-bubble role="assistant" timestamp="10:31 AM">
+                    Great question! Here's how to sort objects by a property:
+
+                    <au-code-block language="javascript" filename="sort-objects.js">
+                        const users = [
+                        { name: 'Alice', age: 30 },
+                        { name: 'Bob', age: 25 },
+                        { name: 'Charlie', age: 35 }
+                        ];
+
+                        // Sort by age (ascending)
+                        users.sort((a, b) => a.age - b.age);
+
+                        // Sort by name (alphabetically)
+                        users.sort((a, b) => a.name.localeCompare(b.name));
+                    </au-code-block>
+
+                    <au-agent-toolbar actions="copy,regenerate,thumbsUp,thumbsDown"></au-agent-toolbar>
+                </au-message-bubble>
+            </div>
+
+            <au-prompt-input id="chat-input" placeholder="Type your message..."></au-prompt-input>
+        </section>
+
+        <!-- Code Block Standalone -->
+        <section class="section">
+            <h2>📄 au-code-block</h2>
+            <au-code-block language="python" filename="example.py">
+                def fibonacci(n):
+                if n <= 1: return n return fibonacci(n-1) + fibonacci(n-2) # Generate first 10 Fibonacci numbers for i
+                    in range(10): print(fibonacci(i)) </au-code-block>
+
+                    <au-code-block language="css">
+                        .button {
+                        background: var(--md-sys-color-primary);
+                        color: var(--md-sys-color-on-primary);
+                        padding: 12px 24px;
+                        border-radius: 8px;
+                        border: none;
+                        }
+                    </au-code-block>
+        </section>
+
+        <!-- Agent Toolbar Demo -->
+        <section class="section">
+            <h2>🔧 au-agent-toolbar</h2>
+            <p>Default actions:</p>
+            <au-agent-toolbar id="toolbar1"></au-agent-toolbar>
+
+            <p style="margin-top: 24px;">Custom actions:</p>
+            <au-agent-toolbar id="toolbar2" actions="copy,edit,share"></au-agent-toolbar>
+        </section>
+    </div>
+
+    <script type="module">
+        import '../../dist/agentui.esm.js';
+
+        // Basic prompt
+        const basicPrompt = document.getElementById('basic-prompt');
+        basicPrompt.addEventListener('au-submit', (e) => {
+            console.log('Submitted:', e.detail.value);
+            alert(`You asked: "${e.detail.value}"`);
+        });
+
+        // Chat functionality
+        const chatInput = document.getElementById('chat-input');
+        const chatContainer = document.getElementById('chat-container');
+
+        chatInput.addEventListener('au-submit', (e) => {
+            // Add user message
+            const userBubble = document.createElement('au-message-bubble');
+            userBubble.setAttribute('role', 'user');
+            userBubble.setAttribute('timestamp', new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+            userBubble.textContent = e.detail.value;
+            chatContainer.appendChild(userBubble);
+
+            // Simulate loading
+            chatInput.loading = true;
+            chatInput.value = '';
+
+            // Simulate AI response
+            setTimeout(() => {
+                const aiBubble = document.createElement('au-message-bubble');
+                aiBubble.setAttribute('role', 'assistant');
+                aiBubble.setAttribute('timestamp', new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+                aiBubble.innerHTML = `
+                    I received your message: "<em>${e.detail.value}</em>". 
+                    This is a simulated response demonstrating the chat interface.
+                    <au-agent-toolbar></au-agent-toolbar>
+                `;
+                chatContainer.appendChild(aiBubble);
+                chatInput.loading = false;
+            }, 1500);
+        });
+
+        // Toolbar actions
+        document.getElementById('toolbar1').addEventListener('au-action', (e) => {
+            console.log('Action:', e.detail.action);
+            alert(`Action: ${e.detail.action}`);
+        });
+
+        document.getElementById('toolbar2').addEventListener('au-action', (e) => {
+            console.log('Action:', e.detail.action);
+        });
+    </script>
+</body>
+
+</html>

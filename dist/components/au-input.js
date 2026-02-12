@@ -1,0 +1,12 @@
+import{j as D}from"./chunk-bxze911z.js";import{n as U,o as X}from"./chunk-y03bwgrc.js";var N=["date","time","datetime-local","month","week"];class Z extends U{static baseClass="au-input";static cssFile="input";static observedAttributes=["type","placeholder","value","disabled","variant","size","label"];#g=null;render(){if(this.querySelector(".au-input__field")){this.#g=this.querySelector("input"),this.#q(),this.#k(),this.#B();return}let g=this.attr("type","text"),k=this.attr("placeholder",""),B=this.attr("label",""),q=this.attr("value",""),G=B||k,$=!G;if(!G&&!this.getAttribute("aria-label"))this.logError("A11Y_MISSING_LABEL","Input must have a label or aria-label attribute.");let K=this.id||`au-input-${Math.random().toString(36).substring(2,9)}`,J=D(G),Q=D(k),F=D(q);this.innerHTML=`
+            ${J?`<label class="au-input__label" for="${K}">${J}</label>`:""}
+            <input 
+                class="au-input__field"
+                id="${K}"
+                type="${g}"
+                ${$?`placeholder="${Q}"`:""}
+                ${!J?`aria-label="${Q||"Text input"}"`:""}
+                value="${F}"
+                ${this.has("disabled")?"disabled":""}
+            />
+        `,this.#g=this.querySelector("input"),this.#q(),this.#k(),this.#B()}#B(){if(!this.#g)return;this.listen(this.#g,"input",(g)=>{this.#k(),this.emit("au-input",{value:g.target.value})}),this.listen(this.#g,"focus",()=>{this.emit("au-focus")}),this.listen(this.#g,"blur",()=>{this.#k(),this.emit("au-blur")})}#k(){let g=this.attr("type","text");if(N.includes(g)||this.#g?.value)this.classList.add("has-value");else this.classList.remove("has-value")}update(g,k,B){if(!this.#g)return;switch(g){case"value":this.#g.value=k??"",this.#k();break;case"placeholder":this.#g.placeholder=k??"";break;case"type":this.#g.type=k??"text",this.#k();break;case"disabled":this.#g.disabled=this.has("disabled");break}this.#q()}#q(){let g=this.attr("variant","outlined"),k=this.attr("size","md"),B=["au-input",`au-input--${g}`,`au-input--${k}`];if(B.forEach((q)=>this.classList.add(q)),Array.from(this.classList).forEach((q)=>{if(q.startsWith("au-input--")&&!B.includes(q))this.classList.remove(q)}),this.has("disabled"))this.classList.add("is-disabled");else this.classList.remove("is-disabled")}get value(){return this.#g?.value??""}set value(g){if(this.#g)this.#g.value=g,this.#k()}focus(){this.#g?.focus()}clear(){this.value=""}}X("au-input",Z);export{Z as AuInput};

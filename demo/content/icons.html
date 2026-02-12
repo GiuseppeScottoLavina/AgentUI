@@ -1,0 +1,89 @@
+<!-- Icons Content Fragment -->
+<div id="page-icons" class="page active">
+    <h1 class="page-title">Icon</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-icon&gt;</code> provides a built-in SVG icon set
+        with 18+ common icons. Inherits color from parent.
+    </p>
+
+    <au-tabs active="0" id="icon-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>STYLING</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <div id="icon-overview" class="doc-tab-content">
+        <au-example title="Available icons">
+            <div slot="demo">
+                <au-grid cols="6" gap="md">
+                    <au-stack align="center" gap="xs"><au-icon name="home"></au-icon><span
+                            style="font-size: 11px;">home</span></au-stack>
+                    <au-stack align="center" gap="xs"><au-icon name="search"></au-icon><span
+                            style="font-size: 11px;">search</span></au-stack>
+                    <au-stack align="center" gap="xs"><au-icon name="settings"></au-icon><span
+                            style="font-size: 11px;">settings</span></au-stack>
+                    <au-stack align="center" gap="xs"><au-icon name="user"></au-icon><span
+                            style="font-size: 11px;">user</span></au-stack>
+                    <au-stack align="center" gap="xs"><au-icon name="check"></au-icon><span
+                            style="font-size: 11px;">check</span></au-stack>
+                    <au-stack align="center" gap="xs"><au-icon name="close"></au-icon><span
+                            style="font-size: 11px;">close</span></au-stack>
+                    <au-stack align="center" gap="xs"><au-icon name="plus"></au-icon><span
+                            style="font-size: 11px;">plus</span></au-stack>
+                    <au-stack align="center" gap="xs"><au-icon name="minus"></au-icon><span
+                            style="font-size: 11px;">minus</span></au-stack>
+                    <au-stack align="center" gap="xs"><au-icon name="edit"></au-icon><span
+                            style="font-size: 11px;">edit</span></au-stack>
+                    <au-stack align="center" gap="xs"><au-icon name="delete"></au-icon><span
+                            style="font-size: 11px;">delete</span></au-stack>
+                    <au-stack align="center" gap="xs"><au-icon name="info"></au-icon><span
+                            style="font-size: 11px;">info</span></au-stack>
+                    <au-stack align="center" gap="xs"><au-icon name="warning"></au-icon><span
+                            style="font-size: 11px;">warning</span></au-stack>
+                </au-grid>
+            </div>
+
+        </au-example>
+    </div>
+
+    <div id="icon-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Attributes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="name" type="string" default="">Icon name from built-in set</au-api-row>
+                <au-api-row name="size" type="string" default="24px">Icon dimensions</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="icon-styling" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">CSS Custom Properties</h2>
+            <au-api-table type="tokens">
+                <au-api-row name="color" default="inherit">Icon inherits parent color via
+                    currentColor</au-api-row>
+                <au-api-row name="font-size" default="24px">Can be used to scale icon</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="icon-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="Button with icon">
+            <div slot="demo">
+                <au-button variant="filled">
+                    <au-icon name="plus" style="margin-right: 8px;"></au-icon>
+                    Add Item
+                </au-button>
+            </div>
+        </au-example>
+
+        <au-example title="Custom color">
+            <div slot="demo">
+                <au-icon name="error" style="color: var(--md-sys-color-error);"></au-icon>
+                <au-icon name="success" style="color: #4caf50;"></au-icon>
+                <au-icon name="warning" style="color: #ff9800;"></au-icon>
+            </div>
+        </au-example>
+    </div>
+</div>

@@ -1,0 +1,177 @@
+/**
+ * CLS Prevention — Pre-define dimensions before custom element registration
+ *
+ * These :not(:defined) rules prevent Cumulative Layout Shift (CLS) by
+ * reserving the correct display mode and minimum height for each component
+ * BEFORE the browser upgrades the custom element.
+ *
+ * Without these rules, au-* tags start as inline (unknown element default),
+ * then jump to their styled dimensions when the JS registers them.
+ * This causes visible layout shifts that hurt Lighthouse Performance scores.
+ *
+ * Dimensions are derived from each component's actual CSS:
+ * - au-button: 40px (MD3 standard touch target)
+ * - au-input: 56px (MD3 text field height)
+ * - au-bottom-nav: 80px (fixed at viewport bottom)
+ * - au-layout: flex container, 100vh
+ * - etc.
+ */
+
+/* ============================================================================
+   LAYOUT COMPONENTS
+   ============================================================================ */
+
+au-layout:not(:defined) {
+    display: flex;
+    min-height: 100vh;
+}
+
+au-container:not(:defined) {
+    display: block;
+}
+
+au-stack:not(:defined) {
+    display: flex;
+    flex-direction: column;
+}
+
+au-grid:not(:defined) {
+    display: grid;
+}
+
+au-navbar:not(:defined) {
+    display: block;
+    min-height: 64px;
+}
+
+au-drawer:not(:defined) {
+    display: block;
+}
+
+au-drawer-item:not(:defined) {
+    display: block;
+    min-height: 56px;
+}
+
+au-bottom-nav:not(:defined) {
+    display: block;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--au-bottom-nav-height, 80px);
+    z-index: 1000;
+}
+
+/* ============================================================================
+   FORM CONTROLS
+   ============================================================================ */
+
+au-button:not(:defined) {
+    display: inline-flex;
+    min-height: 40px;
+}
+
+au-input:not(:defined) {
+    display: block;
+    min-height: 56px;
+}
+
+au-textarea:not(:defined) {
+    display: block;
+    min-height: 56px;
+}
+
+au-dropdown:not(:defined) {
+    display: block;
+    min-height: 56px;
+}
+
+au-checkbox:not(:defined) {
+    display: inline-flex;
+    min-height: 48px;
+}
+
+au-radio:not(:defined) {
+    display: inline-flex;
+    min-height: 48px;
+}
+
+au-switch:not(:defined) {
+    display: inline-flex;
+    min-height: 32px;
+}
+
+au-form:not(:defined) {
+    display: block;
+}
+
+/* ============================================================================
+   DATA DISPLAY
+   ============================================================================ */
+
+au-card:not(:defined) {
+    display: block;
+}
+
+au-chip:not(:defined) {
+    display: inline-flex;
+    min-height: 32px;
+}
+
+au-badge:not(:defined) {
+    display: inline-flex;
+    min-height: 16px;
+}
+
+au-avatar:not(:defined) {
+    display: inline-flex;
+    min-height: 48px;
+}
+
+au-tabs:not(:defined) {
+    display: block;
+    min-height: 48px;
+}
+
+au-datatable:not(:defined) {
+    display: block;
+    min-height: 200px;
+}
+
+au-table:not(:defined) {
+    display: block;
+}
+
+au-divider:not(:defined) {
+    display: block;
+    min-height: 1px;
+}
+
+/* ============================================================================
+   FEEDBACK & STATUS
+   ============================================================================ */
+
+au-alert:not(:defined) {
+    display: block;
+    min-height: 48px;
+}
+
+au-progress:not(:defined) {
+    display: block;
+    min-height: 8px;
+}
+
+au-spinner:not(:defined) {
+    display: inline-flex;
+    min-height: 48px;
+}
+
+au-skeleton:not(:defined) {
+    display: block;
+    min-height: 20px;
+}
+
+au-tooltip:not(:defined) {
+    display: inline;
+}

@@ -1,0 +1,93 @@
+/**
+ * AgentUI chip Component Styles
+ * Auto-extracted from components.css
+ */
+
+/* ============================================================================
+   STACK - Flexbox Layout
+   ============================================================================ */
+
+/* Base element - CSS fallback for before JS upgrade */
+au-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--md-sys-spacing-md, 16px);
+}
+
+/* Attribute-based selectors (work before JS upgrade) */
+au-stack[direction="row"] {
+    flex-direction: row;
+}
+
+au-stack[direction="column"] {
+    flex-direction: column;
+}
+
+au-stack[direction="row-reverse"] {
+    flex-direction: row-reverse;
+}
+
+au-stack[direction="column-reverse"] {
+    flex-direction: column-reverse;
+}
+
+au-stack[gap="none"] {
+    gap: 0;
+}
+
+au-stack[gap="xs"] {
+    gap: var(--md-sys-spacing-xs, 4px);
+}
+
+au-stack[gap="sm"] {
+    gap: var(--md-sys-spacing-sm, 8px);
+}
+
+au-stack[gap="md"] {
+    gap: var(--md-sys-spacing-md, 16px);
+}
+
+au-stack[gap="lg"] {
+    gap: var(--md-sys-spacing-lg, 24px);
+}
+
+au-stack[gap="xl"] {
+    gap: var(--md-sys-spacing-xl, 32px);
+}
+
+au-stack[align="start"] {
+    align-items: flex-start;
+}
+
+au-stack[align="center"] {
+    align-items: center;
+}
+
+au-stack[align="end"] {
+    align-items: flex-end;
+}
+
+au-stack[align="stretch"] {
+    align-items: stretch;
+}
+
+au-stack[justify="start"] {
+    justify-content: flex-start;
+}
+
+au-stack[justify="center"] {
+    justify-content: center;
+}
+
+au-stack[justify="end"] {
+    justify-content: flex-end;
+}
+
+au-stack[justify="between"] {
+    justify-content: space-between;
+}
+
+au-stack[wrap] {
+    flex-wrap: wrap;
+}
+

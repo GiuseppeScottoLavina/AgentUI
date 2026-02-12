@@ -1,0 +1,84 @@
+<!-- Switches Content Fragment -->
+<div id="page-switches" class="page active">
+    <h1 class="page-title">Switch</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-switch&gt;</code> is a toggle control for binary on/off settings.
+        It follows MD3 specifications with smooth thumb animations and state colors.
+    </p>
+
+    <au-tabs active="0" id="switch-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>STYLING</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <div id="switch-overview" class="doc-tab-content">
+        <au-example title="Basic switches">
+            <div slot="demo">
+                <au-stack gap="md">
+                    <au-switch label="Notifications"></au-switch>
+                    <au-switch label="Dark mode" on></au-switch>
+                    <au-switch label="Disabled" disabled></au-switch>
+                </au-stack>
+            </div>
+
+        </au-example>
+
+        <div class="component-section"
+            style="background: var(--md-sys-color-primary-container); border-left: 4px solid var(--md-sys-color-primary);">
+            <h2 class="section-title" style="color: var(--md-sys-color-on-primary-container);">Accessibility
+            </h2>
+            <p style="color: var(--md-sys-color-on-primary-container); line-height: 1.6;">
+                <code>&lt;au-switch&gt;</code> uses <code>role="switch"</code> and manages
+                <code>aria-checked</code> automatically. Keyboard toggle with Space is supported.
+            </p>
+        </div>
+    </div>
+
+    <div id="switch-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Attributes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="on" type="boolean" default="false">Whether the switch is on</au-api-row>
+                <au-api-row name="disabled" type="boolean" default="false">Whether the switch is
+                    disabled</au-api-row>
+                <au-api-row name="label" type="string" default="">Label text</au-api-row>
+            </au-api-table>
+        </div>
+        <div class="component-section">
+            <h2 class="section-title">Events</h2>
+            <au-api-table type="events">
+                <au-api-row name="au-change" detail="{ on: boolean }">Emitted when toggled</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="switch-styling" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">CSS Custom Properties</h2>
+            <au-api-table type="tokens">
+                <au-api-row name="--md-sys-color-primary" default="#6750a4">On state track
+                    color</au-api-row>
+                <au-api-row name="--md-sys-color-on-primary" default="#ffffff">On state thumb
+                    color</au-api-row>
+                <au-api-row name="--md-sys-color-outline" default="#79747e">Off state track
+                    border</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="switch-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="Settings panel">
+            <div slot="demo">
+                <au-card variant="outlined">
+                    <au-stack gap="md">
+                        <au-switch label="Enable notifications" on></au-switch>
+                        <au-switch label="Show previews"></au-switch>
+                        <au-switch label="Play sounds" on></au-switch>
+                    </au-stack>
+                </au-card>
+            </div>
+        </au-example>
+    </div>
+</div>

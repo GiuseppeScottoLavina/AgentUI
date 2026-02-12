@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgentUI Coverage Gap Tests</title>
+    <link rel="stylesheet" href="/src/styles/tokens.css">
+    <link rel="stylesheet" href="/src/styles/components.css">
+    <!-- Load dist bundle for components (registers custom elements globally) -->
+    <script src="/dist/agentui.min.js"></script>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            padding: 20px;
+            background: var(--md-sys-color-surface, #fff);
+            color: var(--md-sys-color-on-surface, #000);
+        }
+
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        #results {
+            background: var(--md-sys-color-surface-container, #f5f5f5);
+            padding: 16px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 13px;
+        }
+
+        #lazy-area {
+            min-height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="test-container">
+        <h1>Coverage Gap Tests</h1>
+        <p>Tests for scenarios that fail in LinkedOM due to missing browser APIs.</p>
+
+        <div id="test-area"></div>
+        <div id="lazy-area"></div>
+        <div id="results">Running tests...</div>
+    </div>
+
+    <script type="module">
+        // Import debounce/throttle via ESM (not on window.AgentUI)
+        import { debounce, throttle } from '/src/core/render.js';
+
+        window.testResults = {};
+        window.testsComplete = false;
+
+        const results = document.getElementById('results');
+        const testArea = document.getElementById('test-area');
+        const lazyArea = document.getElementById('lazy-area');
+
+        function log(msg) {
+            results.textContent += msg + '\n';
+        }
+
+        const delay = (ms) => new Promise(r => setTimeout(r, ms));
+
+        async function runTests() {
+            log('Starting coverage gap tests...\n');
+
+            // ========================================
+            // 1. AU-LAZY: IntersectionObserver + viewport
+            // ========================================
+            log('=== AU-LAZY (IntersectionObserver) ===');
+
+            try {
+                // 1a: load() should force-load content
+                const lazy1 = document.createElement('au-lazy');
+                lazy1.innerHTML = `
+                    <template><div class="lazy-content">Loaded!</div></template>
+                    <div slot="placeholder">Loading...</div>
+                `;
+                lazyArea.appendChild(lazy1);
+                await delay(100);
+
+                lazy1.load();
+                await delay(100);
+
+                window.testResults.lazyForceLoad = !!lazy1.querySelector('.lazy-content');
+                log(`✓ load() force-loads content: ${window.testResults.lazyForceLoad}`);
+
+                // 1b: load() should add is-loaded class
+                window.testResults.lazyIsLoadedClass = lazy1.classList.contains('is-loaded');
+                log(`✓ load() adds is-loaded class: ${window.testResults.lazyIsLoadedClass}`);
+
+                // 1c: load() should be idempotent
+                const childCount = lazy1.childNodes.length;
+                lazy1.load();
+                await delay(50);
+                window.testResults.lazyIdempotent = (lazy1.childNodes.length === childCount);
+                log(`✓ load() is idempotent: ${window.testResults.lazyIdempotent}`);
+
+                // 1d: load() should remove placeholder
+                window.testResults.lazyRemovePlaceholder = !lazy1.querySelector('[slot="placeholder"]');
+                log(`✓ load() removes placeholder: ${window.testResults.lazyRemovePlaceholder}`);
+
+                // 1e: load() emits au-loaded event
+                const lazy2 = document.createElement('au-lazy');
+                lazy2.innerHTML = `<template><div>Content</div></template>`;
+
+                let loadedEventFired = false;
+                lazy2.addEventListener('au-loaded', () => { loadedEventFired = true; });
+
+                // Append off-screen to prevent IntersectionObserver auto-loading
+                lazy2.style.position = 'absolute';
+                lazy2.style.top = '-9999px';
+                lazyArea.appendChild(lazy2);
+                await delay(100);
+
+                lazy2.load();
+                await delay(50);
+                window.testResults.lazyEmitsEvent = loadedEventFired;
+                log(`✓ load() emits au-loaded: ${window.testResults.lazyEmitsEvent}`);
+
+                // 1f: Auto-load via IntersectionObserver (element in viewport)
+                const lazy3 = document.createElement('au-lazy');
+                lazy3.innerHTML = `<template><div class="auto-content">Auto!</div></template>`;
+                lazyArea.appendChild(lazy3);
+                await delay(500);
+
+                window.testResults.lazyAutoLoad = !!lazy3.querySelector('.auto-content');
+                log(`✓ Auto-load via observer: ${window.testResults.lazyAutoLoad}`);
+
+            } catch (e) {
+                log(`✗ AU-LAZY ERROR: ${e.message}`);
+                window.testResults.lazyError = e.message;
+            }
+
+            // ========================================
+            // 2. AU-CONFIRM: dialog showModal
+            // ========================================
+            log('\n=== AU-CONFIRM (dialog) ===');
+
+            try {
+                const confirm1 = document.createElement('au-confirm');
+                confirm1.setAttribute('title', 'Test');
+                confirm1.setAttribute('message', 'Sure?');
+                testArea.appendChild(confirm1);
+                await delay(100);
+
+                confirm1.open();
+                await delay(200);
+
+                const dialog = confirm1.querySelector('dialog');
+                window.testResults.confirmDialogOpen = dialog?.hasAttribute('open') === true;
+                log(`✓ open() opens dialog: ${window.testResults.confirmDialogOpen}`);
+
+                // Confirm button works
+                const okBtn = confirm1.querySelector('[data-action="confirm"], .au-confirm__ok, button:last-of-type');
+                window.testResults.confirmHasButton = !!okBtn;
+                log(`✓ Has confirm button: ${window.testResults.confirmHasButton}`);
+
+            } catch (e) {
+                log(`✗ AU-CONFIRM ERROR: ${e.message}`);
+                window.testResults.confirmError = e.message;
+            }
+
+            // ========================================
+            // 3. AU-FORM: getFormData with <select>
+            // ========================================
+            log('\n=== AU-FORM (select) ===');
+
+            try {
+                const form = document.createElement('au-form');
+                form.innerHTML = `
+                    <au-input name="username" value="test"></au-input>
+                    <select name="color">
+                        <option value="red">Red</option>
+                        <option value="blue" selected>Blue</option>
+                        <option value="green">Green</option>
+                    </select>
+                `;
+                testArea.appendChild(form);
+                await delay(100);
+
+                const data = form.getFormData();
+                window.testResults.formHasData = (typeof data === 'object' && data !== null);
+                log(`✓ getFormData returns object: ${window.testResults.formHasData}`);
+
+                const selectEl = form.querySelector('select[name="color"]');
+                window.testResults.formSelectValue = (selectEl?.value === 'blue');
+                log(`✓ select.value works: ${window.testResults.formSelectValue}`);
+
+                window.testResults.formSelectInData = (data?.color === 'blue');
+                log(`✓ getFormData captures select: ${window.testResults.formSelectInData}`);
+
+            } catch (e) {
+                log(`✗ AU-FORM ERROR: ${e.message}`);
+                window.testResults.formError = e.message;
+            }
+
+            // ========================================
+            // 4. DEBOUNCE & THROTTLE: Real timers
+            // ========================================
+            log('\n=== DEBOUNCE & THROTTLE ===');
+
+            try {
+                // 4a: debounce delays execution
+                let debounceCount = 0;
+                const dFn = debounce(() => { debounceCount++; }, 50);
+
+                dFn();
+                dFn();
+                dFn();
+                const beforeDebounce = debounceCount;
+                await delay(100);
+                const afterDebounce = debounceCount;
+
+                window.testResults.debounceDelay = (beforeDebounce === 0 && afterDebounce === 1);
+                log(`✓ debounce delays: ${window.testResults.debounceDelay}`);
+
+                // 4b: debounce resets timer on new calls
+                let d2Count = 0;
+                const dFn2 = debounce(() => { d2Count++; }, 80);
+
+                dFn2();
+                await delay(40);
+                dFn2(); // Reset
+                await delay(40);
+                const midCount = d2Count;
+                await delay(100);
+                const finalCount = d2Count;
+
+                window.testResults.debounceReset = (midCount === 0 && finalCount === 1);
+                log(`✓ debounce resets: ${window.testResults.debounceReset}`);
+
+                // 4c: throttle limits frequency
+                let tCount = 0;
+                const tFn = throttle(() => { tCount++; }, 100);
+
+                tFn(); // Immediate
+                const firstCall = tCount;
+                tFn(); // Throttled
+                tFn(); // Throttled
+                const duringThrottle = tCount;
+
+                await delay(150);
+                tFn(); // Should work now
+                const afterThrottle = tCount;
+
+                window.testResults.throttle = (firstCall === 1 && duringThrottle === 1 && afterThrottle === 2);
+                log(`✓ throttle limits: ${window.testResults.throttle}`);
+
+            } catch (e) {
+                log(`✗ TIMER ERROR: ${e.message}`);
+                window.testResults.timerError = e.message;
+            }
+
+            // ========================================
+            // SUMMARY
+            // ========================================
+            log('\n=== SUMMARY ===');
+            const allResults = Object.entries(window.testResults)
+                .filter(([k]) => !k.includes('Error'));
+            const passed = allResults.filter(([, v]) => v === true).length;
+            const total = allResults.length;
+            log(`Passed: ${passed}/${total}`);
+
+            if (passed === total) {
+                log('\n✅ ALL COVERAGE GAP TESTS PASSED');
+            } else {
+                const failed = allResults.filter(([, v]) => v !== true);
+                log('\n❌ FAILED:');
+                for (const [k, v] of failed) {
+                    log(`  - ${k}: ${v}`);
+                }
+            }
+
+            window.testsComplete = true;
+        }
+
+        // Wait for au-ready event before running tests
+        if (window.AgentUI?.ready) {
+            runTests();
+        } else {
+            document.addEventListener('au-ready', () => runTests(), { once: true });
+            // Fallback timeout
+            setTimeout(() => {
+                if (!window.testsComplete) runTests();
+            }, 3000);
+        }
+    </script>
+</body>
+
+</html>

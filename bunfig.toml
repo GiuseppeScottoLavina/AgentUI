@@ -1,0 +1,4 @@
+[test]
+root = "./tests"
+timeout = 5000
+preload = ["./tests/setup-dom.js"]

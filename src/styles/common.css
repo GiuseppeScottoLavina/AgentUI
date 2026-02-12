@@ -1,0 +1,86 @@
+/**
+ * AgentUI Common Styles
+ * 
+ * Shared utilities and base styles loaded by all components.
+ * This file is automatically loaded when any AgentUI component is used.
+ */
+
+/* ============================================================================
+   BASE STYLES
+   ============================================================================ */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+/* ============================================================================
+   MD3 STATE LAYER UTILITIES (Reusable across components)
+   Reference: https://m3.material.io/foundations/interaction/states
+   
+   Usage: Add .au-state-layer to any interactive element, then use one of:
+   - .au-state-layer--surface (for outlined/text buttons, cards)
+   - .au-state-layer--on-primary (for filled primary buttons)
+   - .au-state-layer--on-secondary (for tonal buttons)
+   ============================================================================ */
+
+/* Base state layer setup - requires position:relative and overflow:hidden on parent */
+.au-state-layer {
+    position: relative;
+    overflow: hidden;
+}
+
+.au-state-layer::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+    pointer-events: none;
+}
+
+/* Surface variant (default - for outlined, text, surface elements) */
+.au-state-layer--surface::before,
+.au-state-layer:not([class*="au-state-layer--"])::before {
+    background: var(--md-sys-color-on-surface);
+}
+
+/* On-primary variant (for filled primary bg) */
+.au-state-layer--on-primary::before {
+    background: var(--md-sys-color-on-primary);
+}
+
+/* On-secondary variant (for tonal/secondary-container bg) */
+.au-state-layer--on-secondary::before {
+    background: var(--md-sys-color-on-secondary-container);
+}
+
+/* On-error variant (for error buttons) */
+.au-state-layer--on-error::before {
+    background: var(--md-sys-color-on-error);
+}
+
+/* State opacity changes */
+.au-state-layer:hover:not(:disabled)::before {
+    opacity: var(--md-sys-state-hover-opacity);
+}
+
+.au-state-layer:focus-visible:not(:disabled)::before {
+    opacity: var(--md-sys-state-focus-opacity);
+}
+
+.au-state-layer:active:not(:disabled)::before {
+    opacity: var(--md-sys-state-pressed-opacity);
+}
+
+/* Disabled state - hide layer */
+.au-state-layer:disabled::before,
+.au-state-layer.is-disabled::before {
+    display: none;
+}

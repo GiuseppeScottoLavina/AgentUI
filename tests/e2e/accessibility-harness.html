@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessibility Test Harness</title>
+    <link rel="stylesheet" href="/src/styles/tokens.css">
+    <link rel="stylesheet" href="/src/styles/components.css">
+
+    <!-- Use dist bundle for now; will rebuild with fix -->
+    <script src="/dist/agentui.min.js"></script>
+</head>
+
+<body>
+    <!-- Form Components for Testing -->
+    <au-input id="test-input" label="Test Input"></au-input>
+    <au-input id="test-input-no-label" placeholder="Placeholder only"></au-input>
+    <au-textarea id="test-textarea" placeholder="Test textarea"></au-textarea>
+
+    <au-checkbox id="test-checkbox">Test Checkbox</au-checkbox>
+    <au-checkbox id="test-checkbox-checked" checked>Checked Checkbox</au-checkbox>
+    <au-checkbox id="test-checkbox-disabled" disabled>Disabled Checkbox</au-checkbox>
+    <au-checkbox id="test-checkbox-indeterminate" indeterminate>Indeterminate</au-checkbox>
+
+    <au-switch id="test-switch" label="Test Switch"></au-switch>
+    <au-switch id="test-switch-checked" label="Checked Switch" checked></au-switch>
+    <au-switch id="test-switch-disabled" label="Disabled Switch" disabled></au-switch>
+
+    <au-radio-group id="test-radio-group" name="test" value="a">
+        <au-radio id="test-radio-a" value="a">Option A</au-radio>
+        <au-radio id="test-radio-b" value="b">Option B</au-radio>
+        <au-radio id="test-radio-disabled" value="c" disabled>Disabled Option</au-radio>
+    </au-radio-group>
+
+    <au-dropdown id="test-dropdown" placeholder="Select option">
+        <au-option value="1">Option 1</au-option>
+        <au-option value="2">Option 2</au-option>
+    </au-dropdown>
+
+    <au-button id="test-button">Test Button</au-button>
+    <au-button id="test-button-disabled" disabled>Disabled Button</au-button>
+
+    <script>
+        // Mark test completion after components are ready
+        setTimeout(() => {
+            window.testReady = true;
+        }, 500);
+    </script>
+</body>
+
+</html>

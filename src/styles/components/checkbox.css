@@ -1,0 +1,84 @@
+/**
+ * AgentUI Checkbox Component Styles
+ * MD3 Checkbox with check and indeterminate animations
+ */
+
+/* Host element */
+au-checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    /* MD3: 12dp gap */
+    cursor: pointer;
+    user-select: none;
+    min-height: 48px;
+    /* MD3: 48dp touch target */
+    padding: 0 4px;
+}
+
+au-checkbox[disabled] {
+    cursor: not-allowed;
+}
+
+/* Box container */
+.au-checkbox__box {
+    width: 18px;
+    /* MD3: 18dp container */
+    height: 18px;
+    border-radius: 2px;
+    /* MD3: 2dp corner radius */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 2px solid var(--md-sys-color-outline);
+    background: transparent;
+    transition: all var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+/* Filled state (checked or indeterminate) */
+au-checkbox[checked] .au-checkbox__box,
+au-checkbox[indeterminate] .au-checkbox__box {
+    border-color: var(--md-sys-color-primary);
+    background: var(--md-sys-color-primary);
+}
+
+/* Disabled states */
+au-checkbox[disabled] .au-checkbox__box {
+    border-color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+}
+
+au-checkbox[disabled][checked] .au-checkbox__box,
+au-checkbox[disabled][indeterminate] .au-checkbox__box {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+}
+
+/* SVG icon */
+.au-checkbox__icon {
+    width: 14px;
+    height: 14px;
+    color: var(--md-sys-color-on-primary);
+}
+
+au-checkbox[disabled] .au-checkbox__icon {
+    color: var(--md-sys-color-surface);
+}
+
+/* Check path - stroke animation */
+.au-checkbox__check {
+    transition: stroke-dashoffset 200ms var(--md-sys-motion-easing-standard, ease-out);
+}
+
+/* Indeterminate line - stroke animation */
+.au-checkbox__indeterminate {
+    transition: stroke-dashoffset 200ms var(--md-sys-motion-easing-standard, ease-out);
+}
+
+/* Label */
+.au-checkbox__label {
+    color: var(--md-sys-color-on-surface);
+}
+
+au-checkbox[disabled] .au-checkbox__label {
+    color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+}

@@ -1,0 +1,88 @@
+<!-- Radios Content Fragment -->
+<div id="page-radios" class="page active">
+    <h1 class="page-title">Radio Button</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-radio-group&gt;</code> and <code>&lt;au-radio&gt;</code> allow users
+        to select one option from a set. Radio buttons should be used in groups.
+    </p>
+
+    <au-tabs active="0" id="radio-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>STYLING</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <div id="radio-overview" class="doc-tab-content">
+        <au-example title="Radio group">
+            <div slot="demo">
+                <au-radio-group name="size" value="medium">
+                    <au-stack gap="sm">
+                        <au-radio value="small">Small</au-radio>
+                        <au-radio value="medium">Medium</au-radio>
+                        <au-radio value="large">Large</au-radio>
+                    </au-stack>
+                </au-radio-group>
+            </div>
+
+        </au-example>
+
+        <div class="component-section"
+            style="background: var(--md-sys-color-primary-container); border-left: 4px solid var(--md-sys-color-primary);">
+            <h2 class="section-title" style="color: var(--md-sys-color-on-primary-container);">Accessibility
+            </h2>
+            <p style="color: var(--md-sys-color-on-primary-container); line-height: 1.6;">
+                Radio groups use <code>role="radiogroup"</code> and manage
+                <code>aria-checked</code> on each radio. Arrow keys navigate between options.
+            </p>
+        </div>
+    </div>
+
+    <div id="radio-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Attributes (au-radio-group)</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="name" type="string" default="">Form name for the group</au-api-row>
+                <au-api-row name="value" type="string" default="">Currently selected value</au-api-row>
+            </au-api-table>
+        </div>
+        <div class="component-section">
+            <h2 class="section-title">Attributes (au-radio)</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="value" type="string" default="">Value of this radio option</au-api-row>
+                <au-api-row name="disabled" type="boolean" default="false">Whether disabled</au-api-row>
+            </au-api-table>
+        </div>
+        <div class="component-section">
+            <h2 class="section-title">Events</h2>
+            <au-api-table type="events">
+                <au-api-row name="au-change" detail="{ value: string }">Emitted on group when selection
+                    changes</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="radio-styling" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">CSS Custom Properties</h2>
+            <au-api-table type="tokens">
+                <au-api-row name="--md-sys-color-primary" default="#6750a4">Selected radio fill</au-api-row>
+                <au-api-row name="--md-sys-color-outline" default="#79747e">Unselected border</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="radio-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="Horizontal layout">
+            <div slot="demo">
+                <au-radio-group name="color" value="blue">
+                    <au-stack direction="row" gap="md">
+                        <au-radio value="red">Red</au-radio>
+                        <au-radio value="green">Green</au-radio>
+                        <au-radio value="blue">Blue</au-radio>
+                    </au-stack>
+                </au-radio-group>
+            </div>
+        </au-example>
+    </div>
+</div>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Table Demo - AgentUI</title>
+    <link rel="stylesheet" href="../../dist/agentui.css">
+    <style>
+        body {
+            font-family: var(--md-sys-typescale-font);
+            background: var(--md-sys-color-background);
+            color: var(--md-sys-color-on-background);
+            padding: 24px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--md-sys-color-on-surface-variant);
+            margin-bottom: 32px;
+        }
+
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section h2 {
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .actions {
+            margin-bottom: 16px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        code {
+            background: var(--md-sys-color-surface-container);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        pre {
+            background: var(--md-sys-color-surface-container);
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 13px;
+        }
+
+        .console-output {
+            background: var(--md-sys-color-inverse-surface);
+            color: var(--md-sys-color-inverse-on-surface);
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 13px;
+            margin-top: 16px;
+            min-height: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🗃️ au-datatable</h1>
+        <p class="subtitle">Smart Data Table with built-in sorting, pagination, and filtering</p>
+
+        <!-- Basic Example -->
+        <section class="section">
+            <h2>📊 Basic Table</h2>
+            <div class="actions">
+                <au-button id="btn-load" variant="filled">Load 50 Users</au-button>
+                <au-button id="btn-load-100" variant="tonal">Load 100 Users</au-button>
+                <au-button id="btn-clear" variant="outlined">Clear</au-button>
+                <au-button id="btn-state" variant="text">Log State</au-button>
+            </div>
+
+            <au-datatable id="users-table" columns='[
+                    {"field": "id", "label": "#", "sortable": true},
+                    {"field": "name", "label": "Name", "sortable": true},
+                    {"field": "email", "label": "Email", "sortable": true},
+                    {"field": "role", "label": "Role", "sortable": true},
+                    {"field": "status", "label": "Status"}
+                ]' page-size="10" sortable filterable selectable
+                empty-message="Click 'Load Users' to populate the table">
+            </au-datatable>
+
+            <div id="console" class="console-output">Console output will appear here...</div>
+        </section>
+
+        <!-- Usage Example -->
+        <section class="section">
+            <h2>💻 Usage</h2>
+            <pre><code>&lt;au-datatable 
+    id="my-table"
+    columns='[
+        {"field": "name", "label": "Name", "sortable": true},
+        {"field": "email", "label": "Email"},
+        {"field": "role", "label": "Role"}
+    ]'
+    page-size="10"
+    sortable
+    filterable
+    selectable&gt;
+&lt;/au-datatable&gt;
+
+&lt;script&gt;
+    const table = document.getElementById('my-table');
+    
+    // Set data programmatically
+    table.setData(usersArray);
+    
+    // Get current state
+    console.log(table.getSortState());    // { field: 'name', direction: 'asc' }
+    console.log(table.getSelectedRows()); // [...selected rows...]
+    console.log(table.getPageInfo());     // { page: 1, totalPages: 5, ... }
+    
+    // Sort programmatically
+    table.sortBy('name', 'desc');
+    
+    // Navigate pages
+    table.goToPage(2);
+    
+    // Filter
+    table.filter('admin');
+&lt;/script&gt;</code></pre>
+        </section>
+
+        <!-- API Reference -->
+        <section class="section">
+            <h2>📚 API</h2>
+            <au-datatable id="api-table" columns='[
+                    {"field": "method", "label": "Method"},
+                    {"field": "params", "label": "Parameters"},
+                    {"field": "description", "label": "Description"}
+                ]' page-size="20">
+            </au-datatable>
+        </section>
+    </div>
+
+    <script type="module">
+        // Use the pre-built bundle (resolves all dependencies)
+        import '../../dist/agentui.esm.js';
+
+        const table = document.getElementById('users-table');
+        const consoleEl = document.getElementById('console');
+
+        function log(msg) {
+            consoleEl.textContent = typeof msg === 'object' ? JSON.stringify(msg, null, 2) : msg;
+        }
+
+        // Generate fake user data
+        function generateUsers(count) {
+            const roles = ['Admin', 'User', 'Moderator', 'Editor', 'Viewer'];
+            const statuses = ['Active', 'Inactive', 'Pending'];
+            const firstNames = ['Alice', 'Bob', 'Charlie', 'Diana', 'Eve', 'Frank', 'Grace', 'Henry', 'Ivy', 'Jack'];
+            const lastNames = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez'];
+
+            return Array.from({ length: count }, (_, i) => ({
+                id: i + 1,
+                name: `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`,
+                email: `user${i + 1}@example.com`,
+                role: roles[Math.floor(Math.random() * roles.length)],
+                status: statuses[Math.floor(Math.random() * statuses.length)]
+            }));
+        }
+
+        // Button handlers
+        document.getElementById('btn-load').addEventListener('click', () => {
+            const users = generateUsers(50);
+            table.setData(users);
+            log(`Loaded ${users.length} users`);
+        });
+
+        document.getElementById('btn-load-100').addEventListener('click', () => {
+            const users = generateUsers(100);
+            table.setData(users);
+            log(`Loaded ${users.length} users`);
+        });
+
+        document.getElementById('btn-clear').addEventListener('click', () => {
+            table.setData([]);
+            log('Table cleared');
+        });
+
+        document.getElementById('btn-state').addEventListener('click', () => {
+            log({
+                sort: table.getSortState(),
+                page: table.getPageInfo(),
+                selected: table.getSelectedRows().length + ' rows selected'
+            });
+        });
+
+        // Event listeners
+        table.addEventListener('au-sort-change', (e) => {
+            log(`Sort changed: ${e.detail.field} ${e.detail.direction}`);
+        });
+
+        table.addEventListener('au-page-change', (e) => {
+            log(`Page changed: ${e.detail.page} of ${e.detail.totalPages}`);
+        });
+
+        table.addEventListener('au-selection-change', (e) => {
+            log(`Selection changed: ${e.detail.selected.length} rows selected`);
+        });
+
+        // API table data
+        const apiTable = document.getElementById('api-table');
+        apiTable.setData([
+            { method: 'setData(array)', params: 'Array<Object>', description: 'Set table data' },
+            { method: 'getData()', params: '-', description: 'Get current data array' },
+            { method: 'getSortState()', params: '-', description: 'Get current sort field and direction' },
+            { method: 'getSelectedRows()', params: '-', description: 'Get selected row objects' },
+            { method: 'getPageInfo()', params: '-', description: 'Get page, pageSize, totalPages, totalRows' },
+            { method: 'sortBy(field, dir)', params: 'string, "asc"|"desc"', description: 'Sort by field programmatically' },
+            { method: 'goToPage(num)', params: 'number', description: 'Navigate to specific page' },
+            { method: 'filter(query)', params: 'string', description: 'Filter data by search query' }
+        ]);
+    </script>
+</body>
+
+</html>

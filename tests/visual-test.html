@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgentUI v0.1.0 - Complete Visual Test</title>
+    <link rel="stylesheet" href="../src/styles/tokens.css">
+    <link rel="stylesheet" href="../src/styles/components.css">
+    <link rel="stylesheet" href="../src/styles/animations.css">
+    <style>
+        body {
+            font-family: var(--md-sys-typescale-font);
+            background: var(--md-sys-color-surface);
+            color: var(--md-sys-color-on-surface);
+            padding: 0;
+            margin: 0;
+        }
+
+        .test-section {
+            padding: 24px;
+            border-bottom: 1px solid var(--md-sys-color-outline-variant);
+        }
+
+        .test-section h2 {
+            margin-top: 0;
+            color: var(--md-sys-color-primary);
+        }
+
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .test-item {
+            background: var(--md-sys-color-surface-container);
+            padding: 16px;
+            border-radius: 8px;
+        }
+
+        .test-item label {
+            display: block;
+            font-size: 12px;
+            color: var(--md-sys-color-on-surface-variant);
+            margin-bottom: 8px;
+        }
+
+        .status {
+            position: fixed;
+            bottom: 16px;
+            right: 16px;
+            background: var(--md-sys-color-primary);
+            color: var(--md-sys-color-on-primary);
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR TEST -->
+    <au-navbar sticky>
+        <au-navbar-brand>AgentUI Test Suite</au-navbar-brand>
+        <au-navbar-links>
+            <a href="#buttons">Buttons</a>
+            <a href="#forms">Forms</a>
+            <a href="#display">Display</a>
+        </au-navbar-links>
+        <au-navbar-actions>
+            <au-theme-toggle></au-theme-toggle>
+        </au-navbar-actions>
+    </au-navbar>
+
+    <!-- BUTTONS -->
+    <section class="test-section" id="buttons">
+        <h2>🔘 Buttons</h2>
+        <div class="test-grid">
+            <div class="test-item">
+                <label>Variants</label>
+                <au-stack gap="sm">
+                    <au-button variant="primary">Primary</au-button>
+                    <au-button variant="secondary">Secondary</au-button>
+                    <au-button variant="ghost">Ghost</au-button>
+                    <au-button variant="danger">Danger</au-button>
+                </au-stack>
+            </div>
+            <div class="test-item">
+                <label>Sizes</label>
+                <au-stack gap="sm">
+                    <au-button size="sm">Small</au-button>
+                    <au-button size="md">Medium</au-button>
+                    <au-button size="lg">Large</au-button>
+                </au-stack>
+            </div>
+            <div class="test-item">
+                <label>States</label>
+                <au-stack gap="sm">
+                    <au-button disabled>Disabled</au-button>
+                </au-stack>
+            </div>
+        </div>
+    </section>
+
+    <!-- FORMS -->
+    <section class="test-section" id="forms">
+        <h2>📝 Form Elements</h2>
+        <div class="test-grid">
+            <div class="test-item">
+                <label>Input</label>
+                <au-input placeholder="Type here..."></au-input>
+            </div>
+            <div class="test-item">
+                <label>Textarea</label>
+                <au-textarea placeholder="Multi-line..." rows="3"></au-textarea>
+            </div>
+            <div class="test-item">
+                <label>Checkbox</label>
+                <au-stack gap="sm">
+                    <au-checkbox>Option 1</au-checkbox>
+                    <au-checkbox checked>Option 2 (checked)</au-checkbox>
+                </au-stack>
+            </div>
+            <div class="test-item">
+                <label>Switch</label>
+                <au-stack gap="sm">
+                    <au-switch></au-switch>
+                    <au-switch checked></au-switch>
+                </au-stack>
+            </div>
+            <div class="test-item">
+                <label>Radio Group</label>
+                <au-radio-group value="b">
+                    <au-radio value="a">Option A</au-radio>
+                    <au-radio value="b">Option B</au-radio>
+                    <au-radio value="c">Option C</au-radio>
+                </au-radio-group>
+            </div>
+            <div class="test-item">
+                <label>Dropdown</label>
+                <au-dropdown placeholder="Select...">
+                    <au-option value="1">Option 1</au-option>
+                    <au-option value="2">Option 2</au-option>
+                    <au-option value="3">Option 3</au-option>
+                </au-dropdown>
+            </div>
+            <div class="test-item">
+                <label>Chips</label>
+                <au-stack direction="row" gap="sm" wrap>
+                    <au-chip>Tag 1</au-chip>
+                    <au-chip selected>Selected</au-chip>
+                    <au-chip removable>Removable</au-chip>
+                </au-stack>
+            </div>
+        </div>
+    </section>
+
+    <!-- DISPLAY -->
+    <section class="test-section" id="display">
+        <h2>📊 Display Components</h2>
+        <div class="test-grid">
+            <div class="test-item">
+                <label>Card</label>
+                <au-card variant="elevated">
+                    <h4>Card Title</h4>
+                    <p>Card content here.</p>
+                </au-card>
+            </div>
+            <div class="test-item">
+                <label>Avatar</label>
+                <au-stack direction="row" gap="sm">
+                    <au-avatar initials="JD"></au-avatar>
+                    <au-avatar alt="John Doe" size="lg"></au-avatar>
+                </au-stack>
+            </div>
+            <div class="test-item">
+                <label>Badge</label>
+                <au-stack direction="row" gap="sm">
+                    <au-badge variant="primary">New</au-badge>
+                    <au-badge variant="success">Active</au-badge>
+                </au-stack>
+            </div>
+            <div class="test-item">
+                <label>Progress</label>
+                <au-progress value="65" max="100"></au-progress>
+            </div>
+            <div class="test-item">
+                <label>Spinner</label>
+                <au-spinner></au-spinner>
+            </div>
+            <div class="test-item">
+                <label>Skeleton</label>
+                <au-skeleton variant="text" lines="3"></au-skeleton>
+            </div>
+            <div class="test-item">
+                <label>Alert</label>
+                <au-alert severity="success">Success message!</au-alert>
+            </div>
+            <div class="test-item">
+                <label>Icon</label>
+                <au-stack direction="row" gap="sm">
+                    <au-icon name="check"></au-icon>
+                    <au-icon name="close"></au-icon>
+                    <au-icon name="settings"></au-icon>
+                    <au-icon name="user"></au-icon>
+                </au-stack>
+            </div>
+        </div>
+    </section>
+
+    <!-- TABS -->
+    <section class="test-section">
+        <h2>🗂️ Tabs (Animation Test)</h2>
+        <au-tabs active="0" id="test-tabs">
+            <au-tab>Tab 1</au-tab>
+            <au-tab>Tab 2</au-tab>
+            <au-tab>Tab 3</au-tab>
+        </au-tabs>
+        <div id="tab-content"
+            style="padding: 16px; background: var(--md-sys-color-surface-container); border-radius: 0 0 8px 8px;">
+            Content for Tab 1
+        </div>
+    </section>
+
+    <!-- TABLE -->
+    <section class="test-section">
+        <h2>📋 Table</h2>
+        <au-table>
+            <au-thead>
+                <au-tr>
+                    <au-th>Name</au-th>
+                    <au-th>Email</au-th>
+                    <au-th>Status</au-th>
+                </au-tr>
+            </au-thead>
+            <au-tbody>
+                <au-tr>
+                    <au-td>John Doe</au-td>
+                    <au-td>john@example.com</au-td>
+                    <au-td><au-badge variant="success">Active</au-badge></au-td>
+                </au-tr>
+                <au-tr>
+                    <au-td>Jane Smith</au-td>
+                    <au-td>jane@example.com</au-td>
+                    <au-td><au-badge variant="warning">Pending</au-badge></au-td>
+                </au-tr>
+            </au-tbody>
+        </au-table>
+    </section>
+
+    <!-- MODAL TEST -->
+    <section class="test-section">
+        <h2>🪟 Modal</h2>
+        <au-button variant="primary" onclick="document.getElementById('test-modal').open()">Open Modal</au-button>
+        <au-modal id="test-modal" size="md">
+            <h2>Test Modal</h2>
+            <p>This is a test modal dialog.</p>
+            <au-divider></au-divider>
+            <au-stack direction="row" justify="flex-end" gap="sm">
+                <au-button variant="ghost" onclick="document.getElementById('test-modal').close()">Cancel</au-button>
+                <au-button variant="primary" onclick="document.getElementById('test-modal').close()">Confirm</au-button>
+            </au-stack>
+        </au-modal>
+    </section>
+
+    <!-- ANIMATION TEST -->
+    <section class="test-section">
+        <h2>🎬 Animations</h2>
+        <div class="test-grid">
+            <div class="test-item">
+                <label>Hover Effects</label>
+                <au-button class="au-hover-lift">Lift on Hover</au-button>
+            </div>
+            <div class="test-item">
+                <label>Scale</label>
+                <au-button class="au-hover-scale">Scale on Hover</au-button>
+            </div>
+        </div>
+    </section>
+
+    <div class="status" id="status">Loading...</div>
+
+    <script type="module">
+        import '../src/index.js';
+
+        // Count components
+        setTimeout(() => {
+            const count = document.querySelectorAll('[class^="au-"]').length;
+            document.getElementById('status').textContent = `✅ ${count} components rendered`;
+        }, 500);
+
+        // Tab change handler
+        document.getElementById('test-tabs').addEventListener('au-tab-change', (e) => {
+            document.getElementById('tab-content').textContent = `Content for Tab ${e.detail.index + 1}`;
+        });
+    </script>
+</body>
+
+</html>

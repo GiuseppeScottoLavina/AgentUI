@@ -1,0 +1,70 @@
+<!-- Avatars Content Fragment -->
+<div id="page-avatars" class="page active">
+    <h1 class="page-title">Avatar</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-avatar&gt;</code> displays user profile images or initials.
+        Supports multiple sizes and image fallback to initials.
+    </p>
+
+    <au-tabs active="0" id="avatar-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>STYLING</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <div id="avatar-overview" class="doc-tab-content">
+        <au-example title="Avatar sizes">
+            <div slot="demo">
+                <au-stack direction="row" gap="md" align="center">
+                    <au-avatar size="sm" initials="SM"></au-avatar>
+                    <au-avatar size="md" initials="MD"></au-avatar>
+                    <au-avatar size="lg" initials="LG"></au-avatar>
+                </au-stack>
+            </div>
+
+        </au-example>
+    </div>
+
+    <div id="avatar-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Attributes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="size" type="string" default="md">Avatar size: 'sm' | 'md' |
+                    'lg'</au-api-row>
+                <au-api-row name="initials" type="string" default="">Fallback initials when no
+                    image</au-api-row>
+                <au-api-row name="src" type="string" default="">Image URL</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="avatar-styling" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">CSS Custom Properties</h2>
+            <au-api-table type="tokens">
+                <au-api-row name="--md-sys-color-primary-container" default="#eaddff">Avatar
+                    background</au-api-row>
+                <au-api-row name="--md-sys-color-on-primary-container" default="#21005d">Initials
+                    color</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="avatar-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="User list">
+            <div slot="demo">
+                <au-stack gap="sm">
+                    <au-stack direction="row" gap="md" align="center">
+                        <au-avatar initials="JD"></au-avatar>
+                        <span>John Doe</span>
+                    </au-stack>
+                    <au-stack direction="row" gap="md" align="center">
+                        <au-avatar initials="JS"></au-avatar>
+                        <span>Jane Smith</span>
+                    </au-stack>
+                </au-stack>
+            </div>
+        </au-example>
+    </div>
+</div>

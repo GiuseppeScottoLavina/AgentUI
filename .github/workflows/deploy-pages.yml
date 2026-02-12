@@ -1,0 +1,109 @@
+name: Deploy Demo to GitHub Pages
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: "1.3.6"
+
+      - name: Install dependencies
+        run: |
+          echo "=== Starting dependency installation ==="
+          bun install --verbose
+          echo "=== Installed packages ==="
+          ls -la node_modules/ | head -20
+          echo "=== Checking crossbus ==="
+          ls -la node_modules/crossbus/ || echo "crossbus not found!"
+
+      - name: Build framework
+        run: |
+          echo "=== Starting build ==="
+          bun run build:framework
+
+      - name: Prepare demo for static hosting
+        run: |
+          # Create _site with preserved structure
+          mkdir -p _site/demo
+          
+          # Copy demo files (preserving structure)
+          cp -r demo/* _site/demo/
+          
+          # Copy dist (framework bundles) - one level up from demo
+          cp -r dist _site/
+          
+          # Copy assets to root level (shell.html uses ../assets/)
+          cp -r assets _site/
+          
+          # Copy root files needed
+          cp package.json _site/
+          
+          # Create 404.html for SPA routing (redirect to shell.html)
+          cat > _site/404.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta http-equiv="refresh" content="0;url=/AgentUI/demo/shell.html">
+            <title>Redirecting...</title>
+          </head>
+          <body>
+            <p>Redirecting to <a href="/AgentUI/demo/shell.html">AgentUI Demo</a>...</p>
+          </body>
+          </html>
+          EOF
+          
+          # Create index.html redirect at root
+          cat > _site/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta http-equiv="refresh" content="0;url=demo/shell.html">
+            <title>AgentUI Demo</title>
+          </head>
+          <body>
+            <p>Redirecting to <a href="demo/shell.html">AgentUI Demo</a>...</p>
+          </body>
+          </html>
+          EOF
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '_site'
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

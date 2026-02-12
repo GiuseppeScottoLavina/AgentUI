@@ -1,0 +1,233 @@
+<div class="page active">
+    <h1 class="page-title">Virtual List</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-virtual-list&gt;</code> efficiently renders large datasets
+        by only displaying visible items (virtualization).
+    </p>
+
+    <au-tabs active="0" id="virtuallist-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>STYLING</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <div id="virtuallist-overview" class="doc-tab-content">
+        <au-example title="Basic Virtual List (1,000 items)">
+            <div slot="demo">
+                <au-virtual-list id="demo-virtual-list" item-height="50"
+                    style="height: 300px; width: 100%; border: 1px solid var(--md-sys-color-outline); border-radius: 8px;">
+                </au-virtual-list>
+            </div>
+            <div slot="code">&lt;au-virtual-list
+                item-height="50"
+                .items="${largeArray}"
+                .renderItem="${(item) => `&lt;div&gt;${item.name}&lt;/div&gt;`}"&gt;
+                &lt;/au-virtual-list&gt;</div>
+        </au-example>
+
+        <div class="component-section">
+            <h2 class="section-title">When to use</h2>
+            <au-card variant="outlined">
+                <au-stack gap="md">
+                    <au-stack direction="row" gap="sm" align="start">
+                        <au-icon name="check_circle" size="20"
+                            style="color: var(--md-sys-color-primary); margin-top: 2px;"></au-icon>
+                        <div>
+                            <strong>Large datasets (100+ items)</strong>
+                            <div style="font-size: 13px; color: var(--md-sys-color-on-surface-variant);">Chat logs,
+                                logs, big tables, infinite scroll</div>
+                        </div>
+                    </au-stack>
+                    <au-stack direction="row" gap="sm" align="start">
+                        <au-icon name="check_circle" size="20"
+                            style="color: var(--md-sys-color-primary); margin-top: 2px;"></au-icon>
+                        <div>
+                            <strong>Performance-critical UI</strong>
+                            <div style="font-size: 13px; color: var(--md-sys-color-on-surface-variant);">When rendering
+                                all items would cause lag</div>
+                        </div>
+                    </au-stack>
+                </au-stack>
+            </au-card>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">When NOT to use</h2>
+            <au-stack gap="md">
+                <au-alert severity="warning">Don't use for <strong>small lists (&lt;50 items)</strong> - overhead isn't
+                    worth it</au-alert>
+                <au-alert severity="warning">Don't use for <strong>variable-height items</strong> without setting proper
+                    item-height</au-alert>
+            </au-stack>
+        </div>
+
+        <au-example title="Custom Item Rendering">
+            <div slot="demo">
+                <au-virtual-list id="demo-virtual-list-custom" item-height="72"
+                    style="height: 300px; width: 100%; border: 1px solid var(--md-sys-color-outline); border-radius: 8px;">
+                </au-virtual-list>
+            </div>
+            <div slot="code">&lt;au-virtual-list
+                item-height="72"
+                .items="${users}"
+                .renderItem="${(user) => `
+                &lt;au-stack direction="row" gap="md" align="center" style="padding: 12px 16px;"&gt;
+                &lt;au-avatar initials="${user.initials}"&gt;&lt;/au-avatar&gt;
+                &lt;div&gt;
+                &lt;strong&gt;${user.name}&lt;/strong&gt;
+                &lt;div style="font-size: 12px; opacity: 0.7;"&gt;${user.email}&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;/au-stack&gt;
+                `}"&gt;
+                &lt;/au-virtual-list&gt;</div>
+        </au-example>
+    </div>
+
+    <div id="virtuallist-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Attributes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="item-height" type="number" default="50">Height of each item in pixels (required for
+                    calculations)</au-api-row>
+                <au-api-row name="buffer" type="number" default="5">Number of extra items to render above/below
+                    viewport</au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Properties</h2>
+            <au-api-table type="properties">
+                <au-api-row name="items" type="Array" default="[]">The array of data items to render</au-api-row>
+                <au-api-row name="renderItem" type="Function" default="(item) => item">Render function: (item, index) =>
+                    HTML string</au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Methods</h2>
+            <au-api-table type="methods">
+                <au-api-row name="scrollToIndex(index)" type="void">Scrolls to bring the item at given index into
+                    view</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="virtuallist-styling" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">CSS Custom Properties</h2>
+            <au-api-table type="tokens">
+                <au-api-row name="--md-sys-color-surface" default="#FFFBFE">Background color of items</au-api-row>
+                <au-api-row name="--md-sys-color-outline" default="#79747E">Border color</au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Styling Tips</h2>
+            <p style="color: var(--md-sys-color-on-surface-variant); line-height: 1.6;">
+                The virtual list container needs a fixed height to calculate visible items.
+                Set <code>height</code> or use CSS like <code>flex: 1</code> in a flex container.
+                Items are positioned absolutely, so padding should be applied inside the
+                <code>renderItem</code> template.
+            </p>
+        </div>
+    </div>
+
+    <div id="virtuallist-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="Performance comparison">
+            <div slot="demo">
+                <au-stack gap="md">
+                    <au-card variant="outlined">
+                        <au-stack direction="row" gap="md" align="center">
+                            <au-icon name="check_circle" style="color: var(--md-sys-color-primary);"></au-icon>
+                            <div>
+                                <strong>Virtual List (10,000 items)</strong>
+                                <div style="font-size: 12px; opacity: 0.7;">Only ~20 DOM nodes rendered</div>
+                            </div>
+                        </au-stack>
+                    </au-card>
+                    <au-card variant="outlined">
+                        <au-stack direction="row" gap="md" align="center">
+                            <au-icon name="warning" style="color: var(--md-sys-color-error);"></au-icon>
+                            <div>
+                                <strong>Regular DOM (10,000 items)</strong>
+                                <div style="font-size: 12px; opacity: 0.7;">10,000 DOM nodes = 💥 Performance hit</div>
+                            </div>
+                        </au-stack>
+                    </au-card>
+                </au-stack>
+            </div>
+            <div slot="code">// Virtual list: O(visible) DOM nodes
+                // Regular list: O(n) DOM nodes
+
+                // With 10,000 items and 50px item height:
+                // Virtual: ~20 nodes (viewport height / item height)
+                // Regular: 10,000 nodes</div>
+        </au-example>
+
+        <au-example title="Scroll to index">
+            <div slot="demo">
+                <au-stack gap="md">
+                    <au-stack direction="row" gap="sm">
+                        <au-button onclick="document.getElementById('demo-virtual-list').scrollToIndex(0)">Go to
+                            Top</au-button>
+                        <au-button onclick="document.getElementById('demo-virtual-list').scrollToIndex(500)">Go to
+                            #500</au-button>
+                        <au-button onclick="document.getElementById('demo-virtual-list').scrollToIndex(999)">Go to
+                            Bottom</au-button>
+                    </au-stack>
+                </au-stack>
+            </div>
+            <div slot="code">const list = document.querySelector('au-virtual-list');
+                list.scrollToIndex(500); // Jump to item 500</div>
+        </au-example>
+    </div>
+</div>
+
+<script>
+    // Initialize demo virtual lists with sample data
+    // Use customElements.whenDefined to ensure component is fully upgraded
+    customElements.whenDefined('au-virtual-list').then(() => {
+        // Use setTimeout to ensure render() has completed
+        setTimeout(() => {
+            // Basic list with 1000 items
+            const basicList = document.getElementById('demo-virtual-list');
+            if (basicList) {
+                const items = Array.from({ length: 1000 }, (_, i) => ({
+                    id: i,
+                    name: `Item ${i + 1}`
+                }));
+                basicList.renderItem = (item) => `
+                    <div style="padding: 12px 16px; border-bottom: 1px solid var(--md-sys-color-outline-variant); display: flex; align-items: center; gap: 12px;">
+                        <au-icon name="fiber_manual_record" style="font-size: 8px; color: var(--md-sys-color-primary);"></au-icon>
+                        <span>${item.name}</span>
+                    </div>
+                `;
+                basicList.items = items;
+            }
+
+            // Custom list with user cards
+            const customList = document.getElementById('demo-virtual-list-custom');
+            if (customList) {
+                const users = Array.from({ length: 500 }, (_, i) => ({
+                    id: i,
+                    name: `User ${i + 1}`,
+                    email: `user${i + 1}@example.com`,
+                    initials: `U${i + 1}`
+                }));
+                customList.renderItem = (user) => `
+                    <div style="padding: 12px 16px; border-bottom: 1px solid var(--md-sys-color-outline-variant); display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 14px;">
+                            ${user.initials.substring(0, 2)}
+                        </div>
+                        <div>
+                            <strong>${user.name}</strong>
+                            <div style="font-size: 12px; color: var(--md-sys-color-on-surface-variant);">${user.email}</div>
+                        </div>
+                    </div>
+                `;
+                customList.items = users;
+            }
+        }, 0);
+    });
+</script>

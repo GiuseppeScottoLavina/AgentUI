@@ -1,0 +1,218 @@
+/**
+ * AgentUI input Component Styles
+ * Auto-extracted from components.css
+ */
+
+/* ============================================================================
+   INPUT - MD3 Text Field
+   https://m3.material.io/components/text-fields
+   ============================================================================ */
+
+/* Wrapper contains the animated focus indicator */
+.au-input {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+/* MD3 Floating Label */
+.au-input__label {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%) scale(1);
+    transform-origin: left center;
+    font-size: 16px;
+    /* Fixed base size - scaling via transform for GPU acceleration */
+    color: var(--md-sys-color-on-surface-variant);
+    pointer-events: none;
+    transition:
+        top var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized),
+        transform var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized),
+        color var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-standard);
+    z-index: 1;
+}
+
+/* Floating state - when focused or has value */
+.au-input:focus-within .au-input__label,
+.au-input.has-value .au-input__label {
+    top: 6px;
+    transform: translateY(0) scale(0.75);
+    /* 12px = 16px * 0.75 - GPU accelerated */
+}
+
+/* Primary color when focused */
+.au-input:focus-within .au-input__label {
+    color: var(--md-sys-color-primary);
+}
+
+/* Outlined variant: add background to label for border cutout effect */
+/* Uses --au-input-label-bg for context-aware backgrounds (e.g., modals) */
+/* MD3: Background only appears when label is FLOATING (focused or has value) */
+.au-input--outlined .au-input__label {
+    padding: 0 4px;
+    margin-left: -4px;
+    background: transparent;
+    /* Default: no background when not floating */
+}
+
+/* Label gets background ONLY when floating (to create the notch effect) */
+.au-input--outlined:focus-within .au-input__label,
+.au-input--outlined.has-value .au-input__label {
+    background: var(--au-input-label-bg, var(--md-sys-color-surface, #fff));
+}
+
+/* Adjust input padding when label is present */
+.au-input:has(.au-input__label) .au-input__field {
+    padding-top: 24px;
+    padding-bottom: 8px;
+}
+
+/* Animated focus indicator - line expands from center */
+.au-input::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--md-sys-color-primary);
+    transition:
+        width var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized),
+        left var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized);
+}
+
+/* Focus state - line expands to full width (supports both JS class and native CSS) */
+.au-input.is-focused::after,
+.au-input:focus-within::after {
+    width: 100%;
+    left: 0;
+}
+
+/* Actual input field */
+.au-input__field {
+    display: block;
+    width: 100%;
+    height: 56px;
+    padding: 16px;
+    font-family: var(--md-sys-typescale-font);
+    font-size: var(--md-sys-typescale-body-large-size);
+    line-height: var(--md-sys-typescale-body-large-line-height);
+    color: var(--md-sys-color-on-surface);
+    background: var(--md-sys-color-surface-container-highest);
+    border: none;
+    border-bottom: 1px solid var(--md-sys-color-on-surface-variant);
+    border-radius: var(--md-sys-shape-corner-extra-small) var(--md-sys-shape-corner-extra-small) 0 0;
+    caret-color: var(--md-sys-color-primary);
+    transition:
+        background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+        border-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+.au-input__field::placeholder {
+    color: var(--md-sys-color-on-surface-variant);
+    transition: opacity var(--md-sys-motion-duration-short2);
+}
+
+.au-input__field:focus::placeholder {
+    opacity: 0.6;
+}
+
+.au-input__field:hover:not(:disabled):not(:focus) {
+    background: color-mix(in srgb, var(--md-sys-color-surface-container-highest) 95%, var(--md-sys-color-on-surface) 5%);
+    border-bottom-color: var(--md-sys-color-on-surface);
+}
+
+/* Label background must match field on hover (MD3 state layer consistency) */
+.au-input--outlined:has(.au-input__field:hover:not(:disabled):not(:focus)) .au-input__label {
+    background: color-mix(in srgb, var(--md-sys-color-surface-container-highest) 95%, var(--md-sys-color-on-surface) 5%);
+}
+
+.au-input__field:focus {
+    outline: none;
+    border-bottom-color: transparent;
+    /* Hidden because animated line shows */
+}
+
+/* Sizes */
+.au-input--sm .au-input__field {
+    height: 40px;
+    padding: 8px 12px;
+    font-size: var(--md-sys-typescale-body-medium-size);
+}
+
+.au-input--md .au-input__field {
+    height: 56px;
+    padding: 16px;
+}
+
+.au-input--lg .au-input__field {
+    height: 64px;
+    padding: 20px;
+    font-size: 18px;
+}
+
+/* Filled Variant (default) */
+.au-input--filled .au-input__field {
+    background: var(--md-sys-color-surface-container-highest);
+}
+
+/* Outlined Variant */
+.au-input--outlined .au-input__field {
+    height: 56px;
+    padding: 16px;
+    background: transparent;
+    border: 1px solid var(--md-sys-color-outline);
+    border-radius: var(--md-sys-shape-corner-extra-small);
+    transition:
+        border-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+        box-shadow var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+.au-input--outlined .au-input__field:hover:not(:disabled):not(:focus) {
+    border-color: var(--md-sys-color-on-surface);
+}
+
+.au-input--outlined .au-input__field:focus {
+    border-color: var(--md-sys-color-primary);
+    /* Use box-shadow inset to simulate 2px border without layout shift */
+    box-shadow: inset 0 0 0 1px var(--md-sys-color-primary);
+    outline: none;
+}
+
+/* Outlined doesn't use the bottom line indicator */
+.au-input--outlined::after {
+    display: none;
+}
+
+/* Disabled */
+.au-input.is-disabled .au-input__field,
+.au-input__field:disabled {
+    color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) 4%, transparent);
+    border-bottom-color: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent);
+    cursor: not-allowed;
+}
+
+/* ============================================================================
+   NUMBER INPUT - MD3 Style (hide browser spinners)
+   ============================================================================ */
+
+/* Hide native spinners - Chrome, Safari, Edge, Opera */
+.au-input__field[type="number"]::-webkit-inner-spin-button,
+.au-input__field[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Hide native spinners - Firefox */
+.au-input__field[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+/* Search clear button - cursor pointer */
+.au-input__field[type="search"]::-webkit-search-cancel-button,
+.au-input__field[type="search"]::-webkit-search-decoration {
+    cursor: pointer;
+}

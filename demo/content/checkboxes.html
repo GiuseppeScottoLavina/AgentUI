@@ -1,0 +1,178 @@
+<!-- Checkboxes Content Fragment -->
+<div id="page-checkboxes" class="page active">
+    <h1 class="page-title">Checkbox</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-checkbox&gt;</code> provides the same functionality as a native
+        <code>&lt;input type="checkbox"&gt;</code> enhanced with Material Design 3 styling and animations.
+    </p>
+
+    <!-- Documentation Tabs -->
+    <au-tabs active="0" id="checkbox-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>STYLING</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <!-- OVERVIEW Tab Content -->
+    <div id="checkbox-overview" class="doc-tab-content">
+        <au-example title="Basic checkboxes">
+            <div slot="demo">
+                <au-checkbox checked>Check me!</au-checkbox>
+                <au-checkbox disabled>Disabled</au-checkbox>
+            </div>
+
+        </au-example>
+
+        <au-example title="Indeterminate state">
+            <div slot="demo">
+                <au-stack gap="sm">
+                    <au-checkbox indeterminate>Parent task</au-checkbox>
+                    <au-stack gap="xs" style="padding-left: 24px;">
+                        <au-checkbox checked>Child task 1</au-checkbox>
+                        <au-checkbox>Child task 2</au-checkbox>
+                        <au-checkbox>Child task 3</au-checkbox>
+                    </au-stack>
+                </au-stack>
+            </div>
+
+        </au-example>
+
+        <div class="component-section">
+            <h2 class="section-title">Checkbox label</h2>
+            <p style="color: var(--md-sys-color-on-surface-variant); line-height: 1.6;">
+                The checkbox label is provided as the content to the <code>&lt;au-checkbox&gt;</code>
+                element.
+                Alternatively, use the <code>label</code> attribute. For accessibility, always provide a
+                label.
+            </p>
+        </div>
+
+        <div class="component-section"
+            style="background: var(--md-sys-color-primary-container); border-left: 4px solid var(--md-sys-color-primary);">
+            <h2 class="section-title" style="color: var(--md-sys-color-on-primary-container);">Accessibility
+            </h2>
+            <p style="color: var(--md-sys-color-on-primary-container); line-height: 1.6;">
+                <code>&lt;au-checkbox&gt;</code> uses a native <code>role="checkbox"</code> and
+                manages <code>aria-checked</code> automatically based on state.
+                The indeterminate state uses <code>aria-checked="mixed"</code>.
+            </p>
+        </div>
+    </div>
+
+    <!-- API Tab Content -->
+    <div id="checkbox-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Selector</h2>
+            <div class="code-block" style="display: inline-block;">&lt;au-checkbox&gt;</div>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Attributes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="checked" type="boolean" default="false">Whether the checkbox is
+                    checked</au-api-row>
+                <au-api-row name="indeterminate" type="boolean" default="false">Whether in indeterminate
+                    state (horizontal line)</au-api-row>
+                <au-api-row name="disabled" type="boolean" default="false">Whether the checkbox is
+                    disabled</au-api-row>
+                <au-api-row name="label" type="string" default="">Alternative way to set label
+                    text</au-api-row>
+                <au-api-row name="name" type="string" default="">Form input name for form
+                    submission</au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Properties</h2>
+            <au-api-table type="properties">
+                <au-api-row name="checked" type="boolean">Gets/sets the checked state</au-api-row>
+                <au-api-row name="indeterminate" type="boolean">Gets/sets the indeterminate
+                    state</au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Methods</h2>
+            <au-api-table type="methods">
+                <au-api-row name="toggle" signature="toggle(): void">Toggles the checked state</au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Events</h2>
+            <au-api-table type="events">
+                <au-api-row name="au-change" detail="{ checked: boolean, indeterminate: boolean }">Emitted
+                    when the checkbox state changes</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <!-- STYLING Tab Content -->
+    <div id="checkbox-styling" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">CSS Custom Properties</h2>
+            <p style="color: var(--md-sys-color-on-surface-variant); margin-bottom: 16px;">
+                Customize the checkbox using MD3 design tokens.
+            </p>
+            <au-api-table type="tokens">
+                <au-api-row name="--md-sys-color-primary" default="#6750a4">Checked state background and
+                    border</au-api-row>
+                <au-api-row name="--md-sys-color-on-primary" default="#ffffff">Checkmark color</au-api-row>
+                <au-api-row name="--md-sys-color-outline" default="#79747e">Unchecked border
+                    color</au-api-row>
+                <au-api-row name="--md-sys-color-on-surface" default="#1d1b20">Label text color</au-api-row>
+                <au-api-row name="--md-sys-motion-easing-standard" default="ease-out">Animation
+                    easing</au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Theming Example</h2>
+            <div class="code-block">/* Custom checkbox theme */
+                au-checkbox {
+                --md-sys-color-primary: #006d3b;
+                --md-sys-color-on-primary: #ffffff;
+                }</div>
+        </div>
+    </div>
+
+    <!-- EXAMPLES Tab Content -->
+    <div id="checkbox-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="Configurable checkbox">
+            <div slot="demo">
+                <au-stack gap="md">
+                    <au-checkbox id="config-checkbox" checked>Configurable checkbox</au-checkbox>
+                    <au-stack direction="row" gap="sm">
+                        <au-button variant="outlined" size="sm"
+                            onclick="document.getElementById('config-checkbox').checked = !document.getElementById('config-checkbox').checked">Toggle
+                            Checked</au-button>
+                        <au-button variant="outlined" size="sm"
+                            onclick="document.getElementById('config-checkbox').indeterminate = !document.getElementById('config-checkbox').indeterminate">Toggle
+                            Indeterminate</au-button>
+                    </au-stack>
+                </au-stack>
+            </div>
+        </au-example>
+
+        <au-example title="With icons (styled label)">
+            <div slot="demo">
+                <au-checkbox>
+                    <au-stack direction="row" gap="sm" align="center">
+                        <au-icon name="check" style="color: var(--md-sys-color-primary);"></au-icon>
+                        Accept terms and conditions
+                    </au-stack>
+                </au-checkbox>
+            </div>
+        </au-example>
+
+        <au-example title="Form integration">
+            <div slot="demo">
+                <au-form>
+                    <au-checkbox name="newsletter" checked>Subscribe to newsletter</au-checkbox>
+                    <au-checkbox name="terms">I accept the terms</au-checkbox>
+                </au-form>
+            </div>
+        </au-example>
+    </div>
+</div>

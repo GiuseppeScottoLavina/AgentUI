@@ -1,0 +1,116 @@
+<!-- Toasts Content Fragment -->
+<div id="page-toasts" class="page active">
+    <h1 class="page-title">Toast / Snackbar</h1>
+    <p class="page-subtitle">
+        <code>showToast()</code> displays temporary notification messages
+        that auto-dismiss after a configurable duration.
+    </p>
+
+    <au-tabs active="0" id="toast-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>STYLING</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <div id="toast-overview" class="doc-tab-content">
+        <au-example title="Toast severities">
+            <div slot="demo">
+                <au-button variant="filled" onclick="showToast('Success!', { severity: 'success' })">Success</au-button>
+                <au-button variant="tonal" onclick="showToast('Info message', { severity: 'info' })">Info</au-button>
+                <au-button variant="outlined"
+                    onclick="showToast('Warning!', { severity: 'warning' })">Warning</au-button>
+                <au-button variant="danger"
+                    onclick="showToast('Error occurred', { severity: 'error' })">Error</au-button>
+            </div>
+            <div slot="code">showToast('Success!', { severity: 'success' });
+                showToast('Error occurred', { severity: 'error' });</div>
+        </au-example>
+
+        <div class="component-section">
+            <h2 class="section-title">When to use</h2>
+            <au-card variant="outlined">
+                <au-stack gap="md">
+                    <au-stack direction="row" gap="sm" align="start">
+                        <au-icon name="check_circle" size="20"
+                            style="color: var(--md-sys-color-primary); margin-top: 2px;"></au-icon>
+                        <div>
+                            <strong>Brief, non-critical feedback</strong>
+                            <div style="font-size: 13px; color: var(--md-sys-color-on-surface-variant);">"Saved",
+                                "Copied to clipboard", "Settings updated"</div>
+                        </div>
+                    </au-stack>
+                    <au-stack direction="row" gap="sm" align="start">
+                        <au-icon name="check_circle" size="20"
+                            style="color: var(--md-sys-color-primary); margin-top: 2px;"></au-icon>
+                        <div>
+                            <strong>Action confirmation</strong>
+                            <div style="font-size: 13px; color: var(--md-sys-color-on-surface-variant);">User just
+                                clicked something, needs visual acknowledgment</div>
+                        </div>
+                    </au-stack>
+                    <au-stack direction="row" gap="sm" align="start">
+                        <au-icon name="check_circle" size="20"
+                            style="color: var(--md-sys-color-primary); margin-top: 2px;"></au-icon>
+                        <div>
+                            <strong>With undo action</strong>
+                            <div style="font-size: 13px; color: var(--md-sys-color-on-surface-variant);">Reversible
+                                actions like "Item deleted" with an Undo button</div>
+                        </div>
+                    </au-stack>
+                </au-stack>
+            </au-card>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">When NOT to use</h2>
+            <au-stack gap="md">
+                <au-alert severity="warning">Don't use for <strong>errors requiring user action</strong> — use
+                    <code>&lt;au-alert&gt;</code> inline so user sees it while correcting</au-alert>
+                <au-alert severity="warning">Don't use for <strong>important status always visible</strong> — toasts
+                    disappear! Use <code>&lt;au-alert&gt;</code> instead</au-alert>
+                <au-alert severity="warning">Don't use for <strong>confirmations requiring decision</strong> — use
+                    <code>&lt;au-confirm&gt;</code> which blocks until user responds</au-alert>
+            </au-stack>
+        </div>
+    </div>
+
+    <div id="toast-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Function Signature</h2>
+            <div class="code-block">showToast(message: string, options?: ToastOptions): void</div>
+        </div>
+        <div class="component-section">
+            <h2 class="section-title">Options</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="severity" type="string" default="info">Toast type: 'success' | 'info' |
+                    'warning' | 'error'</au-api-row>
+                <au-api-row name="duration" type="number" default="3000">Auto-dismiss duration in
+                    ms</au-api-row>
+                <au-api-row name="action" type="string" default="">Optional action button text</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="toast-styling" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">CSS Custom Properties</h2>
+            <au-api-table type="tokens">
+                <au-api-row name="--md-sys-color-inverse-surface" default="#313033">Toast
+                    background</au-api-row>
+                <au-api-row name="--md-sys-color-inverse-on-surface" default="#f4eff4">Toast text
+                    color</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="toast-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="With action button">
+            <div slot="demo">
+                <au-button variant="filled"
+                    onclick="showToast('Item deleted', { severity: 'info', action: 'Undo' })">Delete with
+                    Undo</au-button>
+            </div>
+        </au-example>
+    </div>
+</div>

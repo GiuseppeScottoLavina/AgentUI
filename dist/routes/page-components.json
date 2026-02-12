@@ -1,0 +1,316 @@
+{
+  "toasts": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-button",
+    "au-card",
+    "au-stack",
+    "au-icon",
+    "au-alert",
+    "au-api-table",
+    "au-api-row"
+  ],
+  "buttons": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-button",
+    "au-stack",
+    "au-card",
+    "au-api-table",
+    "au-api-row"
+  ],
+  "navbar": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-navbar",
+    "au-navbar-brand",
+    "au-navbar-links",
+    "au-api-table",
+    "au-api-row",
+    "au-navbar-actions",
+    "au-button"
+  ],
+  "radios": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-radio-group",
+    "au-stack",
+    "au-radio",
+    "au-api-table",
+    "au-api-row"
+  ],
+  "badges": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-badge",
+    "au-api-table",
+    "au-api-row",
+    "au-stack"
+  ],
+  "home": [
+    "au-stack",
+    "au-card",
+    "au-icon"
+  ],
+  "dividers": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-card",
+    "au-stack",
+    "au-icon",
+    "au-divider",
+    "au-api-table",
+    "au-api-row"
+  ],
+  "progress": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-stack",
+    "au-progress",
+    "au-card",
+    "au-icon",
+    "au-alert",
+    "au-api-table",
+    "au-api-row"
+  ],
+  "tabs": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-api-table",
+    "au-api-row"
+  ],
+  "layout": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-stack",
+    "au-card",
+    "au-grid",
+    "au-api-table",
+    "au-api-row",
+    "au-button"
+  ],
+  "virtual-lists": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-virtual-list",
+    "au-card",
+    "au-stack",
+    "au-icon",
+    "au-alert",
+    "au-api-table",
+    "au-api-row",
+    "au-button"
+  ],
+  "avatars": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-stack",
+    "au-avatar",
+    "au-api-table",
+    "au-api-row"
+  ],
+  "inputs": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-stack",
+    "au-input",
+    "au-textarea",
+    "au-api-table",
+    "au-api-row",
+    "au-form",
+    "au-button"
+  ],
+  "skeletons": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-card",
+    "au-stack",
+    "au-skeleton",
+    "au-api-table",
+    "au-api-row"
+  ],
+  "checkboxes": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-checkbox",
+    "au-stack",
+    "au-api-table",
+    "au-api-row",
+    "au-button",
+    "au-icon",
+    "au-form"
+  ],
+  "confirms": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-button",
+    "au-api-table",
+    "au-api-row"
+  ],
+  "tables": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-table",
+    "au-thead",
+    "au-tr",
+    "au-th",
+    "au-tbody",
+    "au-td",
+    "au-api-table",
+    "au-api-row"
+  ],
+  "switches": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-stack",
+    "au-switch",
+    "au-api-table",
+    "au-api-row",
+    "au-card"
+  ],
+  "chips": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-chip",
+    "au-api-table",
+    "au-api-row"
+  ],
+  "cards": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-card",
+    "au-stack",
+    "au-api-table",
+    "au-api-row",
+    "au-icon",
+    "au-button"
+  ],
+  "callouts": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-stack",
+    "au-callout",
+    "au-api-table",
+    "au-api-row"
+  ],
+  "modals": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-button",
+    "au-modal",
+    "au-stack",
+    "au-card",
+    "au-icon",
+    "au-alert",
+    "au-api-table",
+    "au-api-row"
+  ],
+  "spinners": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-stack",
+    "au-spinner",
+    "au-api-table",
+    "au-api-row",
+    "au-button"
+  ],
+  "datatables": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-datatable",
+    "au-stack",
+    "au-api-table",
+    "au-api-row"
+  ],
+  "icons": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-grid",
+    "au-stack",
+    "au-icon",
+    "au-api-table",
+    "au-api-row",
+    "au-button"
+  ],
+  "enterprise": [
+    "au-tabs",
+    "au-tab",
+    "au-grid",
+    "au-card",
+    "au-stack",
+    "au-icon",
+    "au-chip",
+    "au-api-table",
+    "au-api-row",
+    "au-example",
+    "au-button",
+    "au-error-boundary",
+    "au-alert"
+  ],
+  "codeblocks": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-code",
+    "au-stack",
+    "au-api-table",
+    "au-api-row"
+  ],
+  "tooltips": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-tooltip",
+    "au-button",
+    "au-stack",
+    "au-icon",
+    "au-api-table",
+    "au-api-row",
+    "au-card"
+  ],
+  "alerts": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-stack",
+    "au-alert",
+    "au-card",
+    "au-icon",
+    "au-api-table",
+    "au-api-row",
+    "au-input"
+  ],
+  "dropdowns": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-dropdown",
+    "au-option",
+    "au-api-table",
+    "au-api-row"
+  ]
+}

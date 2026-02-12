@@ -1,0 +1,145 @@
+/**
+ * AgentUI tabs Component Styles
+ * Auto-extracted from components.css
+ */
+
+/* ============================================================================
+   TABS - MD3 Tabs with sliding indicator
+   https://m3.material.io/components/tabs
+   ============================================================================ */
+
+.au-tabs {
+    display: block;
+    /* Required for margin to work */
+    width: 100%;
+    position: relative;
+    margin-bottom: 24px;
+    /* MD3: proper spacing between tabs and content */
+}
+
+.au-tabs__list {
+    display: flex;
+    position: relative;
+    border-bottom: 1px solid var(--md-sys-color-surface-variant);
+}
+
+.au-tabs__tab {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    min-width: 90px;
+    height: 48px;
+    padding: 0 16px;
+    background: transparent;
+    border: none;
+    font-family: var(--md-sys-typescale-font);
+    font-size: var(--md-sys-typescale-title-small-size);
+    font-weight: var(--md-sys-typescale-title-small-weight);
+    color: var(--md-sys-color-on-surface-variant);
+    cursor: pointer;
+    overflow: hidden;
+    transition:
+        color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+        background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+/* State layer for hover/focus */
+.au-tabs__tab::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--md-sys-color-primary);
+    opacity: 0;
+    transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+.au-tabs__tab:hover::before {
+    opacity: var(--md-sys-state-hover-opacity);
+}
+
+.au-tabs__tab:active::before {
+    opacity: var(--md-sys-state-pressed-opacity);
+}
+
+.au-tabs__tab.is-active {
+    color: var(--md-sys-color-primary);
+}
+
+/* Remove per-tab indicator - we use sliding indicator now */
+.au-tabs__tab::after {
+    display: none;
+}
+
+/* Sliding indicator - ::after pseudo-element (no DOM element needed)
+   Position controlled via CSS custom properties set by JS */
+.au-tabs__list::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    height: 3px;
+    background: var(--md-sys-color-primary);
+    border-radius: 3px 3px 0 0;
+    /* Dynamic positioning via CSS custom properties */
+    width: var(--indicator-width, 33.3333%);
+    left: var(--indicator-left, 0);
+    /* Smooth sliding animation */
+    transition: left var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized),
+        width var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized);
+}
+
+/* Legacy support: hide old DOM indicator if present */
+.au-tabs__indicator {
+    display: none;
+}
+
+.au-tabs__panel,
+au-tab-panel {
+    display: block;
+    padding: 16px 0;
+    animation: fadeIn var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+/* Tab panel visibility - hidden by default, shown when active */
+au-tab-panel:not([active]),
+.au-tab-panel:not(.active),
+.doc-tab-content:not(:first-of-type) {
+    display: none;
+}
+
+/* Pills Variant */
+.au-tabs--pills .au-tabs__list {
+    border-bottom: none;
+    gap: 8px;
+    padding: 4px;
+    background: var(--md-sys-color-surface-container);
+    border-radius: var(--md-sys-shape-corner-full);
+    width: fit-content;
+}
+
+.au-tabs--pills .au-tabs__tab {
+    flex: none;
+    height: 36px;
+    min-width: auto;
+    border-radius: var(--md-sys-shape-corner-full);
+    transition:
+        color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+        background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized);
+}
+
+/* NoHide indicator for pills - use background instead */
+.au-tabs--pills .au-tabs__indicator {
+    display: none;
+}
+
+.au-tabs--pills .au-tabs__tab.is-active {
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+}
+
+/* Underline Variant - thinner indicator */
+.au-tabs--underline .au-tabs__indicator {
+    height: 2px;
+}
+

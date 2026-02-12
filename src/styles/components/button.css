@@ -1,0 +1,348 @@
+/**
+ * AgentUI button Component Styles
+ * Auto-extracted from components.css
+ */
+
+/* ============================================================================
+   BUTTON - MD3 Common Button
+   https://m3.material.io/components/buttons
+   ============================================================================ */
+
+.au-button {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 48px;
+    height: 40px;
+    padding: 0 24px;
+    font-family: var(--md-sys-typescale-font);
+    font-size: var(--md-sys-typescale-label-large-size);
+    font-weight: var(--md-sys-typescale-label-large-weight);
+    line-height: var(--md-sys-typescale-label-large-line-height);
+    letter-spacing: 0.1px;
+    text-decoration: none;
+    white-space: nowrap;
+    /* Prevent text wrapping */
+    border: none;
+    border-radius: var(--md-sys-shape-corner-full);
+    cursor: pointer;
+    overflow: hidden;
+    /* Note: hover shadow uses ::before opacity (GPU-composited), not box-shadow transition */
+}
+
+/* State layer overlay */
+.au-button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+/* Sizes */
+.au-button--sm {
+    height: 32px;
+    padding: 0 16px;
+    font-size: var(--md-sys-typescale-label-medium-size);
+}
+
+.au-button--md {
+    height: 40px;
+    padding: 0 24px;
+}
+
+.au-button--lg {
+    height: 48px;
+    padding: 0 32px;
+    font-size: var(--md-sys-typescale-body-large-size);
+}
+
+/* FILLED Button (Primary action) */
+.au-button--primary {
+    background: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+}
+
+.au-button--primary::before {
+    background: var(--md-sys-color-on-primary);
+}
+
+.au-button--primary:hover:not(:disabled)::before {
+    opacity: var(--md-sys-state-hover-opacity);
+}
+
+.au-button--primary:focus-visible:not(:disabled)::before {
+    opacity: var(--md-sys-state-focus-opacity);
+}
+
+.au-button--primary:active:not(:disabled)::before {
+    opacity: var(--md-sys-state-pressed-opacity);
+}
+
+.au-button--primary:hover:not(:disabled) {
+    box-shadow: var(--md-sys-elevation-level1);
+}
+
+/* TONAL Button (Secondary action) */
+.au-button--secondary {
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+}
+
+.au-button--secondary::before {
+    background: var(--md-sys-color-on-secondary-container);
+}
+
+.au-button--secondary:hover:not(:disabled)::before {
+    opacity: var(--md-sys-state-hover-opacity);
+}
+
+.au-button--secondary:focus-visible:not(:disabled)::before {
+    opacity: var(--md-sys-state-focus-opacity);
+}
+
+.au-button--secondary:active:not(:disabled)::before {
+    opacity: var(--md-sys-state-pressed-opacity);
+}
+
+.au-button--secondary:hover:not(:disabled) {
+    box-shadow: var(--md-sys-elevation-level1);
+}
+
+/* OUTLINED Button */
+.au-button--ghost {
+    background: transparent;
+    color: var(--md-sys-color-primary);
+    border: 1px solid var(--md-sys-color-outline);
+}
+
+.au-button--ghost::before {
+    background: var(--md-sys-color-primary);
+}
+
+.au-button--ghost:hover:not(:disabled)::before {
+    opacity: var(--md-sys-state-hover-opacity);
+}
+
+.au-button--ghost:focus-visible:not(:disabled)::before {
+    opacity: var(--md-sys-state-focus-opacity);
+}
+
+/* ERROR/Danger Button */
+.au-button--danger {
+    background: var(--md-sys-color-error);
+    color: var(--md-sys-color-on-error);
+}
+
+.au-button--danger::before {
+    background: var(--md-sys-color-on-error);
+}
+
+.au-button--danger:hover:not(:disabled)::before {
+    opacity: var(--md-sys-state-hover-opacity);
+}
+
+.au-button--danger:hover:not(:disabled) {
+    box-shadow: var(--md-sys-elevation-level1);
+}
+
+/* Disabled State */
+.au-button:disabled,
+.au-button.is-disabled {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent);
+    color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.au-button:disabled::before,
+.au-button.is-disabled::before {
+    display: none;
+}
+
+/* ==========================================================================
+   MD3 OFFICIAL BUTTON VARIANTS
+   https://m3.material.io/components/buttons/overview
+   ========================================================================== */
+
+/* ELEVATED Button - Surface with shadow */
+.au-button--elevated {
+    background: var(--md-sys-color-surface-container-low);
+    color: var(--md-sys-color-primary);
+    box-shadow: var(--md-sys-elevation-level1);
+}
+
+.au-button--elevated::before {
+    background: var(--md-sys-color-primary);
+}
+
+.au-button--elevated:hover:not(:disabled)::before {
+    opacity: var(--md-sys-state-hover-opacity);
+}
+
+.au-button--elevated:hover:not(:disabled) {
+    box-shadow: var(--md-sys-elevation-level2);
+}
+
+.au-button--elevated:focus-visible:not(:disabled)::before {
+    opacity: var(--md-sys-state-focus-opacity);
+}
+
+.au-button--elevated:active:not(:disabled)::before {
+    opacity: var(--md-sys-state-pressed-opacity);
+}
+
+/* FILLED Button - Same as primary */
+.au-button--filled {
+    background: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+}
+
+.au-button--filled::before {
+    background: var(--md-sys-color-on-primary);
+}
+
+.au-button--filled:hover:not(:disabled)::before {
+    opacity: var(--md-sys-state-hover-opacity);
+}
+
+.au-button--filled:hover:not(:disabled) {
+    box-shadow: var(--md-sys-elevation-level1);
+}
+
+.au-button--filled:focus-visible:not(:disabled)::before {
+    opacity: var(--md-sys-state-focus-opacity);
+}
+
+.au-button--filled:active:not(:disabled)::before {
+    opacity: var(--md-sys-state-pressed-opacity);
+}
+
+/* TONAL Button - Secondary container */
+.au-button--tonal {
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+}
+
+.au-button--tonal::before {
+    background: var(--md-sys-color-on-secondary-container);
+}
+
+.au-button--tonal:hover:not(:disabled)::before {
+    opacity: var(--md-sys-state-hover-opacity);
+}
+
+.au-button--tonal:hover:not(:disabled) {
+    box-shadow: var(--md-sys-elevation-level1);
+}
+
+.au-button--tonal:focus-visible:not(:disabled)::before {
+    opacity: var(--md-sys-state-focus-opacity);
+}
+
+.au-button--tonal:active:not(:disabled)::before {
+    opacity: var(--md-sys-state-pressed-opacity);
+}
+
+/* OUTLINED Button - Border only */
+.au-button--outlined {
+    background: transparent;
+    color: var(--md-sys-color-primary);
+    border: 1px solid var(--md-sys-color-outline);
+}
+
+.au-button--outlined::before {
+    background: var(--md-sys-color-primary);
+}
+
+.au-button--outlined:hover:not(:disabled)::before {
+    opacity: var(--md-sys-state-hover-opacity);
+}
+
+.au-button--outlined:focus-visible:not(:disabled)::before {
+    opacity: var(--md-sys-state-focus-opacity);
+}
+
+.au-button--outlined:active:not(:disabled)::before {
+    opacity: var(--md-sys-state-pressed-opacity);
+}
+
+/* TEXT Button - Minimal, no container */
+.au-button--text {
+    background: transparent;
+    color: var(--md-sys-color-primary);
+    padding: 0 12px;
+}
+
+.au-button--text::before {
+    background: var(--md-sys-color-primary);
+}
+
+.au-button--text:hover:not(:disabled)::before {
+    opacity: var(--md-sys-state-hover-opacity);
+}
+
+.au-button--text:focus-visible:not(:disabled)::before {
+    opacity: var(--md-sys-state-focus-opacity);
+}
+
+.au-button--text:active:not(:disabled)::before {
+    opacity: var(--md-sys-state-pressed-opacity);
+}
+
+/* MD3 Ripple Effect Animation */
+@keyframes md-ripple {
+    from {
+        transform: scale(0);
+        opacity: 0.12;
+    }
+
+    to {
+        transform: scale(2.5);
+        opacity: 0;
+    }
+}
+
+/* Universal Ripple Animation (used by ripple.js) */
+@keyframes au-ripple-expand {
+    from {
+        transform: scale(0);
+        opacity: 0.20;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 0;
+    }
+}
+
+.au-button.ripple::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: currentColor;
+    transform: scale(0);
+    animation: md-ripple var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-standard);
+    pointer-events: none;
+}
+
+/* Loading State */
+.au-button.is-loading {
+    color: transparent;
+}
+
+.au-button.is-loading::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.75s linear infinite;
+}

@@ -1,0 +1,560 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentui.dev/component-schema.json",
+  "title": "AgentUI Component Schema",
+  "description": "Machine-readable schema for AI agent component discovery",
+  "version": "0.1.126",
+  "generatedAt": "2026-02-12T03:40:02.851Z",
+  "componentCount": 50,
+  "components": {
+    "au-card": {
+      "tag": "au-card",
+      "baseClass": "au-card",
+      "props": [
+        "variant",
+        "padding"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-drawer-item": {
+      "tag": "au-drawer-item",
+      "baseClass": "au-drawer-item",
+      "props": [
+        "icon",
+        "href",
+        "active",
+        "badge",
+        "disabled",
+        "layout",
+        "label"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-alert": {
+      "tag": "au-alert",
+      "baseClass": "au-alert",
+      "props": [
+        "severity",
+        "dismissible"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-sidebar": {
+      "tag": "au-sidebar",
+      "baseClass": "au-sidebar",
+      "props": [
+        "open",
+        "width"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-virtual-list": {
+      "tag": "au-virtual-list",
+      "baseClass": "au-virtual-list",
+      "props": [
+        "item-height",
+        "buffer"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-theme-toggle": {
+      "tag": "au-theme-toggle",
+      "baseClass": "au-theme-toggle",
+      "props": [],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-layout": {
+      "tag": "au-layout",
+      "baseClass": "au-layout",
+      "props": [
+        "has-drawer",
+        "has-bottom-nav",
+        "full-bleed"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-form": {
+      "tag": "au-form",
+      "baseClass": "au-form",
+      "props": [
+        "action",
+        "method"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-checkbox": {
+      "tag": "au-checkbox",
+      "baseClass": "au-checkbox",
+      "props": [
+        "checked",
+        "disabled",
+        "name",
+        "label",
+        "indeterminate"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-avatar": {
+      "tag": "au-avatar",
+      "baseClass": "au-avatar",
+      "props": [
+        "src",
+        "alt",
+        "initials",
+        "size"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-progress": {
+      "tag": "au-progress",
+      "baseClass": "au-progress",
+      "props": [
+        "value",
+        "max",
+        "variant"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-switch": {
+      "tag": "au-switch",
+      "baseClass": "au-switch",
+      "props": [
+        "checked",
+        "disabled",
+        "label"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-dropdown": {
+      "tag": "au-dropdown",
+      "baseClass": "au-dropdown",
+      "props": [
+        "placeholder",
+        "value",
+        "disabled"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-datatable": {
+      "tag": "au-datatable",
+      "baseClass": "au-datatable",
+      "props": [
+        "columns",
+        "page-size",
+        "sortable",
+        "selectable",
+        "filterable",
+        "empty-message"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-api-table": {
+      "tag": "au-api-table",
+      "baseClass": "au-api-table",
+      "props": [
+        "type"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-table": {
+      "tag": "au-table",
+      "baseClass": "au-table",
+      "props": [
+        "striped",
+        "hover"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-navbar": {
+      "tag": "au-navbar",
+      "baseClass": "au-navbar",
+      "props": [
+        "sticky",
+        "variant"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-radio": {
+      "tag": "au-radio",
+      "baseClass": "au-radio-group",
+      "props": [
+        "name",
+        "value"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-modal": {
+      "tag": "au-modal",
+      "baseClass": "au-modal",
+      "props": [
+        "open",
+        "size"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-toast": {
+      "tag": "au-toast",
+      "baseClass": "au-toast",
+      "props": [
+        "severity",
+        "duration",
+        "position"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-lazy": {
+      "tag": "au-lazy",
+      "baseClass": "au-lazy",
+      "props": [
+        "root-margin",
+        "threshold"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-input": {
+      "tag": "au-input",
+      "baseClass": "au-input",
+      "props": [
+        "type",
+        "placeholder",
+        "value",
+        "disabled",
+        "variant",
+        "size",
+        "label"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-divider": {
+      "tag": "au-divider",
+      "baseClass": "au-divider",
+      "props": [
+        "vertical",
+        "inset"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-stack": {
+      "tag": "au-stack",
+      "baseClass": "au-stack",
+      "props": [
+        "direction",
+        "gap",
+        "align",
+        "justify",
+        "wrap",
+        "nowrap"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-bottom-nav": {
+      "tag": "au-bottom-nav",
+      "baseClass": "au-bottom-nav",
+      "props": [
+        "hide-on-desktop",
+        "value"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-drawer": {
+      "tag": "au-drawer",
+      "baseClass": "au-drawer",
+      "props": [
+        "mode",
+        "open",
+        "expand-on-hover",
+        "position"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-tooltip": {
+      "tag": "au-tooltip",
+      "baseClass": "au-tooltip",
+      "props": [
+        "content",
+        "position"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-icon": {
+      "tag": "au-icon",
+      "baseClass": "au-icon",
+      "props": [
+        "name",
+        "size",
+        "svg",
+        "filled",
+        "font"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-badge": {
+      "tag": "au-badge",
+      "baseClass": "au-badge",
+      "props": [
+        "variant",
+        "size"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-container": {
+      "tag": "au-container",
+      "baseClass": "au-container",
+      "props": [
+        "size",
+        "padding",
+        "center"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-example": {
+      "tag": "au-example",
+      "baseClass": "au-example",
+      "props": [
+        "title"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-grid": {
+      "tag": "au-grid",
+      "baseClass": "au-grid",
+      "props": [
+        "cols",
+        "rows",
+        "gap",
+        "align"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-router": {
+      "tag": "au-router",
+      "baseClass": "au-router",
+      "props": [
+        "base",
+        "default"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-prompt-ui": {
+      "tag": "au-prompt-ui",
+      "baseClass": "au-prompt-input",
+      "props": [
+        "placeholder",
+        "loading",
+        "disabled",
+        "multiline"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-splash": {
+      "tag": "au-splash",
+      "baseClass": "au-splash",
+      "props": [
+        "logo",
+        "duration",
+        "delay",
+        "spinner"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-skeleton": {
+      "tag": "au-skeleton",
+      "baseClass": "au-skeleton",
+      "props": [
+        "variant",
+        "width",
+        "height",
+        "size",
+        "lines"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-tabs": {
+      "tag": "au-tabs",
+      "baseClass": "au-tabs",
+      "props": [
+        "active"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-button": {
+      "tag": "au-button",
+      "baseClass": "au-button",
+      "props": [
+        "variant",
+        "size",
+        "disabled"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-chip": {
+      "tag": "au-chip",
+      "baseClass": "au-chip",
+      "props": [
+        "selected",
+        "removable",
+        "variant",
+        "static"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-repeat": {
+      "tag": "au-repeat",
+      "baseClass": "au-repeat",
+      "props": [],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-spinner": {
+      "tag": "au-spinner",
+      "baseClass": "au-spinner",
+      "props": [
+        "size",
+        "color"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-doc-page": {
+      "tag": "au-doc-page",
+      "baseClass": "au-doc-page",
+      "props": [
+        "title",
+        "selector",
+        "description"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-callout": {
+      "tag": "au-callout",
+      "baseClass": "au-callout",
+      "props": [
+        "variant",
+        "title"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-error-boundary": {
+      "tag": "au-error-boundary",
+      "baseClass": "au-error-boundary",
+      "props": [
+        "fallback"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-code": {
+      "tag": "au-code",
+      "baseClass": "au-code",
+      "props": [
+        "language"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-schema-form": {
+      "tag": "au-schema-form",
+      "baseClass": "au-schema-form",
+      "props": [
+        "submit-label",
+        "reset-label",
+        "inline",
+        "readonly",
+        "disabled"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-page": {
+      "tag": "au-page",
+      "baseClass": "au-page",
+      "props": [
+        "route",
+        "title"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-textarea": {
+      "tag": "au-textarea",
+      "baseClass": "au-textarea",
+      "props": [
+        "placeholder",
+        "rows",
+        "disabled",
+        "readonly",
+        "name"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-fetch": {
+      "tag": "au-fetch",
+      "baseClass": "au-fetch",
+      "props": [
+        "url",
+        "method",
+        "auto",
+        "interval"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-confirm": {
+      "tag": "au-confirm",
+      "baseClass": "au-confirm",
+      "props": [
+        "title",
+        "message",
+        "confirm-text",
+        "cancel-text",
+        "variant",
+        "open",
+        "size"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    }
+  }
+}

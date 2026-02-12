@@ -1,0 +1,156 @@
+{
+  "toasts": [
+    "alerts",
+    "buttons",
+    "cards",
+    "icons",
+    "layout",
+    "tabs"
+  ],
+  "buttons": [
+    "cards",
+    "layout",
+    "tabs"
+  ],
+  "navbar": [
+    "buttons",
+    "tabs"
+  ],
+  "radios": [
+    "layout",
+    "tabs"
+  ],
+  "badges": [
+    "layout",
+    "tabs"
+  ],
+  "home": [
+    "cards",
+    "icons",
+    "layout"
+  ],
+  "dividers": [
+    "cards",
+    "icons",
+    "layout",
+    "tabs"
+  ],
+  "progress": [
+    "alerts",
+    "cards",
+    "icons",
+    "layout",
+    "tabs"
+  ],
+  "layout": [
+    "buttons",
+    "cards",
+    "tabs"
+  ],
+  "virtual-lists": [
+    "alerts",
+    "buttons",
+    "cards",
+    "icons",
+    "layout",
+    "tabs"
+  ],
+  "avatars": [
+    "layout",
+    "tabs"
+  ],
+  "inputs": [
+    "buttons",
+    "layout",
+    "tabs"
+  ],
+  "skeletons": [
+    "cards",
+    "layout",
+    "tabs"
+  ],
+  "checkboxes": [
+    "buttons",
+    "icons",
+    "layout",
+    "tabs"
+  ],
+  "confirms": [
+    "buttons",
+    "tabs"
+  ],
+  "tables": [
+    "tabs"
+  ],
+  "switches": [
+    "cards",
+    "layout",
+    "tabs"
+  ],
+  "chips": [
+    "tabs"
+  ],
+  "cards": [
+    "buttons",
+    "icons",
+    "layout",
+    "tabs"
+  ],
+  "callouts": [
+    "layout",
+    "tabs"
+  ],
+  "modals": [
+    "alerts",
+    "buttons",
+    "cards",
+    "icons",
+    "layout",
+    "tabs"
+  ],
+  "spinners": [
+    "buttons",
+    "layout",
+    "progress",
+    "tabs"
+  ],
+  "datatables": [
+    "layout",
+    "tabs"
+  ],
+  "icons": [
+    "buttons",
+    "layout",
+    "tabs"
+  ],
+  "enterprise": [
+    "alerts",
+    "buttons",
+    "cards",
+    "chips",
+    "icons",
+    "layout",
+    "tabs"
+  ],
+  "codeblocks": [
+    "layout",
+    "tabs"
+  ],
+  "tooltips": [
+    "buttons",
+    "cards",
+    "icons",
+    "layout",
+    "tabs"
+  ],
+  "alerts": [
+    "cards",
+    "icons",
+    "inputs",
+    "layout",
+    "tabs"
+  ],
+  "dropdowns": [
+    "tabs"
+  ]
+}

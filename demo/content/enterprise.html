@@ -1,0 +1,252 @@
+<!-- Enterprise Features Content Fragment -->
+<div id="page-enterprise" class="page active">
+    <h1 class="page-title">Enterprise Features</h1>
+    <p class="page-subtitle">
+        Infrastructure for building large-scale, multi-team applications with AgentUI.
+    </p>
+
+    <!-- Documentation Tabs -->
+    <au-tabs active="0" id="enterprise-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <!-- OVERVIEW Tab Content -->
+    <div id="enterprise-overview" class="doc-tab-content">
+        <div class="component-section"
+            style="background: linear-gradient(135deg, var(--md-sys-color-tertiary-container), var(--md-sys-color-secondary-container));">
+            <h2 class="section-title" style="color: var(--md-sys-color-on-tertiary-container);">🏗️ Built for Scale</h2>
+            <au-grid cols="2" gap="md" style="max-width: 800px;">
+                <au-card variant="elevated">
+                    <au-stack direction="row" gap="sm" align="center">
+                        <au-icon name="folder_managed"
+                            style="font-size: 32px; color: var(--md-sys-color-primary);"></au-icon>
+                        <div>
+                            <strong>Namespaced Stores</strong>
+                            <p
+                                style="font-size: 14px; color: var(--md-sys-color-on-surface-variant); margin: 4px 0 0 0;">
+                                Isolated state per feature/team</p>
+                        </div>
+                    </au-stack>
+                </au-card>
+                <au-card variant="elevated">
+                    <au-stack direction="row" gap="sm" align="center">
+                        <au-icon name="shield" style="font-size: 32px; color: var(--md-sys-color-primary);"></au-icon>
+                        <div>
+                            <strong>Error Boundaries</strong>
+                            <p
+                                style="font-size: 14px; color: var(--md-sys-color-on-surface-variant); margin: 4px 0 0 0;">
+                                Graceful degradation</p>
+                        </div>
+                    </au-stack>
+                </au-card>
+                <au-card variant="elevated">
+                    <au-stack direction="row" gap="sm" align="center">
+                        <au-icon name="apps" style="font-size: 32px; color: var(--md-sys-color-primary);"></au-icon>
+                        <div>
+                            <strong>Feature Registry</strong>
+                            <p
+                                style="font-size: 14px; color: var(--md-sys-color-on-surface-variant); margin: 4px 0 0 0;">
+                                Multi-team organization</p>
+                        </div>
+                    </au-stack>
+                </au-card>
+                <au-card variant="elevated">
+                    <au-stack direction="row" gap="sm" align="center">
+                        <au-icon name="monitoring"
+                            style="font-size: 32px; color: var(--md-sys-color-primary);"></au-icon>
+                        <div>
+                            <strong>Observability</strong>
+                            <p
+                                style="font-size: 14px; color: var(--md-sys-color-on-surface-variant); margin: 4px 0 0 0;">
+                                State history & debugging</p>
+                        </div>
+                    </au-stack>
+                </au-card>
+            </au-grid>
+        </div>
+
+        <div class="component-section"
+            style="background: linear-gradient(135deg, rgba(0, 188, 212, 0.1), rgba(124, 77, 255, 0.1)); border: 2px solid rgba(0, 188, 212, 0.3);">
+            <h2 class="section-title" style="display: flex; align-items: center; gap: 12px;">
+                <au-icon name="smart_toy" style="font-size: 28px;"></au-icon>
+                Agent Automation
+            </h2>
+            <p style="margin-bottom: 16px; color: var(--md-sys-color-on-surface-variant); line-height: 1.6;">
+                2026 features for multimodal AI agents: Visual Markers for screenshot parsing,
+                Component Schema for type-safe code gen, and MCP Actions for standard protocols.
+            </p>
+            <au-stack direction="row" gap="sm" style="flex-wrap: wrap;">
+                <au-chip variant="outlined">📸 Visual Markers</au-chip>
+                <au-chip variant="outlined">📋 Component Schema</au-chip>
+                <au-chip variant="outlined">📜 MCP Actions</au-chip>
+            </au-stack>
+        </div>
+
+        <div class="component-section"
+            style="background: var(--md-sys-color-primary-container); border-left: 4px solid var(--md-sys-color-primary);">
+            <h2 class="section-title" style="color: var(--md-sys-color-on-primary-container);">When to Use</h2>
+            <p style="color: var(--md-sys-color-on-primary-container); line-height: 1.6;">
+                Enterprise features are designed for <strong>large-scale applications</strong> with multiple teams.
+                Use namespaced stores to avoid state conflicts, error boundaries to prevent cascading failures,
+                and the feature registry to organize code by domain.
+            </p>
+        </div>
+    </div>
+
+    <!-- API Tab Content -->
+    <div id="enterprise-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Store Methods</h2>
+            <au-api-table type="methods">
+                <au-api-row name="createNamespacedStore(name, initial)" type="function" returns="Store">
+                    Creates an isolated store with the given namespace and initial state
+                </au-api-row>
+                <au-api-row name="getStore(name)" type="function" returns="Store | undefined">
+                    Retrieves a store by its namespace name
+                </au-api-row>
+                <au-api-row name="getAllStores()" type="function" returns="Record&lt;string, Store&gt;">
+                    Returns all registered namespaced stores
+                </au-api-row>
+                <au-api-row name="captureAppState()" type="function" returns="object">
+                    Serializes all store states for debugging or persistence
+                </au-api-row>
+                <au-api-row name="restoreAppState(snapshot)" type="function" returns="void">
+                    Restores all stores from a previously captured snapshot
+                </au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Observability Methods</h2>
+            <au-api-table type="methods">
+                <au-api-row name="enableObservability()" type="function" returns="void">
+                    Starts tracking state changes for all stores
+                </au-api-row>
+                <au-api-row name="disableObservability()" type="function" returns="void">
+                    Stops tracking state changes
+                </au-api-row>
+                <au-api-row name="getStateHistory(namespace)" type="function" returns="Array&lt;{timestamp, state}&gt;">
+                    Returns the change history for a specific store
+                </au-api-row>
+                <au-api-row name="getErrors()" type="function" returns="Array&lt;Error&gt;">
+                    Returns all errors caught by error boundaries
+                </au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Feature Registry Methods</h2>
+            <au-api-table type="methods">
+                <au-api-row name="createFeature(name, config)" type="function" returns="Feature">
+                    Registers a feature with routes, store, and components
+                </au-api-row>
+                <au-api-row name="getFeatures()" type="function" returns="Record&lt;string, Feature&gt;">
+                    Returns all registered features
+                </au-api-row>
+                <au-api-row name="getFeatureSummary()" type="function" returns="object">
+                    Returns an overview with stats for all features
+                </au-api-row>
+                <au-api-row name="getFeatureComponents(name)" type="function" returns="string[]">
+                    Returns component names registered to a feature
+                </au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Agent Automation Methods</h2>
+            <au-api-table type="methods">
+                <au-api-row name="enableVisualMarkers(options)" type="function" returns="void">
+                    Adds visual markers (badges) to interactive elements for AI parsing
+                </au-api-row>
+                <au-api-row name="getMarkerElement(id)" type="function" returns="HTMLElement">
+                    Returns the element associated with a marker ID (e.g., 'B1')
+                </au-api-row>
+                <au-api-row name="getMarkerMap()" type="function" returns="Record&lt;string, MarkerInfo&gt;">
+                    Returns all marker-to-element mappings
+                </au-api-row>
+                <au-api-row name="getComponentSchema(tagName)" type="function" returns="JSONSchema">
+                    Returns the JSON schema for a component's properties and actions
+                </au-api-row>
+                <au-api-row name="getMCPActions()" type="function" returns="MCPAction[]">
+                    Returns standardized MCP actions for the current page
+                </au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <!-- EXAMPLES Tab Content -->
+    <div id="enterprise-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="Namespaced Store Demo">
+            <div slot="demo">
+                <au-stack gap="md">
+                    <au-stack direction="row" gap="md">
+                        <au-button variant="filled" id="demo-create-store">Create Stores</au-button>
+                        <au-button variant="outlined" id="demo-capture-state">Capture State</au-button>
+                        <au-button variant="text" id="demo-clear-stores">Clear</au-button>
+                    </au-stack>
+                    <au-card variant="outlined" id="store-demo-output"
+                        style="display: none; font-family: var(--md-sys-typescale-body-medium-font); padding: 16px; max-height: 200px; overflow: auto;">
+                    </au-card>
+                </au-stack>
+            </div>
+            <div slot="code">// Create isolated stores for each feature
+                const userStore = AgentUI.createNamespacedStore('user', {
+                profile: { name: 'Demo User' },
+                preferences: { theme: 'dark' }
+                });
+
+                const cartStore = AgentUI.createNamespacedStore('cart', {
+                items: ['Item A', 'Item B'],
+                total: 29.99
+                });
+
+                // Capture entire app state
+                const snapshot = AgentUI.captureAppState();</div>
+        </au-example>
+
+        <au-example title="Visual Markers for AI Agents">
+            <div slot="demo">
+                <au-stack gap="md">
+                    <au-stack direction="row" gap="md" style="flex-wrap: wrap;">
+                        <au-button variant="tonal" id="demo-visual-markers">📸 Enable Markers</au-button>
+                        <au-button variant="outlined" id="demo-get-schema">📋 Get Schema</au-button>
+                        <au-button variant="outlined" id="demo-mcp-actions">📜 MCP Actions</au-button>
+                    </au-stack>
+                    <au-card variant="outlined" id="agent-demo-output"
+                        style="display: none; font-family: var(--md-sys-typescale-body-medium-font); padding: 16px; max-height: 200px; overflow: auto;">
+                    </au-card>
+                </au-stack>
+            </div>
+            <div slot="code">// Enable visual markers for screenshot-based agents
+                AgentUI.enableVisualMarkers({ style: 'badge' });
+                // Agent sees: [B1] Save, [B2] Cancel, [I1] Email
+
+                // Reference elements by marker ID
+                AgentUI.getMarkerElement('B1').click();
+
+                // Get component schema for code generation
+                AgentUI.getComponentSchema('au-button');
+                // { properties: { variant: { enum: [...] } }, actions: ['click'] }</div>
+        </au-example>
+
+        <au-example title="Error Boundary">
+            <div slot="demo">
+                <au-error-boundary
+                    fallback="<au-alert severity='error'><strong>Error caught!</strong> The widget crashed but the app continues.</au-alert>"
+                    id="demo-error-boundary">
+                    <au-card variant="outlined" id="error-prone-card">
+                        <au-stack direction="row" gap="md" align="center">
+                            <au-icon name="verified" style="color: var(--md-sys-color-primary);"></au-icon>
+                            <span>This component is protected by an error boundary</span>
+                        </au-stack>
+                    </au-card>
+                </au-error-boundary>
+            </div>
+            <div slot="code">&lt;au-error-boundary fallback="&lt;p&gt;Something went wrong&lt;/p&gt;"&gt;
+                &lt;au-complex-widget&gt;&lt;/au-complex-widget&gt;
+                &lt;/au-error-boundary&gt;</div>
+        </au-example>
+    </div>
+</div>

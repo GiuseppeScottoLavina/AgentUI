@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: latest
+    
+    - name: Install dependencies
+      run: bun install
+    
+    - name: Run unit tests
+      run: bun run test:isolated
+
+  lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Check for console.log in components
+      run: |
+        if grep -r "console\.log" src/components/*.js --include="*.js" | grep -v "// debug"; then
+          echo "⚠️ Found console.log statements in components"
+          exit 1
+        fi
+        echo "✅ No stray console.log found"

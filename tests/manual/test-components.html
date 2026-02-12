@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Per-Component Loading Test</title>
+    <link rel="stylesheet" href="dist/agentui.css">
+    <style>
+        body {
+            font-family: system-ui;
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--md-sys-color-background, #fffbfe);
+            color: var(--md-sys-color-on-background, #1d1b20);
+        }
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 32px;
+        }
+
+        .test-section {
+            margin: 24px 0;
+            padding: 20px;
+            background: var(--md-sys-color-surface-container, #f3edf7);
+            border-radius: 12px;
+        }
+
+        .log {
+            font-family: monospace;
+            font-size: 13px;
+            padding: 12px;
+            background: #1d1b20;
+            color: #c6ffc1;
+            border-radius: 8px;
+            margin-top: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🧪 Per-Component Loading Test</h1>
+    <p class="subtitle">Testing individual component imports from dist/components/</p>
+
+    <div class="test-section">
+        <h2>Test 1: Button Component</h2>
+        <au-button variant="filled">Loaded Button</au-button>
+        <au-button variant="tonal">Tonal</au-button>
+        <au-button variant="outlined">Outlined</au-button>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 2: Card Component</h2>
+        <au-card style="padding: 20px;">
+            <h3>Card Title</h3>
+            <p>This card was loaded via per-component import.</p>
+        </au-card>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 3: Modal Component</h2>
+        <au-button variant="filled" id="open-modal">Open Modal</au-button>
+        <au-modal id="test-modal">
+            <h2>Modal Test</h2>
+            <p>Modal loaded via per-component import!</p>
+            <au-button variant="filled" onclick="document.getElementById('test-modal').close()">Close</au-button>
+        </au-modal>
+    </div>
+
+    <div class="log" id="log">Loading components...</div>
+
+    <script type="module">
+        const log = document.getElementById('log');
+        const logs = [];
+
+        function addLog(msg) {
+            logs.push(msg);
+            log.innerHTML = logs.join('<br>');
+        }
+
+        const perfStart = performance.now();
+        addLog('⏱️ Starting per-component load test...');
+
+        // Load only the components we need
+        const componentsToLoad = [
+            'au-button',
+            'au-card',
+            'au-modal',
+            'au-stack'
+        ];
+
+        for (const comp of componentsToLoad) {
+            const start = performance.now();
+            try {
+                await import('./dist/components/' + comp + '.js');
+                const time = (performance.now() - start).toFixed(0);
+                addLog('✅ ' + comp + '.js loaded in ' + time + 'ms');
+            } catch (e) {
+                addLog('❌ ' + comp + '.js failed: ' + e.message);
+            }
+        }
+
+        const totalTime = (performance.now() - perfStart).toFixed(0);
+        addLog('');
+        addLog('📦 Total: 4 components loaded in ' + totalTime + 'ms');
+
+        // Setup modal button
+        document.getElementById('open-modal').onclick = () => {
+            document.getElementById('test-modal').open();
+        };
+    </script>
+</body>
+
+</html>

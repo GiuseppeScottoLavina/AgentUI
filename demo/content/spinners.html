@@ -1,0 +1,96 @@
+<div class="page active">
+    <h1 class="page-title">Spinner</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-spinner&gt;</code> is an MD3 circular progress indicator
+        for short loading operations where the wait time is unknown.
+    </p>
+
+    <au-tabs active="0" id="spinner-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>STYLING</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <div id="spinner-overview" class="doc-tab-content">
+        <au-example title="Size variants">
+            <div slot="demo">
+                <au-stack direction="row" gap="lg" align="center">
+                    <au-stack gap="xs" align="center">
+                        <au-spinner size="sm"></au-spinner>
+                        <small>Small</small>
+                    </au-stack>
+                    <au-stack gap="xs" align="center">
+                        <au-spinner size="md"></au-spinner>
+                        <small>Medium</small>
+                    </au-stack>
+                    <au-stack gap="xs" align="center">
+                        <au-spinner size="lg"></au-spinner>
+                        <small>Large</small>
+                    </au-stack>
+                </au-stack>
+            </div>
+            <div slot="code">&lt;au-spinner size="sm"&gt;&lt;/au-spinner&gt;
+                &lt;au-spinner size="md"&gt;&lt;/au-spinner&gt;
+                &lt;au-spinner size="lg"&gt;&lt;/au-spinner&gt;</div>
+        </au-example>
+
+        <au-example title="Color variants">
+            <div slot="demo">
+                <au-spinner color="primary"></au-spinner>
+                <au-spinner color="secondary"></au-spinner>
+                <au-spinner color="tertiary"></au-spinner>
+            </div>
+            <div slot="code">&lt;au-spinner color="primary"&gt;&lt;/au-spinner&gt;
+                &lt;au-spinner color="secondary"&gt;&lt;/au-spinner&gt;
+                &lt;au-spinner color="tertiary"&gt;&lt;/au-spinner&gt;</div>
+        </au-example>
+
+        <div class="component-section">
+            <h2 class="section-title">When to use</h2>
+            <p style="color: var(--md-sys-color-on-surface-variant); line-height: 1.6;">
+                Use spinners for short, indeterminate loading operations (under 4 seconds).
+                For longer operations, use a progress indicator with percentage. For content
+                areas, prefer skeletons over spinners.
+            </p>
+        </div>
+    </div>
+
+    <div id="spinner-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Attributes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="size" type="string" default="md">'sm' | 'md' | 'lg'</au-api-row>
+                <au-api-row name="color" type="string" default="primary">'primary' | 'secondary' |
+                    'tertiary'</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="spinner-styling" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">CSS Custom Properties</h2>
+            <au-api-table type="tokens">
+                <au-api-row name="--md-sys-color-primary" default="#6750a4">Primary spinner color</au-api-row>
+                <au-api-row name="--md-sys-color-secondary" default="#958da5">Secondary spinner color</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="spinner-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="Loading button">
+            <div slot="demo">
+                <au-button disabled>
+                    <au-stack direction="row" gap="sm" align="center">
+                        <au-spinner size="sm" color="primary"></au-spinner>
+                        <span>Loading...</span>
+                    </au-stack>
+                </au-button>
+            </div>
+            <div slot="code">&lt;au-button disabled&gt;
+                &lt;au-spinner size="sm"&gt;&lt;/au-spinner&gt;
+                Loading...
+                &lt;/au-button&gt;</div>
+        </au-example>
+    </div>
+</div>

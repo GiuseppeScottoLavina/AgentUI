@@ -1,0 +1,72 @@
+{
+  "name": "agentui-wc",
+  "version": "0.1.127",
+  "type": "module",
+  "description": "AI-First Web Components Framework - 50 Material Design 3 components optimized for AI agents",
+  "main": "dist/agentui.esm.js",
+  "module": "dist/agentui.esm.js",
+  "types": "dist/agentui.d.ts",
+  "customElements": "custom-elements.json",
+  "files": [
+    "dist/",
+    "custom-elements.json",
+    "AGENTS.md",
+    "AGENTS_DEV.md",
+    "llms.txt",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/agentui.esm.js",
+      "types": "./dist/agentui.d.ts"
+    },
+    "./css": "./dist/agentui.css",
+    "./components/*": "./dist/components/*.js",
+    "./styles/*": "./dist/styles/*"
+  },
+  "scripts": {
+    "dev": "bun server.js",
+    "test": "bun test tests/core tests/components tests/theme-toggle.test.js",
+    "test:isolated": "bun run scripts/test-isolated.js",
+    "test:e2e": "bun test tests/e2e",
+    "test:full": "bun run test:isolated && bun run test:e2e",
+    "test:all": "bun test",
+    "build": "bun run build:framework && bun run build:app",
+    "build:framework": "bun run scripts/build-framework.js",
+    "build:app": "bun run scripts/build-app.js",
+    "prepublishOnly": "bun run test:isolated && bun run build && echo '✅ All checks passed - ready to publish'"
+  },
+  "keywords": [
+    "ai-agents",
+    "ai-first",
+    "web-components",
+    "material-design-3",
+    "ui-framework",
+    "light-dom",
+    "zero-dependencies",
+    "accessibility",
+    "wcag",
+    "custom-elements",
+    "md3",
+    "design-system"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GiuseppeScottoLavina/AgentUI.git"
+  },
+  "homepage": "https://giuseppescottolavina.github.io/AgentUI/",
+  "bugs": {
+    "url": "https://github.com/GiuseppeScottoLavina/AgentUI/issues"
+  },
+  "author": "Giuseppe Scotto Lavina",
+  "license": "Apache-2.0",
+  "dependencies": {},
+  "devDependencies": {
+    "bun-types": "latest",
+    "jsdom": "^27.4.0",
+    "linkedom": "^0.18.5",
+    "puppeteer-core": "^24.0.0"
+  }
+}

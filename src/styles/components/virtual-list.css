@@ -1,0 +1,36 @@
+/**
+ * AgentUI virtual-list Component Styles
+ * Auto-extracted from components.css
+ */
+
+/* ============================================================================
+   FETCH - Data fetcher component states
+   ============================================================================ */
+
+au-fetch {
+    display: block;
+}
+
+.au-fetch__loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100px;
+}
+
+.au-fetch__error {
+    margin: 16px 0;
+}
+
+.au-fetch__empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100px;
+    color: var(--md-sys-color-on-surface-variant);
+}
+
+.au-fetch__data {
+    display: block;
+}
+

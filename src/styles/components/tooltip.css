@@ -1,0 +1,93 @@
+/**
+ * AgentUI tooltip Component Styles
+ * Auto-extracted from components.css
+ */
+
+/* ============================================================================
+   TOOLTIP - MD3 Tooltip
+   https://m3.material.io/components/tooltips
+   ============================================================================ */
+
+.au-tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+/* Hidden by default - CSS-only approach */
+.au-tooltip__content {
+    position: absolute;
+    padding: 8px 12px;
+    background: var(--md-sys-color-inverse-surface);
+    color: var(--md-sys-color-inverse-on-surface);
+    font-family: var(--md-sys-typescale-font);
+    font-size: var(--md-sys-typescale-body-small-size);
+    line-height: var(--md-sys-typescale-body-small-line-height);
+    border-radius: var(--md-sys-shape-corner-extra-small);
+    white-space: nowrap;
+    z-index: var(--au-z-tooltip);
+    pointer-events: none;
+
+    /* Hidden state */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-50%) scale(0.9);
+    transition:
+        opacity var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-standard),
+        visibility var(--md-sys-motion-duration-short3),
+        transform var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized);
+}
+
+/* Show on hover */
+.au-tooltip:hover .au-tooltip__content,
+.au-tooltip:focus-within .au-tooltip__content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) scale(1);
+}
+
+/* Position variants */
+.au-tooltip--top .au-tooltip__content {
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(4px) scale(0.9);
+    margin-bottom: 8px;
+}
+
+.au-tooltip--top:hover .au-tooltip__content {
+    transform: translateX(-50%) translateY(0) scale(1);
+}
+
+.au-tooltip--bottom .au-tooltip__content {
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-4px) scale(0.9);
+    margin-top: 8px;
+}
+
+.au-tooltip--bottom:hover .au-tooltip__content {
+    transform: translateX(-50%) translateY(0) scale(1);
+}
+
+.au-tooltip--left .au-tooltip__content {
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%) translateX(4px) scale(0.9);
+    margin-right: 8px;
+}
+
+.au-tooltip--left:hover .au-tooltip__content {
+    transform: translateY(-50%) translateX(0) scale(1);
+}
+
+.au-tooltip--right .au-tooltip__content {
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%) translateX(-4px) scale(0.9);
+    margin-left: 8px;
+}
+
+.au-tooltip--right:hover .au-tooltip__content {
+    transform: translateY(-50%) translateX(0) scale(1);
+}
+

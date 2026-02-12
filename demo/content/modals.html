@@ -1,0 +1,141 @@
+<!-- Modals Content Fragment -->
+<div id="page-modals" class="page active">
+    <h1 class="page-title">Dialog / Modal</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-modal&gt;</code> displays content in an overlay layer
+        that blocks interaction with the page below.
+    </p>
+
+    <au-tabs active="0" id="modal-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>STYLING</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <div id="modal-overview" class="doc-tab-content">
+        <au-example title="Basic dialog">
+            <div slot="demo">
+                <au-button variant="filled" onclick="document.getElementById('demo-modal').open()">Open
+                    Modal</au-button>
+                <au-modal id="demo-modal">
+                    <h2>Modal Title</h2>
+                    <p>This is the modal content. You can put any content here.</p>
+                    <au-stack direction="row" gap="sm" justify="flex-end" style="margin-top: 16px;">
+                        <au-button variant="text"
+                            onclick="document.getElementById('demo-modal').close()">Cancel</au-button>
+                        <au-button variant="filled"
+                            onclick="document.getElementById('demo-modal').close()">Confirm</au-button>
+                    </au-stack>
+                </au-modal>
+            </div>
+
+        </au-example>
+
+        <div class="component-section">
+            <h2 class="section-title">When to use</h2>
+            <au-card variant="outlined">
+                <au-stack gap="md">
+                    <au-stack direction="row" gap="sm" align="start">
+                        <au-icon name="check_circle" size="20"
+                            style="color: var(--md-sys-color-primary); margin-top: 2px;"></au-icon>
+                        <div>
+                            <strong>Custom content dialogs</strong>
+                            <div style="font-size: 13px; color: var(--md-sys-color-on-surface-variant);">Forms, complex
+                                layouts, multi-step wizards, or any non-standard content</div>
+                        </div>
+                    </au-stack>
+                    <au-stack direction="row" gap="sm" align="start">
+                        <au-icon name="check_circle" size="20"
+                            style="color: var(--md-sys-color-primary); margin-top: 2px;"></au-icon>
+                        <div>
+                            <strong>Details or previews</strong>
+                            <div style="font-size: 13px; color: var(--md-sys-color-on-surface-variant);">Image
+                                galleries, product details, user profiles, expanded views</div>
+                        </div>
+                    </au-stack>
+                    <au-stack direction="row" gap="sm" align="start">
+                        <au-icon name="check_circle" size="20"
+                            style="color: var(--md-sys-color-primary); margin-top: 2px;"></au-icon>
+                        <div>
+                            <strong>Modal forms with validation</strong>
+                            <div style="font-size: 13px; color: var(--md-sys-color-on-surface-variant);">Login,
+                                settings, feedback, where you need full control over layout</div>
+                        </div>
+                    </au-stack>
+                </au-stack>
+            </au-card>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">When NOT to use</h2>
+            <au-stack gap="md">
+                <au-alert severity="warning">Don't use for <strong>simple yes/no confirmations</strong> — use
+                    <code>&lt;au-confirm&gt;</code> instead (less code, built-in patterns)</au-alert>
+                <au-alert severity="warning">Don't use for <strong>temporary notifications</strong> — use
+                    <code>showToast()</code> instead (auto-dismisses, non-blocking)</au-alert>
+                <au-alert severity="warning">Don't use for <strong>persistent status messages</strong> — use
+                    <code>&lt;au-alert&gt;</code> inline instead (always visible)</au-alert>
+            </au-stack>
+        </div>
+
+        <div class="component-section"
+            style="background: var(--md-sys-color-primary-container); border-left: 4px solid var(--md-sys-color-primary);">
+            <h2 class="section-title" style="color: var(--md-sys-color-on-primary-container);">Accessibility
+            </h2>
+            <p style="color: var(--md-sys-color-on-primary-container); line-height: 1.6;">
+                Modal uses <code>role="dialog"</code> and traps focus inside.
+                Press Escape or click backdrop to close. Focus returns to trigger on close.
+            </p>
+        </div>
+    </div>
+
+    <div id="modal-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Methods</h2>
+            <au-api-table type="methods">
+                <au-api-row name="open" signature="open(): void">Opens the modal</au-api-row>
+                <au-api-row name="close" signature="close(): void">Closes the modal</au-api-row>
+            </au-api-table>
+        </div>
+        <div class="component-section">
+            <h2 class="section-title">Events</h2>
+            <au-api-table type="events">
+                <au-api-row name="au-open" detail="{}">Emitted when modal opens</au-api-row>
+                <au-api-row name="au-close" detail="{}">Emitted when modal closes</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="modal-styling" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">CSS Custom Properties</h2>
+            <au-api-table type="tokens">
+                <au-api-row name="--md-sys-color-scrim" default="rgba(0,0,0,0.32)">Backdrop overlay
+                    color</au-api-row>
+                <au-api-row name="--md-sys-color-surface" default="#fef7ff">Modal background</au-api-row>
+                <au-api-row name="--md-sys-shape-corner-extra-large" default="28px">Border
+                    radius</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="modal-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="Confirm dialog">
+            <div slot="demo">
+                <au-button variant="danger" onclick="document.getElementById('confirm-modal').open()">Delete
+                    Item</au-button>
+                <au-modal id="confirm-modal">
+                    <h2>Are you sure?</h2>
+                    <p>This action cannot be undone.</p>
+                    <au-stack direction="row" gap="sm" justify="flex-end" style="margin-top: 16px;">
+                        <au-button variant="text"
+                            onclick="document.getElementById('confirm-modal').close()">Cancel</au-button>
+                        <au-button variant="danger"
+                            onclick="document.getElementById('confirm-modal').close()">Delete</au-button>
+                    </au-stack>
+                </au-modal>
+            </div>
+        </au-example>
+    </div>
+</div>

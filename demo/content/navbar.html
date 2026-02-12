@@ -1,0 +1,70 @@
+<!-- Navbar Content Fragment -->
+<div id="page-navbar" class="page active">
+    <h1 class="page-title">Navbar</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-navbar&gt;</code> provides a responsive navigation bar
+        with brand, links, and actions. Supports mobile hamburger menu.
+    </p>
+
+    <au-tabs active="0" id="navbar-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>STYLING</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <div id="navbar-overview" class="doc-tab-content">
+        <au-example title="Basic navbar">
+            <div slot="demo">
+                <au-navbar>
+                    <au-navbar-brand>Brand</au-navbar-brand>
+                    <au-navbar-links>
+                        <a href="#">Home</a>
+                        <a href="#">About</a>
+                        <a href="#">Contact</a>
+                    </au-navbar-links>
+                </au-navbar>
+            </div>
+
+        </au-example>
+    </div>
+
+    <div id="navbar-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Child Components</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="au-navbar-brand">Container for logo/brand name</au-api-row>
+                <au-api-row name="au-navbar-links">Container for navigation links</au-api-row>
+                <au-api-row name="au-navbar-actions">Container for action buttons</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="navbar-styling" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">CSS Custom Properties</h2>
+            <au-api-table type="tokens">
+                <au-api-row name="--md-sys-color-surface" default="#fef7ff">Navbar background</au-api-row>
+                <au-api-row name="--md-sys-color-on-surface" default="#1d1b20">Text color</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="navbar-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="With action buttons">
+            <div slot="demo">
+                <au-navbar>
+                    <au-navbar-brand>MyApp</au-navbar-brand>
+                    <au-navbar-links>
+                        <a href="#">Features</a>
+                        <a href="#">Pricing</a>
+                    </au-navbar-links>
+                    <au-navbar-actions>
+                        <au-button variant="text">Login</au-button>
+                        <au-button variant="filled">Sign Up</au-button>
+                    </au-navbar-actions>
+                </au-navbar>
+            </div>
+        </au-example>
+    </div>
+</div>

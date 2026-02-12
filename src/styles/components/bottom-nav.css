@@ -1,0 +1,37 @@
+/**
+ * AgentUI bottom-nav Component Styles
+ * Auto-extracted from components.css
+ */
+
+/* ============================================================================
+   BOTTOM NAV - MD3 Bottom Navigation Bar
+   https://m3.material.io/components/navigation-bar
+   ============================================================================ */
+
+au-bottom-nav {
+    display: block;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: var(--au-z-bottom-nav, 150);
+}
+
+.au-bottom-nav-nav {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-around;
+    height: var(--au-bottom-nav-height, 80px);
+    background: var(--md-sys-color-surface-container);
+    border-top: 1px solid var(--md-sys-color-outline-variant);
+    padding: 0 8px;
+    padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+/* Distribute items evenly */
+.au-bottom-nav-nav>au-nav-item,
+.au-bottom-nav-nav>au-drawer-item {
+    flex: 1;
+    max-width: 120px;
+}
+

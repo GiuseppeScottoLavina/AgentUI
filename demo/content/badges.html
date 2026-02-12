@@ -1,0 +1,65 @@
+<!-- Badges Content Fragment -->
+<div id="page-badges" class="page active">
+    <h1 class="page-title">Badge</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-badge&gt;</code> displays small labels for status,
+        counts, or categorical information.
+    </p>
+
+    <au-tabs active="0" id="badge-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>STYLING</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <div id="badge-overview" class="doc-tab-content">
+        <au-example title="Badge variants">
+            <div slot="demo">
+                <au-badge>Default</au-badge>
+                <au-badge variant="primary">Primary</au-badge>
+                <au-badge variant="success">Success</au-badge>
+                <au-badge variant="warning">Warning</au-badge>
+                <au-badge variant="error">Error</au-badge>
+            </div>
+
+        </au-example>
+    </div>
+
+    <div id="badge-api" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">Attributes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="variant" type="string" default="default">Badge type: 'default' | 'primary'
+                    | 'success' | 'warning' | 'error'</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="badge-styling" class="doc-tab-content" style="display: none;">
+        <div class="component-section">
+            <h2 class="section-title">CSS Custom Properties</h2>
+            <au-api-table type="tokens">
+                <au-api-row name="--md-sys-color-primary" default="#6750a4">Primary badge color</au-api-row>
+                <au-api-row name="--md-sys-color-error" default="#b3261e">Error badge color</au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <div id="badge-examples" class="doc-tab-content" style="display: none;">
+        <au-example title="Status indicators">
+            <div slot="demo">
+                <au-stack gap="sm">
+                    <au-stack direction="row" gap="md" align="center">
+                        <au-badge variant="success">Online</au-badge>
+                        <span>User is active</span>
+                    </au-stack>
+                    <au-stack direction="row" gap="md" align="center">
+                        <au-badge variant="warning">Away</au-badge>
+                        <span>User is away</span>
+                    </au-stack>
+                </au-stack>
+            </div>
+        </au-example>
+    </div>
+</div>

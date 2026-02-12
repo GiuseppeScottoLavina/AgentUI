@@ -1,0 +1,252 @@
+/* ============================================
+   AgentUI Animation Utilities
+   
+   Usage: Add these classes for common animations
+   ============================================ */
+
+/* Fade animations */
+.au-fade-in {
+    animation: au-fade-in var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized);
+    will-change: opacity;
+}
+
+.au-fade-out {
+    animation: au-fade-out var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized);
+    will-change: opacity;
+}
+
+@keyframes au-fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes au-fade-out {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+/* Slide animations */
+.au-slide-up {
+    animation: au-slide-up var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized);
+    will-change: transform, opacity;
+}
+
+.au-slide-down {
+    animation: au-slide-down var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized);
+    will-change: transform, opacity;
+}
+
+.au-slide-left {
+    animation: au-slide-left var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized);
+    will-change: transform, opacity;
+}
+
+.au-slide-right {
+    animation: au-slide-right var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized);
+    will-change: transform, opacity;
+}
+
+@keyframes au-slide-up {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes au-slide-down {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes au-slide-left {
+    from {
+        transform: translateX(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes au-slide-right {
+    from {
+        transform: translateX(-20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Scale animations */
+.au-scale-in {
+    animation: au-scale-in var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized);
+    will-change: transform, opacity;
+}
+
+.au-scale-out {
+    animation: au-scale-out var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized);
+    will-change: transform, opacity;
+}
+
+@keyframes au-scale-in {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes au-scale-out {
+    from {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    to {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+}
+
+/* Pulse animation */
+.au-pulse {
+    animation: au-pulse 2s infinite;
+    will-change: opacity;
+}
+
+@keyframes au-pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Shake animation (for errors) */
+.au-shake {
+    animation: au-shake 0.4s var(--md-sys-motion-easing-emphasized);
+    will-change: transform;
+}
+
+@keyframes au-shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    20%,
+    60% {
+        transform: translateX(-5px);
+    }
+
+    40%,
+    80% {
+        transform: translateX(5px);
+    }
+}
+
+/* Spin animation */
+.au-spin {
+    animation: au-spin 1s linear infinite;
+    will-change: transform;
+}
+
+@keyframes au-spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Bounce animation */
+.au-bounce {
+    animation: au-bounce 0.5s var(--md-sys-motion-easing-emphasized);
+    will-change: transform;
+}
+
+@keyframes au-bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Transition utilities (GPU-accelerated only - transform, opacity, filter) */
+.au-transition {
+    transition: transform var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized),
+        opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized),
+        box-shadow var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized);
+}
+
+.au-transition-slow {
+    transition: transform var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized),
+        opacity var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized),
+        box-shadow var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized);
+}
+
+.au-transition-fast {
+    transition: transform var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-emphasized),
+        opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-emphasized),
+        box-shadow var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-emphasized);
+}
+
+/* Hover utilities */
+.au-hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--md-sys-elevation-level2);
+    will-change: transform, box-shadow;
+}
+
+.au-hover-glow:hover {
+    box-shadow: 0 0 20px var(--md-sys-color-primary);
+    will-change: box-shadow;
+}
+
+.au-hover-scale:hover {
+    transform: scale(1.05);
+    will-change: transform;
+}

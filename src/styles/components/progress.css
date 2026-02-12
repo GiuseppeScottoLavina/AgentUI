@@ -1,0 +1,79 @@
+/**
+ * AgentUI progress Component Styles
+ * MD3 Linear Progress Indicator - Expressive Variant
+ */
+
+/* ============================================================================
+   PROGRESS - MD3 Expressive Linear Progress Indicator (8dp)
+   ============================================================================ */
+
+.au-progress {
+    position: relative;
+    width: 100%;
+    height: 8px;
+    /* MD3 Expressive: 8dp track height for better visibility */
+    background: var(--md-sys-color-surface-container-highest);
+    border-radius: 4px;
+    /* MD3: trackCornerRadius = 4dp for rounded track */
+    overflow: hidden;
+}
+
+.au-progress--sm {
+    height: 4px;
+    border-radius: 2px;
+}
+
+.au-progress--md {
+    height: 8px;
+    border-radius: 4px;
+}
+
+.au-progress--lg {
+    height: 12px;
+    border-radius: 6px;
+}
+
+.au-progress__bar {
+    display: block;
+    height: 100%;
+    background: var(--md-sys-color-primary);
+    border-radius: inherit;
+    transition: width var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-standard);
+}
+
+.au-progress--success .au-progress__bar {
+    background: var(--md-sys-color-success);
+}
+
+.au-progress--warning .au-progress__bar {
+    background: var(--md-sys-color-warning);
+}
+
+.au-progress--error .au-progress__bar {
+    background: var(--md-sys-color-error);
+}
+
+/* Indeterminate animation */
+.au-progress[indeterminate] .au-progress__bar {
+    width: 50% !important;
+    animation: au-progress-indeterminate 1.5s infinite ease-in-out;
+}
+
+@keyframes au-progress-indeterminate {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(300%);
+    }
+}
+
+.au-progress__label {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: var(--md-sys-typescale-label-small-size);
+    color: var(--md-sys-color-on-surface);
+}

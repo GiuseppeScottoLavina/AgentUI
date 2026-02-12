@@ -1,0 +1,71 @@
+/**
+ * AgentUI Switch Component Styles
+ * MD3 Toggle Switch
+ */
+
+/* Host element */
+au-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+au-switch[disabled] {
+    cursor: not-allowed;
+}
+
+/* Track */
+.au-switch__track {
+    width: 52px;
+    height: 32px;
+    border-radius: 16px;
+    position: relative;
+    background: var(--md-sys-color-surface-container-highest);
+    transition: background var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+au-switch[checked] .au-switch__track {
+    background: var(--md-sys-color-primary);
+}
+
+au-switch[disabled] .au-switch__track {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent);
+}
+
+/* Thumb */
+.au-switch__thumb {
+    position: absolute;
+    border-radius: 50%;
+    transition: all var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized);
+    background: var(--md-sys-color-outline);
+    box-shadow: var(--md-sys-elevation-level1);
+    /* Default (unchecked): 16dp thumb */
+    width: 16px;
+    height: 16px;
+    top: 8px;
+    left: 6px;
+}
+
+au-switch[checked] .au-switch__thumb {
+    background: var(--md-sys-color-on-primary);
+    /* Checked: 24dp thumb */
+    width: 24px;
+    height: 24px;
+    top: 4px;
+    left: 24px;
+}
+
+au-switch[disabled] .au-switch__thumb {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+    box-shadow: none;
+}
+
+/* Label */
+.au-switch__label {
+    color: var(--md-sys-color-on-surface);
+}
+
+au-switch[disabled] .au-switch__label {
+    color: color-mix(in srgb, var(--md-sys-color-on-surface) 38%, transparent);
+}
