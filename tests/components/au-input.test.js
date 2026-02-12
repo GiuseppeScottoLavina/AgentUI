@@ -297,6 +297,36 @@ describe('au-input Unit Tests', () => {
         expect(label.getAttribute('for')).toBe(input.id);
     });
 
+    test('should use derived ID when user sets id attribute', () => {
+        const el = document.createElement('au-input');
+        el.setAttribute('id', 'task-title');
+        el.setAttribute('label', 'Task Title');
+        body.appendChild(el);
+        const input = el.querySelector('input');
+        expect(input.id).toBe('task-title__field');
+    });
+
+    test('should NOT have duplicate IDs when user sets id', () => {
+        const el = document.createElement('au-input');
+        el.setAttribute('id', 'my-input');
+        el.setAttribute('label', 'Name');
+        body.appendChild(el);
+        const input = el.querySelector('input');
+        // Custom element ID and inner input ID must differ
+        expect(el.id).not.toBe(input.id);
+    });
+
+    test('label for should match derived input ID when user sets id', () => {
+        const el = document.createElement('au-input');
+        el.setAttribute('id', 'email-field');
+        el.setAttribute('label', 'Email');
+        body.appendChild(el);
+        const label = el.querySelector('.au-input__label');
+        const input = el.querySelector('input');
+        expect(label.getAttribute('for')).toBe('email-field__field');
+        expect(label.getAttribute('for')).toBe(input.id);
+    });
+
     test('should add aria-label when no visible label', () => {
         const el = document.createElement('au-input');
         el.setAttribute('aria-label', 'Search');

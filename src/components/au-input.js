@@ -55,7 +55,7 @@ export class AuInput extends AuElement {
         }
 
         // Generate unique ID for label-input association (accessibility)
-        const inputId = this.id || `au-input-${Math.random().toString(36).substring(2, 9)}`;
+        const inputId = this.id ? `${this.id}__field` : `au-input-${Math.random().toString(36).substring(2, 9)}`;
 
         // Escape user-provided attributes to prevent XSS
         const safeLabelText = escapeHTML(labelText);
