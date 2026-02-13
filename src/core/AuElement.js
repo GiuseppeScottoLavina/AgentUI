@@ -78,7 +78,7 @@ export class AuElement extends HTMLElement {
             ...base,
             runtime: {
                 registered: typeof customElements !== 'undefined' && !!customElements.get(tag),
-                version: '0.1.134',
+                version: '0.1.135',
                 instanceCount: instances.length,
                 instances: instances.slice(0, 5).map(el => {
                     const info = { id: el.id || null };
