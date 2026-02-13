@@ -1,6 +1,6 @@
 {
   "name": "agentui-wc",
-  "version": "0.1.131",
+  "version": "0.1.132",
   "type": "module",
   "description": "AI-First Web Components Framework - 50 Material Design 3 components optimized for AI agents",
   "main": "dist/agentui.esm.js",

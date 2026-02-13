@@ -1,6 +1,6 @@
 /**
  * @fileoverview Unit Tests for AgentUI Core Modules
- * Coverage: bus, store, theme, router, http, scheduler, transitions, render, ripple
+ * Coverage: bus, theme, router, http, scheduler, transitions, render, ripple
  */
 
 import { describe, test, expect, beforeAll, beforeEach } from 'bun:test';
@@ -75,69 +75,7 @@ describe('bus Module', () => {
     });
 });
 
-// ============================================
-// STORE MODULE (State Management)
-// ============================================
 
-describe('store Module', () => {
-    let createStore;
-
-    beforeAll(async () => {
-        const module = await import('../../src/core/store.js');
-        createStore = module.createStore;
-    });
-
-    test('should export createStore function', () => {
-        expect(typeof createStore).toBe('function');
-    });
-
-    test('createStore should return store object', () => {
-        const store = createStore({ count: 0, user: null });
-        expect(store).toBeDefined();
-        expect(typeof store.get).toBe('function');
-        expect(typeof store.set).toBe('function');
-    });
-
-    test('store.get should return entire state', () => {
-        const store = createStore({ count: 42, name: 'test' });
-        const state = store.get();
-        expect(state.count).toBe(42);
-        expect(state.name).toBe('test');
-    });
-
-    test('store.set should merge new state', () => {
-        const store = createStore({ count: 0, name: 'old' });
-        store.set({ count: 10 });
-        expect(store.get().count).toBe(10);
-        expect(store.get().name).toBe('old'); // preserved
-    });
-
-    test('store.update should update with function', () => {
-        const store = createStore({ count: 5 });
-        store.update(s => ({ count: s.count + 10 }));
-        expect(store.get().count).toBe(15);
-    });
-
-    test('store.subscribe should notify on change', () => {
-        const store = createStore({ count: 0 });
-        let notifiedState = null;
-        const unsub = store.subscribe((state) => {
-            notifiedState = state;
-        });
-        // subscribe calls immediately with current state
-        expect(notifiedState).toEqual({ count: 0 });
-        store.set({ count: 5 });
-        expect(notifiedState.count).toBe(5);
-        unsub();
-    });
-
-    test('store.reset should restore initial state', () => {
-        const store = createStore({ count: 0 });
-        store.set({ count: 100 });
-        store.reset();
-        expect(store.get().count).toBe(0);
-    });
-});
 
 // ============================================
 // THEME MODULE (Dark/Light Mode)

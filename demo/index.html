@@ -76,10 +76,10 @@
         /* Material Symbols font removed - icons use inline SVG now */
     </style>
     <!-- Preload + async CSS: 12KB loads instantly from preload, media trick prevents render-blocking -->
-    <link rel="preload" as="style" href="../dist/agentui.css?v=0.1.156">
-    <link rel="stylesheet" href="../dist/agentui.css?v=0.1.156" media="print" onload="this.media='all'">
+    <link rel="preload" as="style" href="../dist/agentui.css?v=0.1.159">
+    <link rel="stylesheet" href="../dist/agentui.css?v=0.1.159" media="print" onload="this.media='all'">
     <noscript>
-        <link rel="stylesheet" href="../dist/agentui.css?v=0.1.156">
+        <link rel="stylesheet" href="../dist/agentui.css?v=0.1.159">
     </noscript>
     <style>
         /* Size-adjusted Arial fallback to match Roboto metrics (from Capsize) */
@@ -445,9 +445,8 @@
             <au-drawer-item icon="view_carousel" href="#virtual-lists" data-page="virtual-lists"
                 label="Virtual List"></au-drawer-item>
 
-            <!-- Enterprise -->
-            <au-drawer-item icon="business" href="#enterprise" data-page="enterprise"
-                label="Enterprise"></au-drawer-item>
+            <!-- Advanced -->
+            <au-drawer-item icon="business" href="#enterprise" data-page="enterprise" label="Advanced"></au-drawer-item>
         </au-drawer>
 
         <!-- Bottom Navigation (Mobile Only) -->
@@ -526,7 +525,7 @@
             if (loadedRoutes.has(name)) return;
             loadedRoutes.add(name);
             const start = performance.now();
-            await import('../dist/routes/' + name + '.js?v=0.1.156');
+            await import('../dist/routes/' + name + '.js?v=0.1.159');
             console.log('[Shell] Route ' + name + '.js loaded in ' + (performance.now() - start).toFixed(0) + 'ms');
         }
 

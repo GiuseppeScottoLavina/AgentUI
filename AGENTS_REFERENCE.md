@@ -546,33 +546,6 @@ fetcher.addEventListener('au-success', (e) => {
 </script>
 ```
 
-### Form State Management
-```javascript
-import { createFormState } from 'agentui-wc';
-
-const form = document.querySelector('au-form');
-const state = createFormState(form, {
-    email: { required: true, type: 'email' },
-    password: { required: true, minLength: 8 },
-    name: { maxLength: 50 }
-});
-
-// Check validation
-console.log(state.isValid);     // true if all fields valid
-console.log(state.isDirty);     // true if any field changed
-
-// Per-field state
-state.fields.email.value;       // Current value
-state.fields.email.error;       // Error message or null
-state.fields.email.touched;     // true after blur
-state.fields.email.dirty;       // true if changed from initial
-
-// Actions
-state.validate();               // Validate all, mark touched
-state.getValues();              // { email: '...', password: '...' }
-state.getErrors();              // { email: null, password: 'Min 8 chars' }
-state.reset();                  // Reset to initial values
-```
 
 
 ### Toast Notifications
@@ -1636,58 +1609,62 @@ bun run build:app
 ## State Management for Complex Apps
 
 > **For apps with shared state across components and pages.**
+> AgentUI uses the **EventBus (bus)** for inter-component communication. For app state, use plain JavaScript objects + bus notifications.
 
-### Global Store Pattern
+### Global State Pattern (Bus + Plain Object)
 ```javascript
 // store/index.js - Centralized state with bus notifications
-import { createStore, bus } from 'agentui-wc';
+import { bus } from 'agentui-wc';
 
-const store = createStore({
+const state = {
     user: null,
     items: [],
     loading: false
-});
+};
 
 // Derived values (plain getters)
-export const getItemCount = () => store.get().items.length;
-export const isAuthenticated = () => store.get().user !== null;
+export const getItemCount = () => state.items.length;
+export const isAuthenticated = () => state.user !== null;
 
-// Actions
+// Actions — mutate state, then notify via bus
 export async function fetchItems() {
-    store.set({ loading: true });
+    state.loading = true;
+    bus.emit('state:change', { ...state });
     try {
-        const data = await fetch('/api/items').then(r => r.json());
-        store.set({ items: data, loading: false });
+        state.items = await fetch('/api/items').then(r => r.json());
     } catch (err) {
-        store.set({ loading: false });
+        console.error('Failed to fetch items:', err);
+    } finally {
+        state.loading = false;
+        bus.emit('state:change', { ...state });
     }
 }
 
 export function login(userData) {
-    store.set({ user: userData });
+    state.user = userData;
     localStorage.setItem('user', JSON.stringify(userData));
     bus.emit('auth:change', { user: userData });
 }
 
 export function logout() {
-    store.set({ user: null });
+    state.user = null;
     localStorage.removeItem('user');
     bus.emit('auth:change', { user: null });
 }
 
 // Restore on load
 const savedUser = localStorage.getItem('user');
-if (savedUser) store.set({ user: JSON.parse(savedUser) });
+if (savedUser) state.user = JSON.parse(savedUser);
 
-export { store };
+export { state };
 ```
 
 ### Binding State to Components
 ```javascript
-import { store } from './store/index.js';
+import { bus } from 'agentui-wc';
 
-// Subscribe to all state changes
-store.subscribe((state) => {
+// Subscribe to state changes via bus
+bus.on('state:change', (state) => {
     document.querySelector('#user-name').textContent = state.user?.name || 'Guest';
     document.querySelector('#login-btn').hidden = !!state.user;
     document.querySelector('#logout-btn').hidden = !state.user;
@@ -1702,9 +1679,9 @@ export class AuUserCard extends AuElement {
 
     connectedCallback() {
         super.connectedCallback();
-        // Subscribe to store changes
-        this.#unsubscribe = store.subscribe((state) => {
-            this.user = state.user;
+        // Subscribe to auth changes via bus
+        this.#unsubscribe = bus.on('auth:change', ({ user }) => {
+            this.user = user;
             this.render();
         });
     }
@@ -1805,7 +1782,7 @@ my-app/
 ├── sw.js                # Service Worker
 ├── manifest.json        # PWA manifest
 ├── store/
-│   └── index.js         # Global state (createStore + bus)
+│   └── index.js         # Global state (plain object + bus)
 ├── pages/
 │   ├── home.js          # Lazy-loaded route modules
 │   ├── users.js

@@ -11,13 +11,13 @@
 export { AuElement, define } from './core/AuElement.js';
 export { bus, UIEvents, showToast } from './core/bus.js';
 export { Theme } from './core/theme.js';
-export { createStore, appStore, createNamespacedStore, getStore, getAllStores, captureAppState, restoreAppState, getStateHistory, enableObservability, disableObservability } from './core/store.js';
+
 export { Router } from './core/router.js';
 export { http, HttpError } from './core/http.js';
 export { createRipple, attachRipple, RippleMixin } from './core/ripple.js';
-export { createFormState, getFormValues } from './core/form-state.js';
+
 export { AgentAPI, getAuComponentTree, describe as describeComponent, findByLabel, getRegisteredComponents, enableVisualMarkers, disableVisualMarkers, getMarkerMap, getMarkerElement, getMCPActions } from './core/agent-api.js';
-export { FeatureRegistry, createFeature, getFeatures, getFeature, getFeatureComponents, getFeatureSummary } from './core/feature-registry.js';
+
 export { ComponentSchema, getComponentSchema, getAllSchemas, getSchemaComponents, getSchemaQuickRef } from './core/component-schema.js';
 
 // ============================================
@@ -227,13 +227,13 @@ import './components/au-doc-page.js';
 // ============================================
 import { Theme } from './core/theme.js';
 import { bus, UIEvents, showToast } from './core/bus.js';
-import { createStore, appStore, createNamespacedStore, getStore, getAllStores, captureAppState, restoreAppState, getStateHistory, enableObservability, disableObservability } from './core/store.js';
+
 import { Router } from './core/router.js';
 import { http, HttpError } from './core/http.js';
-import { createFormState, getFormValues } from './core/form-state.js';
+
 import { AgentAPI, getAuComponentTree, describe as describeComponent, findByLabel, getRegisteredComponents, enableVisualMarkers, disableVisualMarkers, getMarkerMap, getMarkerElement, getMCPActions } from './core/agent-api.js';
 import { getComponentSchema, getAllSchemas, getSchemaComponents, getSchemaQuickRef } from './core/component-schema.js';
-import { createFeature, getFeatures } from './core/feature-registry.js';
+
 import { getErrors, clearErrors } from './components/au-error-boundary.js';
 import { auConfirm } from './components/au-confirm.js';
 import { AuElement } from './core/AuElement.js';
@@ -246,31 +246,19 @@ if (typeof window !== 'undefined') {
         bus,
         UIEvents,
         showToast,
-        // Store
-        createStore,
-        appStore,
+
         // Router
         Router,
         // HTTP
         http,
         HttpError,
-        // Form utilities
-        createFormState,
-        getFormValues,
+
         AgentAPI,
         getAuComponentTree,
         describeComponent,
         findByLabel,
         getRegisteredComponents,
-        // Enterprise: Namespaced Stores
-        createNamespacedStore,
-        getStore,
-        getAllStores,
-        captureAppState,
-        restoreAppState,
-        getStateHistory,
-        enableObservability,
-        disableObservability,
+
         // Enterprise: Error Handling
         getErrors,
         clearErrors,
@@ -288,9 +276,7 @@ if (typeof window !== 'undefined') {
         getAllSchemas,
         getSchemaComponents,
         getSchemaQuickRef,
-        // 2026 Agent: Feature Registry (enterprise)
-        createFeature,
-        getFeatures,
+
 
         // 🤖 AI AGENT DISCOVERY (2026)
         // Use this to get ALL component info in one call

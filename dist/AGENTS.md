@@ -309,44 +309,9 @@ const components = AgentUI.getRegisteredComponents();
 // Returns: Map<tag, constructor>
 ```
 
-**4. Enterprise-Scale Features  - Large Application Infrastructure**
+**4. Error Boundaries — Resilient UI**
 
-For building complex, multi-team applications:
-
-```javascript
-// === NAMESPACED STORES ===
-// Isolated state per feature/team - no conflicts
-const userStore = AgentUI.createNamespacedStore('user', { profile: null });
-const cartStore = AgentUI.createNamespacedStore('cart', { items: [] });
-
-// Access stores by namespace
-AgentUI.getStore('user');       // Returns userStore
-AgentUI.getAllStores();         // { user: ..., cart: ... }
-
-// Serialize/restore entire app state
-const snapshot = AgentUI.captureAppState();
-localStorage.setItem('state', JSON.stringify(snapshot));
-AgentUI.restoreAppState(JSON.parse(localStorage.getItem('state')));
-
-// === FEATURE REGISTRY ===
-// Organize code by feature for multi-team development
-AgentUI.createFeature('user', {
-    routes: ['/profile', '/settings'],
-    store: userStore,
-    components: ['au-user-card', 'au-user-form'],
-    meta: { team: 'user-team' }
-});
-
-AgentUI.getFeatures();              // All features
-AgentUI.getFeatureSummary();        // Overview with stats
-AgentUI.getFeatureComponents('user'); // Components in feature
-
-// === OBSERVABILITY ===
-// Track state changes for debugging
-AgentUI.enableObservability();
-AgentUI.getStateHistory('user');    // Timeline of state changes
-AgentUI.getErrors();                // All caught errors
-```
+Catch errors with fallback UI — one error doesn't crash everything:
 
 ```html
 <!-- === ERROR BOUNDARIES === -->

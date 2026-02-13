@@ -1,8 +1,8 @@
-<!-- Enterprise Features Content Fragment -->
+<!-- Advanced Features Content Fragment -->
 <div id="page-enterprise" class="page active">
-    <h1 class="page-title">Enterprise Features</h1>
+    <h1 class="page-title">Advanced Features</h1>
     <p class="page-subtitle">
-        Infrastructure for building large-scale, multi-team applications with AgentUI.
+        Agent automation tools and resilience infrastructure for production applications.
     </p>
 
     <!-- Documentation Tabs -->
@@ -14,59 +14,6 @@
 
     <!-- OVERVIEW Tab Content -->
     <div id="enterprise-overview" class="doc-tab-content">
-        <div class="component-section"
-            style="background: linear-gradient(135deg, var(--md-sys-color-tertiary-container), var(--md-sys-color-secondary-container));">
-            <h2 class="section-title" style="color: var(--md-sys-color-on-tertiary-container);">🏗️ Built for Scale</h2>
-            <au-grid cols="2" gap="md" style="max-width: 800px;">
-                <au-card variant="elevated">
-                    <au-stack direction="row" gap="sm" align="center">
-                        <au-icon name="folder_managed"
-                            style="font-size: 32px; color: var(--md-sys-color-primary);"></au-icon>
-                        <div>
-                            <strong>Namespaced Stores</strong>
-                            <p
-                                style="font-size: 14px; color: var(--md-sys-color-on-surface-variant); margin: 4px 0 0 0;">
-                                Isolated state per feature/team</p>
-                        </div>
-                    </au-stack>
-                </au-card>
-                <au-card variant="elevated">
-                    <au-stack direction="row" gap="sm" align="center">
-                        <au-icon name="shield" style="font-size: 32px; color: var(--md-sys-color-primary);"></au-icon>
-                        <div>
-                            <strong>Error Boundaries</strong>
-                            <p
-                                style="font-size: 14px; color: var(--md-sys-color-on-surface-variant); margin: 4px 0 0 0;">
-                                Graceful degradation</p>
-                        </div>
-                    </au-stack>
-                </au-card>
-                <au-card variant="elevated">
-                    <au-stack direction="row" gap="sm" align="center">
-                        <au-icon name="apps" style="font-size: 32px; color: var(--md-sys-color-primary);"></au-icon>
-                        <div>
-                            <strong>Feature Registry</strong>
-                            <p
-                                style="font-size: 14px; color: var(--md-sys-color-on-surface-variant); margin: 4px 0 0 0;">
-                                Multi-team organization</p>
-                        </div>
-                    </au-stack>
-                </au-card>
-                <au-card variant="elevated">
-                    <au-stack direction="row" gap="sm" align="center">
-                        <au-icon name="monitoring"
-                            style="font-size: 32px; color: var(--md-sys-color-primary);"></au-icon>
-                        <div>
-                            <strong>Observability</strong>
-                            <p
-                                style="font-size: 14px; color: var(--md-sys-color-on-surface-variant); margin: 4px 0 0 0;">
-                                State history & debugging</p>
-                        </div>
-                    </au-stack>
-                </au-card>
-            </au-grid>
-        </div>
-
         <div class="component-section"
             style="background: linear-gradient(135deg, rgba(0, 188, 212, 0.1), rgba(124, 77, 255, 0.1)); border: 2px solid rgba(0, 188, 212, 0.3);">
             <h2 class="section-title" style="display: flex; align-items: center; gap: 12px;">
@@ -85,75 +32,38 @@
         </div>
 
         <div class="component-section"
-            style="background: var(--md-sys-color-primary-container); border-left: 4px solid var(--md-sys-color-primary);">
-            <h2 class="section-title" style="color: var(--md-sys-color-on-primary-container);">When to Use</h2>
-            <p style="color: var(--md-sys-color-on-primary-container); line-height: 1.6;">
-                Enterprise features are designed for <strong>large-scale applications</strong> with multiple teams.
-                Use namespaced stores to avoid state conflicts, error boundaries to prevent cascading failures,
-                and the feature registry to organize code by domain.
-            </p>
+            style="background: linear-gradient(135deg, var(--md-sys-color-tertiary-container), var(--md-sys-color-secondary-container));">
+            <h2 class="section-title" style="color: var(--md-sys-color-on-tertiary-container);">🛡️ Resilience</h2>
+            <au-grid cols="2" gap="md" style="max-width: 800px;">
+                <au-card variant="elevated">
+                    <au-stack direction="row" gap="sm" align="center">
+                        <au-icon name="shield" style="font-size: 32px; color: var(--md-sys-color-primary);"></au-icon>
+                        <div>
+                            <strong>Error Boundaries</strong>
+                            <p
+                                style="font-size: 14px; color: var(--md-sys-color-on-surface-variant); margin: 4px 0 0 0;">
+                                Graceful degradation — isolate failures</p>
+                        </div>
+                    </au-stack>
+                </au-card>
+                <au-card variant="elevated">
+                    <au-stack direction="row" gap="sm" align="center">
+                        <au-icon name="confirmation_number"
+                            style="font-size: 32px; color: var(--md-sys-color-primary);"></au-icon>
+                        <div>
+                            <strong>Programmatic Dialogs</strong>
+                            <p
+                                style="font-size: 14px; color: var(--md-sys-color-on-surface-variant); margin: 4px 0 0 0;">
+                                auConfirm() — async confirmation</p>
+                        </div>
+                    </au-stack>
+                </au-card>
+            </au-grid>
         </div>
     </div>
 
     <!-- API Tab Content -->
     <div id="enterprise-api" class="doc-tab-content" style="display: none;">
-        <div class="component-section">
-            <h2 class="section-title">Store Methods</h2>
-            <au-api-table type="methods">
-                <au-api-row name="createNamespacedStore(name, initial)" type="function" returns="Store">
-                    Creates an isolated store with the given namespace and initial state
-                </au-api-row>
-                <au-api-row name="getStore(name)" type="function" returns="Store | undefined">
-                    Retrieves a store by its namespace name
-                </au-api-row>
-                <au-api-row name="getAllStores()" type="function" returns="Record&lt;string, Store&gt;">
-                    Returns all registered namespaced stores
-                </au-api-row>
-                <au-api-row name="captureAppState()" type="function" returns="object">
-                    Serializes all store states for debugging or persistence
-                </au-api-row>
-                <au-api-row name="restoreAppState(snapshot)" type="function" returns="void">
-                    Restores all stores from a previously captured snapshot
-                </au-api-row>
-            </au-api-table>
-        </div>
-
-        <div class="component-section">
-            <h2 class="section-title">Observability Methods</h2>
-            <au-api-table type="methods">
-                <au-api-row name="enableObservability()" type="function" returns="void">
-                    Starts tracking state changes for all stores
-                </au-api-row>
-                <au-api-row name="disableObservability()" type="function" returns="void">
-                    Stops tracking state changes
-                </au-api-row>
-                <au-api-row name="getStateHistory(namespace)" type="function" returns="Array&lt;{timestamp, state}&gt;">
-                    Returns the change history for a specific store
-                </au-api-row>
-                <au-api-row name="getErrors()" type="function" returns="Array&lt;Error&gt;">
-                    Returns all errors caught by error boundaries
-                </au-api-row>
-            </au-api-table>
-        </div>
-
-        <div class="component-section">
-            <h2 class="section-title">Feature Registry Methods</h2>
-            <au-api-table type="methods">
-                <au-api-row name="createFeature(name, config)" type="function" returns="Feature">
-                    Registers a feature with routes, store, and components
-                </au-api-row>
-                <au-api-row name="getFeatures()" type="function" returns="Record&lt;string, Feature&gt;">
-                    Returns all registered features
-                </au-api-row>
-                <au-api-row name="getFeatureSummary()" type="function" returns="object">
-                    Returns an overview with stats for all features
-                </au-api-row>
-                <au-api-row name="getFeatureComponents(name)" type="function" returns="string[]">
-                    Returns component names registered to a feature
-                </au-api-row>
-            </au-api-table>
-        </div>
-
         <div class="component-section">
             <h2 class="section-title">Agent Automation Methods</h2>
             <au-api-table type="methods">
@@ -174,38 +84,25 @@
                 </au-api-row>
             </au-api-table>
         </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Error Handling Methods</h2>
+            <au-api-table type="methods">
+                <au-api-row name="getErrors()" type="function" returns="Array&lt;Error&gt;">
+                    Returns all errors caught by error boundaries
+                </au-api-row>
+                <au-api-row name="clearErrors()" type="function" returns="void">
+                    Clears the error log
+                </au-api-row>
+                <au-api-row name="auConfirm(message, options)" type="function" returns="Promise&lt;boolean&gt;">
+                    Shows a programmatic confirmation dialog
+                </au-api-row>
+            </au-api-table>
+        </div>
     </div>
 
     <!-- EXAMPLES Tab Content -->
     <div id="enterprise-examples" class="doc-tab-content" style="display: none;">
-        <au-example title="Namespaced Store Demo">
-            <div slot="demo">
-                <au-stack gap="md">
-                    <au-stack direction="row" gap="md">
-                        <au-button variant="filled" id="demo-create-store">Create Stores</au-button>
-                        <au-button variant="outlined" id="demo-capture-state">Capture State</au-button>
-                        <au-button variant="text" id="demo-clear-stores">Clear</au-button>
-                    </au-stack>
-                    <au-card variant="outlined" id="store-demo-output"
-                        style="display: none; font-family: var(--md-sys-typescale-body-medium-font); padding: 16px; max-height: 200px; overflow: auto;">
-                    </au-card>
-                </au-stack>
-            </div>
-            <div slot="code">// Create isolated stores for each feature
-                const userStore = AgentUI.createNamespacedStore('user', {
-                profile: { name: 'Demo User' },
-                preferences: { theme: 'dark' }
-                });
-
-                const cartStore = AgentUI.createNamespacedStore('cart', {
-                items: ['Item A', 'Item B'],
-                total: 29.99
-                });
-
-                // Capture entire app state
-                const snapshot = AgentUI.captureAppState();</div>
-        </au-example>
-
         <au-example title="Visual Markers for AI Agents">
             <div slot="demo">
                 <au-stack gap="md">
@@ -249,4 +146,5 @@
                 &lt;/au-error-boundary&gt;</div>
         </au-example>
     </div>
+
 </div>

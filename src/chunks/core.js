@@ -12,7 +12,7 @@
 export { AuElement, define } from '../core/AuElement.js';
 export { bus, UIEvents, showToast } from '../core/bus.js';
 export { Theme } from '../core/theme.js';
-export { createStore, appStore } from '../core/store.js';
+
 export { createRipple, attachRipple, RippleMixin } from '../core/ripple.js';
 
 // View transitions
@@ -68,7 +68,7 @@ if (!toastBus.hasListeners(ToastEvents.TOAST_SHOW)) {
 // ============================================
 import { Theme } from '../core/theme.js';
 import { bus, UIEvents, showToast } from '../core/bus.js';
-import { createStore, appStore } from '../core/store.js';
+
 import { auConfirm } from '../components/au-confirm.js';
 import { AuElement } from '../core/AuElement.js';
 import { getAuComponentTree, describe as describeComponent, findByLabel, getRegisteredComponents } from '../core/agent-api.js';
@@ -81,9 +81,7 @@ if (typeof window !== 'undefined' && !window.AgentUI) {
         bus,
         UIEvents,
         showToast,
-        // Store
-        createStore,
-        appStore,
+
         // Agent utilities
         getAuComponentTree,
         describeComponent,

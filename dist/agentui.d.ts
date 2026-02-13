@@ -132,18 +132,8 @@ export declare const domBatch: { read(fn: () => void): void; write(fn: () => voi
 export declare function processInChunks<T>(items: T[], processFn: (item: T, index: number) => void, chunkSize?: number): Promise<void>;
 
 // ============================================
-// STORE & ROUTER & HTTP
+// ROUTER & HTTP
 // ============================================
-export interface Store<T> {
-    get(): T;
-    set(newState: Partial<T>): void;
-    update(fn: (state: T) => Partial<T>): void;
-    subscribe(listener: (state: T) => void): () => void;
-    reset(): void;
-}
-
-export declare function createStore<T extends object>(initialState: T): Store<T>;
-export declare const appStore: Store<any>;
 
 export interface Router {
     on(path: string, handler: (params: Record<string, string>) => void): Router;
@@ -172,11 +162,7 @@ export declare class HttpError extends Error {
     body: string;
 }
 
-// ============================================
-// FORM UTILITIES
-// ============================================
-export declare function createFormState(initialValues: Record<string, any>): any;
-export declare function getFormValues(form: HTMLElement): Record<string, any>;
+
 
 // ============================================
 // THEME

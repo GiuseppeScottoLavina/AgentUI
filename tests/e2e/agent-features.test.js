@@ -313,36 +313,8 @@ describe('2026 Agent Features E2E', () => {
         });
     });
 
-    // ========================================
-    // ENTERPRISE FEATURES TESTS
-    // ========================================
 
-    describe('Enterprise Features', () => {
-        test('createNamespacedStore should be available', async () => {
-            const result = await page.evaluate(() => typeof window.AgentUI.createNamespacedStore === 'function');
-            expect(result).toBe(true);
-        });
 
-        test('getStore should be available', async () => {
-            const result = await page.evaluate(() => typeof window.AgentUI.getStore === 'function');
-            expect(result).toBe(true);
-        });
-
-        test('captureAppState should be available', async () => {
-            const result = await page.evaluate(() => typeof window.AgentUI.captureAppState === 'function');
-            expect(result).toBe(true);
-        });
-
-        test('createFeature should be available', async () => {
-            const result = await page.evaluate(() => typeof window.AgentUI.createFeature === 'function');
-            expect(result).toBe(true);
-        });
-
-        test('getFeatures should be available', async () => {
-            const result = await page.evaluate(() => typeof window.AgentUI.getFeatures === 'function');
-            expect(result).toBe(true);
-        });
-    });
 
     // ========================================
     // NEW COMPONENTS TESTS
