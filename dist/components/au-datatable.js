@@ -1,6 +1,6 @@
-import{h as U}from"./chunk-hwrk9hgf.js";import{n as W,o as O}from"./chunk-0f7ph7sp.js";import{p as H}from"./chunk-aeetm00j.js";class q extends H{static get observedAttributes(){return["columns","page-size","sortable","selectable","filterable","empty-message"]}static baseClass="au-datatable";static cssFile="datatable";constructor(){super();this._data=[],this._filteredData=[],this._columns=[],this._currentPage=1,this._sortField=null,this._sortDirection="asc",this._selectedRows=new Set,this._filterValue=""}get columns(){let z=this.getAttribute("columns");if(z)try{return JSON.parse(z)}catch(J){return console.warn("[au-datatable] Invalid columns JSON:",J),[]}return this._columns}set columns(z){if(this._columns=Array.isArray(z)?z:[],this.isConnected)this.render()}get pageSize(){return parseInt(this.getAttribute("page-size"))||10}set pageSize(z){this.setAttribute("page-size",z)}get sortable(){return this.hasAttribute("sortable")}get selectable(){return this.hasAttribute("selectable")}get filterable(){return this.hasAttribute("filterable")}get emptyMessage(){return this.getAttribute("empty-message")||"No data available"}connectedCallback(){super.connectedCallback(),this.render()}attributeChangedCallback(z,J,G){if(this.isConnected&&J!==G)this.render()}setData(z){this._data=Array.isArray(z)?z:[],this._filteredData=[...this._data],this._currentPage=1,this._selectedRows.clear(),this._applySort(),this.render(),this.emit("au-data-change",{data:this._data,count:this._data.length},{bubbles:!0})}getData(){return[...this._data]}getSortState(){return{field:this._sortField,direction:this._sortDirection}}getSelectedRows(){return this._data.filter((z,J)=>this._selectedRows.has(J))}getPageInfo(){let z=Math.ceil(this._filteredData.length/this.pageSize);return{page:this._currentPage,pageSize:this.pageSize,totalPages:z,totalRows:this._filteredData.length}}goToPage(z){let J=Math.ceil(this._filteredData.length/this.pageSize)||1;this._currentPage=Math.max(1,Math.min(z,J)),this.render(),this.emit("au-page-change",this.getPageInfo(),{bubbles:!0})}sortBy(z,J){if(this._sortField===z&&!J)this._sortDirection=this._sortDirection==="asc"?"desc":"asc";else this._sortField=z,this._sortDirection=J||"asc";this._applySort(),this.render(),this.emit("au-sort-change",this.getSortState(),{bubbles:!0})}filter(z){this._filterValue=z.toLowerCase(),this._applyFilter(),this._currentPage=1,this.render(!1)}_applySort(){if(!this._sortField)return;this._filteredData.sort((z,J)=>{let G=z[this._sortField]??"",K=J[this._sortField]??"";if(typeof G==="number"&&typeof K==="number")return this._sortDirection==="asc"?G-K:K-G;let L=String(G).toLowerCase(),N=String(K).toLowerCase(),M=L.localeCompare(N);return this._sortDirection==="asc"?M:-M})}_applyFilter(){if(!this._filterValue){this._filteredData=[...this._data];return}let z=this.columns.filter((G)=>G.filterable!==!1),J=z.length>0?z.map((G)=>G.field):this.columns.map((G)=>G.field);this._filteredData=this._data.filter((G)=>{return J.some((K)=>{return String(G[K]??"").toLowerCase().includes(this._filterValue)})})}_getPageData(){let z=(this._currentPage-1)*this.pageSize,J=z+this.pageSize;return this._filteredData.slice(z,J)}_handleHeaderClick(z){if(this.columns.find((G)=>G.field===z)?.sortable!==!1&&this.sortable)this.sortBy(z)}_handleRowSelect(z,J){let G=(this._currentPage-1)*this.pageSize+z;if(J)this._selectedRows.add(G);else this._selectedRows.delete(G);this.render(),this.emit("au-selection-change",{selected:this.getSelectedRows()},{bubbles:!0})}_handleSelectAll(z){let J=this._getPageData(),G=(this._currentPage-1)*this.pageSize;J.forEach((K,L)=>{if(z)this._selectedRows.add(G+L);else this._selectedRows.delete(G+L)}),this.render(),this.emit("au-selection-change",{selected:this.getSelectedRows()},{bubbles:!0})}render(z=!0){let J=this.columns,G=this._getPageData(),{page:K,totalPages:L,totalRows:N}=this.getPageInfo(),M=(this._currentPage-1)*this.pageSize,X=G.length>0&&G.every((Y,Z)=>this._selectedRows.has(M+Z)),Q=this.querySelector(".au-datatable-table tbody"),_=this.querySelector(".au-datatable-footer");if(!z&&Q){if(Q.innerHTML=this._renderTbody(G,J,M,X),_)_.innerHTML=this._renderFooterContent(K,L,N);this._attachEventListeners();return}this.innerHTML=O`
+import{h as M}from"./chunk-hwrk9hgf.js";import{n as U,o as L}from"./chunk-0f7ph7sp.js";import{p as $}from"./chunk-aeetm00j.js";class q extends ${static get observedAttributes(){return["columns","page-size","sortable","selectable","filterable","empty-message"]}static baseClass="au-datatable";static cssFile="datatable";constructor(){super();this._data=[],this._filteredData=[],this._columns=[],this._currentPage=1,this._sortField=null,this._sortDirection="asc",this._selectedRows=new Set,this._filterValue=""}get columns(){let z=this.getAttribute("columns");if(z)try{return JSON.parse(z)}catch(H){return console.warn("[au-datatable] Invalid columns JSON:",H),[]}return this._columns}set columns(z){if(this._columns=Array.isArray(z)?z:[],this.isConnected)this.render()}get pageSize(){return parseInt(this.getAttribute("page-size"))||10}set pageSize(z){this.setAttribute("page-size",z)}get sortable(){return this.hasAttribute("sortable")}get selectable(){return this.hasAttribute("selectable")}get filterable(){return this.hasAttribute("filterable")}get emptyMessage(){return this.getAttribute("empty-message")||"No data available"}connectedCallback(){super.connectedCallback(),this.render()}attributeChangedCallback(z,H,G){if(this.isConnected&&H!==G)this.render()}setData(z){this._data=Array.isArray(z)?z:[],this._filteredData=[...this._data],this._currentPage=1,this._selectedRows.clear(),this._applySort(),this.render(),this.emit("au-data-change",{data:this._data,count:this._data.length},{bubbles:!0})}getData(){return[...this._data]}getSortState(){return{field:this._sortField,direction:this._sortDirection}}getSelectedRows(){return this._data.filter((z,H)=>this._selectedRows.has(H))}getPageInfo(){let z=Math.ceil(this._filteredData.length/this.pageSize);return{page:this._currentPage,pageSize:this.pageSize,totalPages:z,totalRows:this._filteredData.length}}goToPage(z){let H=Math.ceil(this._filteredData.length/this.pageSize)||1;this._currentPage=Math.max(1,Math.min(z,H)),this.render(),this.emit("au-page-change",this.getPageInfo(),{bubbles:!0})}sortBy(z,H){if(this._sortField===z&&!H)this._sortDirection=this._sortDirection==="asc"?"desc":"asc";else this._sortField=z,this._sortDirection=H||"asc";this._applySort(),this.render(),this.emit("au-sort-change",this.getSortState(),{bubbles:!0})}filter(z){this._filterValue=z.toLowerCase(),this._applyFilter(),this._currentPage=1,this.render(!1)}_applySort(){if(!this._sortField)return;this._filteredData.sort((z,H)=>{let G=z[this._sortField]??"",J=H[this._sortField]??"";if(typeof G==="number"&&typeof J==="number")return this._sortDirection==="asc"?G-J:J-G;let K=String(G).toLowerCase(),N=String(J).toLowerCase(),O=K.localeCompare(N);return this._sortDirection==="asc"?O:-O})}_applyFilter(){if(!this._filterValue){this._filteredData=[...this._data];return}let z=this.columns.filter((G)=>G.filterable!==!1),H=z.length>0?z.map((G)=>G.field):this.columns.map((G)=>G.field);this._filteredData=this._data.filter((G)=>{return H.some((J)=>{return String(G[J]??"").toLowerCase().includes(this._filterValue)})})}_getPageData(){let z=(this._currentPage-1)*this.pageSize,H=z+this.pageSize;return this._filteredData.slice(z,H)}_handleHeaderClick(z){if(this.columns.find((G)=>G.field===z)?.sortable!==!1&&this.sortable)this.sortBy(z)}_handleRowSelect(z,H){let G=(this._currentPage-1)*this.pageSize+z;if(H)this._selectedRows.add(G);else this._selectedRows.delete(G);this.render(),this.emit("au-selection-change",{selected:this.getSelectedRows()},{bubbles:!0})}_handleSelectAll(z){let H=this._getPageData(),G=(this._currentPage-1)*this.pageSize;H.forEach((J,K)=>{if(z)this._selectedRows.add(G+K);else this._selectedRows.delete(G+K)}),this.render(),this.emit("au-selection-change",{selected:this.getSelectedRows()},{bubbles:!0})}render(z=!0){let H=this.columns,G=this._getPageData(),{page:J,totalPages:K,totalRows:N}=this.getPageInfo(),O=(this._currentPage-1)*this.pageSize,W=G.length>0&&G.every((X,Y)=>this._selectedRows.has(O+Y)),Q=this.querySelector(".au-datatable-table tbody"),Z=this.querySelector(".au-datatable-footer");if(!z&&Q){if(Q.innerHTML=this._renderTbody(G,H,O,W),Z)Z.innerHTML=this._renderFooterContent(J,K,N);this._attachEventListeners();return}this.innerHTML=L`
             <div class="au-datatable-wrapper">
-                ${this.filterable?O`
+                ${this.filterable?L`
                     <div class="au-datatable-toolbar">
                         <div class="au-datatable-search">
                             <input 
@@ -15,80 +15,70 @@ import{h as U}from"./chunk-hwrk9hgf.js";import{n as W,o as O}from"./chunk-0f7ph7
                 <table class="au-datatable-table">
                     <thead>
                         <tr>
-                            ${this.selectable?O`
+                            ${this.selectable?L`
                                 <th class="au-datatable-checkbox-cell">
                                     <input 
                                         type="checkbox" 
-                                        ${X?"checked":""}
+                                        ${W?"checked":""}
                                         data-select-all
                                     >
                                 </th>
                             `:""}
-                            ${W(J.map((Y)=>{let Z=Y.sortable!==!1&&this.sortable,$=this._sortField===Y.field,E=$?this._sortDirection==="asc"?"↑":"↓":"↕";return O`
+                            ${U(H.map((X)=>{let Y=X.sortable!==!1&&this.sortable,_=this._sortField===X.field,E=_?this._sortDirection==="asc"?"↑":"↓":"↕";return L`
                                     <th 
-                                        class="${Z?"au-datatable-sortable":""} ${$?"au-datatable-sorted":""}"
-                                        data-field="${Y.field}"
+                                        class="${Y?"au-datatable-sortable":""} ${_?"au-datatable-sorted":""}"
+                                        data-field="${X.field}"
                                     >
-                                        ${Y.label||Y.field}
-                                        ${Z?W(`<span class="au-datatable-sort-icon">${E}</span>`):""}
+                                        ${X.label||X.field}
+                                        ${Y?U(`<span class="au-datatable-sort-icon">${E}</span>`):""}
                                     </th>
                                 `}).join(""))}
                         </tr>
                     </thead>
                     <tbody>
-                        ${W(this._renderTbody(G,J,M,X))}
+                        ${U(this._renderTbody(G,H,O,W))}
                     </tbody>
                 </table>
 
-                ${W(this._renderFooter(K,L,N))}
+                ${U(this._renderFooter(J,K,N))}
             </div>
-        `,this._attachEventListeners()}_renderTbody(z,J,G,K){if(z.length===0)return O`
+        `,this._attachEventListeners()}_renderTbody(z,H,G,J){if(z.length===0)return L`
                 <tr>
-                    <td colspan="${J.length+(this.selectable?1:0)}" class="au-datatable-empty-state">
+                    <td colspan="${H.length+(this.selectable?1:0)}" class="au-datatable-empty-state">
                         ${this.emptyMessage}
                     </td>
                 </tr>
-            `;return z.map((L,N)=>{let M=G+N,X=this._selectedRows.has(M);return O`
-                <tr class="${X?"au-datatable-selected":""}" data-row-index="${N}">
-                    ${this.selectable?O`
+            `;return z.map((K,N)=>{let O=G+N,W=this._selectedRows.has(O);return L`
+                <tr class="${W?"au-datatable-selected":""}" data-row-index="${N}">
+                    ${this.selectable?L`
                         <td class="au-datatable-checkbox-cell">
                             <input 
                                 type="checkbox" 
-                                ${X?"checked":""}
+                                ${W?"checked":""}
                                 data-row-select="${N}"
                             >
                         </td>
                     `:""}
-                    ${W(J.map((Q)=>O`
+                    ${U(H.map((Q)=>L`
                         <td data-field="${Q.field}">
-                            ${Q.render?W(Q.render(L[Q.field],L)):L[Q.field]??""}
+                            ${Q.render?U(Q.render(K[Q.field],K)):K[Q.field]??""}
                         </td>
                     `).join(""))}
                 </tr>
-            `}).join("")}_renderFooter(z,J,G){return`
+            `}).join("")}_renderFooter(z,H,G){return`
             <div class="au-datatable-footer">
-                ${this._renderFooterContent(z,J,G)}
+                ${this._renderFooterContent(z,H,G)}
             </div>
-        `}_renderFooterContent(z,J,G){let K=this._selectedRows.size,L=K>0?`<span class="au-datatable-selected-count">${K} selected</span>`:"";if(J<=1)return`
+        `}_renderFooterContent(z,H,G){let J=this._selectedRows.size,K=J>0?`<span class="au-datatable-selected-count">${J} selected</span>`:"";if(H<=1)return`
                 <span class="au-datatable-footer-info">${G} row${G!==1?"s":""}</span>
-                ${L}
+                ${K}
             `;return`
+            ${K}
             <span class="au-datatable-footer-info">${(z-1)*this.pageSize+1}–${Math.min(z*this.pageSize,G)} of ${G}</span>
-            ${L}
-            <div class="au-datatable-pagination-controls">
-                <button class="au-datatable-pagination-btn" data-page="prev" ${z<=1?"disabled":""}>
-                    ←
-                </button>
-                ${this._getPaginationButtons(z,J)}
-                <button class="au-datatable-pagination-btn" data-page="next" ${z>=J?"disabled":""}>
-                    →
-                </button>
-            </div>
-        `}_getPaginationButtons(z,J){let G=[],K=5,L=Math.max(1,z-Math.floor(2.5)),N=Math.min(J,L+5-1);if(N-L<4)L=Math.max(1,N-5+1);for(let M=L;M<=N;M++)G.push(`
-                <button 
-                    class="au-datatable-pagination-btn ${M===z?"au-datatable-pagination-btn-active":""}"
-                    data-page="${M}"
-                >
-                    ${M}
-                </button>
-            `);return G.join("")}_attachEventListeners(){this.querySelectorAll("th.au-datatable-sortable").forEach((G)=>{this.listen(G,"click",()=>{this._handleHeaderClick(G.dataset.field)})}),this.querySelectorAll(".au-datatable-pagination-btn[data-page]").forEach((G)=>{this.listen(G,"click",()=>{let K=G.dataset.page;if(K==="prev")this.goToPage(this._currentPage-1);else if(K==="next")this.goToPage(this._currentPage+1);else this.goToPage(parseInt(K))})}),this.querySelectorAll("[data-row-select]").forEach((G)=>{this.listen(G,"change",(K)=>{this._handleRowSelect(parseInt(G.dataset.rowSelect),K.target.checked)})});let z=this.querySelector("[data-select-all]");if(z)this.listen(z,"change",(G)=>{this._handleSelectAll(G.target.checked)});let J=this.querySelector(".au-datatable-search input");if(J){let G=U((K)=>this.filter(K),300);this.listen(J,"input",(K)=>G(K.target.value))}}}if(!customElements.get("au-datatable"))customElements.define("au-datatable",q);export{q as AuDataTable};
+            <button class="au-datatable-nav-btn" data-page="prev" ${z<=1?"disabled":""} aria-label="Previous page">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+            </button>
+            <button class="au-datatable-nav-btn" data-page="next" ${z>=H?"disabled":""} aria-label="Next page">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </button>
+        `}_attachEventListeners(){this.querySelectorAll("th.au-datatable-sortable").forEach((G)=>{this.listen(G,"click",()=>{this._handleHeaderClick(G.dataset.field)})}),this.querySelectorAll("[data-page]").forEach((G)=>{this.listen(G,"click",()=>{let J=G.dataset.page;if(J==="prev")this.goToPage(this._currentPage-1);else if(J==="next")this.goToPage(this._currentPage+1)})}),this.querySelectorAll("[data-row-select]").forEach((G)=>{this.listen(G,"change",(J)=>{this._handleRowSelect(parseInt(G.dataset.rowSelect),J.target.checked)})});let z=this.querySelector("[data-select-all]");if(z)this.listen(z,"change",(G)=>{this._handleSelectAll(G.target.checked)});let H=this.querySelector(".au-datatable-search input");if(H){let G=M((J)=>this.filter(J),300);this.listen(H,"input",(J)=>G(J.target.value))}}}if(!customElements.get("au-datatable"))customElements.define("au-datatable",q);export{q as AuDataTable};

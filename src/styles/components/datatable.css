@@ -33,7 +33,6 @@ au-datatable {
     align-items: center;
     gap: 8px;
     flex: 1;
-    max-width: 300px;
 }
 
 .au-datatable-search input {
@@ -155,38 +154,38 @@ au-datatable {
     white-space: nowrap;
 }
 
-.au-datatable-pagination-controls {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-}
-
-.au-datatable-pagination-btn {
+.au-datatable-nav-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 32px;
-    height: 32px;
-    padding: 0 8px;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    margin: 0;
     border: none;
-    border-radius: var(--md-sys-shape-corner-small);
+    border-radius: 50%;
     background: transparent;
-    color: var(--md-sys-color-on-surface);
+    color: var(--md-sys-color-on-surface-variant);
     cursor: pointer;
-    font-size: var(--md-sys-typescale-body-small-size);
     transition: background-color 0.15s;
+    appearance: none;
+    -webkit-appearance: none;
+    line-height: 0;
+    font-size: 0;
+    flex-shrink: 0;
 }
 
-.au-datatable-pagination-btn:hover:not(:disabled) {
+.au-datatable-nav-btn svg {
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+
+.au-datatable-nav-btn:hover:not(:disabled) {
     background: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
 }
 
-.au-datatable-pagination-btn:disabled {
+.au-datatable-nav-btn:disabled {
     opacity: 0.38;
-    cursor: not-allowed;
-}
-
-.au-datatable-pagination-btn.au-datatable-pagination-btn-active {
-    background: var(--md-sys-color-primary);
-    color: var(--md-sys-color-on-primary);
+    cursor: default;
 }

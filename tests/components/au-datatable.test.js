@@ -436,9 +436,32 @@ describe('au-datatable Unit Tests', () => {
         el.setData(SAMPLE_DATA);
         const footer = el.querySelector('.au-datatable-footer');
         expect(footer).toBeTruthy();
-        // Should show both row count AND pagination
-        expect(footer.textContent).toContain('5');
-        expect(footer.querySelector('.au-datatable-pagination-controls')).toBeTruthy();
+        // MD3: range text + prev/next buttons only
+        const info = footer.querySelector('.au-datatable-footer-info');
+        expect(info).toBeTruthy();
+        expect(info.textContent).toContain('1');
+        expect(info.textContent).toContain('5');
+        // Only prev/next buttons, NO numbered page buttons (MD3 spec)
+        const prevBtn = footer.querySelector('[data-page="prev"]');
+        const nextBtn = footer.querySelector('[data-page="next"]');
+        expect(prevBtn).toBeTruthy();
+        expect(nextBtn).toBeTruthy();
+    });
+
+    test('pagination should NOT have numbered page buttons (MD3 spec)', () => {
+        const el = document.createElement('au-datatable');
+        el.setAttribute('columns', JSON.stringify(SAMPLE_COLUMNS));
+        el.setAttribute('page-size', '2');
+        body.appendChild(el);
+
+        el.setData(SAMPLE_DATA);
+        const footer = el.querySelector('.au-datatable-footer');
+        // MD3: only prev/next, no numbered buttons like 1, 2, 3
+        const allButtons = footer.querySelectorAll('button');
+        for (const btn of allButtons) {
+            const page = btn.getAttribute('data-page');
+            expect(page === 'prev' || page === 'next').toBe(true);
+        }
     });
 
     test('footer row count should update after filtering', () => {
@@ -454,5 +477,28 @@ describe('au-datatable Unit Tests', () => {
         // After filtering, should show filtered count
         expect(footer.textContent).toContain('1');
         expect(footer.textContent).toContain('row');
+    });
+
+    test('prev button should be disabled on first page', () => {
+        const el = document.createElement('au-datatable');
+        el.setAttribute('columns', JSON.stringify(SAMPLE_COLUMNS));
+        el.setAttribute('page-size', '2');
+        body.appendChild(el);
+
+        el.setData(SAMPLE_DATA);
+        const prevBtn = el.querySelector('[data-page="prev"]');
+        expect(prevBtn.hasAttribute('disabled')).toBe(true);
+    });
+
+    test('next button should be disabled on last page', () => {
+        const el = document.createElement('au-datatable');
+        el.setAttribute('columns', JSON.stringify(SAMPLE_COLUMNS));
+        el.setAttribute('page-size', '2');
+        body.appendChild(el);
+
+        el.setData(SAMPLE_DATA);
+        el.goToPage(3); // Last page (5 items / 2 per page = 3 pages)
+        const nextBtn = el.querySelector('[data-page="next"]');
+        expect(nextBtn.hasAttribute('disabled')).toBe(true);
     });
 });
