@@ -362,7 +362,7 @@ export class AuDataTable extends AuElement {
                                         data-field="${col.field}"
                                     >
                                         ${col.label || col.field}
-                                        ${isSortable ? `<span class="au-datatable-sort-icon">${sortIcon}</span>` : ''}
+                                        ${isSortable ? safe(`<span class="au-datatable-sort-icon">${sortIcon}</span>`) : ''}
                                     </th>
                                 `;
         }).join(''))}

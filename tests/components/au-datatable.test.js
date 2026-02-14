@@ -232,6 +232,64 @@ describe('au-datatable Unit Tests', () => {
         expect(state.field).toBe(null);
     });
 
+    // ─── SORT ICON RENDERING (regression test) ────────────────────
+    test('sort icon should render as actual span element, not escaped HTML', () => {
+        const el = document.createElement('au-datatable');
+        el.setAttribute('columns', JSON.stringify(SAMPLE_COLUMNS));
+        el.setAttribute('sortable', '');
+        body.appendChild(el);
+
+        el.setData(SAMPLE_DATA);
+        const sortIcon = el.querySelector('.au-datatable-sort-icon');
+        expect(sortIcon).not.toBeNull();
+        expect(sortIcon.tagName).toBe('SPAN');
+    });
+
+    test('column headers should NOT contain raw HTML text', () => {
+        const el = document.createElement('au-datatable');
+        el.setAttribute('columns', JSON.stringify(SAMPLE_COLUMNS));
+        el.setAttribute('sortable', '');
+        body.appendChild(el);
+
+        el.setData(SAMPLE_DATA);
+        const ths = el.querySelectorAll('th');
+        for (const th of ths) {
+            // No raw HTML tags should appear as text
+            expect(th.textContent).not.toContain('<span');
+            expect(th.textContent).not.toContain('</span>');
+        }
+    });
+
+    test('sort icon should contain direction arrow', () => {
+        const el = document.createElement('au-datatable');
+        el.setAttribute('columns', JSON.stringify(SAMPLE_COLUMNS));
+        el.setAttribute('sortable', '');
+        body.appendChild(el);
+
+        el.setData(SAMPLE_DATA);
+        // All unsorted sortable columns should have ↕
+        const icons = el.querySelectorAll('.au-datatable-sort-icon');
+        expect(icons.length).toBeGreaterThan(0);
+        for (const icon of icons) {
+            expect(icon.textContent.trim()).toBe('↕');
+        }
+    });
+
+    test('sort icon should update to ascending arrow after sort', () => {
+        const el = document.createElement('au-datatable');
+        el.setAttribute('columns', JSON.stringify(SAMPLE_COLUMNS));
+        el.setAttribute('sortable', '');
+        body.appendChild(el);
+
+        el.setData(SAMPLE_DATA);
+        el.sortBy('name', 'asc');
+
+        const nameTh = el.querySelector('th[data-field="name"]');
+        const icon = nameTh.querySelector('.au-datatable-sort-icon');
+        expect(icon).not.toBeNull();
+        expect(icon.textContent.trim()).toBe('↑');
+    });
+
     // ─── FILTERING ─────────────────────────────────────────────────
     test('should default to filterable false (opt-in)', () => {
         const el = document.createElement('au-datatable');

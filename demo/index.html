@@ -76,10 +76,10 @@
         /* Material Symbols font removed - icons use inline SVG now */
     </style>
     <!-- Preload + async CSS: 12KB loads instantly from preload, media trick prevents render-blocking -->
-    <link rel="preload" as="style" href="../dist/agentui.css?v=0.1.165">
-    <link rel="stylesheet" href="../dist/agentui.css?v=0.1.165" media="print" onload="this.media='all'">
+    <link rel="preload" as="style" href="../dist/agentui.css?v=0.1.166">
+    <link rel="stylesheet" href="../dist/agentui.css?v=0.1.166" media="print" onload="this.media='all'">
     <noscript>
-        <link rel="stylesheet" href="../dist/agentui.css?v=0.1.165">
+        <link rel="stylesheet" href="../dist/agentui.css?v=0.1.166">
     </noscript>
     <style>
         /* Size-adjusted Arial fallback to match Roboto metrics (from Capsize) */
@@ -526,7 +526,7 @@
             if (loadedRoutes.has(name)) return;
             loadedRoutes.add(name);
             const start = performance.now();
-            await import('../dist/routes/' + name + '.js?v=0.1.165');
+            await import('../dist/routes/' + name + '.js?v=0.1.166');
             console.log('[Shell] Route ' + name + '.js loaded in ' + (performance.now() - start).toFixed(0) + 'ms');
         }
 
