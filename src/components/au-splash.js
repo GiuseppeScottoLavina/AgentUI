@@ -13,6 +13,7 @@
  */
 
 import { AuElement } from '../core/AuElement.js';
+import { html, safe } from '../core/utils.js';
 
 export class AuSplash extends AuElement {
     static get observedAttributes() {
@@ -116,9 +117,9 @@ export class AuSplash extends AuElement {
         // Set CSS variable for duration
         this.style.setProperty('--au-splash-duration', `${duration}ms`);
 
-        this.innerHTML = `
-            ${logo ? `<img class="au-splash__logo" src="${logo}" alt="Loading...">` : ''}
-            ${showSpinner ? '<div class="au-splash__spinner" role="progressbar" aria-label="Loading"></div>' : ''}
+        this.innerHTML = html`
+            ${logo ? html`<img class="au-splash__logo" src="${logo}" alt="Loading...">` : ''}
+            ${showSpinner ? safe('<div class="au-splash__spinner" role="progressbar" aria-label="Loading"></div>') : ''}
         `;
     }
 

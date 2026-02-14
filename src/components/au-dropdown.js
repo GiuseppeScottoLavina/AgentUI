@@ -6,7 +6,7 @@
  */
 
 import { AuElement, define } from '../core/AuElement.js';
-import { escapeHTML } from '../core/utils.js';
+import { html } from '../core/utils.js';
 
 export class AuDropdown extends AuElement {
     static baseClass = 'au-dropdown';
@@ -61,19 +61,16 @@ export class AuDropdown extends AuElement {
         this.#trigger.className = 'au-dropdown__trigger';
         this.#trigger.type = 'button';
 
-        // Escape user-provided attributes to prevent XSS
-        const safePlaceholder = escapeHTML(placeholder);
-
         // Generate unique ID for popover targeting
         const menuId = `au-dropdown-menu-${Math.random().toString(36).slice(2, 9)}`;
 
         // Accessibility attributes
         this.#trigger.setAttribute('aria-haspopup', 'listbox');
         this.#trigger.setAttribute('aria-expanded', 'false');
-        this.#trigger.setAttribute('aria-label', safePlaceholder);
+        this.#trigger.setAttribute('aria-label', placeholder);
         this.#trigger.setAttribute('popovertarget', menuId); // Native popover trigger
-        this.#trigger.innerHTML = `
-            <span class="au-dropdown__value">${safePlaceholder}</span>
+        this.#trigger.innerHTML = html`
+            <span class="au-dropdown__value">${placeholder}</span>
             <svg class="au-dropdown__arrow" width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5">
                 <path d="M1 1l4 4 4-4"/>
             </svg>

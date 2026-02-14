@@ -10,7 +10,7 @@
  */
 
 import { AuElement, define } from '../core/AuElement.js';
-import { escapeHTML } from '../core/utils.js';
+import { html } from '../core/utils.js';
 import { createRipple } from '../core/ripple.js';
 
 export class AuRadioGroup extends AuElement {
@@ -116,11 +116,11 @@ export class AuRadio extends AuElement {
     render() {
         // Read label only once to avoid losing it after innerHTML
         if (!this.#rendered) {
-            this.#labelText = escapeHTML(this.attr('label', '') || this.textContent.trim());
+            this.#labelText = this.attr('label', '') || this.textContent.trim();
             this.#rendered = true;
         }
 
-        this.innerHTML = `
+        this.innerHTML = html`
             <span class="au-radio__circle">
                 <span class="au-radio__dot"></span>
             </span>

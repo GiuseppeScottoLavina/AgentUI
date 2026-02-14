@@ -370,14 +370,14 @@ describe('au-error-boundary Unit Tests', () => {
         expect(source).toContain('error.stack');
     });
 
-    test('source: escapeHTML should be used in renderFallback', async () => {
+    test('source: html tagged template should be used in renderFallback', async () => {
         const fs = await import('fs');
         const source = fs.readFileSync(
             new URL('../../src/components/au-error-boundary.js', import.meta.url),
             'utf-8'
         );
-        expect(source).toContain("import { escapeHTML }");
-        expect(source).toMatch(/\$\{escapeHTML\(this\.#error/);
+        expect(source).toContain("import { html }");
+        expect(source).toMatch(/this\.innerHTML\s*=\s*html`/);
     });
 
     // ─── disconnectedCallback: window.onerror restore (FIX 1) ──

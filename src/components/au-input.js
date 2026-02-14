@@ -10,7 +10,7 @@
  */
 
 import { AuElement, define } from '../core/AuElement.js';
-import { escapeHTML } from '../core/utils.js';
+import { html, safe, escapeHTML } from '../core/utils.js';
 
 // Input types that always show a native browser placeholder (dd/mm/yyyy, --:--:-- etc.)
 const ALWAYS_FLOAT_TYPES = ['date', 'time', 'datetime-local', 'month', 'week'];
@@ -57,20 +57,16 @@ export class AuInput extends AuElement {
         // Generate unique ID for label-input association (accessibility)
         const inputId = this.id ? `${this.id}__field` : `au-input-${Math.random().toString(36).substring(2, 9)}`;
 
-        // Escape user-provided attributes to prevent XSS
-        const safeLabelText = escapeHTML(labelText);
-        const safePlaceholder = escapeHTML(placeholder);
-        const safeValue = escapeHTML(value);
 
-        this.innerHTML = `
-            ${safeLabelText ? `<label class="au-input__label" for="${inputId}">${safeLabelText}</label>` : ''}
+        this.innerHTML = html`
+            ${labelText ? html`<label class="au-input__label" for="${inputId}">${labelText}</label>` : ''}
             <input 
                 class="au-input__field"
                 id="${inputId}"
                 type="${type}"
-                ${showNativePlaceholder ? `placeholder="${safePlaceholder}"` : ''}
-                ${!safeLabelText ? `aria-label="${safePlaceholder || 'Text input'}"` : ''}
-                value="${safeValue}"
+                ${showNativePlaceholder ? safe(`placeholder="${escapeHTML(placeholder)}"`) : ''}
+                ${!labelText ? safe(`aria-label="${escapeHTML(placeholder || 'Text input')}"`) : ''}
+                value="${value}"
                 ${this.has('disabled') ? 'disabled' : ''}
             />
         `;

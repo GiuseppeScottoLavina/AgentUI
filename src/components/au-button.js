@@ -6,7 +6,7 @@
 
 import { AuElement, define } from '../core/AuElement.js';
 import { createRipple } from '../core/ripple.js';
-import { escapeHTML } from '../core/utils.js';
+import { html } from '../core/utils.js';
 
 export class AuButton extends AuElement {
     static baseClass = 'au-button';
@@ -42,7 +42,7 @@ export class AuButton extends AuElement {
                 // Only text content - wrap it in a label span
                 const label = this.textContent.trim();
                 if (label) {
-                    this.innerHTML = `<span class="au-button__label">${escapeHTML(label)}</span>`;
+                    this.innerHTML = html`<span class="au-button__label">${label}</span>`;
                 }
             }
             // If hasElementChildren, leave DOM untouched (icon-only or icon+text buttons)

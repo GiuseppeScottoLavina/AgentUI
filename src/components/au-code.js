@@ -5,6 +5,7 @@
  */
 
 import { AuElement, define } from '../core/AuElement.js';
+import { html, safe } from '../core/utils.js';
 
 export class AuCode extends AuElement {
     static baseClass = 'au-code';
@@ -67,7 +68,7 @@ export class AuCode extends AuElement {
         // Basic syntax highlighting
         const highlighted = this.#highlight(escaped, language);
 
-        this.innerHTML = `
+        this.innerHTML = html`
             <div class="au-code__header">
                 <span class="au-code__language">${language.toUpperCase()}</span>
                 <button class="au-code__copy" title="Copy code">
@@ -77,7 +78,7 @@ export class AuCode extends AuElement {
                     </svg>
                 </button>
             </div>
-            <pre class="au-code__pre"><code class="au-code__content">${highlighted}</code></pre>
+            <pre class="au-code__pre"><code class="au-code__content">${safe(highlighted)}</code></pre>
         `;
 
         this.#applyStyles();

@@ -24,7 +24,7 @@
  */
 
 import { AuElement, define } from '../core/AuElement.js';
-import { escapeHTML } from '../core/utils.js';
+import { html } from '../core/utils.js';
 
 // ============================================
 // AU-PROMPT-INPUT
@@ -106,13 +106,13 @@ export class AuPromptInput extends AuElement {
 
     render() {
         const isTextarea = this.multiline;
-        const safePlaceholder = escapeHTML(this.placeholder);
+        const placeholder = this.placeholder;
 
-        this.innerHTML = `
+        this.innerHTML = html`
             <div class="au-prompt-input-container ${this.loading ? 'au-prompt-input-loading' : ''}">
                 ${isTextarea
-                ? `<textarea class="au-prompt-input-field" placeholder="${safePlaceholder}" ${this.disabled ? 'disabled' : ''}></textarea>`
-                : `<input class="au-prompt-input-field" type="text" placeholder="${safePlaceholder}" ${this.disabled ? 'disabled' : ''} />`
+                ? html`<textarea class="au-prompt-input-field" placeholder="${placeholder}" ${this.disabled ? 'disabled' : ''}></textarea>`
+                : html`<input class="au-prompt-input-field" type="text" placeholder="${placeholder}" ${this.disabled ? 'disabled' : ''} />`
             }
                 <button class="au-prompt-input-submit" ${this.disabled || this.loading ? 'disabled' : ''}>
                     ${this.loading
@@ -189,23 +189,23 @@ export class AuCodeBlock extends AuElement {
     render() {
         const code = this.textContent.trim();
 
-        this.innerHTML = `
+        this.innerHTML = html`
             <div class="au-code-block-container">
                 <div class="au-code-block-header">
                     ${this.filename
-                ? `<span class="au-code-block-filename">${this.filename}</span>`
-                : `<span class="au-code-block-language">${this.language}</span>`
+                ? html`<span class="au-code-block-filename">${this.filename}</span>`
+                : html`<span class="au-code-block-language">${this.language}</span>`
             }
                     <button class="au-code-block-copy-btn">Copy</button>
                 </div>
-                <pre class="au-code-block-pre"><code>${escapeHTML(code)}</code></pre>
+                <pre class="au-code-block-pre"><code>${code}</code></pre>
             </div>
         `;
 
         this.listen(this.querySelector('.au-code-block-copy-btn'), 'click', () => this._copy());
     }
 
-    // Using centralized escapeHTML from core/utils.js for XSS safety
+    // Using html tagged template from core/utils.js for XSS safety
 }
 
 // ============================================

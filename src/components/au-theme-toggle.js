@@ -5,6 +5,7 @@
  */
 
 import { AuElement, define } from '../core/AuElement.js';
+import { html } from '../core/utils.js';
 import { Theme } from '../core/theme.js';
 import { bus, UIEvents, registerComponent } from '../core/bus.js';
 
@@ -23,7 +24,7 @@ export class AuThemeToggle extends AuElement {
     }
 
     render() {
-        this.innerHTML = `
+        this.innerHTML = html`
             <button class="au-theme-toggle__button" aria-label="Toggle theme">
                 <span class="au-theme-toggle__icon"></span>
             </button>

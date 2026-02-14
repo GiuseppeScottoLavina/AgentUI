@@ -62,7 +62,7 @@ bun run test:e2e
  */
 
 import { AuElement, define } from '../core/AuElement.js';
-import { escapeHTML } from '../core/utils.js';  // For user-facing content
+import { html, safe } from '../core/utils.js';  // XSS-safe tagged template
 
 export class AuExample extends AuElement {
     static get observedAttributes() {
@@ -118,14 +118,14 @@ export class AuExample extends AuElement {
     // ========================
 
     render() {
-        // ✅ ALWAYS escape user-facing content
-        this.innerHTML = `
+        // ✅ html`` auto-escapes all interpolated values
+        this.innerHTML = html`
             <div class="au-example">
-                <label>${escapeHTML(this.label)}</label>
+                <label>${this.label}</label>
                 <input 
                     type="text" 
-                    value="${escapeHTML(this.value)}"
-                    placeholder="${escapeHTML(this.getAttribute('placeholder') || '')}"
+                    value="${this.value}"
+                    placeholder="${this.getAttribute('placeholder') || ''}"
                     ${this.disabled ? 'disabled' : ''}
                 >
             </div>
@@ -207,6 +207,9 @@ connectedCallback() {
 // ❌ FORBIDDEN: innerHTML without escaping (XSS vulnerability)
 this.innerHTML = `<div>${userInput}</div>`;
 
+// ✅ CORRECT: Use html`` tagged template (auto-escapes)
+this.innerHTML = html`<div>${userInput}</div>`;
+
 // ❌ FORBIDDEN: removeEventListener with arrow function (never works)
 window.removeEventListener('resize', () => this.handleResize());
 
@@ -238,7 +241,7 @@ disconnectedCallback() {
 |---------|--------|--------|
 | **Event Listeners** | `this.listen(target, type, handler)` | Auto-cleanup via AbortController |
 | **Timers** | `this.setTimeout()` / `this.setInterval()` | Auto-cleanup on disconnectedCallback |
-| **XSS Prevention** | `escapeHTML(userInput)` | Prevents injection in innerHTML |
+| **XSS Prevention** | `html` tagged template | Auto-escapes all interpolations, use `safe()` for trusted HTML |
 | **Keyboard A11y** | `this.setupActivation(callback)` | Handles Enter/Space for interactive elements |
 | **AI Debugging** | `this.logError(code, message)` | Structured errors for AI agents |
 | **Lifecycle** | `super.connectedCallback()` | Initializes AbortController for this.listen() |
@@ -260,7 +263,7 @@ The framework applies **by default** the following optimizations:
 | Speculation Rules API | index.html | Predictive route bundle prefetch |
 | View Transitions API | index.html | Smooth page transitions in SPA |
 
-**Lighthouse Score**: 100/100 Performance, 100/100 Accessibility/BP/SEO
+**Lighthouse Score**: Optimized for high Performance, Accessibility, BP, and SEO scores
 
 ```css
 /* Framework applies automatically: */
@@ -323,9 +326,9 @@ The following components could benefit from the **Popover API**:
 
 Before completing a component, verify:
 
-- [ ] All user-facing content uses `escapeHTML()`
-- [ ] Interpolated attributes in innerHTML are escaped
-- [ ] Slot content controlled (developer-provided) or escaped
+- [ ] All `innerHTML` assignments use the `html` tagged template
+- [ ] Trusted HTML (e.g. icons) is wrapped with `safe()`
+- [ ] Slot content controlled (developer-provided) or auto-escaped via `html`
 - [ ] No `eval()`, `Function()`, `document.write()`
 
 ---
@@ -516,7 +519,7 @@ bun server.js
 
 ### Server Features
 
-The `server.js` is optimized for **Lighthouse 100** scores:
+The `server.js` is optimized for **high Lighthouse** scores:
 
 1. **Cache-Control Headers** - 1 year for versioned assets, must-revalidate for HTML
 2. **Gzip Compression** - Auto-compresses `.html`, `.css`, `.js`, `.json`, `.svg`

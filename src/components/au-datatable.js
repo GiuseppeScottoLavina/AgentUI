@@ -21,7 +21,7 @@
  */
 
 import { AuElement, define } from '../core/AuElement.js';
-import { escapeHTML } from '../core/utils.js';
+import { html, safe } from '../core/utils.js';
 import { debounce } from '../core/render.js';
 
 export class AuDataTable extends AuElement {
@@ -320,15 +320,15 @@ export class AuDataTable extends AuElement {
         }
 
         // Full render
-        this.innerHTML = `
+        this.innerHTML = html`
             <div class="au-datatable-wrapper">
-                ${this.filterable ? `
+                ${this.filterable ? html`
                     <div class="au-datatable-toolbar">
                         <div class="au-datatable-search">
                             <input 
                                 type="search" 
                                 placeholder="Search..." 
-                                value="${escapeHTML(this._filterValue)}"
+                                value="${this._filterValue}"
                             >
                         </div>
                         <div class="au-datatable-info">
@@ -341,7 +341,7 @@ export class AuDataTable extends AuElement {
                 <table class="au-datatable-table">
                     <thead>
                         <tr>
-                            ${this.selectable ? `
+                            ${this.selectable ? html`
                                 <th class="au-datatable-checkbox-cell">
                                     <input 
                                         type="checkbox" 
@@ -350,30 +350,30 @@ export class AuDataTable extends AuElement {
                                     >
                                 </th>
                             ` : ''}
-                            ${columns.map(col => {
+                            ${safe(columns.map(col => {
             const isSortable = col.sortable !== false && this.sortable;
             const isSorted = this._sortField === col.field;
             const sortIcon = isSorted
                 ? (this._sortDirection === 'asc' ? '↑' : '↓')
                 : '↕';
-            return `
+            return html`
                                     <th 
                                         class="${isSortable ? 'au-datatable-sortable' : ''} ${isSorted ? 'au-datatable-sorted' : ''}"
-                                        data-field="${escapeHTML(col.field)}"
+                                        data-field="${col.field}"
                                     >
-                                        ${escapeHTML(col.label || col.field)}
+                                        ${col.label || col.field}
                                         ${isSortable ? `<span class="au-datatable-sort-icon">${sortIcon}</span>` : ''}
                                     </th>
                                 `;
-        }).join('')}
+        }).join(''))}
                         </tr>
                     </thead>
                     <tbody>
-                        ${this._renderTbody(pageData, columns, startIdx, allSelected)}
+                        ${safe(this._renderTbody(pageData, columns, startIdx, allSelected))}
                     </tbody>
                 </table>
 
-                ${this._renderPagination(page, totalPages, totalRows)}
+                ${safe(this._renderPagination(page, totalPages, totalRows))}
             </div>
         `;
 
@@ -382,10 +382,10 @@ export class AuDataTable extends AuElement {
 
     _renderTbody(pageData, columns, startIdx, allSelected) {
         if (pageData.length === 0) {
-            return `
+            return html`
                 <tr>
                     <td colspan="${columns.length + (this.selectable ? 1 : 0)}" class="au-datatable-empty-state">
-                        ${escapeHTML(this.emptyMessage)}
+                        ${this.emptyMessage}
                     </td>
                 </tr>
             `;
@@ -395,9 +395,9 @@ export class AuDataTable extends AuElement {
             const actualIdx = startIdx + idx;
             const isSelected = this._selectedRows.has(actualIdx);
 
-            return `
+            return html`
                 <tr class="${isSelected ? 'au-datatable-selected' : ''}" data-row-index="${idx}">
-                    ${this.selectable ? `
+                    ${this.selectable ? html`
                         <td class="au-datatable-checkbox-cell">
                             <input 
                                 type="checkbox" 
@@ -406,11 +406,11 @@ export class AuDataTable extends AuElement {
                             >
                         </td>
                     ` : ''}
-                    ${columns.map(col => `
-                        <td data-field="${escapeHTML(col.field)}">
-                            ${col.render ? col.render(row[col.field], row) : escapeHTML(row[col.field] ?? '')}
+                    ${safe(columns.map(col => html`
+                        <td data-field="${col.field}">
+                            ${col.render ? safe(col.render(row[col.field], row)) : (row[col.field] ?? '')}
                         </td>
-                    `).join('')}
+                    `).join(''))}
                 </tr>
             `;
         }).join('');

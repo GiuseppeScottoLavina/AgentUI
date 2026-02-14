@@ -13,7 +13,7 @@
  */
 
 import { AuElement, define } from '../core/AuElement.js';
-import { escapeHTML } from '../core/utils.js';
+import { html, safe, escapeHTML } from '../core/utils.js';
 
 export class AuExample extends AuElement {
     static baseClass = 'au-example';
@@ -45,7 +45,7 @@ export class AuExample extends AuElement {
         const normalizedCode = this.#prettifyHTML(codeContent);
         const escapedCode = escapeHTML(normalizedCode);
 
-        this.innerHTML = `
+        this.innerHTML = html`
             <div class="au-example__card">
                 <div class="au-example__header">
                     <span class="au-example__title">${title}</span>
@@ -65,10 +65,10 @@ export class AuExample extends AuElement {
                     </div>
                 </div>
                 <div class="au-example__demo">
-                    ${demoContent}
+                    ${safe(demoContent)}
                 </div>
                 <div class="au-example__code" style="display: none;">
-                    <au-code language="html">${escapedCode}</au-code>
+                    <au-code language="html">${safe(escapedCode)}</au-code>
                 </div>
             </div>
         `;
@@ -79,7 +79,7 @@ export class AuExample extends AuElement {
     }
 
 
-    // Using centralized escapeHTML from core/utils.js for XSS safety
+    // escapeHTML used here for code display (entity-encoding < > & for code blocks), not XSS
 
     /**
      * Pretty-prints HTML with proper indentation

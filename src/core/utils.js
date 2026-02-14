@@ -32,15 +32,13 @@ export function escapeHTML(str) {
 /**
  * Marker class for pre-trusted HTML content.
  * Values wrapped in SafeHTML will NOT be escaped by the `html` tagged template.
+ * Extends String so .innerHTML assignment works directly in all DOM implementations.
  * 
  * @private - Use the `safe()` function instead of constructing directly.
  */
-class SafeHTML {
+class SafeHTML extends String {
     constructor(value) {
-        this.value = value == null ? '' : String(value);
-    }
-    toString() {
-        return this.value;
+        super(value == null ? '' : value);
     }
 }
 
@@ -93,13 +91,13 @@ export function html(strings, ...values) {
         if (i < values.length) {
             const val = values[i];
             if (val instanceof SafeHTML) {
-                // Trusted — no escaping
-                result += val.value;
+                // Trusted — no escaping (SafeHTML extends String)
+                result += val;
             } else if (Array.isArray(val)) {
                 // Process each array element
                 for (const item of val) {
                     if (item instanceof SafeHTML) {
-                        result += item.value;
+                        result += item;
                     } else {
                         result += escapeHTML(item);
                     }

@@ -16,7 +16,7 @@
  */
 
 import { AuElement, define } from '../core/AuElement.js';
-import { escapeHTML } from '../core/utils.js';
+import { html } from '../core/utils.js';
 
 class AuRouter extends AuElement {
     static baseClass = 'au-router';
@@ -127,10 +127,10 @@ class AuRouter extends AuElement {
             this.emit('au-page-loaded', { route });
 
         } catch (error) {
-            container.innerHTML = `
+            container.innerHTML = html`
         <au-alert variant="error">
           <strong>Page not found</strong>
-          <p>Could not load page: ${escapeHTML(route)}</p>
+          <p>Could not load page: ${route}</p>
         </au-alert>
       `;
             this.emit('au-page-error', { route, error });

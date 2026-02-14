@@ -3,6 +3,7 @@
  */
 
 import { AuElement, define } from '../core/AuElement.js';
+import { html, safe } from '../core/utils.js';
 
 export class AuToast extends AuElement {
     static baseClass = 'au-toast';
@@ -48,8 +49,8 @@ export class AuToast extends AuElement {
 
         const content = this.#originalContent || '';
 
-        this.innerHTML = `
-            <span class="au-toast__content">${content}</span>
+        this.innerHTML = html`
+            <span class="au-toast__content">${safe(content)}</span>
             <button class="au-toast__close" aria-label="Dismiss">✕</button>
         `;
 

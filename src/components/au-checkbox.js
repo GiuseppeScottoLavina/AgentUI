@@ -12,7 +12,7 @@
  */
 
 import { AuElement, define } from '../core/AuElement.js';
-import { escapeHTML } from '../core/utils.js';
+import { html } from '../core/utils.js';
 import { createRipple } from '../core/ripple.js';
 
 export class AuCheckbox extends AuElement {
@@ -53,9 +53,9 @@ export class AuCheckbox extends AuElement {
             return;
         }
 
-        const label = escapeHTML(this.attr('label', '') || this.textContent);
+        const label = this.attr('label', '') || this.textContent;
         // SVG with both checkmark and indeterminate line paths
-        this.innerHTML = `
+        this.innerHTML = html`
             <span class="au-checkbox__box">
                 <svg class="au-checkbox__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                     <path class="au-checkbox__check" d="M4 12l6 6L20 6"/>

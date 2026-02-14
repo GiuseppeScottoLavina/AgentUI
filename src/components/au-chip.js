@@ -10,7 +10,7 @@
 
 import { AuElement, define } from '../core/AuElement.js';
 import { createRipple } from '../core/ripple.js';
-import { escapeHTML } from '../core/utils.js';
+import { html } from '../core/utils.js';
 
 export class AuChip extends AuElement {
     static baseClass = 'au-chip';
@@ -72,8 +72,8 @@ export class AuChip extends AuElement {
         const label = this.#originalLabel || this.textContent.trim();
         const removable = this.has('removable') && !this.has('static'); // No remove button in static mode
 
-        this.innerHTML = `
-            <span class="au-chip__label">${escapeHTML(label)}</span>
+        this.innerHTML = html`
+            <span class="au-chip__label">${label}</span>
             ${removable ? '<button class="au-chip__remove" aria-label="Remove">✕</button>' : ''}
         `;
 

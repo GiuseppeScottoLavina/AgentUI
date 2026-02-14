@@ -23,6 +23,7 @@
  */
 
 import { AuElement, define } from '../core/AuElement.js';
+import { html, safe } from '../core/utils.js';
 
 export class AuDocPage extends AuElement {
     static baseClass = 'au-doc-page';
@@ -53,10 +54,10 @@ export class AuDocPage extends AuElement {
         const stylingContent = stylingSlot ? stylingSlot.innerHTML : '';
         const examplesContent = examplesSlot ? examplesSlot.innerHTML : '';
 
-        this.innerHTML = `
+        this.innerHTML = html`
             <h1 class="page-title">${title}</h1>
             <p class="page-subtitle">
-                ${selector ? `<code>&lt;${selector}&gt;</code> ` : ''}${description}
+                ${selector ? html`<code>&lt;${selector}&gt;</code> ` : ''}${description}
             </p>
 
             <au-tabs active="0" class="au-doc-page__tabs" style="margin-bottom: 24px;">
@@ -67,16 +68,16 @@ export class AuDocPage extends AuElement {
             </au-tabs>
 
             <div class="au-doc-page__content au-doc-page__overview">
-                ${overviewContent}
+                ${safe(overviewContent)}
             </div>
             <div class="au-doc-page__content au-doc-page__api" style="display: none;">
-                ${apiContent}
+                ${safe(apiContent)}
             </div>
             <div class="au-doc-page__content au-doc-page__styling" style="display: none;">
-                ${stylingContent}
+                ${safe(stylingContent)}
             </div>
             <div class="au-doc-page__content au-doc-page__examples" style="display: none;">
-                ${examplesContent}
+                ${safe(examplesContent)}
             </div>
         `;
 

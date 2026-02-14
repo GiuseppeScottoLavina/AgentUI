@@ -3,6 +3,7 @@
  */
 
 import { AuElement, define } from '../core/AuElement.js';
+import { html, safe } from '../core/utils.js';
 
 export class AuAlert extends AuElement {
     static baseClass = 'au-alert';
@@ -74,10 +75,10 @@ export class AuAlert extends AuElement {
         const content = this.#originalContent || '';
         const iconName = iconNames[severity] || iconNames.info;
 
-        this.innerHTML = `
+        this.innerHTML = html`
             <au-icon name="${iconName}" size="24" class="au-alert__icon"></au-icon>
-            <span class="au-alert__content">${content}</span>
-            ${dismissible ? '<button class="au-alert__close" aria-label="Dismiss"><au-icon name="close" size="18"></au-icon></button>' : ''}
+            <span class="au-alert__content">${safe(content)}</span>
+            ${dismissible ? safe('<button class="au-alert__close" aria-label="Dismiss"><au-icon name="close" size="18"></au-icon></button>') : ''}
         `;
 
         this.#updateClasses();

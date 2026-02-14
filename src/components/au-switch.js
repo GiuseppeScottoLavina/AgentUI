@@ -5,7 +5,7 @@
  */
 
 import { AuElement, define } from '../core/AuElement.js';
-import { escapeHTML } from '../core/utils.js';
+import { html } from '../core/utils.js';
 import { createRipple } from '../core/ripple.js';
 
 export class AuSwitch extends AuElement {
@@ -44,12 +44,12 @@ export class AuSwitch extends AuElement {
             return;
         }
 
-        const label = escapeHTML(this.attr('label', '') || this.textContent);
-        this.innerHTML = `
+        const label = this.attr('label', '') || this.textContent;
+        this.innerHTML = html`
             <span class="au-switch__track">
                 <span class="au-switch__thumb"></span>
             </span>
-            ${label ? `<span class="au-switch__label">${label}</span>` : ''}
+            ${label ? html`<span class="au-switch__label">${label}</span>` : ''}
         `;
 
         this.style.display = 'inline-flex';

@@ -11,7 +11,7 @@
  */
 
 import { AuElement, define } from '../core/AuElement.js';
-import { escapeHTML } from '../core/utils.js';
+import { html } from '../core/utils.js';
 
 // Inline SVG paths for critical icons (fallback when font not loaded)
 const SVG_ICONS = {
@@ -205,7 +205,7 @@ export class AuIcon extends AuElement {
             }
         }
 
-        this.innerHTML = `<span class="material-symbols-outlined" aria-hidden="true">${escapeHTML(symbolName)}</span>`;
+        this.innerHTML = html`<span class="material-symbols-outlined" aria-hidden="true">${symbolName}</span>`;
 
         // Apply size and fill
         const span = this.querySelector('span');

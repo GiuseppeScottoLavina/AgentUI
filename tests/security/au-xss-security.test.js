@@ -386,26 +386,27 @@ describe('au-error-boundary XSS Protection', () => {
         expect(el.hasError).toBe(false);
     });
 
-    test('escapeHTML import should be used for error messages', async () => {
-        // Verify that the source code imports escapeHTML
+    test('html tagged template should be used for error messages', async () => {
+        // Verify that the source code imports html tagged template
         const fs = await import('fs');
         const source = fs.readFileSync(
             new URL('../../src/components/au-error-boundary.js', import.meta.url),
             'utf-8'
         );
-        expect(source).toContain("import { escapeHTML } from '../core/utils.js'");
-        expect(source).toContain('escapeHTML(');
+        expect(source).toContain("import { html }");
+        expect(source).toMatch(/this\.innerHTML\s*=\s*html`/);
     });
 
-    test('escapeHTML is applied in renderFallback template', async () => {
-        // Verify the template uses escapeHTML around the error message
+    test('html tagged template is applied in renderFallback template', async () => {
+        // Verify the template uses html`` around the error message for auto-escaping
         const fs = await import('fs');
         const source = fs.readFileSync(
             new URL('../../src/components/au-error-boundary.js', import.meta.url),
             'utf-8'
         );
-        // The template should have escapeHTML wrapping the error message
-        expect(source).toMatch(/\$\{escapeHTML\(this\.#error/);
+        // The template should use html`` which auto-escapes interpolated values
+        expect(source).toMatch(/this\.innerHTML\s*=\s*html`/);
+        expect(source).toContain('this.#error?.message');
     });
 
     test('getErrors and clearErrors work correctly', () => {

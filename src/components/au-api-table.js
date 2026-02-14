@@ -8,7 +8,7 @@
  */
 
 import { AuElement, define } from '../core/AuElement.js';
-import { escapeHTML } from '../core/utils.js';
+import { html } from '../core/utils.js';
 
 export class AuApiTable extends AuElement {
     static baseClass = 'au-api-table';
@@ -56,46 +56,37 @@ export class AuApiTable extends AuElement {
     }
 
     #renderRow(type, data) {
-        const safeData = {
-            name: escapeHTML(data.name),
-            type: escapeHTML(data.type),
-            default: escapeHTML(data.default),
-            signature: escapeHTML(data.signature),
-            detail: escapeHTML(data.detail),
-            description: escapeHTML(data.description) // Description is often text, if it needs HTML user should use a slot
-        };
-
         switch (type) {
             case 'attributes':
-                return `<tr>
-                    <td><code>${safeData.name}</code></td>
-                    <td><code class="type">${safeData.type}</code></td>
-                    <td><code class="default">${safeData.default}</code></td>
-                    <td>${safeData.description}</td>
+                return html`<tr>
+                    <td><code>${data.name}</code></td>
+                    <td><code class="type">${data.type}</code></td>
+                    <td><code class="default">${data.default}</code></td>
+                    <td>${data.description}</td>
                 </tr>`;
             case 'properties':
-                return `<tr>
-                    <td><code>${safeData.name}</code></td>
-                    <td><code class="type">${safeData.type}</code></td>
-                    <td>${safeData.description}</td>
+                return html`<tr>
+                    <td><code>${data.name}</code></td>
+                    <td><code class="type">${data.type}</code></td>
+                    <td>${data.description}</td>
                 </tr>`;
             case 'methods':
-                return `<tr>
-                    <td><code>${safeData.name}</code></td>
-                    <td><code class="signature">${safeData.signature}</code></td>
-                    <td>${safeData.description}</td>
+                return html`<tr>
+                    <td><code>${data.name}</code></td>
+                    <td><code class="signature">${data.signature}</code></td>
+                    <td>${data.description}</td>
                 </tr>`;
             case 'events':
-                return `<tr>
-                    <td><code>${safeData.name}</code></td>
-                    <td><code class="detail">${safeData.detail}</code></td>
-                    <td>${safeData.description}</td>
+                return html`<tr>
+                    <td><code>${data.name}</code></td>
+                    <td><code class="detail">${data.detail}</code></td>
+                    <td>${data.description}</td>
                 </tr>`;
             case 'tokens':
-                return `<tr>
-                    <td><code>${safeData.name}</code></td>
-                    <td><code class="default">${safeData.default}</code></td>
-                    <td>${safeData.description}</td>
+                return html`<tr>
+                    <td><code>${data.name}</code></td>
+                    <td><code class="default">${data.default}</code></td>
+                    <td>${data.description}</td>
                 </tr>`;
             default:
                 return '';

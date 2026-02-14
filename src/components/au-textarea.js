@@ -5,7 +5,7 @@
  */
 
 import { AuElement, define } from '../core/AuElement.js';
-import { escapeHTML } from '../core/utils.js';
+import { html } from '../core/utils.js';
 
 export class AuTextarea extends AuElement {
     static baseClass = 'au-textarea';
@@ -17,13 +17,13 @@ export class AuTextarea extends AuElement {
     render() {
         // Idempotent HTML structure creation
         if (!this.querySelector('.au-textarea__field')) {
-            const placeholder = escapeHTML(this.attr('placeholder', ''));
+            const placeholder = this.attr('placeholder', '');
             const rows = this.attr('rows', '4');
             const disabled = this.has('disabled') ? 'disabled' : '';
             const readonly = this.has('readonly') ? 'readonly' : '';
-            const name = escapeHTML(this.attr('name', ''));
+            const name = this.attr('name', '');
 
-            this.innerHTML = `
+            this.innerHTML = html`
                 <textarea 
                     class="au-textarea__field"
                     placeholder="${placeholder}"

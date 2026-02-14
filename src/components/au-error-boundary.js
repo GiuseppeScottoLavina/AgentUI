@@ -19,7 +19,7 @@
  */
 
 import { AuElement, define } from '../core/AuElement.js';
-import { escapeHTML } from '../core/utils.js';
+import { html } from '../core/utils.js';
 
 /**
  * Global error registry for agent observability
@@ -157,11 +157,11 @@ export class AuErrorBoundary extends AuElement {
             this.appendChild(fallbackEl);
         } else {
             // Default fallback UI
-            this.innerHTML = `
+            this.innerHTML = html`
                 <div class="au-error-boundary__fallback" role="alert" aria-live="polite">
                     <au-icon name="error" style="--au-icon-size: 48px; color: var(--md-sys-color-error);"></au-icon>
                     <p class="au-error-boundary__title">Something went wrong</p>
-                    <p class="au-error-boundary__message">${escapeHTML(this.#error?.message || 'An unexpected error occurred')}</p>
+                    <p class="au-error-boundary__message">${this.#error?.message || 'An unexpected error occurred'}</p>
                     <au-button variant="outlined" onclick="this.closest('au-error-boundary').recover()">
                         Try Again
                     </au-button>

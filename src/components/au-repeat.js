@@ -15,7 +15,7 @@
 
 import { AuElement, define } from '../core/AuElement.js';
 import { scheduler } from '../core/render.js';
-import { escapeHTML } from '../core/utils.js';
+import { html } from '../core/utils.js';
 
 export class AuRepeat extends AuElement {
     static baseClass = 'au-repeat';
@@ -24,7 +24,7 @@ export class AuRepeat extends AuElement {
 
     #items = [];
     #keyFn = (item, index) => index;
-    #renderItem = (item) => `<div>${escapeHTML(JSON.stringify(item))}</div>`;
+    #renderItem = (item) => html`<div>${JSON.stringify(item)}</div>`;
     #itemNodes = new Map(); // key -> DOM element
 
     set items(arr) {
@@ -46,9 +46,9 @@ export class AuRepeat extends AuElement {
     /**
      * Set custom render function for items.
      * @param {(item: *, index: number) => string} fn - Must return safe HTML.
-     * @warning XSS: You MUST escape user-provided data with escapeHTML().
-     *   import { escapeHTML } from 'agentui/core/utils.js';
-     *   list.renderItem = (item) => `<div>${escapeHTML(item.name)}</div>`;
+     * @warning XSS: Use the html tagged template to auto-escape user data.
+     *   import { html } from 'agentui/core/utils.js';
+     *   list.renderItem = (item) => html`<div>${item.name}</div>`;
      */
     set renderItem(fn) {
         this.#renderItem = fn;

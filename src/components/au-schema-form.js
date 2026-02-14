@@ -27,7 +27,7 @@
  */
 
 import { AuElement, define } from '../core/AuElement.js';
-import { escapeHTML } from '../core/utils.js';
+import { html, safe } from '../core/utils.js';
 
 export class AuSchemaForm extends AuElement {
     static get observedAttributes() {
@@ -245,29 +245,26 @@ export class AuSchemaForm extends AuElement {
         const errors = this._errors[field] || [];
         const hasError = errors.length > 0;
 
-        // XSS Protection: escape all schema-derived content
-        const safeField = escapeHTML(field);
-        const safeLabel = escapeHTML(def.title || field);
-        const safePlaceholder = escapeHTML(def.placeholder || '');
-        const safeDescription = escapeHTML(def.description || '');
-        const safeValue = escapeHTML(String(rawValue));
-        const safeError = hasError ? escapeHTML(errors[0]) : '';
+        const label = def.title || field;
+        const placeholder = def.placeholder || '';
+        const description = def.description || '';
+        const errorMsg = hasError ? errors[0] : '';
         const disabled = this.disabled || def.readOnly;
         const readonly = this.readonly;
 
         // Boolean → Switch
         if (def.type === 'boolean') {
-            return `
-                <div class="au-schema-form-field" data-field="${safeField}">
+            return html`
+                <div class="au-schema-form-field" data-field="${field}">
                     <div class="au-schema-form-switch-row">
                         <au-switch 
                             ${rawValue ? 'checked' : ''}
                             ${disabled ? 'disabled' : ''}
-                            data-field="${safeField}"
+                            data-field="${field}"
                         ></au-switch>
-                        <label class="au-schema-form-switch-label">${safeLabel}</label>
+                        <label class="au-schema-form-switch-label">${label}</label>
                     </div>
-                    ${safeDescription ? `<div class="au-schema-form-description">${safeDescription}</div>` : ''}
+                    ${description ? html`<div class="au-schema-form-description">${description}</div>` : ''}
                 </div>
             `;
         }
@@ -275,55 +272,53 @@ export class AuSchemaForm extends AuElement {
         // Enum → Dropdown
         if (def.enum) {
             const options = def.enum.map((val, i) => {
-                const safeOptValue = escapeHTML(String(val));
-                const safeOptLabel = escapeHTML(def.enumLabels?.[i] || String(val));
-                return `<au-option value="${safeOptValue}" ${rawValue === val ? 'selected' : ''}>${safeOptLabel}</au-option>`;
+                return html`<au-option value="${String(val)}" ${rawValue === val ? 'selected' : ''}>${def.enumLabels?.[i] || String(val)}</au-option>`;
             }).join('');
 
-            return `
-                <div class="au-schema-form-field ${hasError ? 'au-schema-form-field-error' : ''}" data-field="${safeField}">
+            return html`
+                <div class="au-schema-form-field ${hasError ? 'au-schema-form-field-error' : ''}" data-field="${field}">
                     <au-dropdown 
-                        label="${safeLabel}${isRequired ? ' *' : ''}"
-                        value="${safeValue}"
+                        label="${label}${isRequired ? ' *' : ''}"
+                        value="${String(rawValue)}"
                         ${disabled ? 'disabled' : ''}
                         ${isRequired ? 'required' : ''}
-                        data-field="${safeField}"
+                        data-field="${field}"
                     >
-                        ${options}
+                        ${safe(options)}
                     </au-dropdown>
-                    ${safeDescription ? `<div class="au-schema-form-description">${safeDescription}</div>` : ''}
-                    ${hasError ? `<div class="au-schema-form-error">${safeError}</div>` : ''}
+                    ${description ? html`<div class="au-schema-form-description">${description}</div>` : ''}
+                    ${hasError ? html`<div class="au-schema-form-error">${errorMsg}</div>` : ''}
                 </div>
             `;
         }
 
         // Multiline string → Textarea
         if (def.type === 'string' && def.multiline) {
-            return `
-                <div class="au-schema-form-field ${hasError ? 'au-schema-form-field-error' : ''}" data-field="${safeField}">
+            return html`
+                <div class="au-schema-form-field ${hasError ? 'au-schema-form-field-error' : ''}" data-field="${field}">
                     <au-textarea
-                        label="${safeLabel}${isRequired ? ' *' : ''}"
-                        placeholder="${safePlaceholder}"
+                        label="${label}${isRequired ? ' *' : ''}"
+                        placeholder="${placeholder}"
                         ${disabled ? 'disabled' : ''}
                         ${readonly ? 'readonly' : ''}
                         ${isRequired ? 'required' : ''}
-                        data-field="${safeField}"
-                    >${safeValue}</au-textarea>
-                    ${safeDescription ? `<div class="au-schema-form-description">${safeDescription}</div>` : ''}
-                    ${hasError ? `<div class="au-schema-form-error">${safeError}</div>` : ''}
+                        data-field="${field}"
+                    >${String(rawValue)}</au-textarea>
+                    ${description ? html`<div class="au-schema-form-description">${description}</div>` : ''}
+                    ${hasError ? html`<div class="au-schema-form-error">${errorMsg}</div>` : ''}
                 </div>
             `;
         }
 
         // Default → Input
         const inputType = this._getInputType(def);
-        return `
-            <div class="au-schema-form-field ${hasError ? 'au-schema-form-field-error' : ''}" data-field="${safeField}">
+        return html`
+            <div class="au-schema-form-field ${hasError ? 'au-schema-form-field-error' : ''}" data-field="${field}">
                 <au-input
                     type="${inputType}"
-                    label="${safeLabel}${isRequired ? ' *' : ''}"
-                    placeholder="${safePlaceholder}"
-                    value="${safeValue}"
+                    label="${label}${isRequired ? ' *' : ''}"
+                    placeholder="${placeholder}"
+                    value="${String(rawValue)}"
                     ${disabled ? 'disabled' : ''}
                     ${readonly ? 'readonly' : ''}
                     ${isRequired ? 'required' : ''}
@@ -331,10 +326,10 @@ export class AuSchemaForm extends AuElement {
                     ${def.maximum !== undefined ? `max="${def.maximum}"` : ''}
                     ${def.minLength ? `minlength="${def.minLength}"` : ''}
                     ${def.maxLength ? `maxlength="${def.maxLength}"` : ''}
-                    data-field="${safeField}"
+                    data-field="${field}"
                 ></au-input>
-                ${safeDescription ? `<div class="au-schema-form-description">${safeDescription}</div>` : ''}
-                ${hasError ? `<div class="au-schema-form-error">${safeError}</div>` : ''}
+                ${description ? html`<div class="au-schema-form-description">${description}</div>` : ''}
+                ${hasError ? html`<div class="au-schema-form-error">${errorMsg}</div>` : ''}
             </div>
         `;
     }
@@ -354,9 +349,9 @@ export class AuSchemaForm extends AuElement {
             .map(([field, def]) => this._renderField(field, def, required.includes(field)))
             .join('');
 
-        this.innerHTML = `
+        this.innerHTML = html`
             <div class="au-schema-form ${this.inline ? 'au-schema-form-inline' : ''}">
-                ${fields}
+                ${safe(fields)}
                 
                 <div class="au-schema-form-actions">
                     <au-button variant="filled" data-action="submit" ${this.disabled ? 'disabled' : ''}>

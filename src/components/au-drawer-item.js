@@ -9,7 +9,7 @@
  */
 
 import { AuElement, define } from '../core/AuElement.js';
-import { escapeHTML } from '../core/utils.js';
+import { html, safe } from '../core/utils.js';
 // Import AuIcon to ensure it's registered
 import './au-icon.js';
 
@@ -116,24 +116,24 @@ export class AuDrawerItem extends AuElement {
 
     render() {
         // Use label prop (getter handles fallback logic)
-        const labelText = escapeHTML(this.label);
+        const labelText = this.label;
         const hasLabel = labelText.length > 0;
-        const badgeHtml = this.badge ? `<span class="au-drawer-item-badge">${escapeHTML(this.badge)}</span>` : '';
+        const badgeHtml = this.badge ? html`<span class="au-drawer-item-badge">${this.badge}</span>` : '';
         const tag = this.href ? 'a' : 'button';
-        const hrefAttr = this.href ? `href="${escapeHTML(this.href)}"` : '';
+        const hrefAttr = this.href ? `href="${this.href}"` : '';
         const disabledAttr = this.disabled ? (this.href ? 'aria-disabled="true"' : 'disabled') : '';
         // A11Y: Always add aria-label for screen readers - ensures link/button is identifiable
         // even when label is visually separate or hidden in collapsed drawer
         const ariaLabel = labelText ? `aria-label="${labelText}"` : '';
 
-        this.innerHTML = `
-            <${tag} class="au-drawer-item-link" ${hrefAttr} ${disabledAttr} ${ariaLabel}>
+        this.innerHTML = html`
+            ${safe(`<${tag} class="au-drawer-item-link" ${hrefAttr} ${disabledAttr} ${ariaLabel}>`)}
                 <span class="au-drawer-item-icon">
-                    <au-icon name="${escapeHTML(this.icon)}" size="24"></au-icon>
+                    <au-icon name="${this.icon}" size="24"></au-icon>
                 </span>
-                ${hasLabel ? `<span class="au-drawer-item-label" aria-hidden="true">${labelText}</span>` : ''}
+                ${hasLabel ? html`<span class="au-drawer-item-label" aria-hidden="true">${labelText}</span>` : ''}
                 ${badgeHtml}
-            </${tag}>
+            ${safe(`</${tag}>`)}
         `;
     }
 }

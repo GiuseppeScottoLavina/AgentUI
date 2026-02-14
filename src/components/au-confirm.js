@@ -22,7 +22,7 @@
  */
 
 import { define } from '../core/AuElement.js';
-import { escapeHTML } from '../core/utils.js';
+import { html } from '../core/utils.js';
 import { AuModal } from './au-modal.js';
 
 /**
@@ -114,16 +114,16 @@ export class AuConfirm extends AuModal {
             return;
         }
 
-        const title = escapeHTML(this.attr('title', 'Confirm'));
-        const message = escapeHTML(this.attr('message', 'Are you sure?'));
-        const confirmText = escapeHTML(this.attr('confirm-text', 'Confirm'));
-        const cancelText = escapeHTML(this.attr('cancel-text', 'Cancel'));
+        const title = this.attr('title', 'Confirm');
+        const message = this.attr('message', 'Are you sure?');
+        const confirmText = this.attr('confirm-text', 'Confirm');
+        const cancelText = this.attr('cancel-text', 'Cancel');
         const variant = this.attr('variant', 'primary');
 
         // Map variant to button variant
         const buttonVariant = variant === 'danger' ? 'danger' : 'filled';
 
-        this.innerHTML = `
+        this.innerHTML = html`
             <dialog class="au-confirm__dialog">
                 <h3 class="au-confirm__title">${title}</h3>
                 <p class="au-confirm__message">${message}</p>

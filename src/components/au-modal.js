@@ -7,6 +7,7 @@
  */
 
 import { AuElement, define } from '../core/AuElement.js';
+import { html, safe } from '../core/utils.js';
 import { afterPaint } from '../core/scheduler.js';
 
 export class AuModal extends AuElement {
@@ -39,10 +40,10 @@ export class AuModal extends AuElement {
         const size = this.attr('size', 'md');
         const content = this._userContent || '';
 
-        this.innerHTML = `
+        this.innerHTML = html`
             <dialog class="au-modal__dialog au-modal--${size}">
                 <button class="au-modal__close" aria-label="Close">✕</button>
-                <div class="au-modal__body">${content}</div>
+                <div class="au-modal__body">${safe(content)}</div>
             </dialog>
         `;
 

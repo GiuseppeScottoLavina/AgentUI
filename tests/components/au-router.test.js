@@ -108,13 +108,13 @@ describe('au-router Unit Tests', () => {
     });
 
     // ─── XSS PROTECTION ───────────────────────────────────────────
-    test('should import escapeHTML', async () => {
+    test('should use html tagged template for XSS safety', async () => {
         const fs = await import('fs');
         const source = fs.readFileSync(
             new URL('../../src/components/au-router.js', import.meta.url),
             'utf-8'
         );
-        expect(source).toContain("import { escapeHTML } from '../core/utils.js'");
-        expect(source).toContain('escapeHTML(route)');
+        expect(source).toContain("import { html } from '../core/utils.js'");
+        expect(source).toMatch(/container\.innerHTML\s*=\s*html`/);
     });
 });

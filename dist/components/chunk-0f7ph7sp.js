@@ -1,0 +1,2 @@
+function C(b){if(b==null)return"";return String(b).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}class w extends String{constructor(b){super(b==null?"":b)}}function D(b){return new w(b)}function E(b,...B){let j="";for(let k=0;k<b.length;k++)if(j+=b[k],k<B.length){let q=B[k];if(q instanceof w)j+=q;else if(Array.isArray(q))for(let z of q)if(z instanceof w)j+=z;else j+=C(z);else j+=C(q)}return new w(j)}
+export{C as m,D as n,E as o};
