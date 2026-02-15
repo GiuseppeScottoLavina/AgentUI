@@ -9,19 +9,30 @@
 
 import { AuElement, define } from '../core/AuElement.js';
 
+/**
+ * MD3 Callout / Info Box with variant-based colouring.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-callout
+ */
 export class AuCallout extends AuElement {
     static baseClass = 'au-callout';
+    /** @type {string[]} */
     static observedAttributes = ['variant', 'title'];
 
 
+    /** @override */
     render() {
         this.#updateStyles();
     }
 
+    /** @override */
     update(attr, newValue, oldValue) {
         this.#updateStyles();
     }
 
+    /** @private */
     #updateStyles() {
         const variant = this.attr('variant', 'info');
 

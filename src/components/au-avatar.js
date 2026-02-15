@@ -8,12 +8,20 @@
 
 import { AuElement, define } from '../core/AuElement.js';
 
+/**
+ * Circular avatar component showing image, initials, or a default user icon.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-avatar
+ */
 export class AuAvatar extends AuElement {
     static baseClass = 'au-avatar';
     static cssFile = null; // CSS is inline/JS only
+    /** @type {string[]} */
     static observedAttributes = ['src', 'alt', 'initials', 'size'];
 
-
+    /** @override */
     render() {
         const src = this.attr('src', '');
         const alt = this.attr('alt', '');
@@ -59,6 +67,11 @@ export class AuAvatar extends AuElement {
         }
     }
 
+    /**
+     * @private
+     * @param {string} initials - Explicit initials attribute
+     * @param {string} generatedInitials - Initials generated from alt text
+     */
     #renderInitials(initials, generatedInitials) {
         // Initials are derived from short string manipulation, relatively low risk,
         // but let's be safe and use textContent for the span.
@@ -87,6 +100,7 @@ export class AuAvatar extends AuElement {
         }
     }
 
+    /** @override */
     update(attr, newValue, oldValue) {
         this.render();
     }

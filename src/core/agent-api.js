@@ -24,9 +24,10 @@
  */
 
 /**
- * Get the accessible name of an element following ARIA naming conventions
+ * Get the accessible name of an element following ARIA naming conventions.
  * @param {HTMLElement} el - Element to get name from
  * @returns {string} Accessible name
+ * @private
  */
 function getAccessibleName(el) {
     // Priority order per ARIA spec:
@@ -82,9 +83,10 @@ function getAccessibleName(el) {
 }
 
 /**
- * Get available actions for a component based on its type and state
+ * Get available actions for a component based on its type and state.
  * @param {HTMLElement} el - Component element
  * @returns {string[]} List of available actions
+ * @private
  */
 function getAvailableActions(el) {
     const actions = [];
@@ -139,9 +141,10 @@ function getAvailableActions(el) {
 }
 
 /**
- * Get component state as a plain object
+ * Get component state as a plain object.
  * @param {HTMLElement} el - Component element
  * @returns {Object} Component state
+ * @private
  */
 function getComponentState(el) {
     const state = {};
@@ -191,9 +194,10 @@ function getComponentState(el) {
 }
 
 /**
- * Generate a natural language description of a component
+ * Generate a natural language description of a component.
  * @param {HTMLElement} el - Component element
  * @returns {string} Human-readable description
+ * @private
  */
 function describeComponent(el) {
     const tag = el.tagName.toLowerCase().replace('au-', '');
@@ -231,9 +235,10 @@ function describeComponent(el) {
 }
 
 /**
- * Check if element is visible in viewport
- * @param {HTMLElement} el 
- * @returns {boolean}
+ * Check if element is visible in the viewport.
+ * @param {HTMLElement} el - Element to check
+ * @returns {boolean} True if the element is at least partially visible
+ * @private
  */
 function isInViewport(el) {
     const rect = el.getBoundingClientRect();
@@ -392,9 +397,12 @@ export function findByLabel(labelQuery, root = document.body) {
 // 2026 VISUAL MARKERS (UI-TARS Research)
 // ============================================
 
+/** @type {boolean} Whether visual markers are currently enabled */
 let markersEnabled = false;
+/** @type {HTMLDivElement|null} Container overlay for visual markers */
 let markerContainer = null;
-const markerMap = new Map(); // element -> marker element
+/** @type {Map<string, WeakRef<HTMLElement>>} Marker ID → element reference */
+const markerMap = new Map();
 
 /**
  * Enable visual markers on interactive elements for screenshot-based AI agents.
@@ -756,7 +764,10 @@ export function getMCPActions() {
     };
 }
 
-// Export for global access
+/**
+ * Convenience namespace exporting all agent API functions.
+ * @namespace AgentAPI
+ */
 export const AgentAPI = {
     getAuComponentTree,
     describe,

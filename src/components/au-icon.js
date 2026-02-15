@@ -13,7 +13,7 @@
 import { AuElement, define } from '../core/AuElement.js';
 import { html } from '../core/utils.js';
 
-// Inline SVG paths for critical icons (fallback when font not loaded)
+/** @private Inline SVG paths for critical icons (fallback when font not loaded) */
 const SVG_ICONS = {
     // Actions
     check: 'M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z',
@@ -114,12 +114,21 @@ const KNOWN_ICONS = new Set([
 // Named size → pixel mapping
 const SIZE_MAP = { xs: 16, sm: 20, md: 24, lg: 32, xl: 40 };
 
+/**
+ * Material Symbols icon component with font and SVG fallback.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-icon
+ */
 export class AuIcon extends AuElement {
     static baseClass = 'au-icon';
     static cssFile = 'icon';
+    /** @type {string[]} */
     static observedAttributes = ['name', 'size', 'svg', 'filled', 'font'];
 
 
+    /** @override */
     render() {
         const name = this.attr('name', 'info');
         const sizeAttr = this.attr('size', '24');
@@ -178,6 +187,7 @@ export class AuIcon extends AuElement {
         }
     }
 
+    /** @override */
     update(attr, newValue, oldValue) {
         this.render();
     }

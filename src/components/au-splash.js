@@ -15,6 +15,15 @@
 import { AuElement } from '../core/AuElement.js';
 import { html, safe } from '../core/utils.js';
 
+/**
+ * Instant splash screen with inline critical CSS for zero-JS first paint.
+ * Auto-hides on the `au-ready` event with a configurable fade transition.
+ * Respects `prefers-reduced-motion`.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-splash
+ */
 export class AuSplash extends AuElement {
     static get observedAttributes() {
         return ['logo', 'duration', 'delay', 'spinner'];
@@ -33,6 +42,7 @@ export class AuSplash extends AuElement {
         this._hidden = false;
     }
 
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
 
@@ -109,6 +119,7 @@ export class AuSplash extends AuElement {
         document.head.insertBefore(style, document.head.firstChild);
     }
 
+    /** @override */
     render() {
         const logo = this.getAttribute('logo');
         const showSpinner = this.getAttribute('spinner') !== 'false';

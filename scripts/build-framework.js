@@ -63,12 +63,19 @@ const esmResult = await build({
     format: 'esm',
     minify: true,
     sourcemap: 'external',
+    drop: ['console.log', 'debugger'],
+    emitDCEAnnotations: true,
+    define: { 'process.env.NODE_ENV': '"production"' },
+    metafile: true,
     naming: { entry: 'agentui.esm.js' }
 });
 
 if (!esmResult.success) {
     console.error('❌ ESM build failed:', esmResult.logs);
     process.exit(1);
+}
+if (esmResult.metafile) {
+    writeFileSync(join(outdir, 'meta.json'), JSON.stringify(esmResult.metafile, null, 2));
 }
 console.log('✅ ESM bundle: dist/agentui.esm.js');
 
@@ -82,6 +89,8 @@ const iifeResult = await build({
     format: 'iife',
     minify: true,
     sourcemap: 'external',
+    drop: ['console.log', 'debugger'],
+    define: { 'process.env.NODE_ENV': '"production"' },
     naming: { entry: 'agentui.min.js' }
 });
 
@@ -132,7 +141,10 @@ const chunkedResult = await build({
     format: 'esm',
     minify: true,
     splitting: true,
-    sourcemap: 'none'
+    sourcemap: 'none',
+    drop: ['console.log', 'debugger'],
+    emitDCEAnnotations: true,
+    define: { 'process.env.NODE_ENV': '"production"' }
 });
 
 if (chunkedResult.success) {
@@ -167,7 +179,10 @@ const componentResult = await build({
     format: 'esm',
     minify: true,
     splitting: true,
-    sourcemap: 'none'
+    sourcemap: 'none',
+    drop: ['console.log', 'debugger'],
+    emitDCEAnnotations: true,
+    define: { 'process.env.NODE_ENV': '"production"' }
 });
 
 if (componentResult.success) {
@@ -375,7 +390,10 @@ const routeResult = await build({
     format: 'esm',
     minify: true,
     splitting: true,
-    sourcemap: 'none'
+    sourcemap: 'none',
+    drop: ['console.log', 'debugger'],
+    emitDCEAnnotations: true,
+    define: { 'process.env.NODE_ENV': '"production"' }
 });
 
 if (routeResult.success) {
@@ -733,9 +751,11 @@ for (const demoPath of demoFiles) {
         }
     }
 
-    // Replace all version strings
+    // Replace all version strings (cache busters + footer display)
     const oldVersionPattern = /\?v=\d+\.\d+\.\d+/g;
     content = content.replace(oldVersionPattern, `?v=${newVersion}`);
+    // Update footer version display
+    content = content.replace(/>v\d+\.\d+\.\d+</, `>v${newVersion}<`);
     writeFileSync(demoPath, content);
 }
 

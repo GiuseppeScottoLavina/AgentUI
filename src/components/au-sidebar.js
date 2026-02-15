@@ -10,11 +10,21 @@
 
 import { AuElement, define } from '../core/AuElement.js';
 
+/**
+ * Collapsible sidebar navigation panel.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-sidebar
+ * @fires au-sidebar-toggle - When toggled, detail: `{ open }`
+ * @slot default - `<au-sidebar-item>` children
+ */
 export class AuSidebar extends AuElement {
     static baseClass = 'au-sidebar';
+    /** @type {string[]} */
     static observedAttributes = ['open', 'width'];
 
-
+    /** @override */
     render() {
         const width = this.attr('width', '250px');
 
@@ -28,10 +38,12 @@ export class AuSidebar extends AuElement {
         this.style.flexDirection = 'column';
     }
 
+    /** @override */
     update(attr, newValue, oldValue) {
         this.render();
     }
 
+    /** Toggle the sidebar open/closed. */
     toggle() {
         if (this.has('open')) {
             this.removeAttribute('open');
@@ -42,10 +54,20 @@ export class AuSidebar extends AuElement {
     }
 }
 
+/**
+ * Individual item within `<au-sidebar>`.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-sidebar-item
+ * @fires au-sidebar-select - When clicked, detail: `{ item }`
+ */
 export class AuSidebarItem extends AuElement {
     static baseClass = 'au-sidebar__item';
+    /** @type {string[]} */
     static observedAttributes = ['icon', 'active'];
 
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
         this.listen(this, 'click', () => {
@@ -53,6 +75,7 @@ export class AuSidebarItem extends AuElement {
         });
     }
 
+    /** @override */
     render() {
         const icon = this.attr('icon', '');
         const text = this.textContent;
@@ -72,6 +95,7 @@ export class AuSidebarItem extends AuElement {
         }
     }
 
+    /** @override */
     update(attr, newValue, oldValue) {
         this.render();
     }

@@ -16,11 +16,40 @@
  */
 
 // ─── Precompiled regex for _inferButtonAction (P1.3 perf fix) ────────────────
+/** @private Matches submit-intent button labels */
 const _RE_SUBMIT = /^(save|submit|confirm|send|create|add|apply|ok|yes)$/;
+/** @private Matches cancel-intent button labels */
 const _RE_CANCEL = /^(cancel|close|dismiss|no|nevermind)$/;
+/** @private Matches delete-intent button labels */
 const _RE_DELETE = /^(delete|remove|clear|trash)$/;
+/** @private Matches navigation-intent button labels */
 const _RE_NAVIGATE = /^(back|next|previous|forward|continue)$/;
 
+/**
+ * Base class for all AgentUI Web Components.
+ *
+ * Provides lifecycle management, memory-safe event handling via AbortController,
+ * CSS lazy-loading, AI agent semantic attributes, and per-component readiness.
+ * All AgentUI components extend this class instead of raw HTMLElement.
+ *
+ * @class
+ * @extends HTMLElement
+ *
+ * @fires au:ready - Emitted once after the first render completes (bubbles, composed)
+ *
+ * @example
+ * import { AuElement, define } from 'agentui-wc';
+ *
+ * class MyComponent extends AuElement {
+ *     static baseClass = 'my-component';
+ *     static observedAttributes = ['label'];
+ *
+ *     render() {
+ *         this.innerHTML = `<span>${this.attr('label', 'Hello')}</span>`;
+ *     }
+ * }
+ * define('my-component', MyComponent);
+ */
 export class AuElement extends HTMLElement {
     /** @type {string[]} Attributes to observe for changes */
     static observedAttributes = [];
@@ -124,6 +153,10 @@ export class AuElement extends HTMLElement {
     /** @type {Promise<this>} Resolves after first connectedCallback render */
     ready = new Promise(resolve => { this._readyResolve = resolve; });
 
+    /**
+     * Create a new AuElement instance.
+     * Initializes the global agent error logger on first instantiation.
+     */
     constructor() {
         super();
         // Hoist to class-level: agent logger runs exactly once (P1.2 perf fix)
@@ -133,6 +166,12 @@ export class AuElement extends HTMLElement {
         }
     }
 
+    /**
+     * Initialize the global agent error logger.
+     * Sets up `window.__AGENTUI_ERRORS__` and `window.AgentUIAgent` utilities
+     * for Puppeteer/Playwright-based agent debugging.
+     * @private
+     */
     _initAgentLogger() {
         if (!window.__AGENTUI_ERRORS__) {
             window.__AGENTUI_ERRORS__ = [];
@@ -379,7 +418,9 @@ export class AuElement extends HTMLElement {
     }
 
     /**
-     * Infer button action from text content
+     * Infer button action from text content.
+     * Uses precompiled module-level regex for performance.
+     * @returns {string} Inferred action (submit | cancel | delete | navigate | click)
      * @private
      */
     _inferButtonAction() {
@@ -394,7 +435,8 @@ export class AuElement extends HTMLElement {
     }
 
     /**
-     * Infer button role from context
+     * Infer button role from its variant attribute.
+     * @returns {string} Inferred role (primary-action | secondary-action | tertiary-action | destructive-action | action)
      * @private
      */
     _inferButtonRole() {
@@ -448,7 +490,10 @@ export class AuElement extends HTMLElement {
 
     /**
      * Override in subclass for custom cleanup logic.
-     * Called when component is removed from DOM.
+     * Called automatically from `disconnectedCallback` after AbortController
+     * and timers have been cleaned up.
+     * @abstract
+     * @protected
      */
     cleanup() {
         // Override in subclass
@@ -457,6 +502,9 @@ export class AuElement extends HTMLElement {
     /**
      * Called when observed attribute changes.
      * Triggers efficient update, not full re-render.
+     * @param {string} name - Attribute name
+     * @param {string|null} oldValue - Previous attribute value
+     * @param {string|null} newValue - New attribute value
      */
     attributeChangedCallback(name, oldValue, newValue) {
         if (oldValue !== newValue && this._rendered) {
@@ -465,15 +513,23 @@ export class AuElement extends HTMLElement {
     }
 
     /**
-     * Initial render - override in subclass.
+     * Initial render — override in subclass to build component DOM.
+     * Called once during the first `connectedCallback`.
+     * @abstract
+     * @protected
      */
     render() {
         // Override in subclass
     }
 
     /**
-     * Efficient update - override in subclass.
-     * Modifies existing DOM, never recreates.
+     * Efficient update — override in subclass.
+     * Called when an observed attribute changes. Modifies existing DOM, never recreates.
+     * @param {string} attr - Changed attribute name
+     * @param {string|null} newValue - New attribute value
+     * @param {string|null} oldValue - Previous attribute value
+     * @abstract
+     * @protected
      */
     update(attr, newValue, oldValue) {
         // Override in subclass
@@ -495,21 +551,28 @@ export class AuElement extends HTMLElement {
     }
 
     /**
-     * Helper: Get attribute with default
+     * Helper: Get attribute value with a fallback default.
+     * @param {string} name - Attribute name
+     * @param {string} [defaultValue=''] - Value to return if attribute is missing
+     * @returns {string} Attribute value or default
      */
     attr(name, defaultValue = '') {
         return this.getAttribute(name) ?? defaultValue;
     }
 
     /**
-     * Helper: Check if attribute exists
+     * Helper: Check if a boolean attribute is present.
+     * @param {string} name - Attribute name
+     * @returns {boolean} True if the attribute exists
      */
     has(name) {
         return this.hasAttribute(name);
     }
 
     /**
-     * Helper: Emit a custom event
+     * Helper: Emit a custom event that bubbles and crosses shadow DOM boundaries.
+     * @param {string} name - Event name (e.g. 'au-change')
+     * @param {Object} [detail={}] - Event detail payload
      */
     emit(name, detail = {}) {
         this.dispatchEvent(new CustomEvent(name, {
@@ -522,10 +585,11 @@ export class AuElement extends HTMLElement {
     /**
      * Safe addEventListener with automatic cleanup on disconnect.
      * Uses AbortController signal for efficient removal.
-     * 
+     *
+     * @param {EventTarget} target - Element to attach the listener to
      * @param {string} type - Event type
      * @param {EventListener} listener - Event handler
-     * @param {AddEventListenerOptions} options - Event options
+     * @param {AddEventListenerOptions} [options={}] - Event options
      */
     listen(target, type, listener, options = {}) {
         if (!this._abortController) {

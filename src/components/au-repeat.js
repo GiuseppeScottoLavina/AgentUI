@@ -17,16 +17,29 @@ import { AuElement, define } from '../core/AuElement.js';
 import { scheduler } from '../core/render.js';
 import { html } from '../core/utils.js';
 
+/**
+ * Efficient list renderer with key-based reconciliation.
+ * Only updates DOM nodes whose data has changed, similar to React/Vue keyed lists.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-repeat
+ */
 export class AuRepeat extends AuElement {
     static baseClass = 'au-repeat';
     static observedAttributes = [];
 
 
+    /** @private */
     #items = [];
+    /** @private */
     #keyFn = (item, index) => index;
+    /** @private */
     #renderItem = (item) => html`<div>${JSON.stringify(item)}</div>`;
+    /** @private key → DOM element cache */
     #itemNodes = new Map(); // key -> DOM element
 
+    /** @override */
     disconnectedCallback() {
         super.disconnectedCallback();
         // ML1: Clear DOM references to prevent memory leak
@@ -60,12 +73,15 @@ export class AuRepeat extends AuElement {
         this.#renderItem = fn;
     }
 
+    /** @override */
     render() {
         this.style.display = 'contents';
     }
 
     /**
-     * Efficient reconciliation - only updates changed items
+     * Efficient reconciliation — only updates changed items.
+     * @private
+     * @param {Array} oldItems - Previous items array for diff.
      */
     #reconcile(oldItems) {
         const newKeys = new Set();

@@ -8,12 +8,20 @@
 
 import { AuElement, define } from '../core/AuElement.js';
 
+/**
+ * Horizontal or vertical divider line.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-divider
+ */
 export class AuDivider extends AuElement {
     static baseClass = 'au-divider';
     static cssFile = null; // CSS is inline/JS only
+    /** @type {string[]} */
     static observedAttributes = ['vertical', 'inset'];
 
-
+    /** @override */
     render() {
         const vertical = this.has('vertical');
         const inset = this.has('inset');
@@ -33,6 +41,7 @@ export class AuDivider extends AuElement {
         }
     }
 
+    /** @override */
     update(attr, newValue, oldValue) {
         this.render();
     }

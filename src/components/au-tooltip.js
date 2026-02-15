@@ -8,14 +8,23 @@ import { AuElement, define } from '../core/AuElement.js';
 /** Gap between tooltip and trigger element (MD3 spec: 8px) */
 const TOOLTIP_GAP = 8;
 
+/**
+ * MD3 Tooltip using portal positioning with auto-flip.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-tooltip
+ */
 export class AuTooltip extends AuElement {
     static baseClass = 'au-tooltip';
     static cssFile = 'tooltip';
+    /** @type {string[]} */
     static observedAttributes = ['content', 'position'];
 
 
     #tooltip = null;
 
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
 
@@ -25,6 +34,7 @@ export class AuTooltip extends AuElement {
         this.listen(this, 'blur', () => this.hide(), { capture: true });
     }
 
+    /** @override */
     render() {
         const position = this.attr('position', 'top');
 
@@ -40,6 +50,7 @@ export class AuTooltip extends AuElement {
         this.style.display = 'inline-block';
     }
 
+    /** @override */
     update(attr, newValue, oldValue) {
         if (attr === 'position') {
             const position = this.attr('position', 'top');
@@ -54,6 +65,7 @@ export class AuTooltip extends AuElement {
         }
     }
 
+    /** Show the tooltip and position it relative to the trigger. */
     show() {
         if (this.#tooltip) return;
 
@@ -96,8 +108,8 @@ export class AuTooltip extends AuElement {
     }
 
     /**
-     *  positioning logic inspired by Floating UI
-     * Uses fixed positioning for viewport-relative placement
+     * Floating UI-style fixed positioning logic.
+     * @private
      */
     #computePosition(placement) {
         const triggerRect = this.getBoundingClientRect();
@@ -125,7 +137,8 @@ export class AuTooltip extends AuElement {
     }
 
     /**
-     * Calculate x,y coordinates for a given placement
+     * Calculate x,y coordinates for a given placement.
+     * @private
      */
     #getCoordinates(placement, triggerRect, tooltipRect) {
         let x, y;
@@ -156,7 +169,8 @@ export class AuTooltip extends AuElement {
     }
 
     /**
-     * Auto-flip to opposite side if tooltip overflows viewport
+     * Auto-flip to opposite side if tooltip overflows viewport.
+     * @private
      */
     #autoFlip(placement, x, y, tooltipRect, triggerRect) {
         const viewportWidth = window.innerWidth;
@@ -180,6 +194,7 @@ export class AuTooltip extends AuElement {
         return placement;
     }
 
+    /** Hide and remove the tooltip element. */
     hide() {
         if (this.#tooltip) {
             this.#tooltip.remove();
@@ -187,6 +202,7 @@ export class AuTooltip extends AuElement {
         }
     }
 
+    /** @override */
     disconnectedCallback() {
         super.disconnectedCallback();
         this.hide();

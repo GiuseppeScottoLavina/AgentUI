@@ -34,6 +34,12 @@ export const BREAKPOINTS = {
  * @typedef {(breakpoint: BreakpointClass) => void} BreakpointCallback
  */
 
+/**
+ * Reactive observer for MD3 responsive breakpoints.
+ * Uses MediaQueryList listeners for efficient change detection.
+ *
+ * @class
+ */
 class BreakpointObserver {
     /** @type {Set<BreakpointCallback>} */
     #listeners = new Set();

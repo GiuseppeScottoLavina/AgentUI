@@ -42,15 +42,30 @@ export function clearErrors() {
     errorRegistry.length = 0;
 }
 
+/**
+ * Error boundary that catches rendering failures in child components
+ * and displays a recoverable fallback UI. Maintains a global error
+ * registry for agent observability.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-error-boundary
+ * @fires au-error   - Emitted when an error is caught, detail: `{ error, boundary, recover }`.
+ * @fires au-recover - Emitted after successful recovery.
+ */
 export class AuErrorBoundary extends AuElement {
     static baseClass = 'au-error-boundary';
     static observedAttributes = ['fallback'];
 
 
+    /** @private */
     #hasError = false;
+    /** @private @type {Error|null} */
     #error = null;
+    /** @private */
     #originalContent = '';
 
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
 
@@ -71,6 +86,12 @@ export class AuErrorBoundary extends AuElement {
         });
     }
 
+    /**
+     * Best-effort heuristic to determine if an error originated from a child component.
+     * @private
+     * @param {Error} error
+     * @returns {boolean}
+     */
     #isErrorFromChild(error) {
         // Best-effort check if error is from child component
         if (!error?.stack) return false;
@@ -82,6 +103,11 @@ export class AuErrorBoundary extends AuElement {
         return childTags.some(tag => error.stack.includes(tag));
     }
 
+    /**
+     * Process a caught error: register it, render fallback, and emit `au-error`.
+     * @private
+     * @param {Event|CustomEvent} event
+     */
     #handleError(event) {
         const error = event?.detail?.error || event?.error || event;
 
@@ -124,6 +150,10 @@ export class AuErrorBoundary extends AuElement {
         event?.stopPropagation?.();
     }
 
+    /**
+     * Replace children with fallback UI (custom or default).
+     * @private
+     */
     #renderFallback() {
         const fallback = this.getAttribute('fallback');
 
@@ -153,6 +183,7 @@ export class AuErrorBoundary extends AuElement {
         this.classList.add('has-error');
     }
 
+    /** @override */
     render() {
         // Apply base styles
         this.style.display = 'block';

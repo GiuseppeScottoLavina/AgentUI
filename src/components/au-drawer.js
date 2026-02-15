@@ -14,7 +14,19 @@ import { AuElement, define } from '../core/AuElement.js';
 import { breakpoints } from '../core/breakpoints.js';
 import { keyboard } from '../core/keyboard.js';
 
+/**
+ * MD3 Adaptive Navigation Drawer with responsive breakpoint behaviour.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-drawer
+ * @fires au-nav-select - Bubbles when a child `au-drawer-item` is selected
+ * @slot header - Optional header content
+ * @slot footer - Optional footer content
+ * @slot default - `<au-drawer-item>` children
+ */
 export class AuDrawer extends AuElement {
+    /** @type {string[]} */
     static get observedAttributes() {
         return ['mode', 'open', 'expand-on-hover', 'position'];
     }
@@ -46,6 +58,7 @@ export class AuDrawer extends AuElement {
     get position() { return this.getAttribute('position') || 'start'; }
     set position(v) { this.setAttribute('position', v); }
 
+    /** @override */
     connectedCallback() {
         // Capture slotted children before render
         if (!this._slotsCaptured) {
@@ -64,7 +77,9 @@ export class AuDrawer extends AuElement {
     }
 
     /**
-     * Calculate the initial display mode based on current breakpoints
+     * Calculate the initial display mode based on current breakpoints.
+     * @private
+     * @returns {'expanded'|'rail'|'hidden'}
      */
     _getInitialMode() {
         const mode = this.mode;
@@ -89,11 +104,13 @@ export class AuDrawer extends AuElement {
         }
     }
 
+    /** @private */
     _forceUpdateMode() {
         this._currentMode = this._getInitialMode();
         this._applyMode();
     }
 
+    /** @override */
     disconnectedCallback() {
         super.disconnectedCallback();
         if (this._unsubscribe) {
@@ -105,6 +122,7 @@ export class AuDrawer extends AuElement {
         this._unsubEsc = null;
     }
 
+    /** @override */
     attributeChangedCallback(name, oldVal, newVal) {
         if (!this.isConnected) return;
 
@@ -115,6 +133,7 @@ export class AuDrawer extends AuElement {
         }
     }
 
+    /** @private */
     _setupBreakpointListener() {
         // Subscribe to centralized breakpoint changes
         this._unsubscribe = breakpoints.subscribe(() => {
@@ -122,6 +141,7 @@ export class AuDrawer extends AuElement {
         });
     }
 
+    /** @private */
     _updateMode() {
         const mode = this.mode;
         const isCompact = breakpoints.isCompact;
@@ -152,6 +172,7 @@ export class AuDrawer extends AuElement {
         }
     }
 
+    /** @private */
     _applyMode() {
         const drawer = this.querySelector('.au-drawer-nav');
         if (!drawer) return;
@@ -182,6 +203,7 @@ export class AuDrawer extends AuElement {
         }
     }
 
+    /** @private */
     _setupListeners() {
         // Scrim click to close
         const scrim = this.querySelector('.au-drawer-scrim');
@@ -225,6 +247,7 @@ export class AuDrawer extends AuElement {
         this._unsubEsc = null;
     }
 
+    /** @private */
     _updateActiveItem(selectedItem) {
         const items = this.querySelectorAll('au-drawer-item');
         items.forEach(item => {
@@ -232,6 +255,7 @@ export class AuDrawer extends AuElement {
         });
     }
 
+    /** @private */
     _updateOpenState() {
         const drawer = this.querySelector('.au-drawer-nav');
 
@@ -253,6 +277,7 @@ export class AuDrawer extends AuElement {
         }
     }
 
+    /** @private */
     _showScrim() {
         const scrim = this.querySelector('.au-drawer-scrim');
         if (scrim) {
@@ -260,6 +285,7 @@ export class AuDrawer extends AuElement {
         }
     }
 
+    /** @private */
     _hideScrim() {
         const scrim = this.querySelector('.au-drawer-scrim');
         if (scrim) {
@@ -267,10 +293,12 @@ export class AuDrawer extends AuElement {
         }
     }
 
+    /** Toggle the drawer open/closed. */
     toggle() {
         this.open = !this.open;
     }
 
+    /** @override */
     render() {
         // Build DOM structure
         this.innerHTML = '';

@@ -9,13 +9,22 @@
 
 import { AuElement, define } from '../core/AuElement.js';
 
+/**
+ * MD3 Linear Progress Indicator with determinate and indeterminate modes.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-progress
+ */
 export class AuProgress extends AuElement {
     static baseClass = 'au-progress';
     static cssFile = 'progress';
+    /** @type {string[]} */
     static observedAttributes = ['value', 'max', 'variant', 'indeterminate'];
 
     #primaryBar = null;
 
+    /** @override */
     render() {
         // Idempotent: skip if already rendered
         if (this.querySelector('.au-progress__progress')) {
@@ -40,6 +49,12 @@ export class AuProgress extends AuElement {
         this.#updateClasses();
     }
 
+    /**
+     * @override
+     * @param {string} attr
+     * @param {string|null} newValue
+     * @param {string|null} oldValue
+     */
     update(attr, newValue, oldValue) {
         if (attr === 'value' || attr === 'max') {
             this.#updateProgress();
@@ -57,6 +72,7 @@ export class AuProgress extends AuElement {
         this.#updateClasses();
     }
 
+    /** @private */
     #updateProgress() {
         const value = parseFloat(this.attr('value', '0'));
         const max = parseFloat(this.attr('max', '100'));
@@ -70,6 +86,7 @@ export class AuProgress extends AuElement {
         this.setAttribute('aria-valuemax', max.toString());
     }
 
+    /** @private */
     #updateClasses() {
         const variant = this.attr('variant', 'primary');
 

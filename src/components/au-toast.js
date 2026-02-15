@@ -5,14 +5,24 @@
 import { AuElement, define } from '../core/AuElement.js';
 import { html, safe } from '../core/utils.js';
 
+/**
+ * MD3 Snackbar/Toast notification component with auto-dismiss.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-toast
+ * @fires au-dismiss - When the toast is dismissed
+ */
 export class AuToast extends AuElement {
     static baseClass = 'au-toast';
     static cssFile = null; // Toast CSS is in main bundle only (no separate snackbar.css)
+    /** @type {string[]} */
     static observedAttributes = ['severity', 'duration', 'position'];
 
     #timeout = null;
     #originalContent = null;
 
+    /** @override */
     connectedCallback() {
         // Store content before render (must be before super because super calls render)
         if (!this.#originalContent && !this.querySelector('.au-toast__content')) {
@@ -35,11 +45,13 @@ export class AuToast extends AuElement {
         }
     }
 
+    /** @override */
     disconnectedCallback() {
         super.disconnectedCallback();
         // Timer cleanup handled by AuElement
     }
 
+    /** @override */
     render() {
         // Idempotent: skip if already rendered
         if (this.querySelector('.au-toast__content')) {
@@ -57,10 +69,12 @@ export class AuToast extends AuElement {
         this.#updateClasses();
     }
 
+    /** @override */
     update(attr, newValue, oldValue) {
         this.#updateClasses();
     }
 
+    /** @private */
     #updateClasses() {
         const severity = this.attr('severity', 'info');
         const position = this.attr('position', 'bottom-center');
@@ -75,6 +89,7 @@ export class AuToast extends AuElement {
         });
     }
 
+    /** Dismiss the toast with an exit animation. */
     dismiss() {
         this.emit('au-dismiss');
         this.classList.add('is-exiting');
@@ -101,9 +116,17 @@ export class AuToast extends AuElement {
 
 define('au-toast', AuToast);
 
+/**
+ * Container element for positioning toast notifications.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-toast-container
+ */
 export class AuToastContainer extends AuElement {
     static baseClass = 'au-toast-container';
 
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
         this.setAttribute('role', 'status');
@@ -113,8 +136,20 @@ export class AuToastContainer extends AuElement {
 
 define('au-toast-container', AuToastContainer);
 
-// Toast Manager for programmatic usage
+/**
+ * Toast manager for programmatic toast creation.
+ * @namespace Toast
+ */
 export const Toast = {
+    /**
+     * Show a toast notification.
+     * @param {string} message - Toast message
+     * @param {Object} [options={}] - Toast options
+     * @param {string} [options.severity] - 'info'|'success'|'warning'|'error'
+     * @param {number} [options.duration] - Auto-dismiss duration in ms
+     * @param {string} [options.position='bottom-center'] - Toast position
+     * @returns {AuToast} The created toast element
+     */
     show(message, options = {}) {
         const position = options.position || 'bottom-center';
         let container = document.querySelector(`au-toast-container[position="${position}"]`);

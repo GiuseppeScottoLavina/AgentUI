@@ -27,6 +27,21 @@ import { AuElement, define } from '../core/AuElement.js';
  * @property {Error|null} error
  */
 
+/**
+ * Declarative data fetcher that manages loading, success, error, and empty states.
+ * Supports auto-fetch on connect, interval polling, and custom render functions.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-fetch
+ * @fires au-loading - Emitted when a fetch request begins.
+ * @fires au-success - Emitted on successful fetch, detail: `{ data }`.
+ * @fires au-error   - Emitted on fetch failure, detail: `{ error }`.
+ * @fires au-data    - Emitted when data is available for slotted rendering, detail: `{ data }`.
+ * @slot loading - Template shown during fetch (default: `<au-spinner>`).
+ * @slot error   - Template shown on error (default: `<au-alert variant="error">`).
+ * @slot empty   - Template shown when data is empty (default: `<p>No data</p>`).
+ */
 export class AuFetch extends AuElement {
     static baseClass = 'au-fetch';
     static observedAttributes = ['url', 'method', 'auto', 'interval'];
@@ -47,6 +62,7 @@ export class AuFetch extends AuElement {
     /** @type {number|null} */
     _intervalId = null;
 
+    /** @override */
     connectedCallback() {
         // Store templates before render — sanitize to prevent slot template injection (R7)
         this._loadingTemplate = this.#sanitizeSlotTemplate(
@@ -76,6 +92,7 @@ export class AuFetch extends AuElement {
         }
     }
 
+    /** @override */
     render() {
         // Render based on current state
         this.innerHTML = ''; // Clear content
@@ -240,12 +257,14 @@ export class AuFetch extends AuElement {
         return this._renderItem;
     }
 
+    /** @override */
     update(attr, newValue, oldValue) {
         if (attr === 'url' && newValue !== oldValue) {
             this.fetch();
         }
     }
 
+    /** @override */
     disconnectedCallback() {
         super.disconnectedCallback();
         if (this._controller) {
@@ -255,10 +274,11 @@ export class AuFetch extends AuElement {
     }
 
     /**
-     * R7 Security: Sanitize slot template HTML to strip dangerous elements/attributes.
-     * Prevents template injection when attacker controls initial DOM (CMS, SSTI).
-     * @param {string} html
-     * @returns {string}
+     * Sanitize slot template HTML to strip dangerous elements and attributes.
+     * Prevents template injection when attacker controls initial DOM.
+     * @private
+     * @param {string} html - Raw HTML from a slot template.
+     * @returns {string} Sanitized HTML safe for innerHTML assignment.
      */
     #sanitizeSlotTemplate(html) {
         const container = document.createElement('div');

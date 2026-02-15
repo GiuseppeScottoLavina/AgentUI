@@ -10,14 +10,27 @@ import { AuElement, define } from '../core/AuElement.js';
 import { html, safe } from '../core/utils.js';
 import { afterPaint } from '../core/scheduler.js';
 
+/**
+ * MD3 Dialog component using the native `<dialog>` element.
+ * Provides top-layer rendering, focus trapping, ESC handling, and backdrop.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-modal
+ * @fires au-open - When the dialog opens
+ * @fires au-close - When the dialog closes
+ * @slot default - Dialog body content
+ */
 export class AuModal extends AuElement {
     static baseClass = 'au-modal';
     static cssFile = 'overlays';
+    /** @type {string[]} */
     static observedAttributes = ['open', 'size'];
 
     /** @type {HTMLDialogElement|null} */
     #dialog = null;
 
+    /** @override */
     disconnectedCallback() {
         // ML5: Restore body scroll if we locked it (prevents frozen scroll
         // when modal is force-removed from DOM without close())
@@ -27,6 +40,7 @@ export class AuModal extends AuElement {
         super.disconnectedCallback();
     }
 
+    /** @override */
     connectedCallback() {
         // Store user content only once, before first render
         if (!this.hasAttribute('data-rendered')) {
@@ -42,6 +56,7 @@ export class AuModal extends AuElement {
         this.#setupListeners();
     }
 
+    /** @override */
     render() {
         // Idempotent: check if already rendered via DOM structure
         if (this.querySelector('dialog')) return;
@@ -62,6 +77,7 @@ export class AuModal extends AuElement {
     /**
      * Setup all event listeners. Called after every connectedCallback
      * to ensure listeners survive DOM disconnect/reconnect cycles.
+     * @private
      */
     #setupListeners() {
         this.#dialog = this.querySelector('dialog');
@@ -100,6 +116,12 @@ export class AuModal extends AuElement {
         }
     }
 
+    /**
+     * @override
+     * @param {string} attr
+     * @param {string|null} newValue
+     * @param {string|null} oldValue
+     */
     update(attr, newValue, oldValue) {
         if (attr === 'open') {
             if (newValue !== null) {
@@ -108,6 +130,7 @@ export class AuModal extends AuElement {
         }
     }
 
+    /** @private */
     #showDialog() {
         if (!this.#dialog || this.#dialog.open) return;
 
@@ -123,14 +146,16 @@ export class AuModal extends AuElement {
     }
 
     /**
-     * Open the modal dialog (public API)
+     * Open the modal dialog.
+     * Sets the `open` attribute which triggers `#showDialog`.
      */
     open() {
         this.setAttribute('open', '');
     }
 
     /**
-     * Close the modal dialog with animation (public API)
+     * Close the modal dialog with an MD3 exit animation.
+     * Emits `au-close` after the transition completes.
      */
     close() {
         if (!this.#dialog) return;

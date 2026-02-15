@@ -29,6 +29,17 @@
 import { AuElement, define } from '../core/AuElement.js';
 import { html, safe } from '../core/utils.js';
 
+/**
+ * Auto-generates AgentUI form fields from a JSON Schema definition.
+ * Supports string, number, boolean, and enum types with built-in validation.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-schema-form
+ * @fires au-submit  - Emitted on valid form submit, detail is the values object.
+ * @fires au-reset   - Emitted on form reset, detail: `{ values }`.
+ * @fires au-change  - Emitted on field change, detail: `{ field, value, values }`.
+ */
 export class AuSchemaForm extends AuElement {
     static get observedAttributes() {
         return ['submit-label', 'reset-label', 'inline', 'readonly', 'disabled'];
@@ -81,11 +92,13 @@ export class AuSchemaForm extends AuElement {
 
     // === LIFECYCLE ===
 
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
         this.render();
     }
 
+    /** @override */
     attributeChangedCallback(name, oldVal, newVal) {
         if (this.isConnected && oldVal !== newVal) {
             this.render();
@@ -164,6 +177,10 @@ export class AuSchemaForm extends AuElement {
 
     // === INTERNAL METHODS ===
 
+    /**
+     * Initialize form values from schema defaults.
+     * @private
+     */
     _initializeValues() {
         this._values = {};
         if (!this._schema || !this._schema.properties) return;
@@ -181,6 +198,15 @@ export class AuSchemaForm extends AuElement {
         }
     }
 
+    /**
+     * Validate a single field against its schema definition.
+     * @private
+     * @param {string} field - Field name.
+     * @param {*} value - Current field value.
+     * @param {Object} def - JSON Schema field definition.
+     * @param {boolean} isRequired - Whether the field is required.
+     * @returns {string[]} Array of error messages.
+     */
     _validateField(field, value, def, isRequired) {
         const errors = [];
 
@@ -234,6 +260,12 @@ export class AuSchemaForm extends AuElement {
         return errors;
     }
 
+    /**
+     * Map JSON Schema format/type to an HTML input type.
+     * @private
+     * @param {Object} def - JSON Schema field definition.
+     * @returns {string}
+     */
     _getInputType(def) {
         if (def.format === 'email') return 'email';
         if (def.format === 'password') return 'password';
@@ -246,6 +278,14 @@ export class AuSchemaForm extends AuElement {
         return 'text';
     }
 
+    /**
+     * Render a single form field based on its schema type.
+     * @private
+     * @param {string} field - Field name.
+     * @param {Object} def - JSON Schema field definition.
+     * @param {boolean} isRequired
+     * @returns {string} HTML string for the field.
+     */
     _renderField(field, def, isRequired) {
         const rawValue = this._values[field] ?? '';
         const errors = this._errors[field] || [];
@@ -340,6 +380,7 @@ export class AuSchemaForm extends AuElement {
         `;
     }
 
+    /** @override */
     render() {
         if (!this._schema || !this._schema.properties) {
             this.innerHTML = html`
@@ -373,6 +414,10 @@ export class AuSchemaForm extends AuElement {
         this._attachEventListeners();
     }
 
+    /**
+     * Attach change/input listeners to all generated form controls.
+     * @private
+     */
     _attachEventListeners() {
         // Input changes
         this.querySelectorAll('au-input').forEach(input => {

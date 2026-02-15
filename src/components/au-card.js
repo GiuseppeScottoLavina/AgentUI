@@ -6,29 +6,47 @@
 
 import { AuElement, define } from '../core/AuElement.js';
 
+/**
+ * MD3 Card container component with elevation and padding options.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-card
+ * @slot default - Card body content
+ */
 export class AuCard extends AuElement {
     static baseClass = 'au-card';
     static cssFile = 'card';
+    /** @type {string[]} */
     static observedAttributes = ['variant', 'padding'];
 
     /**
      * Self-documenting component for AI agents
      */
 
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
         this.#updateClasses();
     }
 
+    /** @override */
     render() {
         // Card just wraps content, no internal structure needed
         this.#updateClasses();
     }
 
+    /**
+     * @override
+     * @param {string} attr
+     * @param {string|null} newValue
+     * @param {string|null} oldValue
+     */
     update(attr, newValue, oldValue) {
         this.#updateClasses();
     }
 
+    /** @private */
     #updateClasses() {
         const variant = this.attr('variant', 'flat');
         const padding = this.attr('padding', 'md');

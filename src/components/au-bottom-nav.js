@@ -10,7 +10,16 @@
 import { AuElement, define } from '../core/AuElement.js';
 import { breakpoints } from '../core/breakpoints.js';
 
+/**
+ * MD3 Bottom Navigation Bar for mobile viewports.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-bottom-nav
+ * @fires au-change - When active destination changes, detail: `{ value, item }`
+ */
 export class AuBottomNav extends AuElement {
+    /** @type {string[]} */
     static get observedAttributes() {
         return ['hide-on-desktop', 'value'];
     }
@@ -32,6 +41,7 @@ export class AuBottomNav extends AuElement {
     get value() { return this.getAttribute('value') || ''; }
     set value(v) { this.setAttribute('value', v); }
 
+    /** @override */
     connectedCallback() {
         // Preserve children before render
         if (!this._childrenCaptured) {
@@ -44,6 +54,7 @@ export class AuBottomNav extends AuElement {
         this._updateVisibility();
     }
 
+    /** @override */
     disconnectedCallback() {
         super.disconnectedCallback();
         if (this._unsubscribe) {
@@ -52,6 +63,7 @@ export class AuBottomNav extends AuElement {
         }
     }
 
+    /** @override */
     attributeChangedCallback(name, oldVal, newVal) {
         if (!this.isConnected) return;
 
@@ -60,6 +72,7 @@ export class AuBottomNav extends AuElement {
         }
     }
 
+    /** @private */
     _setupBreakpointListener() {
         if (this.hideOnDesktop) {
             // Subscribe to centralized breakpoint changes
@@ -69,6 +82,7 @@ export class AuBottomNav extends AuElement {
         }
     }
 
+    /** @private */
     _updateVisibility() {
         // Hide on medium+ screens (tablets and desktop) using centralized breakpoints
         if (this.hideOnDesktop && breakpoints.isNotCompact) {
@@ -78,6 +92,7 @@ export class AuBottomNav extends AuElement {
         }
     }
 
+    /** @private */
     _setupListeners() {
         // Listen for nav item selection
         this.listen(this, 'au-nav-select', (e) => {
@@ -88,6 +103,7 @@ export class AuBottomNav extends AuElement {
         });
     }
 
+    /** @private */
     _updateActiveItem(selectedItem) {
         const items = this.querySelectorAll('au-nav-item, au-drawer-item');
         items.forEach(item => {
@@ -95,6 +111,7 @@ export class AuBottomNav extends AuElement {
         });
     }
 
+    /** @override */
     render() {
         // Create nav wrapper and append preserved children
         const nav = document.createElement('nav');

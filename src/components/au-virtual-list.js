@@ -16,6 +16,15 @@ import { throttle } from '../core/render.js';
 
 import { html } from '../core/utils.js';
 
+/**
+ * Virtual-scrolling list that renders only the visible slice of a dataset.
+ * Uses throttled scroll handling and optional `scheduler.yield()` batching
+ * for large lists to prevent INP degradation.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-virtual-list
+ */
 export class AuVirtualList extends AuElement {
     static baseClass = 'au-virtual-list';
     static cssFile = null; // CSS is inline/JS only
@@ -23,16 +32,21 @@ export class AuVirtualList extends AuElement {
 
     // Data
 
+    /** @private */
     #items = [];
+    /** @private */
     #renderItem = (item) => html`<div>${item}</div>`;
 
-    // State
+    /** @private */
     #scrollTop = 0;
+    /** @private */
     #visibleStart = 0;
+    /** @private */
     #visibleEnd = 0;
 
-    // Refs
+    /** @private @type {HTMLElement|null} */
     #container = null;
+    /** @private @type {HTMLElement|null} */
     #content = null;
 
     set items(arr) {
@@ -56,11 +70,13 @@ export class AuVirtualList extends AuElement {
         this.#updateVisibleRange();
     }
 
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
         // Note: scroll listener is attached in render() to the internal viewport container
     }
 
+    /** @override */
     render() {
         const itemHeight = parseInt(this.attr('item-height', '50'));
 
@@ -96,6 +112,10 @@ export class AuVirtualList extends AuElement {
         this.#updateVisibleRange();
     }
 
+    /**
+     * Recalculate visible item range and trigger re-render if changed.
+     * @private
+     */
     #updateVisibleRange() {
         if (!this.#container || !this.#items.length) return;
 
@@ -119,6 +139,11 @@ export class AuVirtualList extends AuElement {
         }
     }
 
+    /**
+     * Render only the items within the current visible range.
+     * Uses `scheduler.yield()` for large batches to keep the page responsive.
+     * @private
+     */
     async #renderVisibleItems() {
         const itemHeight = parseInt(this.attr('item-height', '50'));
         const itemsContainer = this.querySelector('.au-virtual-list__items');

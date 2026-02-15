@@ -8,15 +8,30 @@ import { AuElement, define } from '../core/AuElement.js';
 import { createRipple } from '../core/ripple.js';
 import { html } from '../core/utils.js';
 
+/**
+ * MD3 Button component with ripple effect and variant support.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-button
+ * @fires click
+ * @slot default - Button label text or icon content
+ *
+ * @example
+ * <au-button variant="filled">Save</au-button>
+ * <au-button variant="outlined" size="sm">Cancel</au-button>
+ */
 export class AuButton extends AuElement {
     static baseClass = 'au-button';
     static cssFile = 'button';
+    /** @type {string[]} Observed HTML attributes */
     static observedAttributes = ['variant', 'size', 'disabled'];
 
     /**
      * Self-documenting component for AI agents
      */
 
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
         this.setAttribute('role', 'button');
@@ -30,6 +45,7 @@ export class AuButton extends AuElement {
         });
     }
 
+    /** @override */
     render() {
         // Only wrap text on first render to preserve custom children (icons, etc.)
         if (!this._initialRenderDone) {
@@ -52,6 +68,12 @@ export class AuButton extends AuElement {
         this.#updateClasses();
     }
 
+    /**
+     * @override
+     * @param {string} attr - Changed attribute name
+     * @param {string|null} newValue
+     * @param {string|null} oldValue
+     */
     update(attr, newValue, oldValue) {
         if (attr === 'disabled') {
             this.updateTabindex();
@@ -59,6 +81,7 @@ export class AuButton extends AuElement {
         this.#updateClasses();
     }
 
+    /** @private */
     #updateClasses() {
         const variant = this.attr('variant', 'primary');
         const size = this.attr('size', 'md');

@@ -7,10 +7,19 @@
 
 import { AuElement, define } from '../core/AuElement.js';
 
+/**
+ * MD3 Circular Progress Indicator (indeterminate mode).
+ *
+ * @class
+ * @extends AuElement
+ * @element au-spinner
+ */
 export class AuSpinner extends AuElement {
     static baseClass = 'au-spinner';
+    /** @type {string[]} */
     static observedAttributes = ['size', 'color'];
 
+    /** @override */
     render() {
         // Idempotent: skip if already rendered
         if (this.querySelector('.au-spinner__spinner')) return;
@@ -30,10 +39,12 @@ export class AuSpinner extends AuElement {
         this.#updateClasses();
     }
 
+    /** @override */
     update(attr, newValue, oldValue) {
         this.#updateClasses();
     }
 
+    /** @private */
     #updateClasses() {
         const size = this.attr('size', 'md');
         const color = this.attr('color', 'primary');

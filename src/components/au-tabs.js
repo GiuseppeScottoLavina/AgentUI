@@ -14,15 +14,26 @@
 
 import { AuElement, define } from '../core/AuElement.js';
 
+/**
+ * MD3 Tabs component with sliding indicator animation.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-tabs
+ * @fires au-tab-change - When the active tab changes, detail: `{ index }`
+ * @slot default - `<au-tab>` children
+ */
 export class AuTabs extends AuElement {
     static baseClass = 'au-tabs';
     static cssFile = 'tabs';
+    /** @type {string[]} */
     static observedAttributes = ['active'];
 
 
     #tabs = [];
     #list = null;
 
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
         // Listen for tab clicks via event delegation
@@ -43,6 +54,7 @@ export class AuTabs extends AuElement {
         });
     }
 
+    /** @override */
     render() {
         // Idempotent: skip if already rendered
         if (this.querySelector('.au-tabs__list')) {
@@ -70,6 +82,12 @@ export class AuTabs extends AuElement {
         this.#updateActive();
     }
 
+    /**
+     * @override
+     * @param {string} attr
+     * @param {string|null} newValue
+     * @param {string|null} oldValue
+     */
     update(attr, newValue, oldValue) {
         if (attr === 'active') {
             this.#updateActive();
@@ -77,6 +95,7 @@ export class AuTabs extends AuElement {
         }
     }
 
+    /** @private */
     #updateActive() {
         const activeIndex = parseInt(this.attr('active', '0'));
         const tabCount = this.#tabs.length;
@@ -96,14 +115,23 @@ export class AuTabs extends AuElement {
     }
 }
 
+/**
+ * Individual tab element for use inside `<au-tabs>`.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-tab
+ */
 export class AuTab extends AuElement {
     static baseClass = 'au-tabs__tab';
 
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
         this.setAttribute('tabindex', '0');
     }
 
+    /** @override */
     render() {
         // Tab just wraps content, no transformation needed
     }

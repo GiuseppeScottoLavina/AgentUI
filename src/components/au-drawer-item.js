@@ -13,7 +13,16 @@ import { html, safe } from '../core/utils.js';
 // Import AuIcon to ensure it's registered
 import './au-icon.js';
 
+/**
+ * MD3 Navigation Drawer / Bottom Nav item component.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-drawer-item
+ * @fires au-nav-select - When item is clicked, detail: `{ href, item }`
+ */
 export class AuDrawerItem extends AuElement {
+    /** @type {string[]} */
     static get observedAttributes() {
         return ['icon', 'href', 'active', 'badge', 'disabled', 'layout', 'label'];
     }
@@ -64,6 +73,7 @@ export class AuDrawerItem extends AuElement {
     get label() { return this.getAttribute('label') || this._capturedLabel || ''; }
     set label(v) { this.setAttribute('label', v); }
 
+    /** @override */
     connectedCallback() {
         // If label attribute already exists, capture it
         if (!this._capturedLabel && this.hasAttribute('label')) {
@@ -85,16 +95,19 @@ export class AuDrawerItem extends AuElement {
         this.setupActivation(() => this._handleClick(new MouseEvent('click')));
     }
 
+    /** @override */
     attributeChangedCallback(name, oldValue, newValue) {
         if (oldValue !== newValue && this.isConnected) {
             this.render();
         }
     }
 
+    /** @private */
     _setupListeners() {
         this.listen(this, 'click', this._handleClick.bind(this));
     }
 
+    /** @private */
     _handleClick(e) {
         if (this.disabled) {
             e.preventDefault();
@@ -114,6 +127,7 @@ export class AuDrawerItem extends AuElement {
         this.emit('au-nav-select', { href: this.href, item: this }, { bubbles: true, composed: true });
     }
 
+    /** @override */
     render() {
         // Use label prop (getter handles fallback logic)
         const labelText = this.label;

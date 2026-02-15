@@ -14,61 +14,94 @@
  */
 
 /**
- * Create a new HTTP client instance
- * @param {{ baseURL?: string, headers?: Record<string, string> }} [config]
+ * Create a new HTTP client instance with configurable baseURL and headers.
+ * @param {Object} [config={}] - Client configuration
+ * @param {string} [config.baseURL=''] - Base URL prepended to all request paths
+ * @param {Record<string, string>} [config.headers={}] - Default headers for all requests
+ * @returns {Object} HTTP client with get/post/put/delete/request/create methods
  */
 function createHttpClient(config = {}) {
     return {
+        /** @type {string} Base URL for all requests */
         baseURL: config.baseURL || '',
+        /** @type {Record<string, string>} Default headers */
         headers: {
             'Content-Type': 'application/json',
             ...(config.headers || {})
         },
 
         /**
-         * Set base URL for all requests
+         * Set base URL for all subsequent requests.
+         * @param {string} url - New base URL
          */
         setBaseURL(url) {
             this.baseURL = url;
         },
 
         /**
-         * Set default header
+         * Set a default header for all subsequent requests.
+         * @param {string} key - Header name
+         * @param {string} value - Header value
          */
         setHeader(key, value) {
             this.headers[key] = value;
         },
 
         /**
-         * GET request
+         * Perform a GET request.
+         * @param {string} url - Request URL (appended to baseURL)
+         * @param {Object} [options={}] - Additional fetch options
+         * @returns {Promise<*>} Parsed JSON or text response
+         * @throws {HttpError}
          */
         async get(url, options = {}) {
             return this.request(url, { ...options, method: 'GET' });
         },
 
         /**
-         * POST request
+         * Perform a POST request.
+         * @param {string} url - Request URL (appended to baseURL)
+         * @param {*} body - Request body (will be JSON.stringified)
+         * @param {Object} [options={}] - Additional fetch options
+         * @returns {Promise<*>} Parsed JSON or text response
+         * @throws {HttpError}
          */
         async post(url, body, options = {}) {
             return this.request(url, { ...options, method: 'POST', body });
         },
 
         /**
-         * PUT request
+         * Perform a PUT request.
+         * @param {string} url - Request URL (appended to baseURL)
+         * @param {*} body - Request body (will be JSON.stringified)
+         * @param {Object} [options={}] - Additional fetch options
+         * @returns {Promise<*>} Parsed JSON or text response
+         * @throws {HttpError}
          */
         async put(url, body, options = {}) {
             return this.request(url, { ...options, method: 'PUT', body });
         },
 
         /**
-         * DELETE request
+         * Perform a DELETE request.
+         * @param {string} url - Request URL (appended to baseURL)
+         * @param {Object} [options={}] - Additional fetch options
+         * @returns {Promise<*>} Parsed JSON or text response
+         * @throws {HttpError}
          */
         async delete(url, options = {}) {
             return this.request(url, { ...options, method: 'DELETE' });
         },
 
         /**
-         * Core request method
+         * Core request method — performs the actual fetch.
+         * @param {string} url - Request URL (appended to baseURL)
+         * @param {Object} [options={}] - Request options
+         * @param {string} [options.method='GET'] - HTTP method
+         * @param {*} [options.body] - Request body (will be JSON.stringified)
+         * @param {Record<string, string>} [options.headers] - Extra headers to merge
+         * @returns {Promise<*>} Parsed JSON or text response
+         * @throws {HttpError} On non-ok responses or network errors
          */
         async request(url, options = {}) {
             const fullURL = this.baseURL + url;
@@ -111,16 +144,29 @@ function createHttpClient(config = {}) {
     };
 }
 
+/** @type {Object} Default HTTP client singleton */
 export const http = createHttpClient();
 
 /**
- * HTTP Error class
+ * Error class for HTTP failures.
+ * Carries `status`, `statusText` and `body` from the failed response.
+ *
+ * @class
+ * @extends Error
  */
 export class HttpError extends Error {
+    /**
+     * @param {number} status - HTTP status code (0 for network errors)
+     * @param {string} statusText - HTTP status text
+     * @param {string} body - Response body or error message
+     */
     constructor(status, statusText, body) {
         super(`HTTP ${status}: ${statusText}`);
+        /** @type {number} HTTP status code */
         this.status = status;
+        /** @type {string} HTTP status text */
         this.statusText = statusText;
+        /** @type {string} Response body */
         this.body = body;
     }
 }

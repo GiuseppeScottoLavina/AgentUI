@@ -15,14 +15,27 @@
 
 import { AuElement, define } from '../core/AuElement.js';
 
+/**
+ * Defers rendering of child content until the element enters the viewport.
+ * Uses `IntersectionObserver` for efficient, non-blocking detection.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-lazy
+ * @fires au-loaded - Emitted when content is loaded into the DOM.
+ * @slot placeholder - Content shown before the element becomes visible.
+ */
 export class AuLazy extends AuElement {
     static baseClass = 'au-lazy';
     static observedAttributes = ['root-margin', 'threshold'];
 
 
+    /** @private @type {IntersectionObserver|null} */
     #observer = null;
+    /** @private */
     #loaded = false;
 
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
 
@@ -41,11 +54,13 @@ export class AuLazy extends AuElement {
         this.#observer.observe(this);
     }
 
+    /** @override */
     disconnectedCallback() {
         super.disconnectedCallback();
         this.#observer?.disconnect();
     }
 
+    /** @override */
     render() {
         // Show placeholder initially
         const placeholder = this.querySelector('[slot="placeholder"]');
@@ -60,6 +75,10 @@ export class AuLazy extends AuElement {
         }
     }
 
+    /**
+     * Clone template content into the DOM, remove placeholder, and emit `au-loaded`.
+     * @private
+     */
     #load() {
         this.#loaded = true;
         this.#observer?.disconnect();

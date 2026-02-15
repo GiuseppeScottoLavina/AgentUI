@@ -29,6 +29,16 @@ import { html, safe } from '../core/utils.js';
 // ============================================
 // AU-PROMPT-INPUT
 // ============================================
+/**
+ * Enhanced text input with submit button, loading spinner, and multiline support.
+ * Designed for AI agent prompt interfaces.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-prompt-input
+ * @fires au-submit - Emitted on submit, detail: `{ value }`.
+ * @fires au-input  - Emitted on input change, detail: `{ value }`.
+ */
 export class AuPromptInput extends AuElement {
     static get observedAttributes() {
         return ['placeholder', 'loading', 'disabled', 'multiline'];
@@ -74,6 +84,7 @@ export class AuPromptInput extends AuElement {
         if (input) input.value = val;
     }
 
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
         this.render();
@@ -116,6 +127,10 @@ export class AuPromptInput extends AuElement {
         }
     }
 
+    /**
+     * Submit current value if valid.
+     * @private
+     */
     _submit() {
         if (this.loading || this.disabled || !this._value.trim()) return;
 
@@ -125,6 +140,11 @@ export class AuPromptInput extends AuElement {
         }));
     }
 
+    /**
+     * Handle keyboard shortcuts (Enter to submit).
+     * @private
+     * @param {KeyboardEvent} e
+     */
     _handleKeydown(e) {
         if (e.key === 'Enter' && !e.shiftKey && !this.multiline) {
             e.preventDefault();
@@ -135,6 +155,7 @@ export class AuPromptInput extends AuElement {
         }
     }
 
+    /** @override */
     render() {
         const isTextarea = this.multiline;
         const placeholder = this.placeholder;
@@ -173,6 +194,13 @@ export class AuPromptInput extends AuElement {
 // ============================================
 // AU-CODE-BLOCK
 // ============================================
+/**
+ * Syntax-highlighted code display with copy-to-clipboard button.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-code-block
+ */
 export class AuCodeBlock extends AuElement {
     static get observedAttributes() {
         return ['language', 'filename'];
@@ -192,6 +220,7 @@ export class AuCodeBlock extends AuElement {
         return this.getAttribute('filename');
     }
 
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
         this.render();
@@ -203,6 +232,10 @@ export class AuCodeBlock extends AuElement {
         }
     }
 
+    /**
+     * Copy code content to clipboard.
+     * @private
+     */
     async _copy() {
         // Read ONLY from the <code> element, not the entire component textContent
         const codeEl = this.querySelector('code');
@@ -219,6 +252,7 @@ export class AuCodeBlock extends AuElement {
         }
     }
 
+    /** @override */
     render() {
         const code = this.textContent.trim();
 
@@ -244,6 +278,14 @@ export class AuCodeBlock extends AuElement {
 // ============================================
 // AU-AGENT-TOOLBAR
 // ============================================
+/**
+ * Toolbar with action buttons (copy, regenerate, thumbs up/down) for AI responses.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-agent-toolbar
+ * @fires au-action - Emitted on button click, detail: `{ action }`.
+ */
 export class AuAgentToolbar extends AuElement {
     static get observedAttributes() {
         return ['actions'];
@@ -260,6 +302,7 @@ export class AuAgentToolbar extends AuElement {
         return attr ? attr.split(',').map(a => a.trim()) : ['copy', 'regenerate', 'thumbsUp', 'thumbsDown'];
     }
 
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
         this.render();
@@ -267,6 +310,7 @@ export class AuAgentToolbar extends AuElement {
 
 
 
+    /** @override */
     render() {
         const actionButtons = {
             copy: { icon: '📋', label: 'Copy' },
@@ -302,6 +346,13 @@ export class AuAgentToolbar extends AuElement {
 // ============================================
 // AU-MESSAGE-BUBBLE
 // ============================================
+/**
+ * Chat message bubble with role-based styling, avatar, and timestamp.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-message-bubble
+ */
 export class AuMessageBubble extends AuElement {
     static get observedAttributes() {
         return ['role', 'avatar', 'name', 'timestamp'];
@@ -330,6 +381,7 @@ export class AuMessageBubble extends AuElement {
         return this.getAttribute('timestamp');
     }
 
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
         // Capture original children before render
@@ -345,6 +397,7 @@ export class AuMessageBubble extends AuElement {
         }
     }
 
+    /** @override */
     render() {
         const isUser = this.role === 'user';
         const defaultAvatar = isUser ? '👤' : '🤖';

@@ -9,11 +9,19 @@
 
 import { AuElement, define } from '../core/AuElement.js';
 
+/**
+ * Skeleton placeholder loader with pulse animation.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-skeleton
+ */
 export class AuSkeleton extends AuElement {
     static baseClass = 'au-skeleton';
+    /** @type {string[]} */
     static observedAttributes = ['variant', 'width', 'height', 'size', 'lines'];
 
-
+    /** @override */
     render() {
         // Idempotent: skip if already rendered (has skeleton line or animation)
         if (this.querySelector('.au-skeleton__line') || this.style.animation) {
@@ -62,6 +70,7 @@ export class AuSkeleton extends AuElement {
         }
     }
 
+    /** @override */
     update(attr, newValue, oldValue) {
         this.render();
     }

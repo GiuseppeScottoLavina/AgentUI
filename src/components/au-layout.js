@@ -10,7 +10,20 @@
 
 import { AuElement, define } from '../core/AuElement.js';
 
+/**
+ * MD3 responsive layout container orchestrating drawer, content, and bottom nav.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-layout
+ * @slot header - Navbar or top bar
+ * @slot drawer - `<au-drawer>` navigation
+ * @slot footer - Footer content
+ * @slot bottom - `<au-bottom-nav>` for mobile
+ * @slot default - Main page content
+ */
 export class AuLayout extends AuElement {
+    /** @type {string[]} */
     static get observedAttributes() {
         return ['has-drawer', 'has-bottom-nav', 'full-bleed'];
     }
@@ -25,6 +38,7 @@ export class AuLayout extends AuElement {
         super();
     }
 
+    /** @override */
     connectedCallback() {
         // Capture slotted children before render
         if (!this._slotsCaptured) {
@@ -50,11 +64,13 @@ export class AuLayout extends AuElement {
         }
     }
 
+    /** @override */
     disconnectedCallback() {
         super.disconnectedCallback();
         // Listener cleanup handled by AuElement AbortController
     }
 
+    /** @private */
     _setupScrollReset() {
         // Reset content scroll when navigating to a new section
         this.listen(window, 'hashchange', () => {
@@ -65,6 +81,7 @@ export class AuLayout extends AuElement {
         });
     }
 
+    /** @private */
     _updateLayout() {
         const hasDrawer = this._slots.drawer !== null;
         const hasBottomNav = this._slots.bottom !== null;
@@ -75,8 +92,7 @@ export class AuLayout extends AuElement {
 
     /**
      * Re-check bottom-nav visibility after child components have initialized.
-     * au-bottom-nav[hide-on-desktop] sets display:none in its connectedCallback,
-     * which may run after au-layout's. This deferred check corrects has-bottom-nav.
+     * @private
      */
     _recheckBottomNav() {
         const bottomNav = this._slots.bottom;
@@ -86,8 +102,8 @@ export class AuLayout extends AuElement {
     }
 
     /**
-     * Runtime safety check: warns if user CSS has accidentally overridden
-     * the bottom-nav padding compensation on .au-layout-content.
+     * Warn if user CSS overrides bottom-nav padding on `.au-layout-content`.
+     * @private
      */
     _checkPaddingIntegrity() {
         if (!this.hasAttribute('has-bottom-nav')) return;
@@ -119,6 +135,7 @@ export class AuLayout extends AuElement {
         }
     }
 
+    /** @override */
     render() {
         // Build layout structure with DOM manipulation
         this.innerHTML = '';

@@ -10,6 +10,12 @@
  * Router.start();
  */
 
+/**
+ * Hash-based SPA router with parameter support.
+ * Routes are matched in registration order; first match wins.
+ *
+ * @class
+ */
 class RouterClass {
     #routes = [];
     #notFound = null;
@@ -17,9 +23,10 @@ class RouterClass {
     #handleRoute = null;
 
     /**
-     * Register a route
-     * @param {string} path - Route path (supports :param)
-     * @param {(params: Object) => void} handler
+     * Register a route handler.
+     * @param {string} path - Route path (supports `:param` placeholders)
+     * @param {(params: Object) => void} handler - Called with matched params
+     * @returns {RouterClass} This instance (chainable)
      */
     on(path, handler) {
         // Convert path params to regex
@@ -41,7 +48,9 @@ class RouterClass {
     }
 
     /**
-     * Set 404 handler
+     * Set the 404 (not found) handler.
+     * @param {(path: string) => void} handler - Called with unmatched path
+     * @returns {RouterClass} This instance (chainable)
      */
     notFound(handler) {
         this.#notFound = handler;
@@ -57,14 +66,16 @@ class RouterClass {
     }
 
     /**
-     * Get current path
+     * Get current route path.
+     * @returns {string}
      */
     get current() {
         return this.#currentPath;
     }
 
     /**
-     * Start the router
+     * Start listening for hash changes and resolve the initial route.
+     * @returns {RouterClass} This instance (chainable)
      */
     start() {
         this.#handleRoute = () => {
@@ -121,4 +132,5 @@ class RouterClass {
 }
 
 export { RouterClass };
+/** @type {RouterClass} Global router singleton */
 export const Router = new RouterClass();

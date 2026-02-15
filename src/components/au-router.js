@@ -19,15 +19,29 @@ import { AuElement, define } from '../core/AuElement.js';
 import { html } from '../core/utils.js';
 import { bus } from '../core/bus.js';
 
+/**
+ * Hash-based router that lazily loads pages from HTML files, caches them,
+ * and emits navigation events on both the DOM and the global `bus`.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-router
+ * @fires au-route-change - Emitted on route change, detail: `{ route }`.
+ * @fires au-page-loaded  - Emitted after page content is rendered, detail: `{ route }`.
+ * @fires au-page-error   - Emitted on page load failure, detail: `{ route, error }`.
+ */
 class AuRouter extends AuElement {
     static baseClass = 'au-router';
     static observedAttributes = ['base', 'default'];
 
     // Cache for loaded pages
 
+    /** @private @type {Map<string,string>} */
     #pageCache = new Map();
+    /** @private @type {string|null} */
     #currentRoute = null;
 
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
 
@@ -40,23 +54,43 @@ class AuRouter extends AuElement {
 
     // disconnectedCallback handled by AuElement (AbortController cleanup)
 
+    /** @override */
     render() {
         // Empty container - pages render inside
         this.innerHTML = '<div class="au-router__content"></div>';
     }
 
+    /**
+     * Resolved base path for page HTML files.
+     * @private
+     * @type {string}
+     */
     get #basePath() {
         return this.attr('base', '/app/pages');
     }
 
+    /**
+     * Default route when hash is empty.
+     * @private
+     * @type {string}
+     */
     get #defaultRoute() {
         return this.attr('default', 'home');
     }
 
+    /**
+     * Router content container element.
+     * @private
+     * @type {HTMLElement|null}
+     */
     get #contentContainer() {
         return this.querySelector('.au-router__content');
     }
 
+    /**
+     * Parse the current hash and load the corresponding page.
+     * @private
+     */
     async #handleRoute() {
         const hash = window.location.hash.slice(1) || this.#defaultRoute;
 
@@ -76,6 +110,11 @@ class AuRouter extends AuElement {
         await this.#loadPage(hash);
     }
 
+    /**
+     * Fetch, sanitize, cache, and render a page by route name.
+     * @private
+     * @param {string} route
+     */
     async #loadPage(route) {
         const container = this.#contentContainer;
         if (!container) return;
@@ -192,6 +231,11 @@ class AuRouter extends AuElement {
         return doc.body.innerHTML;
     }
 
+    /**
+     * Dynamically import component dependencies declared in a page.
+     * @private
+     * @param {string} depsText - Newline/comma-separated component tag names.
+     */
     async #loadDependencies(depsText) {
         const deps = depsText
             .split(/[\n,]/)

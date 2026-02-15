@@ -8,11 +8,21 @@ import { AuElement, define } from '../core/AuElement.js';
 import { html } from '../core/utils.js';
 import { createRipple } from '../core/ripple.js';
 
+/**
+ * MD3 Toggle Switch component.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-switch
+ * @fires au-change - When toggled, detail: `{ checked, source }`
+ */
 export class AuSwitch extends AuElement {
     static baseClass = 'au-switch';
     static cssFile = 'switch';
+    /** @type {string[]} */
     static observedAttributes = ['checked', 'disabled', 'label'];
 
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
         // Accessibility: set role and keyboard navigation
@@ -37,6 +47,7 @@ export class AuSwitch extends AuElement {
         });
     }
 
+    /** @override */
     render() {
         // Idempotent: skip if already rendered  
         if (this.querySelector('.au-switch__track')) {
@@ -60,10 +71,12 @@ export class AuSwitch extends AuElement {
         this.#updateState();
     }
 
+    /** @override */
     update(attr, newValue, oldValue) {
         this.#updateState();
     }
 
+    /** @private */
     #updateState() {
         const track = this.querySelector('.au-switch__track');
         const thumb = this.querySelector('.au-switch__thumb');
@@ -131,6 +144,7 @@ export class AuSwitch extends AuElement {
         if (labelText) this.setAttribute('aria-label', labelText);
     }
 
+    /** Toggle the switch state. */
     toggle() {
         if (this.has('checked')) {
             this.removeAttribute('checked');
@@ -140,10 +154,15 @@ export class AuSwitch extends AuElement {
         this.emit('au-change', { checked: this.has('checked'), source: 'user' });
     }
 
+    /**
+     * Whether the switch is checked.
+     * @type {boolean}
+     */
     get checked() {
         return this.has('checked');
     }
 
+    /** @param {boolean} v */
     set checked(v) {
         if (v) {
             this.setAttribute('checked', '');

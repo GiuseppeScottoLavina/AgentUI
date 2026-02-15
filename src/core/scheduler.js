@@ -15,14 +15,16 @@
  */
 
 /**
- * Check if Scheduler API is supported
+ * Whether the native Scheduler API (scheduler.postTask) is available.
+ * @type {boolean}
  */
 export const supportsScheduler = 'scheduler' in globalThis;
 
 /**
- * Schedule a task with priority
- * @param {() => T} callback 
- * @param {'user-blocking' | 'user-visible' | 'background'} priority 
+ * Schedule a task with priority.
+ * @template T
+ * @param {() => T} callback - Task to schedule
+ * @param {'user-blocking' | 'user-visible' | 'background'} [priority='user-visible'] - Task priority
  * @returns {Promise<T>}
  */
 export async function scheduleTask(callback, priority = 'user-visible') {
@@ -53,12 +55,14 @@ export async function yieldToMain() {
 }
 
 /**
- * Process items in chunks, yielding between chunks
- * Better than processInChunks because it uses scheduler.yield()
- * 
- * @param {T[]} items 
- * @param {(item: T, index: number) => void} process 
- * @param {number} chunkSize
+ * Process items in chunks, yielding between chunks.
+ * Prefer over `processInChunks` because it uses native `scheduler.yield()` when available.
+ *
+ * @template T
+ * @param {T[]} items - Array of items to process
+ * @param {(item: T, index: number) => void} process - Callback for each item
+ * @param {number} [chunkSize=50] - Items per chunk before yielding
+ * @returns {Promise<void>}
  */
 export async function processWithYield(items, process, chunkSize = 50) {
     for (let i = 0; i < items.length; i++) {
@@ -72,8 +76,9 @@ export async function processWithYield(items, process, chunkSize = 50) {
 }
 
 /**
- * Run background task (lowest priority, won't block UI)
- * @param {() => T} callback 
+ * Run background task (lowest priority, won't block UI).
+ * @template T
+ * @param {() => T} callback - Task to run in background
  * @returns {Promise<T>}
  */
 export function runBackground(callback) {
@@ -81,8 +86,9 @@ export function runBackground(callback) {
 }
 
 /**
- * Run user-blocking task (highest priority)
- * @param {() => T} callback 
+ * Run user-blocking task (highest priority).
+ * @template T
+ * @param {() => T} callback - Task to run immediately
  * @returns {Promise<T>}
  */
 export function runImmediate(callback) {

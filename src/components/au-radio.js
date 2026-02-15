@@ -13,11 +13,22 @@ import { AuElement, define } from '../core/AuElement.js';
 import { html } from '../core/utils.js';
 import { createRipple } from '../core/ripple.js';
 
+/**
+ * MD3 Radio Button Group managing exclusive selection.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-radio-group
+ * @fires au-change - When value changes, detail: `{ value, source }`
+ * @slot default - `<au-radio>` children
+ */
 export class AuRadioGroup extends AuElement {
     static baseClass = 'au-radio-group';
     static cssFile = 'radio';
+    /** @type {string[]} */
     static observedAttributes = ['name', 'value'];
 
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
         // Accessibility: set role
@@ -53,6 +64,7 @@ export class AuRadioGroup extends AuElement {
         });
     }
 
+    /** @override */
     render() {
         this.style.display = 'flex';
         this.style.flexDirection = 'column';
@@ -64,12 +76,14 @@ export class AuRadioGroup extends AuElement {
         this.setTimeout(() => this.#updateSelection(), 0);
     }
 
+    /** @override */
     update(attr, newValue, oldValue) {
         if (attr === 'value') {
             this.#updateSelection();
         }
     }
 
+    /** @private */
     #updateSelection() {
         const currentValue = this.attr('value', '');
         this.querySelectorAll('au-radio').forEach(radio => {
@@ -82,6 +96,10 @@ export class AuRadioGroup extends AuElement {
         });
     }
 
+    /**
+     * Select a value and emit change.
+     * @param {string} value
+     */
     select(value) {
         this.setAttribute('value', value);
         this.emit('au-change', { value, source: 'user' });
@@ -96,13 +114,22 @@ export class AuRadioGroup extends AuElement {
     }
 }
 
+/**
+ * Individual radio button within an `<au-radio-group>`.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-radio
+ */
 export class AuRadio extends AuElement {
     static baseClass = 'au-radio';
+    /** @type {string[]} */
     static observedAttributes = ['value', 'checked', 'disabled', 'label'];
 
     #labelText = '';
     #rendered = false;
 
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
         // Accessibility: set role and keyboard navigation
@@ -113,6 +140,7 @@ export class AuRadio extends AuElement {
         });
     }
 
+    /** @override */
     render() {
         // Read label only once to avoid losing it after innerHTML
         if (!this.#rendered) {
@@ -138,6 +166,7 @@ export class AuRadio extends AuElement {
         this.#updateState();
     }
 
+    /** @override */
     update(attr, newValue, oldValue) {
         // For checked changes, just update visuals without full re-render
         if (attr === 'checked' || attr === 'disabled') {
@@ -149,6 +178,7 @@ export class AuRadio extends AuElement {
         }
     }
 
+    /** @private */
     #updateState() {
         const circle = this.querySelector('.au-radio__circle');
         const dot = this.querySelector('.au-radio__dot');

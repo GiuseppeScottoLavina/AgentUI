@@ -9,11 +9,15 @@
  * @module component-schema
  */
 
-// Component definitions with JSON Schema metadata
+/** @private @type {Map<string, Object>} Internal registry of component JSON schemas */
 const componentSchemas = new Map();
 
 /**
- * Base schema structure for all components
+ * Create the base JSON Schema structure shared by all components.
+ * @param {string} tagName - Component tag name (e.g. 'au-button')
+ * @param {string} description - Human-readable component description
+ * @returns {Object} Base JSON Schema object
+ * @private
  */
 const createBaseSchema = (tagName, description) => ({
     $schema: 'https://json-schema.org/draft/2020-12/schema',
@@ -319,9 +323,9 @@ componentSchemas.set('au-badge', {
 // ============================================
 
 /**
- * Get JSON Schema for a specific component
- * @param {string} tagName - Component tag name (e.g., 'au-button')
- * @returns {object|null} JSON Schema object or null if not found
+ * Get JSON Schema for a specific component.
+ * @param {string} tagName - Component tag name (e.g. 'au-button')
+ * @returns {Object|null} JSON Schema object or null if not found
  */
 export function getComponentSchema(tagName) {
     return componentSchemas.get(tagName) || null;
@@ -387,7 +391,10 @@ export function exportSchemasAsJSON() {
     return JSON.stringify(allSchemas, null, 2);
 }
 
-// Export for module usage
+/**
+ * Convenience namespace exporting all schema API functions.
+ * @namespace ComponentSchema
+ */
 export const ComponentSchema = {
     getComponentSchema,
     getAllSchemas,

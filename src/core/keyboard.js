@@ -23,6 +23,12 @@
  * @property {() => void} callback - Function to call on ESC
  */
 
+/**
+ * Stack-based keyboard manager for modal-like ESC handling.
+ * Components push/pop handlers; only the topmost receives the ESC key.
+ *
+ * @class
+ */
 class KeyboardManager {
     /** @type {EscapeEntry[]} */
     #escapeStack = [];

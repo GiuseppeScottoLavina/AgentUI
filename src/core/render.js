@@ -11,16 +11,22 @@
  */
 
 /**
- * Batch multiple DOM updates into single animation frame
- * Prevents layout thrashing in complex updates
+ * Batches multiple DOM update callbacks into a single animation frame
+ * to prevent layout thrashing in complex updates.
+ *
+ * @class
+ * @private
  */
 class RenderScheduler {
+    /** @type {Function[]} Queued render callbacks */
     #queue = [];
+    /** @type {boolean} Whether a rAF is already scheduled */
     #scheduled = false;
 
     /**
-     * Schedule a render callback for next animation frame
-     * Multiple calls are batched together
+     * Schedule a render callback for the next animation frame.
+     * Multiple calls within the same frame are batched together.
+     * @param {Function} callback - DOM update function to execute
      */
     schedule(callback) {
         this.#queue.push(callback);
@@ -31,6 +37,10 @@ class RenderScheduler {
         }
     }
 
+    /**
+     * Flush all queued callbacks in a single animation frame.
+     * @private
+     */
     #flush() {
         const callbacks = this.#queue; // Swap, not copy (P1.4 perf fix)
         this.#queue = [];
@@ -47,16 +57,18 @@ class RenderScheduler {
     }
 }
 
+/** @type {RenderScheduler} Singleton rAF-batched render scheduler */
 export const rafScheduler = new RenderScheduler();
-/** @deprecated Use rafScheduler instead to avoid collision with scheduler.js */
+/** @deprecated Use `rafScheduler` instead to avoid name collision with scheduler.js */
 export { rafScheduler as scheduler };
 
 /**
- * Memoize expensive function calls
+ * Memoize expensive function calls with optional LRU eviction.
  * @param {Function} fn - Function to memoize
  * @param {Object} [options] - Memoization options
- * @param {Function} [options.keyFn=JSON.stringify] - Key function for cache
- * @param {number} [options.maxSize] - Maximum cache entries (LRU eviction)
+ * @param {Function} [options.keyFn=JSON.stringify] - Cache key derivation function
+ * @param {number} [options.maxSize=Infinity] - Maximum cache entries (LRU eviction)
+ * @returns {Function} Memoized function with same signature as `fn`
  */
 export function memo(fn, options = {}) {
     const keyFn = options.keyFn ?? JSON.stringify;
@@ -84,9 +96,10 @@ export function memo(fn, options = {}) {
 }
 
 /**
- * Debounce function calls
- * @param {Function} fn 
- * @param {number} delay - Delay in ms
+ * Debounce function calls — delays execution until `delay` ms of silence.
+ * @param {Function} fn - Function to debounce
+ * @param {number} [delay=100] - Delay in ms
+ * @returns {Function} Debounced function
  */
 export function debounce(fn, delay = 100) {
     let timer = null;
@@ -98,9 +111,10 @@ export function debounce(fn, delay = 100) {
 }
 
 /**
- * Throttle function calls
- * @param {Function} fn 
- * @param {number} limit - Minimum time between calls in ms
+ * Throttle function calls — ensures at most one call per `limit` ms.
+ * @param {Function} fn - Function to throttle
+ * @param {number} [limit=100] - Minimum time between calls in ms
+ * @returns {Function} Throttled function
  */
 export function throttle(fn, limit = 100) {
     let inThrottle = false;
@@ -115,9 +129,11 @@ export function throttle(fn, limit = 100) {
 }
 
 /**
- * Create an intersection observer for lazy rendering
- * @param {Function} onVisible - Called when element becomes visible
- * @param {Object} options - IntersectionObserver options
+ * Create an IntersectionObserver for lazy/viewport-based rendering.
+ * Automatically unobserves each element after it first becomes visible.
+ * @param {Function} onVisible - Called with `(element)` when it enters viewport
+ * @param {IntersectionObserverInit} [options={}] - IntersectionObserver options
+ * @returns {{ observe: (el: Element) => void, disconnect: () => void }}
  */
 export function createVisibilityObserver(onVisible, options = {}) {
     const observer = new IntersectionObserver((entries) => {
@@ -140,16 +156,23 @@ export function createVisibilityObserver(onVisible, options = {}) {
 }
 
 /**
- * Batch DOM reads and writes to prevent layout thrashing
- * Based on fastdom pattern
+ * Batches DOM reads and writes to prevent layout thrashing.
+ * Reads (measure) execute first, then writes (mutate), following the fastdom pattern.
+ *
+ * @class
+ * @private
  */
 class DomBatch {
+    /** @type {Function[]} Queued read (measure) callbacks */
     #reads = [];
+    /** @type {Function[]} Queued write (mutate) callbacks */
     #writes = [];
+    /** @type {boolean} Whether a rAF is already scheduled */
     #scheduled = false;
 
     /**
-     * Schedule a DOM read (measure)
+     * Schedule a DOM read (measure).
+     * @param {Function} fn - Read callback
      */
     read(fn) {
         this.#reads.push(fn);
@@ -157,13 +180,15 @@ class DomBatch {
     }
 
     /**
-     * Schedule a DOM write (mutate)
+     * Schedule a DOM write (mutate).
+     * @param {Function} fn - Write callback
      */
     write(fn) {
         this.#writes.push(fn);
         this.#schedule();
     }
 
+    /** @private */
     #schedule() {
         if (!this.#scheduled) {
             this.#scheduled = true;
@@ -171,6 +196,7 @@ class DomBatch {
         }
     }
 
+    /** @private */
     #flush() {
         // Reads first (measure phase)
         let fn;
@@ -192,13 +218,16 @@ class DomBatch {
     }
 }
 
+/** @type {DomBatch} Singleton DOM read/write batcher */
 export const domBatch = new DomBatch();
 
 /**
- * Chunk large array operations to avoid blocking main thread
+ * Chunk large array operations to avoid blocking the main thread.
+ * Yields to the event loop between chunks via `setTimeout(0)`.
  * @param {Array} items - Array to process
- * @param {Function} processFn - Function to call for each item
- * @param {number} chunkSize - Items per chunk
+ * @param {Function} processFn - Called with `(item, index)` for each item
+ * @param {number} [chunkSize=100] - Items per chunk before yielding
+ * @returns {Promise<void>} Resolves when all items are processed
  */
 export async function processInChunks(items, processFn, chunkSize = 100) {
     for (let i = 0; i < items.length; i += chunkSize) {

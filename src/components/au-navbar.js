@@ -16,12 +16,20 @@
 
 import { AuElement, define } from '../core/AuElement.js';
 
+/**
+ * Top navigation bar with brand, links, and action slots.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-navbar
+ */
 export class AuNavbar extends AuElement {
     static baseClass = 'au-navbar';
     static cssFile = 'navbar';
+    /** @type {string[]} */
     static observedAttributes = ['sticky', 'variant'];
 
-
+    /** @override */
     render() {
         this.style.display = 'flex';
         this.style.alignItems = 'center';
@@ -39,26 +47,47 @@ export class AuNavbar extends AuElement {
     }
 }
 
+/**
+ * Brand section for `<au-navbar>`.
+ * @class
+ * @extends AuElement
+ * @element au-navbar-brand
+ */
 export class AuNavbarBrand extends AuElement {
     static baseClass = 'au-navbar__brand';
 
+    /** @override */
     render() {
         this.style.fontWeight = '600';
         this.style.fontSize = '1.25rem';
     }
 }
 
+/**
+ * Links section for `<au-navbar>`.
+ * @class
+ * @extends AuElement
+ * @element au-navbar-links
+ */
 export class AuNavbarLinks extends AuElement {
     static baseClass = 'au-navbar__links';
 
+    /** @override */
     render() {
         // All styles handled by CSS in components.css
     }
 }
 
+/**
+ * Actions section for `<au-navbar>`.
+ * @class
+ * @extends AuElement
+ * @element au-navbar-actions
+ */
 export class AuNavbarActions extends AuElement {
     static baseClass = 'au-navbar__actions';
 
+    /** @override */
     render() {
         this.style.display = 'flex';
         this.style.gap = 'var(--md-sys-spacing-sm, 8px)';

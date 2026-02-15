@@ -4,25 +4,37 @@
 
 import { AuElement, define } from '../core/AuElement.js';
 
+/**
+ * MD3 Badge component for status indicators.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-badge
+ * @slot default - Badge content (text or number)
+ */
 export class AuBadge extends AuElement {
     static baseClass = 'au-badge';
     static cssFile = 'badge';
+    /** @type {string[]} */
     static observedAttributes = ['variant', 'size'];
 
-
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
         this.#updateClasses();
     }
 
+    /** @override */
     render() {
         this.#updateClasses();
     }
 
+    /** @override */
     update(attr, newValue, oldValue) {
         this.#updateClasses();
     }
 
+    /** @private */
     #updateClasses() {
         const variant = this.attr('variant', 'primary');
         const size = this.attr('size', 'md');

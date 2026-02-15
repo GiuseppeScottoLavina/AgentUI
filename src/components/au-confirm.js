@@ -82,7 +82,14 @@ export async function auConfirm(message, options = {}) {
 }
 
 /**
- * AuConfirm extends AuModal to inherit native <dialog> benefits
+ * Programmatic confirm dialog extending `AuModal` for native `<dialog>` benefits
+ * (backdrop blur, ESC handling, focus trapping, top-layer stacking).
+ *
+ * @class
+ * @extends AuModal
+ * @element au-confirm
+ * @fires au-confirm - Emitted when the user confirms.
+ * @fires au-cancel  - Emitted when the user cancels or presses ESC.
  */
 export class AuConfirm extends AuModal {
     static baseClass = 'au-confirm';
@@ -92,6 +99,7 @@ export class AuConfirm extends AuModal {
     /** @type {HTMLDialogElement|null} */
     #dialog = null;
 
+    /** @override */
     disconnectedCallback() {
         // ML6: Restore body overflow if confirm was open when force-removed
         if (this.#dialog?.open) {
@@ -100,6 +108,7 @@ export class AuConfirm extends AuModal {
         super.disconnectedCallback();
     }
 
+    /** @override */
     connectedCallback() {
         // Skip AuModal's content preservation - we generate our own
         // Go directly to AuElement's connectedCallback for listener setup
@@ -113,6 +122,7 @@ export class AuConfirm extends AuModal {
         // Note: listeners are set up in render() after dialog is created
     }
 
+    /** @override */
     render() {
         // Don't call super.render() - we have our own layout
         // Idempotent: if already rendered, just re-attach listeners (AbortController clears on disconnect)
@@ -160,6 +170,10 @@ export class AuConfirm extends AuModal {
         }
     }
 
+    /**
+     * Attach native dialog event listeners (close, cancel, backdrop click).
+     * @private
+     */
     #setupConfirmListeners() {
         this.#dialog = this.querySelector('dialog');
         if (!this.#dialog) return;
@@ -185,6 +199,7 @@ export class AuConfirm extends AuModal {
         });
     }
 
+    /** @override */
     update(attr, newValue, oldValue) {
         if (attr === 'open') {
             if (newValue !== null) {
@@ -193,6 +208,10 @@ export class AuConfirm extends AuModal {
         }
     }
 
+    /**
+     * Show the dialog with modal behaviour and focus management.
+     * @private
+     */
     #showDialog() {
         if (!this.#dialog || this.#dialog.open) return;
 

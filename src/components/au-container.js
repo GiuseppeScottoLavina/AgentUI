@@ -6,19 +6,30 @@
 
 import { AuElement, define } from '../core/AuElement.js';
 
+/**
+ * Responsive container with max-width and auto-centering.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-container
+ * @slot default - Page content
+ */
 export class AuContainer extends AuElement {
     static baseClass = 'au-container';
+    /** @type {string[]} */
     static observedAttributes = ['size', 'padding', 'center'];
 
-
+    /** @override */
     render() {
         this.#updateStyles();
     }
 
+    /** @override */
     update(attr, newValue, oldValue) {
         this.#updateStyles();
     }
 
+    /** @private */
     #updateStyles() {
         const size = this.attr('size', 'lg');
         const padding = this.attr('padding', 'md');

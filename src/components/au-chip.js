@@ -12,9 +12,20 @@ import { AuElement, define } from '../core/AuElement.js';
 import { createRipple } from '../core/ripple.js';
 import { html } from '../core/utils.js';
 
+/**
+ * MD3 Chip/Tag component with selectable and removable modes.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-chip
+ * @fires au-change - When selection state changes, detail: `{ selected }`
+ * @fires au-remove - When the chip is removed
+ * @slot default - Chip label text
+ */
 export class AuChip extends AuElement {
     static baseClass = 'au-chip';
     static cssFile = null; // CSS is inline/JS only
+    /** @type {string[]} */
     static observedAttributes = ['selected', 'removable', 'variant', 'static'];
 
     #originalLabel = null;
@@ -23,6 +34,7 @@ export class AuChip extends AuElement {
      * Self-documenting component for AI agents
      */
 
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
 
@@ -62,6 +74,7 @@ export class AuChip extends AuElement {
         });
     }
 
+    /** @override */
     render() {
         // Idempotent: skip if already rendered
         if (this.querySelector('.au-chip__label')) {
@@ -80,10 +93,17 @@ export class AuChip extends AuElement {
         this.#updateStyles();
     }
 
+    /**
+     * @override
+     * @param {string} attr
+     * @param {string|null} newValue
+     * @param {string|null} oldValue
+     */
     update(attr, newValue, oldValue) {
         this.#updateStyles();
     }
 
+    /** @private */
     #updateStyles() {
         const isSelected = this.has('selected');
         const isStatic = this.has('static');
@@ -127,6 +147,7 @@ export class AuChip extends AuElement {
         }
     }
 
+    /** Toggle the selected state. No-op for static chips. */
     toggle() {
         // Static chips don't toggle
         if (this.has('static')) return;

@@ -10,11 +10,24 @@
 
 import { AuElement, define } from '../core/AuElement.js';
 
+/**
+ * Form container with built-in validation and data collection.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-form
+ * @fires au-submit  - Valid submission, detail: `{ data, isValid }`
+ * @fires au-invalid - Failed validation, detail: `{ data, errors }`
+ * @fires au-reset   - Form reset
+ * @slot default - Input controls and submit button
+ */
 export class AuForm extends AuElement {
     static baseClass = 'au-form';
+    /** @type {string[]} */
     static observedAttributes = ['action', 'method'];
 
 
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
 
@@ -32,6 +45,7 @@ export class AuForm extends AuElement {
         });
     }
 
+    /** @override */
     render() {
         // Form is a passthrough container
         this.setAttribute('role', 'form');
@@ -50,6 +64,7 @@ export class AuForm extends AuElement {
         }
     }
 
+    /** @private */
     #handleSubmit() {
         const data = this.getFormData();
         const isValid = this.validate();
@@ -62,7 +77,8 @@ export class AuForm extends AuElement {
     }
 
     /**
-     * Get all form data as object
+     * Collect all form control values.
+     * @returns {Object<string, string|boolean>} Values keyed by field name
      */
     getFormData() {
         const data = {};
@@ -85,15 +101,16 @@ export class AuForm extends AuElement {
     }
 
     /**
-     * Alias for getFormData() - preferred API for agents
-     * @returns {Object} Form values keyed by field name
+     * Alias for {@link getFormData} — preferred for agent consumers.
+     * @returns {Object<string, string|boolean>}
      */
     getValues() {
         return this.getFormData();
     }
 
     /**
-     * Validate all required fields
+     * Validate all `[required]` fields.
+     * @returns {boolean} `true` when every required field has a value
      */
     validate() {
         let isValid = true;
@@ -111,6 +128,7 @@ export class AuForm extends AuElement {
         return isValid;
     }
 
+    /** @private */
     #getErrors() {
         const errors = [];
         this.querySelectorAll('.is-invalid').forEach(field => {
@@ -123,7 +141,7 @@ export class AuForm extends AuElement {
     }
 
     /**
-     * Reset form to initial state
+     * Reset all controls to their initial (empty) state.
      */
     reset() {
         this.querySelectorAll('au-input').forEach(input => {

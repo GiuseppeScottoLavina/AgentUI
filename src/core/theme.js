@@ -19,12 +19,16 @@ const _store = createStore(
 );
 
 /**
- * Theme manager singleton
+ * Theme manager singleton.
+ * Provides light/dark mode toggling with localStorage persistence.
+ *
+ * @namespace Theme
  */
 export const Theme = {
     /**
-     * Set the current theme
-     * @param {'light'|'dark'|'auto'} theme
+     * Set the current theme.
+     * @param {'light'|'dark'|'auto'} theme - Theme to apply
+     * @fires UIEvents.THEME_CHANGE
      */
     set(theme) {
         if (theme === 'auto') {

@@ -12,12 +12,24 @@
 import { AuElement, define } from '../core/AuElement.js';
 import { html, safe, escapeHTML } from '../core/utils.js';
 
-// Input types that always show a native browser placeholder (dd/mm/yyyy, --:--:-- etc.)
+/** @private Input types that always show a native browser placeholder (dd/mm/yyyy, --:--:-- etc.) */
 const ALWAYS_FLOAT_TYPES = ['date', 'time', 'datetime-local', 'month', 'week'];
 
+/**
+ * MD3 Text Field component with floating label and validation support.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-input
+ * @fires au-input - On each keystroke, detail: `{ value }`
+ * @fires au-change - On value commit
+ * @fires au-focus - When the input receives focus
+ * @fires au-blur - When the input loses focus
+ */
 export class AuInput extends AuElement {
     static baseClass = 'au-input';
     static cssFile = 'input';
+    /** @type {string[]} Observed HTML attributes */
     static observedAttributes = ['type', 'placeholder', 'value', 'disabled', 'variant', 'size', 'label'];
 
     /**
@@ -27,6 +39,7 @@ export class AuInput extends AuElement {
     /** @type {HTMLInputElement|null} */
     #input = null;
 
+    /** @override */
     render() {
         // Idempotent: if already rendered, just update references and listeners
         if (this.querySelector('.au-input__field')) {
@@ -77,6 +90,7 @@ export class AuInput extends AuElement {
         this.#setupListeners();
     }
 
+    /** @private */
     #setupListeners() {
         if (!this.#input) return;
 
@@ -96,6 +110,7 @@ export class AuInput extends AuElement {
         });
     }
 
+    /** @private */
     #updateValueState() {
         const type = this.attr('type', 'text');
         if (ALWAYS_FLOAT_TYPES.includes(type) || this.#input?.value) {
@@ -105,6 +120,12 @@ export class AuInput extends AuElement {
         }
     }
 
+    /**
+     * @override
+     * @param {string} attr - Changed attribute name
+     * @param {string|null} newValue
+     * @param {string|null} oldValue
+     */
     update(attr, newValue, oldValue) {
         if (!this.#input) return;
 
@@ -128,6 +149,7 @@ export class AuInput extends AuElement {
         this.#updateClasses();
     }
 
+    /** @private */
     #updateClasses() {
         const variant = this.attr('variant', 'outlined');
         const size = this.attr('size', 'md');
@@ -150,11 +172,15 @@ export class AuInput extends AuElement {
         }
     }
 
-    // Expose input value
+    /**
+     * Current input value.
+     * @type {string}
+     */
     get value() {
         return this.#input?.value ?? '';
     }
 
+    /** @param {string} v */
     set value(v) {
         if (this.#input) {
             this.#input.value = v;
@@ -162,10 +188,12 @@ export class AuInput extends AuElement {
         }
     }
 
+    /** Focus the internal input element. */
     focus() {
         this.#input?.focus();
     }
 
+    /** Clear the input value. */
     clear() {
         this.value = '';
     }

@@ -34,10 +34,11 @@ export async function transition(updateCallback) {
 }
 
 /**
- * Transition with custom animation classes
- * @param {() => void | Promise<void>} updateCallback 
- * @param {Object} options
- * @param {string} options.name - View transition name
+ * Transition with custom animation classes.
+ * @param {() => void | Promise<void>} updateCallback - DOM update function
+ * @param {Object} [options] - Transition options
+ * @param {string} [options.name='page'] - View transition name
+ * @returns {Promise<void>}
  */
 export async function transitionNamed(updateCallback, { name = 'page' } = {}) {
     if (supportsViewTransitions) {
@@ -62,9 +63,10 @@ export async function transitionNamed(updateCallback, { name = 'page' } = {}) {
 }
 
 /**
- * Navigate with view transition
- * @param {string} path - Route path
- * @param {Function} render - Render function
+ * Navigate with view transition.
+ * @param {string} path - Route path to push to history
+ * @param {Function} render - Render function for the new view
+ * @returns {Promise<void>}
  */
 export async function navigateWithTransition(path, render) {
     await transition(() => {

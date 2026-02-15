@@ -5,13 +5,24 @@
 import { AuElement, define } from '../core/AuElement.js';
 import { html, safe } from '../core/utils.js';
 
+/**
+ * MD3 Alert/Banner component for displaying status messages.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-alert
+ * @fires au-dismiss - When the alert is dismissed
+ * @slot default - Alert message content
+ */
 export class AuAlert extends AuElement {
     static baseClass = 'au-alert';
+    /** @type {string[]} */
     static observedAttributes = ['severity', 'dismissible'];
 
     #closeBtn = null;
     #originalContent = null;
 
+    /** @override */
     connectedCallback() {
         // Accessibility: set role and aria-live for screen readers (always safe)
         this.setAttribute('role', 'alert');
@@ -40,6 +51,7 @@ export class AuAlert extends AuElement {
         }
     }
 
+    /** @private */
     #initializeComponent() {
         // Event delegation for close button
         this.listen(this, 'click', (e) => {
@@ -57,6 +69,7 @@ export class AuAlert extends AuElement {
         this.remove();
     }
 
+    /** @override */
     render() {
         // Idempotent: skip if already rendered
         if (this.querySelector('.au-alert__content')) {
@@ -87,10 +100,17 @@ export class AuAlert extends AuElement {
         this.#updateClasses();
     }
 
+    /**
+     * @override
+     * @param {string} attr
+     * @param {string|null} newValue
+     * @param {string|null} oldValue
+     */
     update(attr, newValue, oldValue) {
         this.#updateClasses();
     }
 
+    /** @private */
     #updateClasses() {
         const severity = this.attr('severity', 'info');
 

@@ -95,7 +95,10 @@ if (routeEntryFiles.length > 0) {
         format: 'esm',
         minify: true,
         splitting: true,
-        sourcemap: 'none'
+        sourcemap: 'none',
+        drop: ['console.log', 'debugger'],
+        emitDCEAnnotations: true,
+        define: { 'process.env.NODE_ENV': '"production"' }
     });
 
     if (!routeResult.success) {

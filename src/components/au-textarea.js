@@ -7,13 +7,24 @@
 import { AuElement, define } from '../core/AuElement.js';
 import { html } from '../core/utils.js';
 
+/**
+ * Multi-line text input component with MD3 styling.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-textarea
+ * @fires au-input - On each keystroke, detail: `{ value }`
+ * @fires au-change - On value commit, detail: `{ value }`
+ */
 export class AuTextarea extends AuElement {
     static baseClass = 'au-textarea';
     static cssFile = 'input';
+    /** @type {string[]} */
     static observedAttributes = ['placeholder', 'rows', 'disabled', 'readonly', 'name'];
 
     #textarea = null;
 
+    /** @override */
     render() {
         // Idempotent HTML structure creation
         if (!this.querySelector('.au-textarea__field')) {
@@ -78,16 +89,22 @@ export class AuTextarea extends AuElement {
         });
     }
 
+    /**
+     * Current textarea value.
+     * @type {string}
+     */
     get value() {
         return this.#textarea?.value || '';
     }
 
+    /** @param {string} v */
     set value(v) {
         if (this.#textarea) {
             this.#textarea.value = v;
         }
     }
 
+    /** Focus the internal textarea element. */
     focus() {
         this.#textarea?.focus();
     }

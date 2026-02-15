@@ -25,19 +25,34 @@
 import { AuElement, define } from '../core/AuElement.js';
 import { html, safe } from '../core/utils.js';
 
+/**
+ * Self-contained documentation page with a four-tab layout
+ * (Overview, API, Styling, Examples) driven by slotted content.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-doc-page
+ * @slot overview - Component overview and description.
+ * @slot api      - API tables for attributes, properties, methods, events.
+ * @slot styling  - CSS design-token documentation.
+ * @slot examples - Interactive example cards.
+ */
 export class AuDocPage extends AuElement {
     static baseClass = 'au-doc-page';
     static observedAttributes = ['title', 'selector', 'description'];
 
 
+    /** @private Currently selected tab index. */
     #activeTab = 0;
 
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
         // Use requestAnimationFrame to ensure child elements are parsed
         requestAnimationFrame(() => this.#setupTabs());
     }
 
+    /** @override */
     render() {
         const title = this.attr('title', 'Component');
         const selector = this.attr('selector', '');
@@ -84,6 +99,10 @@ export class AuDocPage extends AuElement {
         this.style.display = 'block';
     }
 
+    /**
+     * Wire tab-change events to show/hide corresponding content panels.
+     * @private
+     */
     #setupTabs() {
         const tabs = this.querySelector('.au-doc-page__tabs');
         const contents = this.querySelectorAll('.au-doc-page__content');

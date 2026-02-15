@@ -15,13 +15,23 @@ import { AuElement, define } from '../core/AuElement.js';
 import { html } from '../core/utils.js';
 import { createRipple } from '../core/ripple.js';
 
+/**
+ * MD3 Checkbox component with indeterminate state support.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-checkbox
+ * @fires au-change - When checked state changes, detail: `{ checked, indeterminate, source }`
+ */
 export class AuCheckbox extends AuElement {
     static baseClass = 'au-checkbox';
     static cssFile = 'checkbox';
+    /** @type {string[]} */
     static observedAttributes = ['checked', 'disabled', 'name', 'label', 'indeterminate'];
 
     #input = null;
 
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
         // Accessibility: set role and keyboard navigation
@@ -46,6 +56,7 @@ export class AuCheckbox extends AuElement {
         });
     }
 
+    /** @override */
     render() {
         // Idempotent: skip if already rendered
         if (this.querySelector('.au-checkbox__box')) {
@@ -76,10 +87,17 @@ export class AuCheckbox extends AuElement {
         this.#updateState();
     }
 
+    /**
+     * @override
+     * @param {string} attr
+     * @param {string|null} newValue
+     * @param {string|null} oldValue
+     */
     update(attr, newValue, oldValue) {
         this.#updateState();
     }
 
+    /** @private */
     #updateState() {
         const box = this.querySelector('.au-checkbox__box');
         const icon = this.querySelector('.au-checkbox__icon');
@@ -147,6 +165,7 @@ export class AuCheckbox extends AuElement {
         this.setAttribute('tabindex', isDisabled ? '-1' : '0');
     }
 
+    /** Toggle the checked state and clear indeterminate. */
     toggle() {
         // User click always clears indeterminate and toggles checked
         if (this.has('indeterminate')) {
@@ -165,10 +184,15 @@ export class AuCheckbox extends AuElement {
         });
     }
 
+    /**
+     * Whether the checkbox is checked.
+     * @type {boolean}
+     */
     get checked() {
         return this.has('checked');
     }
 
+    /** @param {boolean} v */
     set checked(v) {
         if (v) {
             this.setAttribute('checked', '');
@@ -177,10 +201,15 @@ export class AuCheckbox extends AuElement {
         }
     }
 
+    /**
+     * Whether the checkbox is in indeterminate state.
+     * @type {boolean}
+     */
     get indeterminate() {
         return this.has('indeterminate');
     }
 
+    /** @param {boolean} v */
     set indeterminate(v) {
         if (v) {
             this.setAttribute('indeterminate', '');

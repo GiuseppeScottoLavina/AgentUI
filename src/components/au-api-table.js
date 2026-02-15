@@ -10,11 +10,20 @@
 import { AuElement, define } from '../core/AuElement.js';
 import { html, safe } from '../core/utils.js';
 
+/**
+ * API documentation table that renders structured attribute, property,
+ * method, event, and design-token rows from child `<au-api-row>` elements.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-api-table
+ */
 export class AuApiTable extends AuElement {
     static baseClass = 'au-api-table';
     static observedAttributes = ['type'];
 
 
+    /** @override */
     render() {
         const type = this.attr('type', 'attributes');
         const rows = Array.from(this.querySelectorAll('au-api-row'));
@@ -55,6 +64,13 @@ export class AuApiTable extends AuElement {
         this.#applyStyles();
     }
 
+    /**
+     * Render a single table row based on the table type.
+     * @private
+     * @param {string} type - Table type (attributes, properties, methods, events, tokens).
+     * @param {Object} data - Row data extracted from the `<au-api-row>` element.
+     * @returns {string} HTML string for the table row.
+     */
     #renderRow(type, data) {
         switch (type) {
             case 'attributes':
@@ -93,6 +109,10 @@ export class AuApiTable extends AuElement {
         }
     }
 
+    /**
+     * Apply Material Design 3 inline styles to the rendered table.
+     * @private
+     */
     #applyStyles() {
         this.style.display = 'block';
         this.style.overflowX = 'auto';
@@ -146,10 +166,19 @@ export class AuApiTable extends AuElement {
     }
 }
 
+/**
+ * Data container row for `<au-api-table>`. Holds attribute metadata;
+ * actual rendering is delegated to the parent table.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-api-row
+ */
 export class AuApiRow extends AuElement {
     static baseClass = 'au-api-row';
     static observedAttributes = ['name', 'type', 'default', 'signature', 'detail'];
 
+    /** @override */
     render() {
         // Just a container, actual rendering done by parent
     }

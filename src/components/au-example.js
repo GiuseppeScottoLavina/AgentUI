@@ -15,13 +15,25 @@
 import { AuElement, define } from '../core/AuElement.js';
 import { html, safe, escapeHTML } from '../core/utils.js';
 
+/**
+ * Interactive example card that displays a live demo alongside its source code.
+ * Extracts content from `demo` and `code` slots, renders a toggle-able view.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-example
+ * @slot demo - Live component demonstration area.
+ * @slot code - HTML source code to display (falls back to demo innerHTML).
+ */
 export class AuExample extends AuElement {
     static baseClass = 'au-example';
     static observedAttributes = ['title'];
 
 
+    /** @private Whether the code panel is currently visible. */
     #showCode = false;
 
+    /** @override */
     render() {
         const title = this.attr('title', 'Example');
         const demoSlot = this.querySelector('[slot="demo"]');
@@ -155,6 +167,10 @@ export class AuExample extends AuElement {
         return result.trim();
     }
 
+    /**
+     * Apply Material Design 3 inline styles to the example card structure.
+     * @private
+     */
     #applyStyles() {
         this.style.display = 'block';
         this.style.marginBottom = '24px';
@@ -319,6 +335,11 @@ export class AuExample extends AuElement {
         }
     }
 
+    /**
+     * Copy the current page URL to the clipboard.
+     * @private
+     * @param {HTMLElement} btn - The button element that triggered the copy.
+     */
     async #copyLink(btn) {
         const url = window.location.href;
         try {

@@ -7,8 +7,16 @@
 import { AuElement, define } from '../core/AuElement.js';
 import { html, safe } from '../core/utils.js';
 
+/**
+ * Code block with built-in syntax highlighting and copy-to-clipboard.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-code
+ */
 export class AuCode extends AuElement {
     static baseClass = 'au-code';
+    /** @type {string[]} */
     static observedAttributes = ['language'];
 
     /**
@@ -19,6 +27,7 @@ export class AuCode extends AuElement {
      */
     static #decoder = null;
 
+    /** @private */
     static #decodeEntities(html) {
         if (typeof document === 'undefined') return html;
         if (!AuCode.#decoder) {
@@ -33,6 +42,7 @@ export class AuCode extends AuElement {
 
     #originalCode = null;
 
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
         // Store original code before render
@@ -41,6 +51,7 @@ export class AuCode extends AuElement {
         }
     }
 
+    /** @override */
     render() {
         // Idempotent: skip if already rendered
         if (this.querySelector('.au-code__content')) {
@@ -105,6 +116,7 @@ export class AuCode extends AuElement {
      * @param {string} highlightedHtml - Output from #highlight()
      * @returns {string} Sanitized highlighted HTML
      */
+    /** @private */
     #sanitizeHighlighted(highlightedHtml) {
         // Allow only: <span class="au-code__..."> and </span>
         // Escape any other tags that could have been introduced by regex mutation
@@ -118,6 +130,7 @@ export class AuCode extends AuElement {
         });
     }
 
+    /** @private */
     #highlight(code, language) {
         // Shared marker helper to avoid regex self-matching
         // IMPORTANT: Uses Unicode Private Use Area characters + letters to avoid
@@ -314,15 +327,8 @@ export class AuCode extends AuElement {
     }
 
     /**
-     *  Dedent - Remove common leading whitespace from all lines
-     * Based on TC39 String.dedent proposal and npm 'dedent' package algorithm
-     * 
-     * Algorithm:
-     * 1. Split into lines, trim leading/trailing empty lines
-     * 2. Find minimum indent across ALL non-empty lines
-     * 3. Remove exactly that amount from start of each line
-     * 
-     * This preserves relative indentation within the code.
+     * Remove common leading whitespace from all lines.
+     * @private
      */
     #dedent(code) {
         // Split into lines
@@ -363,15 +369,8 @@ export class AuCode extends AuElement {
     }
 
     /**
-     *  Auto-Indent - Lightweight bracket-counting code formatter
-     * Inspired by js-beautify but minimal (~30 lines vs ~50KB)
-     * 
-     * Supports: JavaScript/JSON ({} blocks), HTML (<> tags), CSS ({} rules)
-     * 
-     * Algorithm:
-     * 1. Strip existing indentation (each line trimmed)
-     * 2. Track indent level based on opening/closing brackets
-     * 3. Apply consistent 4-space indentation
+     * Bracket-counting auto-indenter.
+     * @private
      */
     #autoIndent(code, language) {
         const INDENT = '    '; // 4 spaces
@@ -448,6 +447,7 @@ export class AuCode extends AuElement {
         return result.join('\n');
     }
 
+    /** @private */
     #applyStyles() {
         this.style.display = 'block';
         this.style.background = 'var(--md-sys-color-surface-container-highest)';
@@ -543,6 +543,7 @@ export class AuCode extends AuElement {
         }
     }
 
+    /** @private */
     #setupCopyButton(originalCode) {
         const btn = this.querySelector('.au-code__copy');
         if (btn) {

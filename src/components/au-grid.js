@@ -10,20 +10,31 @@
 
 import { AuElement, define } from '../core/AuElement.js';
 
+/**
+ * CSS Grid layout component with responsive column collapse.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-grid
+ * @slot default - Grid children
+ */
 export class AuGrid extends AuElement {
     static baseClass = 'au-grid';
     static cssFile = 'grid';
+    /** @type {string[]} */
     static observedAttributes = ['cols', 'rows', 'gap', 'align'];
 
-
+    /** @override */
     render() {
         this.#updateStyles();
     }
 
+    /** @override */
     update(attr, newValue, oldValue) {
         this.#updateStyles();
     }
 
+    /** @private */
     #updateStyles() {
         const cols = this.attr('cols', '1');
         const rows = this.attr('rows', '');

@@ -9,9 +9,18 @@ import { AuElement, define } from '../core/AuElement.js';
 import { html } from '../core/utils.js';
 import { throttle } from '../core/render.js';
 
+/**
+ * MD3 Select Menu component using the native Popover API.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-dropdown
+ * @fires au-select - When an option is selected, detail: `{ value, label }`
+ */
 export class AuDropdown extends AuElement {
     static baseClass = 'au-dropdown';
     static cssFile = 'input';
+    /** @type {string[]} */
     static observedAttributes = ['placeholder', 'value', 'disabled'];
 
     #menu = null;
@@ -19,6 +28,7 @@ export class AuDropdown extends AuElement {
     #options = []; // Store options data
     #isSelecting = false; // Guard to prevent attributeChangedCallback loop from select()
 
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
 
@@ -27,11 +37,13 @@ export class AuDropdown extends AuElement {
         this.listen(window, 'resize', throttle(() => this.#updatePosition(), 100), { passive: true });
     }
 
+    /** @override */
     disconnectedCallback() {
         super.disconnectedCallback();
         this.#menu?.remove();
     }
 
+    /** @override */
     attributeChangedCallback(name, oldVal, newVal) {
         if (!this.isConnected || oldVal === newVal) return;
 
@@ -53,6 +65,7 @@ export class AuDropdown extends AuElement {
         }
     }
 
+    /** @override */
     render() {
         // Only build once - check both trigger AND menu exist
         if (this.querySelector('.au-dropdown__trigger') && this.#menu) return;
@@ -61,6 +74,7 @@ export class AuDropdown extends AuElement {
         requestAnimationFrame(() => this.#buildDropdown());
     }
 
+    /** @private */
     #buildDropdown() {
         // Trigger already built?
         if (this.querySelector('.au-dropdown__trigger') && this.#menu) return;
@@ -166,6 +180,7 @@ export class AuDropdown extends AuElement {
         }
     }
 
+    /** @private */
     #handleMenuKey(e) {
         const options = Array.from(this.#menu.querySelectorAll('.au-dropdown__option'));
         const current = document.activeElement;
@@ -221,6 +236,7 @@ export class AuDropdown extends AuElement {
         });
     }
 
+    /** Toggle the dropdown open/closed. */
     toggle() {
         if (this.#menu?.matches(':popover-open')) {
             this.close();
@@ -229,17 +245,24 @@ export class AuDropdown extends AuElement {
         }
     }
 
+    /** Open the dropdown menu. */
     open() {
         if (this.hasAttribute('disabled') || !this.#menu) return;
         this.#menu.showPopover(); // Native API!
     }
 
+    /** Close the dropdown menu. */
     close() {
         if (this.#menu?.matches(':popover-open')) {
             this.#menu.hidePopover(); // Native API!
         }
     }
 
+    /**
+     * Select an option by value.
+     * @param {string} value - Option value
+     * @param {string} label - Option display label
+     */
     select(value, label) {
         this.#isSelecting = true;
         const valueEl = this.querySelector('.au-dropdown__value');
@@ -255,16 +278,30 @@ export class AuDropdown extends AuElement {
         this.#isSelecting = false;
     }
 
+    /**
+     * Current selected value.
+     * @type {string}
+     */
     get value() { return this.getAttribute('value') || ''; }
+    /** @param {string} v */
     set value(v) { this.setAttribute('value', v); }
 }
 
+/**
+ * Option element for use inside `<au-dropdown>`.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-option
+ */
 export class AuOption extends AuElement {
     static baseClass = 'au-dropdown__option';
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
         this.setAttribute('role', 'option');
     }
+    /** @override */
     render() { }
 }
 

@@ -24,7 +24,19 @@ import { AuElement, define } from '../core/AuElement.js';
 import { html, safe } from '../core/utils.js';
 import { debounce } from '../core/render.js';
 
+/**
+ * AI-first smart data table with sorting, pagination, filtering, and row selection.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-datatable
+ * @fires au-data-change      - After `setData()`, detail: `{ data, count }`
+ * @fires au-sort-change       - After sorting, detail: `{ field, direction }`
+ * @fires au-page-change       - After pagination, detail: page info object
+ * @fires au-selection-change  - After selection, detail: `{ selected }`
+ */
 export class AuDataTable extends AuElement {
+    /** @type {string[]} */
     static get observedAttributes() {
         return ['columns', 'page-size', 'sortable', 'selectable', 'filterable', 'empty-message'];
     }
@@ -93,11 +105,13 @@ export class AuDataTable extends AuElement {
 
     // === LIFECYCLE ===
 
+    /** @override */
     connectedCallback() {
         super.connectedCallback();
         this.render();
     }
 
+    /** @override */
     attributeChangedCallback(name, oldVal, newVal) {
         if (this.isConnected && oldVal !== newVal) {
             this.render();
@@ -202,6 +216,7 @@ export class AuDataTable extends AuElement {
 
     // === INTERNAL METHODS ===
 
+    /** @private */
     _applySort() {
         if (!this._sortField) return;
 
@@ -221,6 +236,7 @@ export class AuDataTable extends AuElement {
         });
     }
 
+    /** @private */
     _applyFilter() {
         if (!this._filterValue) {
             this._filteredData = [...this._data];
@@ -240,12 +256,14 @@ export class AuDataTable extends AuElement {
         });
     }
 
+    /** @private */
     _getPageData() {
         const start = (this._currentPage - 1) * this.pageSize;
         const end = start + this.pageSize;
         return this._filteredData.slice(start, end);
     }
 
+    /** @private */
     _handleHeaderClick(field) {
         const column = this.columns.find(c => c.field === field);
         if (column?.sortable !== false && this.sortable) {
@@ -253,6 +271,7 @@ export class AuDataTable extends AuElement {
         }
     }
 
+    /** @private */
     _handleRowSelect(index, checked) {
         const actualIndex = (this._currentPage - 1) * this.pageSize + index;
         if (checked) {
@@ -265,6 +284,7 @@ export class AuDataTable extends AuElement {
         this.emit('au-selection-change', { selected: this.getSelectedRows() }, { bubbles: true });
     }
 
+    /** @private */
     _handleSelectAll(checked) {
         const pageData = this._getPageData();
         const startIdx = (this._currentPage - 1) * this.pageSize;
@@ -282,6 +302,7 @@ export class AuDataTable extends AuElement {
         this.emit('au-selection-change', { selected: this.getSelectedRows() }, { bubbles: true });
     }
 
+    /** @override */
     render(fullRender = true) {
         const columns = this.columns;
         const pageData = this._getPageData();
@@ -365,6 +386,7 @@ export class AuDataTable extends AuElement {
         this._attachEventListeners();
     }
 
+    /** @private */
     _renderTbody(pageData, columns, startIdx, allSelected) {
         if (pageData.length === 0) {
             return html`
@@ -401,6 +423,7 @@ export class AuDataTable extends AuElement {
         }).join('');
     }
 
+    /** @private */
     _renderFooter(page, totalPages, totalRows) {
         return `
             <div class="au-datatable-footer">
@@ -409,6 +432,7 @@ export class AuDataTable extends AuElement {
         `;
     }
 
+    /** @private */
     _renderFooterContent(page, totalPages, totalRows) {
         const selectedCount = this._selectedRows.size;
         const selectionBadge = selectedCount > 0 ? `<span class="au-datatable-selected-count">${selectedCount} selected</span>` : '';
@@ -432,6 +456,7 @@ export class AuDataTable extends AuElement {
         `;
     }
 
+    /** @private */
     _attachEventListeners() {
         // Header click for sorting
         this.querySelectorAll('th.au-datatable-sortable').forEach(th => {

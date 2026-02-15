@@ -6,19 +6,30 @@
 
 import { AuElement, define } from '../core/AuElement.js';
 
+/**
+ * Flexbox stack layout component for vertical/horizontal arrangement.
+ *
+ * @class
+ * @extends AuElement
+ * @element au-stack
+ * @slot default - Stack children
+ */
 export class AuStack extends AuElement {
     static baseClass = 'au-stack';
+    /** @type {string[]} */
     static observedAttributes = ['direction', 'gap', 'align', 'justify', 'wrap', 'nowrap'];
 
-
+    /** @override */
     render() {
         this.#updateStyles();
     }
 
+    /** @override */
     update(attr, newValue, oldValue) {
         this.#updateStyles();
     }
 
+    /** @private */
     #updateStyles() {
         const direction = this.attr('direction', 'column');
         const gap = this.attr('gap', 'md');
