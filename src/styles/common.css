@@ -20,6 +20,43 @@ body {
 }
 
 /* ============================================================================
+   MD3 SCROLLBAR STYLING
+   Thin overlay scrollbars with Material Design aesthetics.
+   Supports Webkit (Chrome/Safari/Edge) and Firefox.
+   ============================================================================ */
+
+/* Firefox: thin scrollbar with theme-aware colors */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--md-sys-color-outline) transparent;
+}
+
+/* Webkit: custom scrollbar styling */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--md-sys-color-outline);
+    border-radius: var(--md-sys-shape-corner-full);
+    transition: background var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--md-sys-color-on-surface-variant);
+}
+
+/* Hide scrollbar on very small containers (e.g., chips, buttons) */
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+/* ============================================================================
    MD3 STATE LAYER UTILITIES (Reusable across components)
    Reference: https://m3.material.io/foundations/interaction/states
    

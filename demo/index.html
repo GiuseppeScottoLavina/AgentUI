@@ -76,10 +76,10 @@
         /* Material Symbols font removed - icons use inline SVG now */
     </style>
     <!-- Preload + async CSS: 12KB loads instantly from preload, media trick prevents render-blocking -->
-    <link rel="preload" as="style" href="../dist/agentui.css?v=0.1.201">
-    <link rel="stylesheet" href="../dist/agentui.css?v=0.1.201" media="print" onload="this.media='all'">
+    <link rel="preload" as="style" href="../dist/agentui.css?v=0.1.202">
+    <link rel="stylesheet" href="../dist/agentui.css?v=0.1.202" media="print" onload="this.media='all'">
     <noscript>
-        <link rel="stylesheet" href="../dist/agentui.css?v=0.1.201">
+        <link rel="stylesheet" href="../dist/agentui.css?v=0.1.202">
     </noscript>
     <style>
         /* Size-adjusted Arial fallback to match Roboto metrics (from Capsize) */
@@ -508,7 +508,7 @@
 
         <!-- Footer -->
         <footer slot="footer" class="app-footer">
-            <p>AgentUI <span id="app-version" style="opacity: 0.5; font-size: 0.75rem;">v0.1.201</span> • Apache-2.0 •
+            <p>AgentUI <span id="app-version" style="opacity: 0.5; font-size: 0.75rem;">v0.1.202</span> • Apache-2.0 •
                 Made with ❤️</p>
         </footer>
     </au-layout>
@@ -527,7 +527,7 @@
             if (loadedRoutes.has(name)) return;
             loadedRoutes.add(name);
             const start = performance.now();
-            await import('../dist/routes/' + name + '.js?v=0.1.201');
+            await import('../dist/routes/' + name + '.js?v=0.1.202');
             console.log('[Shell] Route ' + name + '.js loaded in ' + (performance.now() - start).toFixed(0) + 'ms');
         }
 
