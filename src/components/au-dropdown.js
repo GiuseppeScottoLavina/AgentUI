@@ -7,6 +7,7 @@
 
 import { AuElement, define } from '../core/AuElement.js';
 import { html } from '../core/utils.js';
+import { throttle } from '../core/render.js';
 
 export class AuDropdown extends AuElement {
     static baseClass = 'au-dropdown';
@@ -21,9 +22,9 @@ export class AuDropdown extends AuElement {
     connectedCallback() {
         super.connectedCallback();
 
-        // Reposition on scroll/resize (Anchor API not yet baseline)
-        this.listen(window, 'scroll', () => this.#updatePosition(), { capture: true, passive: true });
-        this.listen(window, 'resize', () => this.#updatePosition(), { passive: true });
+        // P2.3 perf fix: throttle scroll/resize (was firing 60+ times/sec unthrottled)
+        this.listen(window, 'scroll', throttle(() => this.#updatePosition(), 16), { capture: true, passive: true });
+        this.listen(window, 'resize', throttle(() => this.#updatePosition(), 100), { passive: true });
     }
 
     disconnectedCallback() {
@@ -208,10 +209,10 @@ export class AuDropdown extends AuElement {
             ? triggerRect.top - menuHeight - 4
             : triggerRect.bottom + 4;
 
-        // Apply positioning (popover uses position: fixed by default in top-layer)
+        // Popover in top-layer requires position:fixed with calculated coordinates
         Object.assign(this.#menu.style, {
             position: 'fixed',
-            margin: '0', // Reset popover default margin: auto
+            margin: '0',
             top: `${top}px`,
             left: `${triggerRect.left}px`,
             width: `${triggerRect.width}px`,

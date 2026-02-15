@@ -84,71 +84,32 @@ const SVG_ICONS = {
     monitoring: 'M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 12h2v5H7v-5zm4-3h2v8h-2V9zm4-3h2v11h-2V6z'
 };
 
-// Map from alert severity to Material Symbol names
-const SYMBOL_NAMES = {
-    check: 'check',
-    close: 'close',
-    add: 'add',
-    remove: 'remove',
-    edit: 'edit',
-    delete: 'delete',
-    search: 'search',
-    menu: 'menu',
-    chevron_right: 'chevron_right',
-    chevron_left: 'chevron_left',
-    expand_more: 'expand_more',
-    expand_less: 'expand_less',
-    home: 'home',
-    arrow_back: 'arrow_back',
-    arrow_forward: 'arrow_forward',
-    info: 'info',
-    warning: 'warning',
-    error: 'error',
+// P2.4 perf fix: Only actual aliases (was 45 identity entries + 6 aliases = wasted memory)
+// Identity mappings (check → check, close → close, etc.) are useless — removed.
+const ICON_ALIASES = {
     success: 'check_circle',
-    check_circle: 'check_circle',
-    cancel: 'cancel',
-    settings: 'settings',
-    person: 'person',
-    light_mode: 'light_mode',
-    dark_mode: 'dark_mode',
     sun: 'light_mode',
     moon: 'dark_mode',
     user: 'person',
-    visibility: 'visibility',
-    visibility_off: 'visibility_off',
-    // Drawer/Navigation icons
-    download: 'download',
-    smart_button: 'smart_button',
-    text_fields: 'text_fields',
-    check_box: 'check_box',
-    toggle_on: 'toggle_on',
-    radio_button_checked: 'radio_button_checked',
-    arrow_drop_down_circle: 'arrow_drop_down_circle',
-    view_carousel: 'view_carousel',
-    grid_view: 'grid_view',
-    tab: 'tab',
-    notifications: 'notifications',
-    open_in_new: 'open_in_new',
-    hourglass_empty: 'hourglass_empty',
-    account_circle: 'account_circle',
-    fiber_manual_record: 'fiber_manual_record',
-    label: 'label',
-    emoji_emotions: 'emoji_emotions',
-    business: 'business',
-    input: 'input',
-    category: 'category',
-    widgets: 'widgets',
-    smart_toy: 'smart_toy',
-    notification_important: 'notification_important',
-    // Enterprise icons
-    folder_managed: 'folder_managed',
-    shield: 'shield',
-    apps: 'apps',
-    monitoring: 'monitoring',
-    // Common aliases
     plus: 'add',
     minus: 'remove'
 };
+
+// Exhaustive list of known icon names (for validation only)
+const KNOWN_ICONS = new Set([
+    'check', 'close', 'add', 'remove', 'edit', 'delete', 'search', 'menu',
+    'chevron_right', 'chevron_left', 'expand_more', 'expand_less', 'home',
+    'arrow_back', 'arrow_forward', 'info', 'warning', 'error', 'check_circle',
+    'cancel', 'settings', 'person', 'light_mode', 'dark_mode', 'visibility',
+    'visibility_off', 'download', 'smart_button', 'text_fields', 'check_box',
+    'toggle_on', 'radio_button_checked', 'arrow_drop_down_circle', 'view_carousel',
+    'grid_view', 'tab', 'notifications', 'open_in_new', 'hourglass_empty',
+    'account_circle', 'fiber_manual_record', 'label', 'emoji_emotions',
+    'business', 'input', 'category', 'widgets', 'smart_toy',
+    'notification_important', 'folder_managed', 'shield', 'apps', 'monitoring',
+    // All aliases resolve too
+    ...Object.keys(ICON_ALIASES)
+]);
 
 // Named size → pixel mapping
 const SIZE_MAP = { xs: 16, sm: 20, md: 24, lg: 32, xl: 40 };
@@ -170,9 +131,9 @@ export class AuIcon extends AuElement {
         this.setAttribute('role', 'img');
         this.setAttribute('aria-hidden', 'true');
 
-        // Resolve aliases
-        const resolvedName = SYMBOL_NAMES[name] ? name : name;
-        const svgPath = SVG_ICONS[name] || SVG_ICONS[SYMBOL_NAMES[name]];
+        // Resolve aliases (P2.4: was a no-op — SYMBOL_NAMES[name] ? name : name  always returned name)
+        const resolvedName = ICON_ALIASES[name] || name;
+        const svgPath = SVG_ICONS[resolvedName] || SVG_ICONS[name];
 
         // SVG first (default) - eliminates 254KB font dependency for common icons
         // Only fall back to font if: 1) force font attr, or 2) no SVG exists
@@ -186,10 +147,10 @@ export class AuIcon extends AuElement {
         }
 
         // Fall back to Material Symbols font (for rare icons not in SVG set)
-        const symbolName = SYMBOL_NAMES[name] || name;
+        const symbolName = ICON_ALIASES[name] || name;
 
         // Log warning for unknown icon names (AI agent readiness)
-        if (!SYMBOL_NAMES[name] && !SVG_ICONS[name]) {
+        if (!KNOWN_ICONS.has(name) && !SVG_ICONS[name]) {
             this.logError('UNKNOWN_ICON', `Icon name "${name}" not found in predefined icons. Using font fallback.`);
         }
 
@@ -223,7 +184,7 @@ export class AuIcon extends AuElement {
 }
 
 // Export icon names for reference
-export const IconNames = Object.keys(SYMBOL_NAMES);
+export const IconNames = [...KNOWN_ICONS];
 export const SvgIconNames = Object.keys(SVG_ICONS);
 
 define('au-icon', AuIcon);

@@ -84,7 +84,12 @@ export class AuToast extends AuElement {
         const cleanup = () => {
             if (!removed) {
                 removed = true;
+                const container = this.parentElement;
                 this.remove();
+                // ML3: Clean up empty container to prevent DOM accumulation
+                if (container?.tagName === 'AU-TOAST-CONTAINER' && container.children.length === 0) {
+                    container.remove();
+                }
             }
         };
 

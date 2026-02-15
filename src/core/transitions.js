@@ -54,7 +54,7 @@ export async function transitionNamed(updateCallback, { name = 'page' } = {}) {
         try {
             await transition(updateCallback);
         } finally {
-            style.remove();
+            try { style.remove(); } catch (_) { /* style may already be detached */ }
         }
     } else {
         await updateCallback();

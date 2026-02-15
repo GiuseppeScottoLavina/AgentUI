@@ -200,8 +200,14 @@ export class AuSchemaForm extends AuElement {
             if (def.maxLength && value.length > def.maxLength) {
                 errors.push(`Maximum ${def.maxLength} characters`);
             }
-            if (def.pattern && !new RegExp(def.pattern).test(value)) {
-                errors.push(def.patternError || 'Invalid format');
+            if (def.pattern) {
+                try {
+                    if (!new RegExp(def.pattern).test(value)) {
+                        errors.push(def.patternError || 'Invalid format');
+                    }
+                } catch (e) {
+                    errors.push('Invalid validation pattern');
+                }
             }
             if (def.format === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
                 errors.push('Invalid email address');

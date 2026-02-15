@@ -31,7 +31,6 @@ coverage/
 .antigravity/
 .gemini/
 .tmp/
-node_modules/
 # Favicon (root-level only, for local dev)
 /favicon.png
 /favicon.ico

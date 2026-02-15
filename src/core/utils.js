@@ -21,13 +21,18 @@
  */
 export function escapeHTML(str) {
     if (str == null) return '';
-    return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
+    // P1.7 perf fix: single-pass replacement (was 5 sequential regex scans)
+    return String(str).replace(/[&<>"']/g, c => _ESCAPE_MAP[c]);
 }
+
+/** @private Single-pass HTML escape lookup */
+const _ESCAPE_MAP = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+};
 
 /**
  * Marker class for pre-trusted HTML content.

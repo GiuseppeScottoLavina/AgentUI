@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Shared `launchBrowser()` helper**: `tests/e2e/puppeteer-helper.js` for consistent Chrome management
 
 ### Changed
-- **1530 tests** (was 1300+): 85 isolated test files, 0 fail, 55 skip
+- **1826 tests** (was 1530): 94 isolated test files, 0 fail, 32 skip
 - 11 LinkedOM-failing unit tests marked as skip with E2E cross-references
 - Updated docs: README, AGENTS.md, demo homepage with current test counts
 
@@ -264,7 +264,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Navigation: `au-tabs`, `au-navbar`, `au-bottom-nav`, `au-drawer-item`
   - Data: `au-table`, `au-datatable`, `au-repeat`, `au-virtual-list`
   - Advanced: `au-router`, `au-lazy`, `au-fetch`, `au-code`, `au-example`
-- **Zero Dependencies**: No runtime dependencies, ~215KB ESM bundle
+- **Zero Dependencies**: No runtime dependencies, ~168KB ESM bundle
 - **Full TypeScript Support**: Complete type definitions included
 - **Accessibility**: WCAG 2.1 AA compliant with full keyboard navigation
 - **Theming**: Dark/Light mode with CSS custom properties

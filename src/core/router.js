@@ -98,17 +98,27 @@ class RouterClass {
     }
 
     /**
-     * Destroy the router and remove event listeners
+     * Stop the router (remove listener) without clearing routes.
+     * Call start() to resume.
      */
-    destroy() {
+    stop() {
         if (this.#handleRoute) {
             window.removeEventListener('hashchange', this.#handleRoute);
             this.#handleRoute = null;
         }
+        return this;
+    }
+
+    /**
+     * Destroy the router and remove event listeners
+     */
+    destroy() {
+        this.stop();
         this.#routes = [];
         this.#notFound = null;
         this.#currentPath = '';
     }
 }
 
+export { RouterClass };
 export const Router = new RouterClass();

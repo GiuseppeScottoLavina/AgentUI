@@ -1,6 +1,10 @@
 /**
  * @fileoverview Lazy-loaded component describe() catalog
  * 
+ * TODO: This 1900+ line file is hand-maintained and will drift from source.
+ * It should be auto-generated from JSDoc/source analysis during build.
+ * See: https://github.com/AntiguaUI/agentui/issues — maintainer audit P1.2
+ * 
  * This file is NOT included in the main bundle.
  * It is loaded on-demand when an agent calls discoverAll() or
  * loads descriptions via AgentUI.loadDescriptions().

@@ -65,14 +65,7 @@ export function createRipple(element, event, options = {}) {
         pointer-events: none;
     `;
 
-    // Ensure container has proper positioning
-    const computedStyle = getComputedStyle(element);
-    if (computedStyle.position === 'static') {
-        element.style.position = 'relative';
-    }
-    if (computedStyle.overflow !== 'hidden') {
-        element.style.overflow = 'hidden';
-    }
+    // Positioning now set at attachRipple time (P1.6 perf fix — no getComputedStyle per click)
 
     // Add ripple to element
     element.appendChild(ripple);
@@ -126,6 +119,11 @@ export function attachRipple(element, options = {}) {
         return () => { }; // no-op cleanup (original cleanup is still valid)
     }
     _rippleElements.add(element);
+
+    // Set positioning ONCE at attach time (P1.6 perf fix — avoids getComputedStyle per click)
+    const cs = getComputedStyle(element);
+    if (cs.position === 'static') element.style.position = 'relative';
+    if (cs.overflow !== 'hidden') element.style.overflow = 'hidden';
 
     const handler = (e) => {
         // Don't create ripple if element is disabled

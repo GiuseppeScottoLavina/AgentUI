@@ -530,7 +530,7 @@ export function enableVisualMarkers(options = {}) {
         }
 
         markerContainer.appendChild(marker);
-        markerMap.set(markerId, el);
+        markerMap.set(markerId, new WeakRef(el));
     }
 
     markersEnabled = true;
@@ -555,7 +555,8 @@ export function disableVisualMarkers() {
  * @returns {HTMLElement|null}
  */
 export function getMarkerElement(markerId) {
-    return markerMap.get(markerId) || null;
+    const ref = markerMap.get(markerId);
+    return ref?.deref() || null;
 }
 
 /**
@@ -564,7 +565,9 @@ export function getMarkerElement(markerId) {
  */
 export function getMarkerMap() {
     const result = {};
-    for (const [id, el] of markerMap) {
+    for (const [id, ref] of markerMap) {
+        const el = ref.deref();
+        if (!el) continue; // ML8: Skip GC'd elements
         result[id] = {
             tag: el.tagName.toLowerCase(),
             label: getAccessibleName(el),

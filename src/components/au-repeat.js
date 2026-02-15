@@ -27,6 +27,12 @@ export class AuRepeat extends AuElement {
     #renderItem = (item) => html`<div>${JSON.stringify(item)}</div>`;
     #itemNodes = new Map(); // key -> DOM element
 
+    disconnectedCallback() {
+        super.disconnectedCallback();
+        // ML1: Clear DOM references to prevent memory leak
+        this.#itemNodes.clear();
+    }
+
     set items(arr) {
         const oldItems = this.#items;
         this.#items = arr || [];

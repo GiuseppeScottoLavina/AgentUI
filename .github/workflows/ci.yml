@@ -24,6 +24,9 @@ jobs:
     - name: Run unit tests
       run: bun run test:isolated
 
+    - name: Build framework
+      run: bun run build
+
   lint:
     runs-on: ubuntu-latest
     
@@ -37,3 +40,4 @@ jobs:
           exit 1
         fi
         echo "✅ No stray console.log found"
+

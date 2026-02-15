@@ -15,6 +15,12 @@
  * - content-visibility auto for off-screen elements
  */
 
+// ─── Precompiled regex for _inferButtonAction (P1.3 perf fix) ────────────────
+const _RE_SUBMIT = /^(save|submit|confirm|send|create|add|apply|ok|yes)$/;
+const _RE_CANCEL = /^(cancel|close|dismiss|no|nevermind)$/;
+const _RE_DELETE = /^(delete|remove|clear|trash)$/;
+const _RE_NAVIGATE = /^(back|next|previous|forward|continue)$/;
+
 export class AuElement extends HTMLElement {
     /** @type {string[]} Attributes to observe for changes */
     static observedAttributes = [];
@@ -33,6 +39,9 @@ export class AuElement extends HTMLElement {
 
     /** @type {boolean} Whether agentui.css bundle is loaded (skip lazy CSS) */
     static _bundleLoaded = false;
+
+    /** @type {boolean} Whether _initAgentLogger has run (P1.2 perf fix) */
+    static _agentLoggerInitialized = false;
 
     /** @type {boolean} Apply CSS containment for perf */
     static useContainment = true;
@@ -78,7 +87,7 @@ export class AuElement extends HTMLElement {
             ...base,
             runtime: {
                 registered: typeof customElements !== 'undefined' && !!customElements.get(tag),
-                version: '0.1.144',
+                version: '0.1.146',
                 instanceCount: instances.length,
                 instances: instances.slice(0, 5).map(el => {
                     const info = { id: el.id || null };
@@ -117,7 +126,11 @@ export class AuElement extends HTMLElement {
 
     constructor() {
         super();
-        this._initAgentLogger();
+        // Hoist to class-level: agent logger runs exactly once (P1.2 perf fix)
+        if (!AuElement._agentLoggerInitialized) {
+            AuElement._agentLoggerInitialized = true;
+            this._initAgentLogger();
+        }
     }
 
     _initAgentLogger() {
@@ -255,15 +268,10 @@ export class AuElement extends HTMLElement {
                 !!document.querySelector('link[href*="components.css"]') ||
                 // 4. Style tag marked by bundler
                 !!document.querySelector('style[data-agentui]') ||
-                // 5. Check for au-* CSS rules already loaded (skip if styleSheets undefined)
-                (document.styleSheets && Array.from(document.styleSheets).some(sheet => {
-                    try {
-                        return sheet.cssRules && Array.from(sheet.cssRules).some(rule =>
-                            rule.selectorText?.includes('.au-button') ||
-                            rule.selectorText?.includes('.au-chip')
-                        );
-                    } catch { return false; } // Cross-origin stylesheets throw
-                }));
+                // 5. Check for AgentUI CSS custom property token (O(1) vs O(n×m) cssRules scan — P1.1 perf fix)
+                (typeof getComputedStyle !== 'undefined' &&
+                    getComputedStyle(document.documentElement)
+                        .getPropertyValue('--md-sys-color-primary').trim() !== '');
         }
         if (AuElement._bundleLoaded) return;
 
@@ -299,6 +307,19 @@ export class AuElement extends HTMLElement {
                     const match = srcScript.src.match(/(.*\/src\/)/);
                     if (match) basePath = match[1] + 'styles/';
                 }
+            }
+        }
+
+        // R6 Security: Validate basePath is same-origin to prevent CSS injection via DOM clobbering
+        if (basePath.startsWith('http') || basePath.startsWith('//')) {
+            try {
+                const baseUrl = new URL(basePath, window.location.origin);
+                if (baseUrl.origin !== window.location.origin) {
+                    console.warn(`[AgentUI] Blocked cross-origin CSS path: ${basePath}`);
+                    basePath = '/styles/';
+                }
+            } catch {
+                basePath = '/styles/';
             }
         }
 
@@ -364,23 +385,11 @@ export class AuElement extends HTMLElement {
     _inferButtonAction() {
         const text = this.textContent?.toLowerCase().trim() || '';
 
-        // Submit/Save patterns
-        if (/^(save|submit|confirm|send|create|add|apply|ok|yes)$/.test(text)) {
-            return 'submit';
-        }
-        // Cancel/Close patterns
-        if (/^(cancel|close|dismiss|no|nevermind)$/.test(text)) {
-            return 'cancel';
-        }
-        // Delete/Remove patterns
-        if (/^(delete|remove|clear|trash)$/.test(text)) {
-            return 'delete';
-        }
-        // Navigation patterns
-        if (/^(back|next|previous|forward|continue)$/.test(text)) {
-            return 'navigate';
-        }
-        // Default
+        // Precompiled regex (module-level) — P1.3 perf fix
+        if (_RE_SUBMIT.test(text)) return 'submit';
+        if (_RE_CANCEL.test(text)) return 'cancel';
+        if (_RE_DELETE.test(text)) return 'delete';
+        if (_RE_NAVIGATE.test(text)) return 'navigate';
         return 'click';
     }
 

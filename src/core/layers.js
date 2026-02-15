@@ -65,7 +65,6 @@ ${Object.entries(Z_INDEX).map(([k, v]) => `    --z-${k}: ${v};`).join('\n')}
     document.head.appendChild(style);
 }
 
-// Auto-inject on load
-if (typeof window !== 'undefined') {
-    injectLayerTokens();
-}
+// Note (P3.2): injectLayerTokens() is NOT auto-called on import.
+// CSS custom properties are defined in tokens.css (canonical source).
+// Call injectLayerTokens() manually if you need JS-injected tokens.

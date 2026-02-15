@@ -11,6 +11,25 @@ export class AuCode extends AuElement {
     static baseClass = 'au-code';
     static observedAttributes = ['language'];
 
+    /**
+     * ML2: Reusable element for HTML entity decoding.
+     * Replaces DOMParser which creates a full HTMLDocument per render.
+     * Using a div is safe: setting innerHTML on a detached element
+     * does not execute scripts. Reading textContent is pure text extraction.
+     */
+    static #decoder = null;
+
+    static #decodeEntities(html) {
+        if (typeof document === 'undefined') return html;
+        if (!AuCode.#decoder) {
+            AuCode.#decoder = document.createElement('div');
+        }
+        AuCode.#decoder.innerHTML = html;
+        const decoded = AuCode.#decoder.textContent;
+        AuCode.#decoder.innerHTML = ''; // Clear for GC
+        return decoded;
+    }
+
 
     #originalCode = null;
 
@@ -36,18 +55,8 @@ export class AuCode extends AuElement {
 
         // First decode any HTML entities that might already be in the content
         // This handles cases where the HTML source uses &lt; &gt; etc.
-        // Security: DOMParser does NOT execute scripts or event handlers during parsing
-        // Fallback to createElement for test environments (linkedom) where DOMParser is unavailable
-        let decodedCode;
-        if (typeof DOMParser !== 'undefined') {
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(rawCode, 'text/html');
-            decodedCode = doc.documentElement.textContent;
-        } else {
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = rawCode;
-            decodedCode = tempDiv.textContent;
-        }
+        // ML2: Use reusable textarea instead of DOMParser (avoids full HTMLDocument allocation per render)
+        const decodedCode = AuCode.#decodeEntities(rawCode);
 
         // Dedent: remove common leading whitespace from all lines
         const dedentedCode = this.#dedent(decodedCode);
@@ -68,6 +77,10 @@ export class AuCode extends AuElement {
         // Basic syntax highlighting
         const highlighted = this.#highlight(escaped, language);
 
+        // R1 Security: sanitize highlighted output — only allow au-code__* span tags.
+        // If highlight regex somehow produces unexpected HTML, this catches it.
+        const sanitizedHighlighted = this.#sanitizeHighlighted(highlighted);
+
         this.innerHTML = html`
             <div class="au-code__header">
                 <span class="au-code__language">${language.toUpperCase()}</span>
@@ -78,11 +91,31 @@ export class AuCode extends AuElement {
                     </svg>
                 </button>
             </div>
-            <pre class="au-code__pre"><code class="au-code__content">${safe(highlighted)}</code></pre>
+            <pre class="au-code__pre"><code class="au-code__content">${safe(sanitizedHighlighted)}</code></pre>
         `;
 
         this.#applyStyles();
         this.#setupCopyButton(copyableCode);
+    }
+
+    /**
+     * R1 Security: Validate highlighted HTML output.
+     * Only allow <span class="au-code__*"> opening/closing tags.
+     * Any other HTML tag is escaped to prevent mXSS.
+     * @param {string} highlightedHtml - Output from #highlight()
+     * @returns {string} Sanitized highlighted HTML
+     */
+    #sanitizeHighlighted(highlightedHtml) {
+        // Allow only: <span class="au-code__..."> and </span>
+        // Escape any other tags that could have been introduced by regex mutation
+        return highlightedHtml.replace(/<(\/?)([^>]*)>/g, (match, slash, content) => {
+            // Allow closing </span>
+            if (slash === '/' && content.trim() === 'span') return match;
+            // Allow opening <span class="au-code__...">
+            if (!slash && /^span\s+class="au-code__[a-z]+"$/.test(content.trim())) return match;
+            // Escape everything else
+            return match.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        });
     }
 
     #highlight(code, language) {
@@ -478,9 +511,12 @@ export class AuCode extends AuElement {
             content.style.color = 'var(--md-sys-color-on-surface)';
         }
 
-        // Syntax highlighting colors
-        const style = document.createElement('style');
-        style.textContent = `
+        // P2.1 perf fix: inject syntax highlighting styles once (not per render)
+        if (!AuCode._stylesInjected) {
+            AuCode._stylesInjected = true;
+            const style = document.createElement('style');
+            style.id = 'au-code-styles';
+            style.textContent = `
             .au-code__tag { color: var(--md-sys-color-primary); }
             .au-code__attr { color: var(--md-sys-color-tertiary); }
             .au-code__string { color: var(--md-sys-color-secondary); }
@@ -503,13 +539,8 @@ export class AuCode extends AuElement {
                 color: #1b5e20 !important;
             }
         `;
-        // Remove old styles and add new ones to ensure latest CSS
-        const existingStyle = document.getElementById('au-code-styles');
-        if (existingStyle) {
-            existingStyle.remove();
+            document.head.appendChild(style);
         }
-        style.id = 'au-code-styles';
-        document.head.appendChild(style);
     }
 
     #setupCopyButton(originalCode) {

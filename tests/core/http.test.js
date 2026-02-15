@@ -116,4 +116,59 @@ describe('http Module Unit Tests', () => {
     test('delete should accept url and options', () => {
         expect(() => http.delete).not.toThrow();
     });
+
+    // ========================================
+    // P2.3: http.create() factory
+    // ========================================
+
+    test('create should be a function', () => {
+        expect(typeof http.create).toBe('function');
+    });
+
+    test('create() should return a new instance', () => {
+        const instance = http.create();
+        expect(instance).toBeDefined();
+        expect(instance).not.toBe(http);
+    });
+
+    test('created instances should have all http methods', () => {
+        const instance = http.create();
+        expect(typeof instance.get).toBe('function');
+        expect(typeof instance.post).toBe('function');
+        expect(typeof instance.put).toBe('function');
+        expect(typeof instance.delete).toBe('function');
+        expect(typeof instance.request).toBe('function');
+        expect(typeof instance.setBaseURL).toBe('function');
+        expect(typeof instance.setHeader).toBe('function');
+    });
+
+    test('created instances should be isolated', () => {
+        const a = http.create();
+        const b = http.create();
+
+        a.setBaseURL('https://api-a.com');
+        b.setBaseURL('https://api-b.com');
+
+        expect(a.baseURL).toBe('https://api-a.com');
+        expect(b.baseURL).toBe('https://api-b.com');
+        expect(http.baseURL).toBe(''); // default not affected
+    });
+
+    test('created instances should have independent headers', () => {
+        const instance = http.create();
+        instance.setHeader('X-Custom', 'value');
+
+        expect(instance.headers['X-Custom']).toBe('value');
+        expect(http.headers['X-Custom']).toBeUndefined();
+    });
+
+    test('create() should accept initial config', () => {
+        const instance = http.create({
+            baseURL: 'https://custom.api.com',
+            headers: { 'Authorization': 'Bearer xyz' }
+        });
+
+        expect(instance.baseURL).toBe('https://custom.api.com');
+        expect(instance.headers['Authorization']).toBe('Bearer xyz');
+    });
 });

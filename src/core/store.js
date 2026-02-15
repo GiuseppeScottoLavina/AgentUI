@@ -52,7 +52,23 @@ export function createStore(initialState, options = {}) {
                     // Only restore keys present in initialState
                     for (const key of Object.keys(initialState)) {
                         if (key in parsed) {
-                            _state[key] = parsed[key];
+                            const initial = initialState[key];
+                            const restored = parsed[key];
+                            // R4 Security: Type-check restored values against initialState
+                            // Prevents localStorage poisoning with type-confused values
+                            if (initial === null || initial === undefined) {
+                                // null/undefined initial = accept any type (developer opt-in)
+                                _state[key] = restored;
+                            } else if (Array.isArray(initial)) {
+                                // Array type must match
+                                if (Array.isArray(restored)) {
+                                    _state[key] = restored;
+                                }
+                            } else if (typeof restored === typeof initial) {
+                                // Primitive types must match
+                                _state[key] = restored;
+                            }
+                            // Type mismatch: silently keep initialState value
                         }
                     }
                 }
@@ -88,11 +104,20 @@ export function createStore(initialState, options = {}) {
     }
 
     // ── Reactive Proxy ────────────────────────────────────────────────
+    // Keys that must be blocked to prevent prototype pollution
+    const BLOCKED_KEYS = new Set(['__proto__', 'constructor', 'prototype']);
+
     const proxy = new Proxy(_state, {
         get(target, prop) {
             return target[prop];
         },
         set(target, prop, value) {
+            // Guard: block prototype pollution vectors
+            if (BLOCKED_KEYS.has(prop)) {
+                console.warn(`[AgentUI Store] Blocked dangerous key: "${String(prop)}"`);
+                return true; // silently ignore
+            }
+
             const oldVal = target[prop];
             if (Object.is(oldVal, value)) return true; // no-op for same value
             target[prop] = value;

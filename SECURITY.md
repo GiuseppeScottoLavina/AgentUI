@@ -60,6 +60,24 @@ Demo pages include CSP headers:
 - `connect-src 'self'` - Prevents data exfiltration
 - No `'unsafe-eval'` - Blocks dynamic code execution
 
+**Known limitation**: `style-src 'unsafe-inline'` is required because ~40 components set inline styles programmatically (e.g., `this.style.display = 'block'`). Removing this would require refactoring all components to use CSS classes exclusively.
+
+### Server Security Headers
+
+The development server (`server.js`) sets the following security headers on **all** responses:
+
+| Header | Value | Purpose |
+|--------|-------|---------|
+| `X-Content-Type-Options` | `nosniff` | Prevents MIME-type sniffing |
+| `X-Frame-Options` | `DENY` | Prevents clickjacking |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` | Limits referrer leakage |
+| `Permissions-Policy` | `camera=(), microphone=(), geolocation=()` | Disables sensitive browser APIs |
+| `Cross-Origin-Opener-Policy` | `same-origin` | Prevents cross-origin window access |
+
+### Prototype Pollution Protection
+
+The reactive store (`createStore`) blocks `__proto__`, `constructor`, and `prototype` keys from being set via the Proxy, preventing prototype pollution attacks.
+
 ### Zero Dependencies
 
 The production bundle has **zero runtime dependencies**, eliminating supply chain risks.
@@ -68,10 +86,31 @@ The production bundle has **zero runtime dependencies**, eliminating supply chai
 
 - ✅ No `eval()` or `Function()` calls
 - ✅ No `document.write`
-- ✅ No prototype pollution patterns (`__proto__`)
+- ✅ No prototype pollution patterns (`__proto__` blocked in store)
 - ✅ No hardcoded secrets or credentials
 - ✅ `html` tagged template for automatic XSS-safe rendering
 - ✅ Centralized `escapeHTML()` utility as internal safeguard
+- ✅ `try/catch` around user-supplied regex patterns (ReDoS protection)
+- ✅ Router page content sanitization (strips `<script>`, event handlers, `javascript:` URIs)
+- ✅ Syntax highlighting mXSS defense (whitelist-only span tag output)
+- ✅ Dynamic import path traversal protection (strict `au-[a-z0-9-]+` validation)
+- ✅ localStorage type-checking against initialState schema (poisoning defense)
+- ✅ CSS base path same-origin validation (DOM clobbering defense)
+- ✅ `au-fetch` slot template sanitization (strip dangerous HTML from `<template>` slots)
+- ✅ `/-/clear-cache` CSRF protection (POST-only method enforcement)
+
+### Known Design Decisions
+
+**`javascript:` URIs in `html` tag**: The `html` tagged template escapes HTML entities (`<`, `>`, `&`, `"`, `'`) but does **not** sanitize URL schemes. This means `html\`<a href="${'javascript:alert(1)}'>">\`` will pass through. This is the same behavior as React's JSX — URL validation is the developer's responsibility. Always validate URLs from user input before using them in `href` attributes:
+
+```javascript
+// ✅ Safe: validate URL scheme before rendering
+const href = userInput.startsWith('http') ? userInput : '#';
+element.innerHTML = html`<a href="${href}">Link</a>`;
+
+// ❌ Risky: user-supplied URL directly in href
+element.innerHTML = html`<a href="${userInput}">Link</a>`;
+```
 
 ## Reporting a Vulnerability
 
@@ -81,11 +120,30 @@ Please report security vulnerabilities by opening an issue with the `security` l
 
 ## Security Audit
 
-Last audit: **2026-02-07** (v0.1.x)
+Last audit: **2026-02-15** (v0.1.x) — **Round 2 (Deep Dive)**
 
-- Full codebase review completed
-- `html` tagged template added for automatic XSS-safe rendering
-- `safe()` opt-out for trusted HTML with explicit developer intent
-- 20 components with explicit XSS protection via `escapeHTML()`
-- All remaining innerHTML usage audited and classified as safe
-- Developer callback patterns (renderItem) documented with safety guidance
+### Round 1 — Surface Audit
+- Server hardened with 5 security headers on all response paths
+- Prototype pollution guard added to reactive store
+- ReDoS protection added to schema form validation
+- `au-agent-toolbar` migrated from raw template literal to `html` tagged template
+- `javascript:` URI passthrough documented as design decision (same as React)
+- CSP `unsafe-inline` for `style-src` documented as architectural limitation
+- 21 new security tests
+
+### Round 2 — Deep Dive (PortSwigger Grade)
+- **R1**: `au-code` mXSS defense — `#sanitizeHighlighted()` whitelist validates highlight output
+- **R2**: `au-router` page content sanitization — `_sanitizePageContent()` strips dangerous elements/attributes before innerHTML
+- **R3**: Dynamic import path traversal protection — strict `/^au-[a-z0-9-]+$/` regex
+- **R4**: `store.js` localStorage poisoning defense — type-check restored values against initialState
+- **R5**: `au-icon` confirmed safe by design (parseInt + hardcoded map)
+- **R6**: `AuElement._loadComponentCSS` same-origin CSS path validation
+- 27 new security tests (5 mXSS + 10 router + 2 CSS + 10 store)
+
+### Round 3 — Final Ultra-Deep
+- **R7**: `au-fetch` slot template innerHTML injection — `#sanitizeSlotTemplate()` strips dangerous elements from `<template>` slots
+- **R8**: `/-/clear-cache` CSRF DoS — POST-only method enforcement, GET returns 405
+- 8 new security tests (6 fetch-template + 2 CSRF)
+
+**Total security tests: 56** (Round 1: 21 + Round 2: 27 + Round 3: 8)
+

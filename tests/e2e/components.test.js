@@ -241,6 +241,79 @@ describe('Components E2E Tests', () => {
             });
             expect(result).toBe(true);
         });
+
+        // ── POSITIONING TESTS (regression guard for P2.4) ──
+
+        test('menu should have position:fixed when opened', async () => {
+            const result = await page.evaluate(async () => {
+                const dropdown = document.querySelector('au-dropdown');
+                dropdown.open();
+                // Wait for popover to render
+                await new Promise(r => setTimeout(r, 100));
+                const menu = dropdown.querySelector('[popover]');
+                if (!menu) return { error: 'no menu found' };
+                const style = getComputedStyle(menu);
+                dropdown.close();
+                return { position: style.position };
+            });
+            expect(result.position).toBe('fixed');
+        });
+
+        test('menu should appear near trigger, NOT at (0, 0)', async () => {
+            const result = await page.evaluate(async () => {
+                const dropdown = document.querySelector('au-dropdown');
+                const trigger = dropdown.querySelector('button') || dropdown.querySelector('[slot="trigger"]');
+                if (!trigger) return { error: 'no trigger' };
+
+                const triggerRect = trigger.getBoundingClientRect();
+                dropdown.open();
+                await new Promise(r => setTimeout(r, 100));
+
+                const menu = dropdown.querySelector('[popover]');
+                if (!menu) return { error: 'no menu' };
+
+                const menuRect = menu.getBoundingClientRect();
+                dropdown.close();
+
+                return {
+                    triggerBottom: triggerRect.bottom,
+                    triggerLeft: triggerRect.left,
+                    menuTop: menuRect.top,
+                    menuLeft: menuRect.left,
+                    // Menu should be near trigger, not at origin
+                    menuNotAtOrigin: menuRect.top > 5 || menuRect.left > 5
+                };
+            });
+            expect(result.menuNotAtOrigin).toBe(true);
+        });
+
+        test('menu should reposition correctly after close and reopen', async () => {
+            const result = await page.evaluate(async () => {
+                const dropdown = document.querySelector('au-dropdown');
+
+                // Open, get position, close
+                dropdown.open();
+                await new Promise(r => setTimeout(r, 100));
+                const menu = dropdown.querySelector('[popover]');
+                if (!menu) return { error: 'no menu' };
+                const firstTop = menu.getBoundingClientRect().top;
+                dropdown.close();
+                await new Promise(r => setTimeout(r, 100));
+
+                // Reopen, get position
+                dropdown.open();
+                await new Promise(r => setTimeout(r, 100));
+                const secondTop = menu.getBoundingClientRect().top;
+                dropdown.close();
+
+                return {
+                    firstTop,
+                    secondTop,
+                    consistent: Math.abs(firstTop - secondTop) < 2 // 2px tolerance
+                };
+            });
+            expect(result.consistent).toBe(true);
+        });
     });
 
     // ========================================

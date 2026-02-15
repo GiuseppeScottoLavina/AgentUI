@@ -92,6 +92,14 @@ export class AuConfirm extends AuModal {
     /** @type {HTMLDialogElement|null} */
     #dialog = null;
 
+    disconnectedCallback() {
+        // ML6: Restore body overflow if confirm was open when force-removed
+        if (this.#dialog?.open) {
+            document.body.style.overflow = '';
+        }
+        super.disconnectedCallback();
+    }
+
     connectedCallback() {
         // Skip AuModal's content preservation - we generate our own
         // Go directly to AuElement's connectedCallback for listener setup
@@ -244,7 +252,8 @@ export class AuConfirm extends AuModal {
                 cleanup();
             }
         };
-        dialog.addEventListener('transitionend', onTransitionEnd);
+        // ML7: Use managed listener for auto-cleanup on disconnect
+        this.listen(dialog, 'transitionend', onTransitionEnd);
 
         // Fallback: cleanup after expected transition time (200ms matches CSS)
         this.setTimeout(() => {

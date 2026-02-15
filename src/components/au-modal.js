@@ -18,6 +18,15 @@ export class AuModal extends AuElement {
     /** @type {HTMLDialogElement|null} */
     #dialog = null;
 
+    disconnectedCallback() {
+        // ML5: Restore body scroll if we locked it (prevents frozen scroll
+        // when modal is force-removed from DOM without close())
+        if (this.classList.contains('is-open')) {
+            document.body.style.overflow = '';
+        }
+        super.disconnectedCallback();
+    }
+
     connectedCallback() {
         // Store user content only once, before first render
         if (!this.hasAttribute('data-rendered')) {
@@ -152,7 +161,8 @@ export class AuModal extends AuElement {
                 cleanup();
             }
         };
-        dialog.addEventListener('transitionend', onTransitionEnd);
+        // ML7: Use managed listener for auto-cleanup on disconnect
+        this.listen(dialog, 'transitionend', onTransitionEnd);
 
         // Fallback: cleanup after expected transition time (200ms matches CSS)
         this.setTimeout(() => {

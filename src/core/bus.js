@@ -37,6 +37,7 @@ const AGENTUI_META = {
 // ============================================================================
 class LightBus {
     #listeners = new Map();
+    #wildcards = new Map();  // P1.5: dedicated wildcard prefix → Set<callback> registry
     #handlers = new Map();
     #inboundHooks = new Set();
     #outboundHooks = new Set();
@@ -56,6 +57,16 @@ class LightBus {
     }
 
     on(event, callback) {
+        // P1.5 perf fix: route wildcards to dedicated Map for O(1) prefix matching
+        if (event.endsWith('*')) {
+            const prefix = event.slice(0, -1);
+            if (!this.#wildcards.has(prefix)) {
+                this.#wildcards.set(prefix, new Set());
+            }
+            this.#wildcards.get(prefix).add(callback);
+            return { unsubscribe: () => this.#wildcards.get(prefix)?.delete(callback) };
+        }
+
         if (!this.#listeners.has(event)) {
             this.#listeners.set(event, new Set());
         }
@@ -75,6 +86,11 @@ class LightBus {
     }
 
     off(event, callback) {
+        if (event.endsWith('*')) {
+            const prefix = event.slice(0, -1);
+            this.#wildcards.get(prefix)?.delete(callback);
+            return;
+        }
         this.#listeners.get(event)?.delete(callback);
     }
 
@@ -99,10 +115,10 @@ class LightBus {
             }
         }
 
-        // Wildcard support: 'ui:*' matches 'ui:toast:show'
-        for (const [pattern, patternListeners] of this.#listeners) {
-            if (pattern.endsWith('*') && event.startsWith(pattern.slice(0, -1)) && pattern !== event) {
-                for (const cb of patternListeners) {
+        // P1.5 perf fix: Wildcard matching via dedicated Map (no full scan)
+        for (const [prefix, cbs] of this.#wildcards) {
+            if (event.startsWith(prefix)) {
+                for (const cb of cbs) {
                     cb(inPayload);
                 }
             }

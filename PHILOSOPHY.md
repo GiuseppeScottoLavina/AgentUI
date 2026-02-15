@@ -188,19 +188,19 @@ this.innerHTML = html`
 
 ---
 
-## 5. Smart Bundle Architecture (60KB Critical Path)
+## 5. Smart Bundle Architecture (61KB Critical Path)
 
 **The tree-shaking argument:**
 "I only use 3 components, why download all 50?"
 
 **AgentUI's response:**
 
-The 60KB figure is the **critical path only** — the initial shell that loads instantly. Routes and content are lazy-loaded on demand.
+The 61KB figure is the **critical path only** — the initial shell that loads instantly. Routes and content are lazy-loaded on demand.
 
 ### How It Actually Works
 
 ```
-Initial Load (60KB gzipped):
+Initial Load (61KB gzipped):
 ┌────────────────────────────────────────────────┐
 │ agentui.css + shell.js (critical components)  │
 │ → App shell renders immediately               │
@@ -238,7 +238,7 @@ item.addEventListener('mouseenter', () => loadRoute(pageId));
 **Result:** 100/100 Lighthouse Performance with all 50 components available.
 [**→ Verify it yourself on PageSpeed Insights**](https://pagespeed.web.dev/analysis?url=https://giuseppescottolavina.github.io/AgentUI/demo/)
 
-**Trade-off acknowledged:** The initial 60KB is larger than a minimal tree-shaken app. But the lazy loading architecture means subsequent pages load only what they need, and the developer experience is zero-config.
+**Trade-off acknowledged:** The initial 61KB is larger than a minimal tree-shaken app. But the lazy loading architecture means subsequent pages load only what they need, and the developer experience is zero-config.
 
 ---
 

@@ -99,7 +99,7 @@ console.log('✅ IIFE bundle: dist/agentui.min.js');
 const catalogSource = readFileSync('./src/core/describe-catalog.js', 'utf-8');
 const catalogMatch = catalogSource.match(/export const catalog = ({[\s\S]*});/);
 if (catalogMatch) {
-    const catalogData = eval('(' + catalogMatch[1] + ')');
+    const catalogData = JSON.parse(catalogMatch[1]);
     writeFileSync(join(outdir, 'describe-catalog.json'), JSON.stringify(catalogData));
     console.log('✅ Describe catalog: dist/describe-catalog.json (lazy-loaded via fetch)');
 } else {
@@ -226,14 +226,39 @@ const clsPreventionCss = existsSync('./src/styles/cls-prevention.css')
     ? readFileSync('./src/styles/cls-prevention.css', 'utf-8')
     : '';
 
-// Minify CSS (basic)
+// Minify CSS (string-safe: preserves quoted strings and url() contents)
 function minifyCSS(css) {
-    return css
+    // 1. Preserve strings: extract quoted strings, replace with placeholders
+    const strings = [];
+    let preserved = css.replace(/(["'])(?:(?!\1|\\).|\\.)*\1/g, (match) => {
+        strings.push(match);
+        return `__STR_${strings.length - 1}__`;
+    });
+
+    // 2. Preserve url() contents
+    const urls = [];
+    preserved = preserved.replace(/url\(([^)]*)\)/g, (match) => {
+        urls.push(match);
+        return `__URL_${urls.length - 1}__`;
+    });
+
+    // 3. Now safe to strip comments and whitespace
+    preserved = preserved
         .replace(/\/\*[\s\S]*?\*\//g, '')
         .replace(/\s+/g, ' ')
         .replace(/\s*([{}:;,>~])\s*/g, '$1')
         .replace(/;}/g, '}')
         .trim();
+
+    // 4. Restore url() and strings
+    for (let i = 0; i < urls.length; i++) {
+        preserved = preserved.replace(`__URL_${i}__`, urls[i]);
+    }
+    for (let i = 0; i < strings.length; i++) {
+        preserved = preserved.replace(`__STR_${i}__`, strings[i]);
+    }
+
+    return preserved;
 }
 
 const combinedCss = `${tokensCss}\n${componentsCss}\n${animationsCss}\n${overlaysCss}\n${clsPreventionCss}`;
@@ -443,6 +468,224 @@ writeFileSync(
     JSON.stringify(pageComponents, null, 2)
 );
 console.log(`   ✅ page-components.json (${Object.keys(pageComponents).length} pages scanned)`);
+
+// ============================================
+// 8.5 Post-Build: HTML Template Minification
+// ============================================
+// Bun's minify: true only minifies JS syntax — HTML inside template
+// literals keeps all whitespace/newlines. This step collapses them.
+console.log('\n🗜️  Minifying HTML in template literals...');
+
+/**
+ * Minify HTML content inside backtick template literals in JS code.
+ * Recursive single-pass scanner: collapses whitespace in HTML templates,
+ * including nested templates inside ${...} expressions.
+ * 
+ * @param {string} code - JS source code
+ * @returns {string} Code with minified HTML template literals
+ */
+function minifyHTMLInJS(code) {
+    let i = 0;
+    const len = code.length;
+
+    // Parse JS code, returning the processed string up to the stop condition.
+    // stopAtBrace: if true, stop when encountering '}' at depth 0 (for ${...} expressions)
+    function parseJS(stopAtBrace) {
+        let out = '';
+        let braceDepth = 0;
+        // Track last significant token for regex detection
+        // '/' is regex after: ( , ; = [ ! & | ? : { } + - * % ^ ~ < > newline
+        // '/' is division after: ) ] identifier number
+        let lastToken = '';
+
+        while (i < len) {
+            const ch = code[i];
+
+            // Stop condition for ${...} expressions
+            if (stopAtBrace && ch === '}' && braceDepth === 0) {
+                return out;
+            }
+
+            // Track brace depth
+            if (ch === '{') { braceDepth++; lastToken = '{'; }
+            if (ch === '}' && braceDepth > 0) { braceDepth--; lastToken = '}'; }
+
+            // Skip string literals
+            if (ch === "'" || ch === '"') {
+                out += ch;
+                i++;
+                while (i < len && code[i] !== ch) {
+                    if (code[i] === '\\') { out += code[i++]; }
+                    if (i < len) { out += code[i++]; }
+                }
+                if (i < len) { out += code[i++]; }
+                lastToken = 'str';
+                continue;
+            }
+
+            // Handle '/' — could be comment, regex, or division
+            if (ch === '/') {
+                // Line comment
+                if (i + 1 < len && code[i + 1] === '/') {
+                    while (i < len && code[i] !== '\n') { out += code[i++]; }
+                    continue;
+                }
+
+                // Block comment
+                if (i + 1 < len && code[i + 1] === '*') {
+                    out += '/*';
+                    i += 2;
+                    while (i < len && !(code[i] === '*' && i + 1 < len && code[i + 1] === '/')) {
+                        out += code[i++];
+                    }
+                    if (i < len) { out += '*/'; i += 2; }
+                    continue;
+                }
+
+                // Regex literal — '/' is regex when preceded by an operator/keyword token
+                // After ) or ] or identifier/number, '/' is division
+                const regexPrecedes = '(,;=+[!&|?:{}*%-^~<>\n>';
+                if (lastToken === '' || regexPrecedes.includes(lastToken)) {
+                    // Parse as regex
+                    out += ch; i++; // opening /
+                    while (i < len && code[i] !== '/') {
+                        if (code[i] === '\\') { out += code[i++]; } // escape
+                        if (i < len) { out += code[i++]; }
+                    }
+                    if (i < len) { out += code[i++]; } // closing /
+                    // Consume flags (gimsuvy)
+                    while (i < len && /[gimsuy]/.test(code[i])) { out += code[i++]; }
+                    lastToken = 'regex';
+                    continue;
+                }
+
+                // Otherwise it's division — fall through to normal char handling
+            }
+
+            // Template literal — parse recursively
+            if (ch === '`') {
+                out += parseTemplate();
+                lastToken = 'str';
+                continue;
+            }
+
+            // Track lastToken for regex heuristic
+            if (ch !== ' ' && ch !== '\t' && ch !== '\n' && ch !== '\r') {
+                if (/[a-zA-Z0-9_$]/.test(ch)) {
+                    lastToken = 'id'; // identifier/number character
+                } else if (ch === ')') {
+                    lastToken = ')';
+                } else if (ch === ']') {
+                    lastToken = ']';
+                } else {
+                    lastToken = ch; // operator/punctuation
+                }
+            }
+
+            out += ch;
+            i++;
+        }
+        return out;
+    }
+
+    // Parse a template literal starting at the opening backtick.
+    // Returns the full template string (with backticks), HTML-minified if it contains '<'.
+    function parseTemplate() {
+        // Collect raw parts: text segments and ${expr} segments
+        i++; // skip opening `
+        let segments = []; // [{type:'text',value:''}, {type:'expr',value:''}]
+        let currentText = '';
+
+        while (i < len) {
+            if (code[i] === '\\') {
+                currentText += code[i++];
+                if (i < len) currentText += code[i++];
+                continue;
+            }
+            if (code[i] === '$' && i + 1 < len && code[i + 1] === '{') {
+                // Save current text segment
+                segments.push({ type: 'text', value: currentText });
+                currentText = '';
+                i += 2; // skip ${
+                // Recursively parse JS inside the expression (which may contain nested templates)
+                const exprContent = parseJS(true);
+                segments.push({ type: 'expr', value: exprContent });
+                i++; // skip closing }
+                continue;
+            }
+            if (code[i] === '`') {
+                segments.push({ type: 'text', value: currentText });
+                i++; // skip closing `
+                break;
+            }
+            currentText += code[i++];
+        }
+
+        // Check if this template has indentation (multiline with leading whitespace).
+        // This catches HTML templates (<tag>), CSS templates (property: value),
+        // and any other indented content. Skips bare-newline templates like `\n`.
+        const shouldMinify = segments.some(s => s.type === 'text' && /\n\s{2,}/.test(s.value));
+
+        if (shouldMinify) {
+            // Minify: collapse whitespace in text segments, preserve expressions
+            let result = '`';
+            for (const seg of segments) {
+                if (seg.type === 'expr') {
+                    result += '${' + seg.value + '}';
+                } else {
+                    // Collapse runs of whitespace to single space
+                    result += seg.value.replace(/\s+/g, ' ');
+                }
+            }
+            result += '`';
+            // Trim whitespace after opening backtick and before closing
+            result = result.replace(/^`\s+/, '`').replace(/\s+`$/, '`');
+            return result;
+        } else {
+            // Reconstruct as-is
+            let result = '`';
+            for (const seg of segments) {
+                if (seg.type === 'expr') {
+                    result += '${' + seg.value + '}';
+                } else {
+                    result += seg.value;
+                }
+            }
+            result += '`';
+            return result;
+        }
+    }
+
+    return parseJS(false);
+}
+
+// Process all dist JS files
+const jsDirs = [
+    outdir,
+    join(outdir, 'chunks'),
+    join(outdir, 'components'),
+    join(outdir, 'routes')
+];
+
+let filesProcessed = 0;
+let totalSaved = 0;
+
+for (const dir of jsDirs) {
+    if (!existsSync(dir)) continue;
+    const jsFiles = readdirSync(dir).filter(f => f.endsWith('.js'));
+    for (const file of jsFiles) {
+        const filePath = join(dir, file);
+        const original = readFileSync(filePath, 'utf-8');
+        const minified = minifyHTMLInJS(original);
+        if (minified.length < original.length) {
+            writeFileSync(filePath, minified);
+            totalSaved += original.length - minified.length;
+            filesProcessed++;
+        }
+    }
+}
+
+console.log(`   ✅ ${filesProcessed} files minified (${(totalSaved / 1024).toFixed(1)} KB saved)`);
 
 // ============================================
 // Summary

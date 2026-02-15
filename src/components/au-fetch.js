@@ -48,13 +48,19 @@ export class AuFetch extends AuElement {
     _intervalId = null;
 
     connectedCallback() {
-        // Store templates before render
-        this._loadingTemplate = this.querySelector('template[slot="loading"]')?.innerHTML ||
-            '<au-spinner></au-spinner>';
-        this._errorTemplate = this.querySelector('template[slot="error"]')?.innerHTML ||
-            '<au-alert variant="error">Error loading data</au-alert>';
-        this._emptyTemplate = this.querySelector('template[slot="empty"]')?.innerHTML ||
-            '<p>No data</p>';
+        // Store templates before render — sanitize to prevent slot template injection (R7)
+        this._loadingTemplate = this.#sanitizeSlotTemplate(
+            this.querySelector('template[slot="loading"]')?.innerHTML ||
+            '<au-spinner></au-spinner>'
+        );
+        this._errorTemplate = this.#sanitizeSlotTemplate(
+            this.querySelector('template[slot="error"]')?.innerHTML ||
+            '<au-alert variant="error">Error loading data</au-alert>'
+        );
+        this._emptyTemplate = this.#sanitizeSlotTemplate(
+            this.querySelector('template[slot="empty"]')?.innerHTML ||
+            '<p>No data</p>'
+        );
 
         super.connectedCallback();
 
@@ -79,7 +85,7 @@ export class AuFetch extends AuElement {
                 // Safe: _loadingTemplate is trusted or empty, but let's wrap it container
                 const loadingContainer = document.createElement('div');
                 loadingContainer.className = 'au-fetch__loading';
-                loadingContainer.innerHTML = this._loadingTemplate; // _loadingTemplate comes from initial slot content which is trusted
+                loadingContainer.innerHTML = this._loadingTemplate; // Safe: pre-sanitized by #sanitizeSlotTemplate() in connectedCallback
                 this.appendChild(loadingContainer);
                 break;
             case 'error':
@@ -112,7 +118,7 @@ export class AuFetch extends AuElement {
                 if (!this.data || (Array.isArray(this.data) && this.data.length === 0)) {
                     const emptyContainer = document.createElement('div');
                     emptyContainer.className = 'au-fetch__empty';
-                    emptyContainer.innerHTML = this._emptyTemplate; // Trusted slot content
+                    emptyContainer.innerHTML = this._emptyTemplate; // Safe: pre-sanitized by #sanitizeSlotTemplate() in connectedCallback
                     this.appendChild(emptyContainer);
                 } else {
                     const dataContainer = document.createElement('div');
@@ -246,6 +252,39 @@ export class AuFetch extends AuElement {
             this._controller.abort();
         }
         // Note: setInterval cleanup now handled by AuElement via super.disconnectedCallback()
+    }
+
+    /**
+     * R7 Security: Sanitize slot template HTML to strip dangerous elements/attributes.
+     * Prevents template injection when attacker controls initial DOM (CMS, SSTI).
+     * @param {string} html
+     * @returns {string}
+     */
+    #sanitizeSlotTemplate(html) {
+        const container = document.createElement('div');
+        container.innerHTML = html;
+
+        // Remove dangerous elements
+        container.querySelectorAll('script, iframe, object, embed, base, meta[http-equiv]')
+            .forEach(el => el.remove());
+
+        // Remove dangerous attributes from all elements
+        for (const el of container.querySelectorAll('*')) {
+            for (const attr of [...el.attributes]) {
+                if (attr.name.startsWith('on')) {
+                    el.removeAttribute(attr.name);
+                }
+                if (attr.name === 'srcdoc') {
+                    el.removeAttribute(attr.name);
+                }
+                if (['href', 'src', 'action', 'formaction'].includes(attr.name) &&
+                    attr.value.trim().toLowerCase().startsWith('javascript:')) {
+                    el.removeAttribute(attr.name);
+                }
+            }
+        }
+
+        return container.innerHTML;
     }
 }
 

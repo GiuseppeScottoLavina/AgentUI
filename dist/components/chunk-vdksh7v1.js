@@ -1,0 +1,2 @@
+function D(b){if(b==null)return"";return String(b).replace(/[&<>"']/g,(z)=>F[z])}var F={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"};class w extends String{constructor(b){super(b==null?"":b)}}function G(b){return new w(b)}function I(b,...z){let j="";for(let k=0;k<b.length;k++)if(j+=b[k],k<z.length){let q=z[k];if(q instanceof w)j+=q;else if(Array.isArray(q))for(let B of q)if(B instanceof w)j+=B;else j+=D(B);else j+=D(q)}return new w(j)}
+export{D as m,G as n,I as o};

@@ -32,7 +32,7 @@ class RenderScheduler {
     }
 
     #flush() {
-        const callbacks = this.#queue.slice();
+        const callbacks = this.#queue; // Swap, not copy (P1.4 perf fix)
         this.#queue = [];
         this.#scheduled = false;
 
@@ -47,7 +47,9 @@ class RenderScheduler {
     }
 }
 
-export const scheduler = new RenderScheduler();
+export const rafScheduler = new RenderScheduler();
+/** @deprecated Use rafScheduler instead to avoid collision with scheduler.js */
+export { rafScheduler as scheduler };
 
 /**
  * Memoize expensive function calls

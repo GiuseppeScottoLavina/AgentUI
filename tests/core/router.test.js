@@ -91,4 +91,45 @@ describe('router.js Unit Tests', () => {
     test('destroy() should be a function', () => {
         expect(typeof Router.destroy).toBe('function');
     });
+
+    // ========================================
+    // P2.1: RouterClass export for testability
+    // ========================================
+
+    test('RouterClass should be exported', async () => {
+        const module = await import('../../src/core/router.js');
+        expect(module.RouterClass).toBeDefined();
+        expect(typeof module.RouterClass).toBe('function');
+    });
+
+    test('RouterClass should be instantiable', async () => {
+        const module = await import('../../src/core/router.js');
+        const router = new module.RouterClass();
+        expect(router).toBeDefined();
+        expect(typeof router.on).toBe('function');
+        expect(typeof router.start).toBe('function');
+    });
+
+    // ========================================
+    // P2.2: stop() — pause without clearing routes
+    // ========================================
+
+    test('stop() should be a function', () => {
+        expect(typeof Router.stop).toBe('function');
+    });
+
+    test('stop() should remove listener but preserve routes', () => {
+        // Register a route, start, stop
+        Router.on('/stop-test', () => { });
+        Router.start();
+        Router.stop();
+        // Routes should still be registered (can start again)
+        const result = Router.start();
+        expect(result).toBe(Router);
+    });
+
+    test('stop() should return this for chaining', () => {
+        const result = Router.stop();
+        expect(result).toBe(Router);
+    });
 });

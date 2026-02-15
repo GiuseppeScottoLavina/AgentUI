@@ -58,7 +58,7 @@ Always call `.describe()` and read the `events` field first.
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><text y='56' font-size='56'>🎨</text></svg>">
 ```
 
-> **⚠️ PERFORMANCE NOTE**: The full bundle is ~183KB JS + ~95KB CSS. For apps using
+> **⚠️ PERFORMANCE NOTE**: The full bundle is ~168KB JS + ~96KB CSS. For apps using
 > fewer than 10 components, use chunk imports (see Per-Component Imports below)
 > to reduce unused CSS and achieve Lighthouse Performance ≥90.
 
@@ -471,7 +471,7 @@ Use this `<head>` template for Lighthouse 100:
 
 ### Per-Component Imports (Reduce Bundle Size)
 
-The full bundle is ~183KB JS + ~95KB CSS. For smaller apps, import individual components:
+The full bundle is ~168KB JS + ~96KB CSS. For smaller apps, import individual components:
 
 ```javascript
 // Per-component (only loads what you use):
@@ -494,7 +494,7 @@ import 'agentui-wc/dist/chunks/advanced.js';// Datatable, virtual-list, router
 
 ### Modular CSS Loading (Reduce Unused CSS)
 
-The full `agentui.css` is ~95KB. While unused rules have zero runtime cost,
+The full `agentui.css` is ~96KB. While unused rules have zero runtime cost,
 the browser must parse the full file before first paint, which Lighthouse penalizes.
 For optimal Performance scores, load only the CSS you need:
 

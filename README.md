@@ -17,7 +17,7 @@
   <a href="https://www.npmjs.com/package/agentui-wc"><img src="https://img.shields.io/npm/v/agentui-wc?color=6750A4" alt="npm version"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue" alt="License"></a>
   <img src="https://img.shields.io/badge/dependencies-0-brightgreen" alt="Zero Dependencies">
-  <img src="https://img.shields.io/badge/60KB_gzipped-brightgreen" alt="Bundle Size">
+  <img src="https://img.shields.io/badge/61KB_gzipped-brightgreen" alt="Bundle Size">
   <img src="https://img.shields.io/badge/Material_Design_3-6750A4?logo=materialdesign&logoColor=white" alt="MD3">
   <a href="https://pagespeed.web.dev/analysis?url=https://giuseppescottolavina.github.io/AgentUI/demo/"><img src="https://img.shields.io/badge/Lighthouse-100%2F100%2F100%2F100-brightgreen" alt="Lighthouse"></a>
 </p>
@@ -26,7 +26,7 @@
   <a href="./SECURITY.md"><img src="https://img.shields.io/badge/XSS-Safe-2ea44f?logo=shieldsdotio&logoColor=white" alt="XSS Safe"></a>
   <img src="https://img.shields.io/badge/CSP-Compatible-2ea44f?logo=shieldsdotio&logoColor=white" alt="CSP Compatible">
   <img src="https://img.shields.io/badge/eval()-None-2ea44f" alt="No eval()">
-  <img src="https://img.shields.io/badge/tests-1670+-blue" alt="1670+ Tests">
+  <img src="https://img.shields.io/badge/tests-1826-blue" alt="1826 Tests">
 </p>
 
 ---
@@ -65,7 +65,7 @@ Whether this approach reduces errors compared to good static documentation + RAG
 
 No Virtual DOM. No runtime framework overhead. Just native Custom Elements doing native things.
 
-- **60KB total** — All 50 components, JS + CSS, gzipped. Smaller than most frameworks' "hello world".
+- **61KB total** — All 50 components, JS + CSS, gzipped. Smaller than most frameworks' "hello world".
 - **Lighthouse 100/100/100/100** — Performance, Accessibility, Best Practices, SEO. [Verify it yourself →](https://pagespeed.web.dev/analysis?url=https://giuseppescottolavina.github.io/AgentUI/demo/)
 - **DOM Speed** — 500 instantiations <8ms, 500 updates <3ms.
 - **Zero Config** — One `<script>` tag. No bundler, no build step, no npm required.
@@ -97,7 +97,7 @@ Every architecture involves trade-offs. Here's what AgentUI optimizes for and wh
 | Decision | AgentUI Approach | Trade-off |
 |---|---|---|
 | **Agent Discovery** | `.describe()` on every component — runtime API introspection | Requires metadata maintenance |
-| **Bundle Strategy** | All 50 components in 60KB gzipped | No tree-shaking — you load everything |
+| **Bundle Strategy** | All 50 components in 61KB gzipped | No tree-shaking — you load everything |
 | **XSS Protection** | Auto-escape `html` tagged template | Custom template syntax, not JSX |
 | **Dependencies** | Zero — nothing in `node_modules` | No ecosystem — you build what you need |
 | **DOM Model** | Light DOM (no Shadow DOM) | Full access, but no style encapsulation |
@@ -133,7 +133,7 @@ Every architecture involves trade-offs. Here's what AgentUI optimizes for and wh
 
 | Metric | Value |
 |--------|-------|
-| **Tests** | 1670+ (unit + E2E), 0 failures, 113 isolated test files |
+| **Tests** | 1826 (unit + E2E), 0 failures, 94 isolated test files |
 | **Security** | XSS-audited, CSP-compatible, no `eval()`, [full policy →](./SECURITY.md) |
 | **Memory** | Managed listeners (AbortController), zero leaks verified |
 | **DOM Speed** | 500 instantiations <8ms, 500 updates <3ms |
@@ -166,7 +166,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) to get started, or [open a discussion](
 
 ## Status
 
-AgentUI is an **experimental** library (v0.1.x) built by a single developer. The 50 components and agent API are functional and tested (1670+ tests), but this is a research project exploring runtime introspection for AI agents — not a production framework.
+AgentUI is an **experimental** library (v0.1.x) built by a single developer. The 50 components and agent API are functional and tested (1826 tests), but this is a research project exploring runtime introspection for AI agents — not a production framework.
 
 The core question being tested: **does runtime component introspection meaningfully reduce AI agent errors compared to static documentation?**
 

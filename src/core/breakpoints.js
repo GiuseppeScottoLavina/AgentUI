@@ -156,7 +156,7 @@ class BreakpointObserver {
      * @returns {boolean}
      */
     get isNotCompact() {
-        return this.#current !== 'compact';
+        return !this.isCompact;
     }
 
     /**

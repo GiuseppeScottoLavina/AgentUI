@@ -83,6 +83,15 @@ function shouldCompress(path) {
     return COMPRESSIBLE_TYPES.includes(ext);
 }
 
+// Security headers applied to ALL responses
+const SECURITY_HEADERS = {
+    'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'DENY',
+    'Referrer-Policy': 'strict-origin-when-cross-origin',
+    'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+    'Cross-Origin-Opener-Policy': 'same-origin',
+};
+
 function getPreloadLinks(path) {
     return PRELOAD_HINTS[path] || [];
 }
@@ -103,13 +112,21 @@ function startServer(initialPort) {
                     // ===== CACHE MANAGEMENT ENDPOINTS =====
 
                     // Clear cache endpoint - sends headers to invalidate browser cache
+                    // R8 Security: POST only to prevent CSRF via <img src="/-/clear-cache">
                     if (path === '/-/clear-cache') {
+                        if (req.method !== 'POST') {
+                            return new Response('Method Not Allowed', {
+                                status: 405,
+                                headers: { ...SECURITY_HEADERS, 'Allow': 'POST' },
+                            });
+                        }
                         return new Response(JSON.stringify({
                             status: 'ok',
                             message: 'Cache cleared. Reload the page with Ctrl+Shift+R',
                             timestamp: new Date().toISOString()
                         }), {
                             headers: {
+                                ...SECURITY_HEADERS,
                                 'Content-Type': 'application/json',
                                 'Cache-Control': 'no-store, no-cache, must-revalidate',
                                 'Clear-Site-Data': '"cache", "storage"',
@@ -120,7 +137,7 @@ function startServer(initialPort) {
                     // Health check
                     if (path === '/-/health') {
                         return new Response(JSON.stringify({ status: 'ok', port: server.port }), {
-                            headers: { 'Content-Type': 'application/json' },
+                            headers: { ...SECURITY_HEADERS, 'Content-Type': 'application/json' },
                         });
                     }
 
@@ -135,6 +152,7 @@ Sitemap: https://agentui.dev/sitemap.xml
 `;
                         return new Response(robotsTxt, {
                             headers: {
+                                ...SECURITY_HEADERS,
                                 'Content-Type': 'text/plain; charset=utf-8',
                                 'Cache-Control': 'public, max-age=86400',
                                 'X-Robots-Tag': 'all',
@@ -174,7 +192,7 @@ Sitemap: https://agentui.dev/sitemap.xml
                     const decodedPath = decodeURIComponent(path);
                     const filePath = new URL('.' + decodedPath, 'file://' + projectRoot + '/').pathname;
                     if (!filePath.startsWith(projectRoot)) {
-                        return new Response('Forbidden', { status: 403 });
+                        return new Response('Forbidden', { status: 403, headers: SECURITY_HEADERS });
                     }
                     const file = Bun.file(filePath);
 
@@ -186,9 +204,9 @@ Sitemap: https://agentui.dev/sitemap.xml
 
                         // Build headers
                         const headers = {
+                            ...SECURITY_HEADERS,
                             'Content-Type': contentType,
                             'Cache-Control': cacheControl,
-                            'X-Content-Type-Options': 'nosniff',
                             // Enable bf-cache
                             'Vary': 'Accept-Encoding',
                         };
@@ -238,7 +256,7 @@ Sitemap: https://agentui.dev/sitemap.xml
                         return new Response(file, { headers });
                     }
 
-                    return new Response('Not Found', { status: 404 });
+                    return new Response('Not Found', { status: 404, headers: SECURITY_HEADERS });
                 },
             });
 

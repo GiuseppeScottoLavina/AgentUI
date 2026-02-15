@@ -24,7 +24,7 @@
  */
 
 import { AuElement, define } from '../core/AuElement.js';
-import { html } from '../core/utils.js';
+import { html, safe } from '../core/utils.js';
 
 // ============================================
 // AU-PROMPT-INPUT
@@ -279,13 +279,13 @@ export class AuAgentToolbar extends AuElement {
 
         const buttons = this.actions
             .filter(a => actionButtons[a])
-            .map(a => `
+            .map(a => html`
                 <button class="au-agent-toolbar-btn" data-action="${a}" title="${actionButtons[a].label}">
-                    ${actionButtons[a].icon}
+                    ${safe(actionButtons[a].icon)}
                 </button>
-            `).join('');
+            `);
 
-        this.innerHTML = buttons;
+        this.innerHTML = html`${buttons}`;
     }
 
     /**

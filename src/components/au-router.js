@@ -110,9 +110,10 @@ class AuRouter extends AuElement {
                 const template = muPage.querySelector('template');
                 const content = template ? template.innerHTML : muPage.innerHTML;
 
-                // Cache and render
-                this.#pageCache.set(route, content);
-                container.innerHTML = content;
+                // Sanitize and cache
+                const sanitized = this._sanitizePageContent(content);
+                this.#pageCache.set(route, sanitized);
+                container.innerHTML = sanitized;
 
                 // Load dependencies
                 const deps = muPage.querySelector('script[type="x-dependencies"]');
@@ -143,11 +144,59 @@ class AuRouter extends AuElement {
         }
     }
 
+    /**
+     * Sanitize page HTML content before innerHTML injection.
+     * Strips dangerous elements and attributes to prevent XSS.
+     * @param {string} html - Raw HTML content from fetched page
+     * @returns {string} Sanitized HTML
+     */
+    _sanitizePageContent(htmlContent) {
+        // Use DOMParser for safe parsing (does NOT execute scripts)
+        let doc;
+        if (typeof DOMParser !== 'undefined') {
+            const parser = new DOMParser();
+            doc = parser.parseFromString(htmlContent, 'text/html');
+        } else {
+            // linkedom fallback for test environments
+            const container = document.createElement('div');
+            container.innerHTML = htmlContent;
+            doc = { body: container };
+        }
+
+        // Remove dangerous elements
+        const dangerousSelectors = 'script, iframe, object, embed, base, meta[http-equiv]';
+        doc.body.querySelectorAll(dangerousSelectors).forEach(el => el.remove());
+
+        // Remove dangerous attributes from all elements
+        const allElements = doc.body.querySelectorAll('*');
+        for (const el of allElements) {
+            const attrs = [...el.attributes];
+            for (const attr of attrs) {
+                // Remove all event handler attributes
+                if (attr.name.startsWith('on')) {
+                    el.removeAttribute(attr.name);
+                }
+                // Remove srcdoc (iframe XSS vector)
+                if (attr.name === 'srcdoc') {
+                    el.removeAttribute(attr.name);
+                }
+                // Block javascript: URIs in href/src/action/formaction
+                if (['href', 'src', 'action', 'formaction'].includes(attr.name)) {
+                    if (attr.value.trim().toLowerCase().startsWith('javascript:')) {
+                        el.removeAttribute(attr.name);
+                    }
+                }
+            }
+        }
+
+        return doc.body.innerHTML;
+    }
+
     async #loadDependencies(depsText) {
         const deps = depsText
             .split(/[\n,]/)
             .map(d => d.trim())
-            .filter(d => d && d.startsWith('au-'));
+            .filter(d => d && /^au-[a-z0-9-]+$/.test(d));  // R3: strict validation
 
         // Load each component
         for (const dep of deps) {

@@ -306,7 +306,7 @@ describe('au-toast Component', () => {
         expect(dismissStart).toBeGreaterThan(-1);
 
         // Extract a reasonable block from the method
-        const dismissBlock = source.slice(dismissStart, dismissStart + 500);
+        const dismissBlock = source.slice(dismissStart, dismissStart + 800);
 
         // Must use this.listen(this, 'animationend' — managed listener
         expect(dismissBlock).toContain("this.listen(this, 'animationend'");
