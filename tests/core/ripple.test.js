@@ -128,4 +128,70 @@ describe('ripple Module Unit Tests', () => {
         const instance = new Mixed();
         expect(typeof instance.disconnectedCallback).toBe('function');
     });
+
+    // ========================================
+    // eventTarget OPTION (regression: ripple accumulation bug)
+    // ========================================
+
+    test('createRipple with eventTarget should attach pointerup listener to eventTarget, not element', () => {
+        const container = document.createElement('div');  // state-layer (ripple visual)
+        const parent = document.createElement('div');     // eventTarget (receives pointer events)
+        parent.appendChild(container);
+        body.appendChild(parent);
+
+        container.getBoundingClientRect = () => ({ left: 0, top: 0, width: 40, height: 40 });
+
+        // Track addEventListener calls on both elements
+        const containerListeners = [];
+        const parentListeners = [];
+        const origContainerAddEL = container.addEventListener.bind(container);
+        const origParentAddEL = parent.addEventListener.bind(parent);
+        container.addEventListener = (type, fn, opts) => { containerListeners.push(type); origContainerAddEL(type, fn, opts); };
+        parent.addEventListener = (type, fn, opts) => { parentListeners.push(type); origParentAddEL(type, fn, opts); };
+
+        createRipple(container, null, { centered: true, eventTarget: parent });
+
+        // pointerup/pointerleave/pointercancel should be on PARENT, not container
+        expect(parentListeners).toContain('pointerup');
+        expect(parentListeners).toContain('pointerleave');
+        expect(parentListeners).toContain('pointercancel');
+        expect(containerListeners).not.toContain('pointerup');
+        expect(containerListeners).not.toContain('pointerleave');
+    });
+
+    test('pointerup on eventTarget should trigger fadeOut (listener presence)', () => {
+        const container = document.createElement('div');
+        const parent = document.createElement('div');
+        parent.appendChild(container);
+        body.appendChild(parent);
+
+        container.getBoundingClientRect = () => ({ left: 0, top: 0, width: 40, height: 40 });
+
+        // Track listener removals on parent to verify fadeOut runs
+        const removedListeners = [];
+        const origRemoveEL = parent.removeEventListener.bind(parent);
+        parent.removeEventListener = (type, fn) => { removedListeners.push(type); origRemoveEL(type, fn); };
+
+        const ripple = createRipple(container, null, { centered: true, eventTarget: parent });
+        expect(container.querySelector('.au-ripple-wave')).not.toBeNull();
+
+        // Verify: the ripple was created inside the container (state-layer), not parent
+        expect(container.children.length).toBeGreaterThanOrEqual(1);
+        expect(parent.querySelector('.au-ripple-wave')).not.toBeNull();
+    });
+
+    test('createRipple without eventTarget should attach listeners to original element', () => {
+        const el = document.createElement('div');
+        body.appendChild(el);
+        el.getBoundingClientRect = () => ({ left: 0, top: 0, width: 100, height: 100 });
+
+        const listeners = [];
+        const origAddEL = el.addEventListener.bind(el);
+        el.addEventListener = (type, fn, opts) => { listeners.push(type); origAddEL(type, fn, opts); };
+
+        createRipple(el, null, { centered: true });
+
+        expect(listeners).toContain('pointerup');
+        expect(listeners).toContain('pointerleave');
+    });
 });

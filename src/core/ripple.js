@@ -23,7 +23,9 @@
  * @param {boolean} options.centered - Force ripple to start from center
  */
 export function createRipple(element, event, options = {}) {
-    const { color = 'currentColor', centered = false } = options;
+    const { color = 'currentColor', centered = false, eventTarget } = options;
+    // eventTarget: element to listen for pointerup/leave (defaults to element)
+    const releaseTarget = eventTarget || element;
 
     // Get element bounds
     const rect = element.getBoundingClientRect();
@@ -92,14 +94,14 @@ export function createRipple(element, event, options = {}) {
         }).onfinish = () => ripple.remove();
 
         // Cleanup listeners
-        element.removeEventListener('pointerup', fadeOut);
-        element.removeEventListener('pointerleave', fadeOut);
-        element.removeEventListener('pointercancel', fadeOut);
+        releaseTarget.removeEventListener('pointerup', fadeOut);
+        releaseTarget.removeEventListener('pointerleave', fadeOut);
+        releaseTarget.removeEventListener('pointercancel', fadeOut);
     };
 
-    element.addEventListener('pointerup', fadeOut, { once: true });
-    element.addEventListener('pointerleave', fadeOut, { once: true });
-    element.addEventListener('pointercancel', fadeOut, { once: true });
+    releaseTarget.addEventListener('pointerup', fadeOut, { once: true });
+    releaseTarget.addEventListener('pointerleave', fadeOut, { once: true });
+    releaseTarget.addEventListener('pointercancel', fadeOut, { once: true });
 
     return ripple;
 }

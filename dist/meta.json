@@ -1082,7 +1082,7 @@
       "format": "esm"
     },
     "src/components/au-switch.js": {
-      "bytes": 6669,
+      "bytes": 6688,
       "imports": [
         {
           "path": "../core/AuElement.js",
@@ -1268,7 +1268,7 @@
       "format": "esm"
     },
     "src/components/au-checkbox.js": {
-      "bytes": 8717,
+      "bytes": 8736,
       "imports": [
         {
           "path": "../core/AuElement.js",
@@ -1348,7 +1348,7 @@
       "format": "esm"
     },
     "src/core/ripple.js": {
-      "bytes": 5686,
+      "bytes": 5865,
       "imports": [],
       "format": "esm"
     },
@@ -1382,7 +1382,7 @@
       "format": "esm"
     },
     "src/components/au-radio.js": {
-      "bytes": 8419,
+      "bytes": 8438,
       "imports": [
         {
           "path": "../core/AuElement.js",
@@ -1412,7 +1412,7 @@
   },
   "outputs": {
     "./agentui.esm.js": {
-      "bytes": 184381,
+      "bytes": 184453,
       "inputs": {
         "src/core/AuElement.js": {
           "bytesInOutput": 6405
@@ -1433,7 +1433,7 @@
           "bytesInOutput": 1005
         },
         "src/core/ripple.js": {
-          "bytesInOutput": 1829
+          "bytesInOutput": 1850
         },
         "src/core/agent-api.js": {
           "bytesInOutput": 11354
@@ -1511,13 +1511,13 @@
           "bytesInOutput": 4727
         },
         "src/components/au-checkbox.js": {
-          "bytesInOutput": 4178
+          "bytesInOutput": 4195
         },
         "src/components/au-switch.js": {
-          "bytesInOutput": 3378
+          "bytesInOutput": 3395
         },
         "src/components/au-radio.js": {
-          "bytesInOutput": 3940
+          "bytesInOutput": 3957
         },
         "src/components/au-chip.js": {
           "bytesInOutput": 2363

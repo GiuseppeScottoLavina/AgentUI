@@ -46,7 +46,7 @@ export class AuRadioGroup extends AuElement {
             }
             if (radio && !radio.hasAttribute('disabled')) {
                 const stateLayer = radio.querySelector('.au-radio__state-layer');
-                if (stateLayer) createRipple(stateLayer, e, { centered: true });
+                if (stateLayer) createRipple(stateLayer, e, { centered: true, eventTarget: this });
             }
         });
 

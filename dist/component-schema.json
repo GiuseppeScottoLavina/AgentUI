@@ -4,7 +4,7 @@
   "title": "AgentUI Component Schema",
   "description": "Machine-readable schema for AI agent component discovery",
   "version": "0.1.147",
-  "generatedAt": "2026-02-15T09:43:47.522Z",
+  "generatedAt": "2026-02-15T09:51:52.410Z",
   "componentCount": 50,
   "components": {
     "au-card": {

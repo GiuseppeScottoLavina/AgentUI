@@ -47,7 +47,7 @@ export class AuCheckbox extends AuElement {
         this.listen(this, 'pointerdown', (e) => {
             if (!this.isDisabled) {
                 const stateLayer = this.querySelector('.au-checkbox__state-layer');
-                if (stateLayer) createRipple(stateLayer, e, { centered: true });
+                if (stateLayer) createRipple(stateLayer, e, { centered: true, eventTarget: this });
             }
         });
         this.listen(this, 'click', () => {
