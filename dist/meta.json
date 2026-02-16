@@ -1,7 +1,7 @@
 {
   "inputs": {
     "src/index.js": {
-      "bytes": 13607,
+      "bytes": 13685,
       "imports": [
         {
           "path": "/Users/giuseppescottolavina/Documents/PERSONAL/AgentUI/src/core/AuElement.js",
@@ -294,6 +294,11 @@
           "original": "./components/au-lazy.js"
         },
         {
+          "path": "/Users/giuseppescottolavina/Documents/PERSONAL/AgentUI/src/components/au-if.js",
+          "kind": "import-statement",
+          "original": "./components/au-if.js"
+        },
+        {
           "path": "/Users/giuseppescottolavina/Documents/PERSONAL/AgentUI/src/components/au-repeat.js",
           "kind": "import-statement",
           "original": "./components/au-repeat.js"
@@ -507,6 +512,11 @@
           "path": "/Users/giuseppescottolavina/Documents/PERSONAL/AgentUI/src/components/au-lazy.js",
           "kind": "import-statement",
           "original": "./components/au-lazy.js"
+        },
+        {
+          "path": "/Users/giuseppescottolavina/Documents/PERSONAL/AgentUI/src/components/au-if.js",
+          "kind": "import-statement",
+          "original": "./components/au-if.js"
         },
         {
           "path": "/Users/giuseppescottolavina/Documents/PERSONAL/AgentUI/src/components/au-repeat.js",
@@ -795,6 +805,16 @@
         },
         {
           "path": "../core/utils.js",
+          "kind": "import-statement"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/components/au-if.js": {
+      "bytes": 6656,
+      "imports": [
+        {
+          "path": "../core/AuElement.js",
           "kind": "import-statement"
         }
       ],
@@ -1315,8 +1335,9 @@
           "kind": "import-statement"
         },
         {
-          "path": "../core/form-styles.js",
-          "kind": "import-statement"
+          "path": "/Users/giuseppescottolavina/Documents/PERSONAL/AgentUI/src/core/form-styles.js",
+          "kind": "import-statement",
+          "original": "../core/form-styles.js"
         }
       ],
       "format": "esm"
@@ -1438,9 +1459,8 @@
           "kind": "import-statement"
         },
         {
-          "path": "/Users/giuseppescottolavina/Documents/PERSONAL/AgentUI/src/core/form-styles.js",
-          "kind": "import-statement",
-          "original": "../core/form-styles.js"
+          "path": "../core/form-styles.js",
+          "kind": "import-statement"
         }
       ],
       "format": "esm"
@@ -1463,7 +1483,7 @@
   },
   "outputs": {
     "./agentui.esm.js": {
-      "bytes": 184148,
+      "bytes": 185323,
       "inputs": {
         "src/core/AuElement.js": {
           "bytesInOutput": 6405
@@ -1636,6 +1656,9 @@
         "src/components/au-lazy.js": {
           "bytesInOutput": 903
         },
+        "src/components/au-if.js": {
+          "bytesInOutput": 1164
+        },
         "src/components/au-repeat.js": {
           "bytesInOutput": 1256
         },
@@ -1777,6 +1800,7 @@
         "AuLazy",
         "AuLayout",
         "AuInput",
+        "AuIf",
         "AuIcon",
         "AuGrid",
         "AuForm",

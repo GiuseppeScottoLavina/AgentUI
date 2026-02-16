@@ -1744,7 +1744,7 @@ npx serve app-dist
 ```
 AgentUI/
 ├── src/                    # Framework source
-│   └── components/         # 50 components
+│   └── components/         # 51 components
 │
 ├── dist/                   # Framework build
 │   ├── agentui.esm.js      # Full bundle
@@ -1924,6 +1924,37 @@ export class AuUserCard extends AuElement {
 ## Data-Driven Components
 
 > **Components that render dynamic data from arrays/objects.**
+
+### au-if (Conditional Rendering)
+```html
+<au-if condition>
+  <p>Visible when condition is true</p>
+</au-if>
+
+<!-- With else template -->
+<au-if id="auth-guard" condition else="login-tpl">
+  <p>Welcome back!</p>
+</au-if>
+<template id="login-tpl">
+  <au-alert severity="info">Please log in.</au-alert>
+</template>
+
+<script type="module">
+// Programmatic control
+const guard = document.getElementById('auth-guard');
+guard.condition = isLoggedIn; // true = show children, false = show else template
+
+// Events
+guard.addEventListener('au-show', () => console.log('Content visible'));
+guard.addEventListener('au-hide', () => console.log('Content hidden'));
+</script>
+```
+
+**Key points:**
+- Children are **truly removed** from DOM (not `display: none`)
+- Same DOM nodes are restored on toggle (identity preserved)
+- `else` attribute references a `<template>` by ID (XSS-safe: `getElementById` only)
+- `display: contents` — zero layout impact
 
 ### au-repeat (Declarative Lists)
 ```html
@@ -2122,7 +2153,7 @@ export async function render(container) {
 
 ## 📦 Component Quick Reference
 
-> **All 50 AgentUI components at a glance.** Key attributes and copy-paste examples.
+> **All 51 AgentUI components at a glance.** Key attributes and copy-paste examples.
 
 ### Buttons & Actions
 
@@ -2206,6 +2237,7 @@ export async function render(container) {
 | `au-lazy` | `src` | `<au-lazy src="heavy-component.js"></au-lazy>` |
 | `au-fetch` | `url`, `method` | `<au-fetch url="/api/data"></au-fetch>` |
 | `au-repeat` | `items`, `template` | `<au-repeat items="...">...</au-repeat>` |
+| `au-if` | `condition`, `else` | `<au-if condition>Visible</au-if>` |
 | `au-virtual-list` | `items`, `item-height` | `<au-virtual-list items="..." item-height="50"></au-virtual-list>` |
 | `au-error-boundary` | `fallback` | `<au-error-boundary fallback="Error">...</au-error-boundary>` |
 

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="AgentUI - AI-First Web Components Library with 50 Material Design 3 components">
+    <meta name="description" content="AgentUI - AI-First Web Components Library with 51 Material Design 3 components">
     <title>AgentUI - Component Showcase</title>
 
     <!-- Security: Content Security Policy -->
@@ -76,10 +76,10 @@
         /* Material Symbols font removed - icons use inline SVG now */
     </style>
     <!-- Preload + async CSS: 12KB loads instantly from preload, media trick prevents render-blocking -->
-    <link rel="preload" as="style" href="../dist/agentui.css?v=0.1.209">
-    <link rel="stylesheet" href="../dist/agentui.css?v=0.1.209" media="print" onload="this.media='all'">
+    <link rel="preload" as="style" href="../dist/agentui.css?v=0.1.210">
+    <link rel="stylesheet" href="../dist/agentui.css?v=0.1.210" media="print" onload="this.media='all'">
     <noscript>
-        <link rel="stylesheet" href="../dist/agentui.css?v=0.1.209">
+        <link rel="stylesheet" href="../dist/agentui.css?v=0.1.210">
     </noscript>
     <style>
         /* Size-adjusted Arial fallback to match Roboto metrics (from Capsize) */
@@ -444,6 +444,8 @@
                 label="Code Block"></au-drawer-item>
             <au-drawer-item icon="view_carousel" href="#virtual-lists" data-page="virtual-lists"
                 label="Virtual List"></au-drawer-item>
+            <au-drawer-item icon="alt_route" href="#structural" data-page="structural"
+                label="Structural"></au-drawer-item>
 
             <!-- Advanced -->
             <au-drawer-item icon="business" href="#enterprise" data-page="enterprise" label="Advanced"></au-drawer-item>
@@ -489,6 +491,7 @@
         <div id="datatables" tabindex="-1" aria-hidden="true"></div>
         <div id="codeblocks" tabindex="-1" aria-hidden="true"></div>
         <div id="virtual-lists" tabindex="-1" aria-hidden="true"></div>
+        <div id="structural" tabindex="-1" aria-hidden="true"></div>
         <div id="enterprise" tabindex="-1" aria-hidden="true"></div>
         <main id="content-area" class="app-main">
             <!-- LCP image kept inline (preloaded in <head>), text loaded async from content/home.html -->
@@ -508,7 +511,7 @@
 
         <!-- Footer -->
         <footer slot="footer" class="app-footer">
-            <p>AgentUI <span id="app-version" style="opacity: 0.5; font-size: 0.75rem;">v0.1.209</span> • Apache-2.0 •
+            <p>AgentUI <span id="app-version" style="opacity: 0.5; font-size: 0.75rem;">v0.1.210</span> • Apache-2.0 •
                 Made with ❤️</p>
         </footer>
     </au-layout>
@@ -527,7 +530,7 @@
             if (loadedRoutes.has(name)) return;
             loadedRoutes.add(name);
             const start = performance.now();
-            await import('../dist/routes/' + name + '.js?v=0.1.209');
+            await import('../dist/routes/' + name + '.js?v=0.1.210');
             console.log('[Shell] Route ' + name + '.js loaded in ' + (performance.now() - start).toFixed(0) + 'ms');
         }
 

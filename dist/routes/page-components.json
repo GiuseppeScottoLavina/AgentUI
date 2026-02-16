@@ -271,6 +271,24 @@
     "au-error-boundary",
     "au-alert"
   ],
+  "structural": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-stack",
+    "au-button",
+    "au-if",
+    "au-alert",
+    "au-switch",
+    "au-card",
+    "au-avatar",
+    "au-icon",
+    "au-divider",
+    "au-input",
+    "au-repeat",
+    "au-api-table",
+    "au-api-row"
+  ],
   "codeblocks": [
     "au-tabs",
     "au-tab",

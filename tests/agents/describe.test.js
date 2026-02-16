@@ -95,10 +95,10 @@ describe('Component describe() Method', () => {
             expect(desc.description).toBeDefined(); // Full metadata after catalog
         });
 
-        test('All 55 catalog entries (50 components + 5 sub-components)', () => {
+        test('All 56 catalog entries (51 components + 5 sub-components)', () => {
             const { catalog } = require('../../src/core/describe-catalog.js');
             const tags = Object.keys(catalog);
-            expect(tags.length).toBe(55);
+            expect(tags.length).toBe(56);
         });
 
         // v0.1.73: Event detail format consistency

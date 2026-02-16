@@ -5,6 +5,7 @@
 
 export { AuVirtualList } from '../components/au-virtual-list.js';
 export { AuLazy } from '../components/au-lazy.js';
+export { AuIf } from '../components/au-if.js';
 export { AuRepeat } from '../components/au-repeat.js';
 
 // Documentation components (dev only)
@@ -20,6 +21,7 @@ export { http, HttpError } from '../core/http.js';
 // Auto-register
 import '../components/au-virtual-list.js';
 import '../components/au-lazy.js';
+import '../components/au-if.js';
 import '../components/au-repeat.js';
 import '../components/au-code.js';
 import '../components/au-api-table.js';

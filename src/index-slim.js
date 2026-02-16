@@ -157,6 +157,7 @@ export { AuSplash } from './components/au-splash.js';
 // ============================================
 export { AuVirtualList } from './components/au-virtual-list.js';
 export { AuLazy } from './components/au-lazy.js';
+export { AuIf } from './components/au-if.js';
 export { AuRepeat } from './components/au-repeat.js';
 export { AuFetch } from './components/au-fetch.js';
 

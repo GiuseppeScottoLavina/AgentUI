@@ -170,6 +170,7 @@ export { AuSplash } from './components/au-splash.js';
 // ============================================
 export { AuVirtualList } from './components/au-virtual-list.js';
 export { AuLazy } from './components/au-lazy.js';
+export { AuIf } from './components/au-if.js';
 export { AuRepeat } from './components/au-repeat.js';
 export { AuFetch } from './components/au-fetch.js';
 
@@ -223,6 +224,7 @@ import './components/au-avatar.js';
 import './components/au-skeleton.js';
 import './components/au-virtual-list.js';
 import './components/au-lazy.js';
+import './components/au-if.js';
 import './components/au-repeat.js';
 import './components/au-confirm.js';
 import './components/au-fetch.js';

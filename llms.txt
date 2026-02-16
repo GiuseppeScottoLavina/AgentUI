@@ -1,6 +1,6 @@
 # AgentUI — AI-First Web Components Framework
 # https://github.com/GiuseppeScottoLavina/AgentUI
-# 50 MD3 Components • Light DOM • Zero Build • Zero Dependencies
+# 51 MD3 Components • Light DOM • Zero Build • Zero Dependencies
 
 > AGENT: This file is your primary reference. For full API docs see AGENTS.md
 > For build recipes and templates, see SKILL.md
@@ -129,7 +129,7 @@ element.innerHTML = `<h2>${userInput}</h2>`; // XSS RISK!
 
 ---
 
-## ALL 50 COMPONENTS — QUICK REFERENCE
+## ALL 51 COMPONENTS — QUICK REFERENCE
 
 ### Layout & Structure
 | Component | Purpose | Key Props |
@@ -200,6 +200,7 @@ element.innerHTML = `<h2>${userInput}</h2>`; // XSS RISK!
 | `au-fetch` | Declarative data fetching | url, method, auto, interval |
 | `au-lazy` | Lazy-load wrapper | root-margin, threshold |
 | `au-repeat` | Template repeater | — (use setItems()) |
+| `au-if` | Conditional rendering | condition, else |
 | `au-error-boundary` | Error catch wrapper | fallback |
 | `au-theme-toggle` | Dark/light mode toggle | — |
 | `au-prompt-ui` | AI chat prompt input | — |

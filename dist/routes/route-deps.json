@@ -132,6 +132,17 @@
     "layout",
     "tabs"
   ],
+  "structural": [
+    "alerts",
+    "avatars",
+    "buttons",
+    "cards",
+    "icons",
+    "inputs",
+    "layout",
+    "switches",
+    "tabs"
+  ],
   "codeblocks": [
     "layout",
     "tabs"

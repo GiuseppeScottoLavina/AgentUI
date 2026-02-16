@@ -407,6 +407,7 @@ const pageRoutes = {
     datatables: ['au-datatable', 'au-stack', 'au-tabs', 'au-example', 'au-code', 'au-api-table'],
     codeblocks: ['au-code', 'au-stack', 'au-tabs', 'au-example', 'au-api-table'],
     'virtual-lists': ['au-virtual-list', 'au-stack', 'au-tabs', 'au-example', 'au-code', 'au-api-table', 'au-alert', 'au-icon', 'au-card', 'au-avatar'],
+    structural: ['au-if', 'au-repeat', 'au-stack', 'au-tabs', 'au-example', 'au-code', 'au-api-table', 'au-alert', 'au-icon', 'au-card', 'au-button', 'au-switch', 'au-input', 'au-avatar', 'au-divider', 'au-checkbox'],
     enterprise: ['au-router', 'au-page', 'au-error-boundary', 'au-fetch', 'au-lazy', 'au-stack', 'au-tabs', 'au-example', 'au-code', 'au-api-table']
 };
 

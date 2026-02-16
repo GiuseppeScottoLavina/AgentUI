@@ -1,2 +1,2 @@
 function n(e,t){e.style.display="inline-flex",e.style.alignItems="center",e.style.gap="12px",e.style.cursor=t?"not-allowed":"pointer",e.style.userSelect="none",e.style.minHeight="48px",e.style.padding="0 4px"}function s(e){e.style.cssText=`width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; flex-shrink: 0;`}function i(e,t){e.style.cursor=t?"not-allowed":"pointer"}
-export{n as h,s as i,i as j};
+export{n as i,s as j,i as k};

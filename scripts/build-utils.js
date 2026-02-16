@@ -87,6 +87,8 @@ export function componentsToRoutes(components) {
         'au-drawer-item': 'shell-critical',
         'au-theme-toggle': 'shell-deferred',
         'au-bottom-nav': 'shell-deferred',
+        'au-if': 'structural',
+        'au-repeat': 'structural',
     };
 
     const routes = new Set();

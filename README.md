@@ -5,7 +5,7 @@
 <h1 align="center">AgentUI</h1>
 
 <p align="center">
-  <strong>50 standards-based web components with built-in agent introspection.</strong>
+  <strong>51 production-ready web components. Zero dependencies. One script tag.</strong>
 </p>
 
 <p align="center">
@@ -26,58 +26,52 @@
   <a href="./SECURITY.md"><img src="https://img.shields.io/badge/XSS-Safe-2ea44f?logo=shieldsdotio&logoColor=white" alt="XSS Safe"></a>
   <img src="https://img.shields.io/badge/CSP-Compatible-2ea44f?logo=shieldsdotio&logoColor=white" alt="CSP Compatible">
   <img src="https://img.shields.io/badge/eval()-None-2ea44f" alt="No eval()">
-  <img src="https://img.shields.io/badge/tests-1921-blue" alt="1921 Tests">
+  <img src="https://img.shields.io/badge/tests-1949-blue" alt="1949 Tests">
 </p>
 
 ---
 
-```javascript
-// Any agent can ask any component what it is and how to use it
-customElements.get('au-button').describe()
-// → { props: { variant: ['filled','outlined','text'], disabled: 'boolean' },
-//     events: ['click'],
-//     examples: ['<au-button variant="filled">Save</au-button>'] }
-
-// Or discover the entire framework at once
-const components = await AgentUI.discoverAll()
-// → 50 components, fully described, at runtime
+```html
+<au-card variant="elevated">
+  <h2>Hello AgentUI!</h2>
+  <au-button variant="filled">Get Started</au-button>
+</au-card>
 ```
 
-**The UI describes itself — agents query the DOM instead of guessing the API.**
+**Standard HTML. No framework. No build step.**
 
 ---
 
-## 🤖 Self-Describing Components
+## What's Included
 
-Every AgentUI component exposes a `.describe()` method that returns its props, events, slots, and working examples as structured data at runtime.
+51 components covering everything you need:
 
-This is an experiment in **runtime introspection**: instead of relying on external documentation or training data, an Agent can query the live DOM to discover what's available and how to use it.
-
-Whether this approach reduces errors compared to good static documentation + RAG is an open question — and the reason this project exists.
-
-<p align="center">
-  <a href="./PHILOSOPHY.md"><strong>📖 Read the full Philosophy →</strong></a>
-</p>
+| Category | Components |
+|----------|------------|
+| **Layout** | `au-stack`, `au-grid`, `au-container`, `au-layout`, `au-page`, `au-navbar`, `au-sidebar`, `au-drawer`, `au-bottom-nav`, `au-divider` |
+| **Form** | `au-button`, `au-input`, `au-textarea`, `au-form`, `au-dropdown`, `au-checkbox`, `au-switch`, `au-radio`, `au-chip`, `au-prompt-input` |
+| **Display** | `au-card`, `au-tabs`, `au-alert`, `au-badge`, `au-callout`, `au-progress`, `au-table`, `au-datatable`, `au-avatar`, `au-skeleton`, `au-code`, `au-message-bubble` |
+| **Feedback** | `au-spinner`, `au-modal`, `au-confirm`, `au-toast`, `au-tooltip`, `au-error-boundary`, `au-splash` |
+| **Structural** | `au-if`, `au-repeat`, `au-lazy`, `au-virtual-list`, `au-fetch`, `au-router` |
+| **Utility** | `au-icon`, `au-theme-toggle`, `au-schema-form` |
 
 ---
 
 ## ⚡ Performance by Default
 
-No Virtual DOM. No runtime framework overhead. Just native Custom Elements doing native things.
+No Virtual DOM. No runtime framework overhead. Just native Custom Elements.
 
-- **61KB total** — All 50 components, JS + CSS, gzipped. Smaller than most frameworks' "hello world".
-- **Lighthouse 100/100/100/100** — Performance, Accessibility, Best Practices, SEO. [Verify it yourself →](https://pagespeed.web.dev/analysis?url=https://giuseppescottolavina.github.io/AgentUI/demo/)
+- **61KB total** — All 51 components, JS + CSS, gzipped. Smaller than most frameworks' "hello world".
+- **Lighthouse 100/100/100/100** — [Verify it yourself →](https://pagespeed.web.dev/analysis?url=https://giuseppescottolavina.github.io/AgentUI/demo/)
 - **DOM Speed** — 500 instantiations <8ms, 500 updates <3ms.
 - **Zero Config** — One `<script>` tag. No bundler, no build step, no npm required.
-- **`au-ready` Event** — Framework fires `au-ready` when all 50 components are registered. No `setTimeout` hacks.
 
 ## 🔒 Secure by Default
 
 Security isn't an add-on — it's baked into every component from day one.
 
 - **XSS-safe `html` template** — All interpolated values are auto-escaped. [Details →](./SECURITY.md)
-- **20 components** with explicit `escapeHTML()` protection on user-facing content.
-- **CSP-compatible** — No `eval()`, no `Function()`, no `document.write`. Works with strict Content Security Policy.
+- **CSP-compatible** — No `eval()`, no `Function()`, no `document.write`.
 - **Zero dependencies** — Nothing in `node_modules`. No supply chain risk.
 
 ## 🏛️ Built on Standards
@@ -92,15 +86,12 @@ Built on W3C Web Components — native browser APIs with zero abstraction tax.
 
 ## Design Choices
 
-Every architecture involves trade-offs. Here's what AgentUI optimizes for and what it costs:
-
 | Decision | AgentUI Approach | Trade-off |
 |---|---|---|
-| **Agent Discovery** | `.describe()` on every component — runtime API introspection | Requires metadata maintenance |
-| **Bundle Strategy** | All 50 components in 61KB gzipped | No tree-shaking — you load everything |
-| **XSS Protection** | Auto-escape `html` tagged template | Custom template syntax, not JSX |
-| **Dependencies** | Zero — nothing in `node_modules` | No ecosystem — you build what you need |
-| **DOM Model** | Light DOM (no Shadow DOM) | Full access, but no style encapsulation |
+| **Bundle** | All 51 components in 61KB gzipped | No tree-shaking — you load everything |
+| **XSS** | Auto-escape `html` tagged template | Custom template syntax, not JSX |
+| **Dependencies** | Zero | No ecosystem — you build what you need |
+| **DOM** | Light DOM (no Shadow DOM) | Full access, but no style encapsulation |
 | **Standard** | W3C Web Components | Newer ecosystem, smaller community |
 
 ---
@@ -133,12 +124,11 @@ Every architecture involves trade-offs. Here's what AgentUI optimizes for and wh
 
 | Metric | Value |
 |--------|-------|
-| **Tests** | 1921 (unit + E2E), 0 failures, 102 isolated test files |
+| **Tests** | 1949 (unit + E2E), 0 failures, 103 isolated test files |
 | **Security** | XSS-audited, CSP-compatible, no `eval()`, [full policy →](./SECURITY.md) |
 | **Memory** | Managed listeners (AbortController), zero leaks verified |
 | **DOM Speed** | 500 instantiations <8ms, 500 updates <3ms |
 | **Stability** | W3C Web Components — no framework version churn |
-| **Agent Docs** | [AGENTS.md](./AGENTS.md) (concepts), [SKILL.md](./SKILL.md) (recipes), [AGENTS_DEV.md](./AGENTS_DEV.md) (extending), [llms.txt](./llms.txt), [component-schema.json](./component-schema.json) |
 
 ---
 
@@ -166,9 +156,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) to get started, or [open a discussion](
 
 ## Status
 
-AgentUI is an **experimental** library (v0.1.x) built by a single developer. The 50 components and agent API are functional and tested (1921 tests), but this is a research project exploring runtime introspection for AI agents — not a production framework.
-
-The core question being tested: **does runtime component introspection meaningfully reduce AI agent errors compared to static documentation?**
+AgentUI is an **experimental** library (v0.1.x) — 51 components, 1949 tests, built by a single developer. Functional and tested, but still a work in progress.
 
 Feedback, criticism, and stress-testing are welcome — [open a discussion](https://github.com/GiuseppeScottoLavina/AgentUI/discussions).
 

@@ -977,6 +977,35 @@ export const catalog = {
             "Use describe().bundledIcons to see which icons work offline"
         ]
     },
+    "au-if": {
+        "name": "au-if",
+        "description": "Structural conditional directive — renders children only when condition is true. Children are truly removed from the DOM (not just hidden) and restored as the same nodes on toggle.",
+        "props": {
+            "condition": {
+                "type": "boolean",
+                "default": false,
+                "description": "When present, children are rendered. When absent, children are removed from DOM."
+            },
+            "else": {
+                "type": "string",
+                "description": "ID of a <template> element to render when condition is false"
+            }
+        },
+        "events": {
+            "au-show": { "detail": {} },
+            "au-hide": { "detail": {} }
+        },
+        "examples": [
+            "<au-if condition>\n  <p>This is visible</p>\n</au-if>",
+            "<au-if id=\"auth\" else=\"login-tpl\">\n  <p>Welcome back!</p>\n</au-if>\n<template id=\"login-tpl\">\n  <au-button>Login</au-button>\n</template>"
+        ],
+        "tips": [
+            "Children are truly removed from DOM when false — not just hidden",
+            "Use .condition property for JS control: el.condition = isLoggedIn",
+            "Original DOM nodes are preserved (not recreated) on toggle — event listeners survive",
+            "For show/hide without DOM removal, use CSS hidden attribute instead"
+        ]
+    },
     "au-input": {
         "name": "au-input",
         "description": "Material Design 3 text field with floating label",

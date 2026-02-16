@@ -302,6 +302,7 @@ export declare class AuThemeToggle extends AuElement { }
 export declare class AuIcon extends AuElement { }
 export declare class AuFetch extends AuElement { }
 export declare class AuLazy extends AuElement { load(): void; }
+export declare class AuIf extends AuElement { condition: boolean; }
 export declare class AuRepeat extends AuElement { items: any[]; keyFn: (item: any, index: number) => any; renderItem: (item: any, index: number) => string; refresh(): void; }
 export declare class AuVirtualList extends AuElement { items: any[]; renderItem: (item: any, index: number) => string; scrollToIndex(index: number): void; }
 export declare class AuRouter extends AuElement { }

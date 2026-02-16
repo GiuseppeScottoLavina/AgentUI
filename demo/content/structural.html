@@ -1,0 +1,373 @@
+<div class="page active">
+    <h1 class="page-title">Structural Directives</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-if&gt;</code> and <code>&lt;au-repeat&gt;</code> control <strong>what</strong> renders in the DOM —
+        conditional rendering and list iteration, similar to Angular's <code>*ngIf</code> / <code>*ngFor</code>.
+    </p>
+
+    <au-tabs active="0" id="structural-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <!-- ===== OVERVIEW ===== -->
+    <div id="structural-overview" class="doc-tab-content">
+
+        <!-- au-if -->
+        <div class="component-section">
+            <h2 class="section-title">au-if — Conditional Rendering</h2>
+            <p style="color: var(--md-sys-color-on-surface-variant); line-height: 1.6; margin-bottom: 16px;">
+                Conditionally renders its children. When the <code>condition</code> attribute is removed,
+                children are <strong>truly removed from the DOM</strong> (not just hidden).
+                When condition returns, the <em>same DOM nodes</em> are restored (identity preserved).
+            </p>
+        </div>
+
+        <au-example title="Basic au-if toggle">
+            <div slot="demo">
+                <au-stack gap="md">
+                    <au-button id="if-toggle-btn" variant="filled">Toggle Condition</au-button>
+                    <au-if id="demo-if" condition>
+                        <au-alert severity="success">✅ I'm visible because <code>condition</code> is present!</au-alert>
+                    </au-if>
+                </au-stack>
+            </div>
+            <div slot="code">&lt;au-if condition&gt;
+                &lt;au-alert severity="success"&gt;Visible!&lt;/au-alert&gt;
+                &lt;/au-if&gt;
+
+                &lt;script&gt;
+                const el = document.querySelector('au-if');
+                el.condition = false; // removes children from DOM
+                el.condition = true; // same nodes restored
+                &lt;/script&gt;</div>
+        </au-example>
+
+        <au-example title="au-if with else template">
+            <div slot="demo">
+                <au-stack gap="md">
+                    <au-stack direction="row" gap="sm" align="center">
+                        <au-switch id="auth-switch" label="Logged in"></au-switch>
+                    </au-stack>
+                    <au-if id="demo-if-else" else="guest-tpl">
+                        <au-card variant="elevated">
+                            <au-stack direction="row" gap="md" align="center">
+                                <au-avatar initials="GS" size="md"></au-avatar>
+                                <div>
+                                    <strong>Welcome back, Giuseppe!</strong>
+                                    <div style="font-size: 13px; opacity: 0.7;">Admin • Last login: today</div>
+                                </div>
+                            </au-stack>
+                        </au-card>
+                    </au-if>
+                    <template id="guest-tpl">
+                        <au-alert severity="info">
+                            <au-stack direction="row" gap="sm" align="center">
+                                <au-icon name="login"></au-icon>
+                                <span>Please log in to continue.</span>
+                            </au-stack>
+                        </au-alert>
+                    </template>
+                </au-stack>
+            </div>
+            <div slot="code">&lt;au-if condition else="guest-tpl"&gt;
+                &lt;p&gt;Welcome back!&lt;/p&gt;
+                &lt;/au-if&gt;
+                &lt;template id="guest-tpl"&gt;
+                &lt;au-alert severity="info"&gt;Please log in.&lt;/au-alert&gt;
+                &lt;/template&gt;</div>
+        </au-example>
+
+        <au-divider></au-divider>
+
+        <!-- au-repeat -->
+        <div class="component-section" style="margin-top: 24px;">
+            <h2 class="section-title">au-repeat — List Rendering</h2>
+            <p style="color: var(--md-sys-color-on-surface-variant); line-height: 1.6; margin-bottom: 16px;">
+                Renders arrays efficiently with <strong>keyed reconciliation</strong>.
+                Only changed items update — like React/Vue keyed lists.
+                Uses <code>display: contents</code> for zero layout impact.
+            </p>
+        </div>
+
+        <au-example title="Dynamic list with au-repeat">
+            <div slot="demo">
+                <au-stack gap="md">
+                    <au-stack direction="row" gap="sm" align="center">
+                        <au-input id="repeat-input" label="Add item" style="flex: 1;"></au-input>
+                        <au-button id="repeat-add-btn" variant="filled">Add</au-button>
+                    </au-stack>
+                    <au-repeat id="demo-repeat"></au-repeat>
+                    <div id="repeat-empty" style="text-align: center; padding: 24px; opacity: 0.5; font-style: italic;">
+                        No items yet — add one above!
+                    </div>
+                </au-stack>
+            </div>
+            <div slot="code">const list = document.querySelector('au-repeat');
+
+                list.keyFn = (item) => item.id;
+                list.renderItem = (item) => `
+                &lt;au-card variant="outlined"&gt;
+                &lt;au-stack direction="row" gap="md" align="center"&gt;
+                &lt;span&gt;${item.name}&lt;/span&gt;
+                &lt;au-button variant="text" data-id="${item.id}"&gt;
+                &lt;au-icon name="delete"&gt;&lt;/au-icon&gt;
+                &lt;/au-button&gt;
+                &lt;/au-stack&gt;
+                &lt;/au-card&gt;
+                `;
+
+                list.items = [
+                { id: 1, name: 'First item' },
+                { id: 2, name: 'Second item' }
+                ];</div>
+        </au-example>
+    </div>
+
+    <!-- ===== API ===== -->
+    <div id="structural-api" class="doc-tab-content" style="display: none;">
+
+        <!-- au-if API -->
+        <div class="component-section">
+            <h2 class="section-title">au-if API</h2>
+        </div>
+
+        <div class="component-section">
+            <h3 class="section-title">Attributes</h3>
+            <au-api-table type="attributes">
+                <au-api-row name="condition" type="boolean" default="absent">
+                    When present, children are rendered. When removed, children are moved to a
+                    DocumentFragment (true DOM removal). Presence = true.
+                </au-api-row>
+                <au-api-row name="else" type="string" default="—">
+                    ID of a <code>&lt;template&gt;</code> element to render when condition is false.
+                    Safe: uses <code>getElementById</code> only — no innerHTML injection.
+                </au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h3 class="section-title">Properties</h3>
+            <au-api-table type="properties">
+                <au-api-row name="condition" type="boolean" default="false">
+                    Get/set condition programmatically. Reflects the <code>condition</code> attribute.
+                </au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h3 class="section-title">Events</h3>
+            <au-api-table type="events">
+                <au-api-row name="au-show" type="CustomEvent">
+                    Fired when condition becomes true and children are restored to DOM.
+                </au-api-row>
+                <au-api-row name="au-hide" type="CustomEvent">
+                    Fired when condition becomes false and children are removed from DOM.
+                </au-api-row>
+            </au-api-table>
+        </div>
+
+        <au-divider></au-divider>
+
+        <!-- au-repeat API -->
+        <div class="component-section" style="margin-top: 24px;">
+            <h2 class="section-title">au-repeat API</h2>
+        </div>
+
+        <div class="component-section">
+            <h3 class="section-title">Properties</h3>
+            <au-api-table type="properties">
+                <au-api-row name="items" type="Array" default="[]">
+                    The array of data items. Setting this triggers efficient reconciliation.
+                </au-api-row>
+                <au-api-row name="keyFn" type="Function" default="(item, i) => i">
+                    Key extraction function for reconciliation. Use unique IDs for best performance.
+                </au-api-row>
+                <au-api-row name="renderItem" type="Function" default="JSON.stringify">
+                    Render function: <code>(item, index) => htmlString</code>. Use <code>html``</code> tagged template
+                    for XSS safety.
+                </au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h3 class="section-title">Methods</h3>
+            <au-api-table type="methods">
+                <au-api-row name="getElement(key)" type="Element|undefined">
+                    Returns the DOM element for a given key.
+                </au-api-row>
+                <au-api-row name="refresh()" type="void">
+                    Forces a full re-render, clearing all cached DOM nodes.
+                </au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <!-- ===== EXAMPLES ===== -->
+    <div id="structural-examples" class="doc-tab-content" style="display: none;">
+
+        <au-example title="Auth guard pattern (au-if)">
+            <div slot="demo">
+                <au-alert severity="info">See the code — common pattern for gating UI behind authentication.</au-alert>
+            </div>
+            <div slot="code">// Auth guard: show different UI based on login state
+                const guard = document.querySelector('au-if#auth-guard');
+
+                bus.on('auth:change', ({ authenticated }) => {
+                guard.condition = authenticated;
+                });
+
+                // HTML:
+                // &lt;au-if id="auth-guard" else="login-form-tpl"&gt;
+                // &lt;!-- Protected content --&gt;
+                // &lt;/au-if&gt;
+                // &lt;template id="login-form-tpl"&gt;
+                // &lt;au-schema-form ...&gt;&lt;/au-schema-form&gt;
+                // &lt;/template&gt;</div>
+        </au-example>
+
+        <au-example title="Task list with au-repeat + createStore">
+            <div slot="demo">
+                <au-alert severity="info">See the code — reactive task list using store + repeat.</au-alert>
+            </div>
+            <div slot="code">import { createStore } from 'agentui-wc';
+
+                const store = createStore(
+                { tasks: [] },
+                { persist: 'my-tasks' }
+                );
+
+                const list = document.querySelector('au-repeat');
+                list.keyFn = (task) => task.id;
+                list.renderItem = (task) => `
+                &lt;au-card variant="outlined"&gt;
+                &lt;au-checkbox ${task.done ? 'checked' : ''}
+                label="${task.title}"
+                data-id="${task.id}"&gt;
+                &lt;/au-checkbox&gt;
+                &lt;/au-card&gt;
+                `;
+
+                // Reactive: store changes -> list updates
+                store.subscribe('tasks', (tasks) => {
+                list.items = tasks;
+                });</div>
+        </au-example>
+
+        <au-example title="Nested au-if + au-repeat">
+            <div slot="demo">
+                <au-alert severity="info">See the code — combining structural directives.</au-alert>
+            </div>
+            <div slot="code">&lt;!-- Show list only when data is loaded --&gt;
+                &lt;au-if id="data-guard" else="loading-tpl"&gt;
+                &lt;au-repeat id="user-list"&gt;&lt;/au-repeat&gt;
+                &lt;/au-if&gt;
+
+                &lt;template id="loading-tpl"&gt;
+                &lt;au-skeleton variant="text" lines="5"&gt;&lt;/au-skeleton&gt;
+                &lt;/template&gt;
+
+                &lt;script type="module"&gt;
+                const guard = document.querySelector('#data-guard');
+                const list = document.querySelector('#user-list');
+
+                // Initially hidden (loading)
+                guard.condition = false;
+
+                // Fetch data
+                const users = await fetch('/api/users').then(r => r.json());
+
+                // Configure list
+                list.keyFn = (u) => u.id;
+                list.renderItem = (u) => `
+                &lt;au-card variant="outlined"&gt;${u.name}&lt;/au-card&gt;
+                `;
+                list.items = users;
+
+                // Show content
+                guard.condition = true;
+                &lt;/script&gt;</div>
+        </au-example>
+    </div>
+</div>
+
+<script>
+    // === au-if toggle demo ===
+    const toggleBtn = document.getElementById('if-toggle-btn');
+    const demoIf = document.getElementById('demo-if');
+    if (toggleBtn && demoIf) {
+        toggleBtn.addEventListener('click', () => {
+            demoIf.condition = !demoIf.condition;
+            toggleBtn.textContent = demoIf.condition ? 'Hide Content' : 'Show Content';
+        });
+    }
+
+    // === au-if else demo ===
+    const authSwitch = document.getElementById('auth-switch');
+    const demoIfElse = document.getElementById('demo-if-else');
+    if (authSwitch && demoIfElse) {
+        authSwitch.addEventListener('au-change', (e) => {
+            demoIfElse.condition = e.detail.checked;
+        });
+    }
+
+    // === au-repeat demo ===
+    const repeatInput = document.getElementById('repeat-input');
+    const repeatAddBtn = document.getElementById('repeat-add-btn');
+    const demoRepeat = document.getElementById('demo-repeat');
+    const repeatEmpty = document.getElementById('repeat-empty');
+
+    if (demoRepeat && repeatAddBtn) {
+        let nextId = 1;
+        let items = [];
+
+        demoRepeat.keyFn = (item) => item.id;
+        demoRepeat.renderItem = (item) => `
+            <au-card variant="outlined" style="margin-bottom: 8px;">
+                <au-stack direction="row" gap="md" align="center" justify="space-between">
+                    <au-stack direction="row" gap="sm" align="center">
+                        <au-icon name="fiber_manual_record" style="font-size: 8px; color: var(--md-sys-color-primary);"></au-icon>
+                        <span>${item.name}</span>
+                    </au-stack>
+                    <au-button variant="text" size="sm" data-delete-id="${item.id}">
+                        <au-icon name="delete"></au-icon>
+                    </au-button>
+                </au-stack>
+            </au-card>
+        `;
+
+        function updateList() {
+            demoRepeat.items = [...items];
+            if (repeatEmpty) {
+                repeatEmpty.style.display = items.length === 0 ? 'block' : 'none';
+            }
+        }
+
+        repeatAddBtn.addEventListener('click', () => {
+            const name = repeatInput?.value?.trim();
+            if (!name) return;
+            items.push({ id: nextId++, name });
+            updateList();
+            if (repeatInput) repeatInput.value = '';
+        });
+
+        // Delete via event delegation
+        demoRepeat.addEventListener('click', (e) => {
+            const btn = e.target.closest('[data-delete-id]');
+            if (btn) {
+                const id = Number(btn.dataset.deleteId);
+                items = items.filter(i => i.id !== id);
+                updateList();
+            }
+        });
+
+        // Seed with example items
+        items = [
+            { id: nextId++, name: 'Buy groceries' },
+            { id: nextId++, name: 'Review pull requests' },
+            { id: nextId++, name: 'Deploy to staging' }
+        ];
+        updateList();
+    }
+</script>
