@@ -551,7 +551,7 @@
         // Route chunks set window.AgentUI via IIFE but it's not guaranteed
         // to be ready when this module executes. ESM imports resolve
         // synchronously before the script body runs.
-        import { createStore, bus } from '/dist/agentui.esm.js';
+        import { createStore, bus } from '../dist/agentui.esm.js';
 
         const perfStart = performance.now();
         const loadedRoutes = new Set();
