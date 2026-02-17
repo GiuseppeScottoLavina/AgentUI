@@ -87,8 +87,14 @@ export function componentsToRoutes(components) {
         'au-drawer-item': 'shell-critical',
         'au-theme-toggle': 'shell-deferred',
         'au-bottom-nav': 'shell-deferred',
-        'au-if': 'structural',
-        'au-repeat': 'structural',
+        'au-if': 'au-if',
+        'au-repeat': 'au-repeat',
+        'au-show': 'au-show',
+        'au-portal': 'au-portal',
+        'au-intersection': 'au-intersection',
+        'au-media': 'au-media',
+        'au-transition': 'au-transition',
+        'au-timer': 'au-timer',
     };
 
     const routes = new Set();

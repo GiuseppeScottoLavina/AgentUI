@@ -1,5 +1,5 @@
 /**
- * au-router - Route management and lazy page loading
+ * @fileoverview au-router - Route management and lazy page loading
  * 
  * Features:
  * - Hash-based routing (#page-name)

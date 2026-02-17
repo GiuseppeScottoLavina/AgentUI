@@ -1,5 +1,5 @@
 /**
- * au-bottom-nav.js - Material Design 3 Bottom Navigation Bar
+ * @fileoverview au-bottom-nav - Material Design 3 Bottom Navigation Bar
  * 
  * Fixed bottom navigation for mobile devices.
  * Follows MD3 Navigation Bar specifications (3-5 destinations).

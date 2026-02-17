@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="AgentUI - AI-First Web Components Library with 51 Material Design 3 components">
+    <meta name="description" content="AgentUI - AI-First Web Components Library with 57 Material Design 3 components">
     <title>AgentUI - Component Showcase</title>
 
     <!-- Security: Content Security Policy -->
@@ -76,10 +76,10 @@
         /* Material Symbols font removed - icons use inline SVG now */
     </style>
     <!-- Preload + async CSS: 12KB loads instantly from preload, media trick prevents render-blocking -->
-    <link rel="preload" as="style" href="../dist/agentui.css?v=0.1.210">
-    <link rel="stylesheet" href="../dist/agentui.css?v=0.1.210" media="print" onload="this.media='all'">
+    <link rel="preload" as="style" href="../dist/agentui.css?v=0.1.226">
+    <link rel="stylesheet" href="../dist/agentui.css?v=0.1.226" media="print" onload="this.media='all'">
     <noscript>
-        <link rel="stylesheet" href="../dist/agentui.css?v=0.1.210">
+        <link rel="stylesheet" href="../dist/agentui.css?v=0.1.226">
     </noscript>
     <style>
         /* Size-adjusted Arial fallback to match Roboto metrics (from Capsize) */
@@ -260,7 +260,9 @@
         @media (max-width: 599px) {
             .app-main {
                 padding: 16px;
-                padding-bottom: calc(var(--au-bottom-nav-height, 80px) + 16px + env(safe-area-inset-bottom, 0));
+                /* padding-bottom for bottom-nav handled by framework
+                   on .au-layout-content — no duplicate needed here */
+                min-height: 0;
             }
         }
 
@@ -330,6 +332,14 @@
             min-height: 500px;
             /* Prevent height collapse during route transitions */
             transition: none;
+        }
+
+        @media (max-width: 599px) {
+            #content-area {
+                /* On mobile, min-height causes excessive whitespace.
+                   Content height is determined by flex layout. */
+                min-height: 0;
+            }
         }
 
         /* SOTA 2026: content-visibility for lazy rendering of off-screen examples */
@@ -444,8 +454,17 @@
                 label="Code Block"></au-drawer-item>
             <au-drawer-item icon="view_carousel" href="#virtual-lists" data-page="virtual-lists"
                 label="Virtual List"></au-drawer-item>
-            <au-drawer-item icon="alt_route" href="#structural" data-page="structural"
-                label="Structural"></au-drawer-item>
+            <au-drawer-item icon="alt_route" href="#au-if" data-page="au-if" label="au-if"></au-drawer-item>
+            <au-drawer-item icon="repeat" href="#au-repeat" data-page="au-repeat" label="au-repeat"></au-drawer-item>
+            <au-drawer-item icon="visibility" href="#au-show" data-page="au-show" label="au-show"></au-drawer-item>
+            <au-drawer-item icon="open_in_new" href="#au-portal" data-page="au-portal"
+                label="au-portal"></au-drawer-item>
+            <au-drawer-item icon="filter_center_focus" href="#au-intersection" data-page="au-intersection"
+                label="au-intersection"></au-drawer-item>
+            <au-drawer-item icon="devices" href="#au-media" data-page="au-media" label="au-media"></au-drawer-item>
+            <au-drawer-item icon="animation" href="#au-transition" data-page="au-transition"
+                label="au-transition"></au-drawer-item>
+            <au-drawer-item icon="timer" href="#au-timer" data-page="au-timer" label="au-timer"></au-drawer-item>
 
             <!-- Advanced -->
             <au-drawer-item icon="business" href="#enterprise" data-page="enterprise" label="Advanced"></au-drawer-item>
@@ -491,7 +510,14 @@
         <div id="datatables" tabindex="-1" aria-hidden="true"></div>
         <div id="codeblocks" tabindex="-1" aria-hidden="true"></div>
         <div id="virtual-lists" tabindex="-1" aria-hidden="true"></div>
-        <div id="structural" tabindex="-1" aria-hidden="true"></div>
+        <div id="au-if" tabindex="-1" aria-hidden="true"></div>
+        <div id="au-repeat" tabindex="-1" aria-hidden="true"></div>
+        <div id="au-show" tabindex="-1" aria-hidden="true"></div>
+        <div id="au-portal" tabindex="-1" aria-hidden="true"></div>
+        <div id="au-intersection" tabindex="-1" aria-hidden="true"></div>
+        <div id="au-media" tabindex="-1" aria-hidden="true"></div>
+        <div id="au-transition" tabindex="-1" aria-hidden="true"></div>
+        <div id="au-timer" tabindex="-1" aria-hidden="true"></div>
         <div id="enterprise" tabindex="-1" aria-hidden="true"></div>
         <main id="content-area" class="app-main">
             <!-- LCP image kept inline (preloaded in <head>), text loaded async from content/home.html -->
@@ -505,13 +531,13 @@
             </div>
             <h1 class="page-title" style="text-align: center;">AgentUI</h1>
             <p class="page-subtitle" style="text-align: center; font-size: 1.25rem; max-width: 600px; margin: 0 auto;">
-                Designed for AI agents. 50 Web Components with built-in self-description, discoverable docs, and zero
+                Designed for AI agents. 57 Web Components with built-in self-description, discoverable docs, and zero
                 config.</p>
         </main>
 
         <!-- Footer -->
         <footer slot="footer" class="app-footer">
-            <p>AgentUI <span id="app-version" style="opacity: 0.5; font-size: 0.75rem;">v0.1.210</span> • Apache-2.0 •
+            <p>AgentUI <span id="app-version" style="opacity: 0.7; font-size: 0.75rem;">v0.1.226</span> • Apache-2.0 •
                 Made with ❤️</p>
         </footer>
     </au-layout>
@@ -520,17 +546,51 @@
         // =============================================
         // APP SHELL - Dynamic Content Loading
         // =============================================
+
+        // ── Import from built bundle (minified ESM) ─────────────────────
+        // Route chunks set window.AgentUI via IIFE but it's not guaranteed
+        // to be ready when this module executes. ESM imports resolve
+        // synchronously before the script body runs.
+        import { createStore, bus } from '/dist/agentui.esm.js';
+
         const perfStart = performance.now();
         const loadedRoutes = new Set();
         const loadedContent = new Map();
         const contentArea = document.getElementById('content-area');
+
+        // ── Demo state persistence (survives navigation) ──────────────
+        // Uses createStore with localStorage persistence.
+        // Created eagerly — available immediately for page scripts.
+        const demoStore = createStore(
+            { tabs: {}, toggles: {}, inputs: {}, counters: {} },
+            { persist: 'demo-state' }
+        );
+        window.__demoStore = demoStore;
+
+        /** @returns {typeof demoStore} */
+        function getDemoStore() {
+            return demoStore;
+        }
+
+        // ── Expose bus for page scripts ───────────────────────────────
+        // Page scripts (non-module <script>) need bus access for cleanup.
+        // window.AgentUI.bus IS set by route chunks, but we also set
+        // __demoBus as a reliable fallback guaranteed before page scripts.
+        window.__demoBus = bus;
+
+        // ── Page cleanup registry ─────────────────────────────────────
+        // Each page script pushes its bus.on('demo:cleanup') unsubscribe
+        // function here. The shell flushes this array before each
+        // innerHTML replacement to prevent bus listener leaks.
+        /** @type {Function[]} */
+        window.__demoCleanups = [];
 
         // Load JS route bundle
         async function loadRoute(name) {
             if (loadedRoutes.has(name)) return;
             loadedRoutes.add(name);
             const start = performance.now();
-            await import('../dist/routes/' + name + '.js?v=0.1.210');
+            await import('../dist/routes/' + name + '.js?v=0.1.226');
             console.log('[Shell] Route ' + name + '.js loaded in ' + (performance.now() - start).toFixed(0) + 'ms');
         }
 
@@ -565,6 +625,17 @@
             const content = await loadContent(pageId);
 
             const updateDOM = () => {
+                // ── Teardown previous page ────────────────────────────
+                // 1. Fire synchronous cleanup signal — page scripts
+                //    use this to clearInterval, abort DOM listeners, etc.
+                bus.emit('demo:cleanup');
+                // 2. Unsubscribe all cleanup handlers from the bus
+                //    (prevents bus listener leaks from accumulating)
+                if (window.__demoCleanups) {
+                    for (const unsub of window.__demoCleanups) unsub();
+                    window.__demoCleanups.length = 0;
+                }
+
                 // Scroll to top INSIDE transition (now synchronous!)
                 const scrollContainer = document.querySelector('.au-layout-main') || window;
                 scrollContainer.scrollTo({ top: 0, behavior: 'instant' });
@@ -624,6 +695,14 @@
                             el.style.display = i === e.detail.index ? 'block' : 'none';
                         }
                     });
+                    // Persist tab selection to store
+                    const store = getDemoStore();
+                    if (store) {
+                        const prefix = tabsId.replace('-doc-tabs', '');
+                        const t = { ...store.state.tabs };
+                        t[prefix] = e.detail.index;
+                        store.state.tabs = t;
+                    }
                 });
             }
         }
@@ -651,6 +730,19 @@
                     `${prefix}-styling`,
                     `${prefix}-examples`
                 ];
+
+                // Restore saved tab index from persistent store
+                const store = getDemoStore();
+                const savedIndex = store?.state.tabs?.[prefix];
+                if (savedIndex !== undefined && savedIndex > 0) {
+                    tabs.setAttribute('active', String(savedIndex));
+                    // Apply visibility immediately (before au-tab-change fires)
+                    contentIds.forEach((id, i) => {
+                        const el = document.getElementById(id);
+                        if (el) el.style.display = i === savedIndex ? 'block' : 'none';
+                    });
+                }
+
                 setupDocTabs(tabs.id, contentIds);
             });
 

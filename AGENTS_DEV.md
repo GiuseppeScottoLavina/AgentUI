@@ -418,7 +418,7 @@ npx serve app-dist
 ```
 AgentUI/
 ├── src/                    # Framework source
-│   └── components/         # 50 components
+│   └── components/         # 57 components
 │
 ├── dist/                   # Framework build
 │   ├── agentui.esm.js      # Full ESM bundle (177 KB)
@@ -530,4 +530,4 @@ The `server.js` is optimized for **high Lighthouse** scores:
 
 *This document is for framework developers. For building apps with AgentUI, see [AGENTS.md](./AGENTS.md).*
 
-*Last updated: v0.1.65 - 2026-02-09*
+*Last updated: v0.1.150 - 2026-02-17*

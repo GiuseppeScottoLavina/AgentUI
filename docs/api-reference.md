@@ -83,7 +83,7 @@ showToast('Message', {
 
 ## Framework Ready Event
 
-AgentUI fires `au-ready` on `document` when all 50 components are registered:
+AgentUI fires `au-ready` on `document` when all 57 components are registered:
 
 ```javascript
 document.addEventListener('au-ready', () => {

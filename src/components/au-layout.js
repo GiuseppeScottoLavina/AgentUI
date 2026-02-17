@@ -1,5 +1,5 @@
 /**
- * au-layout.js - Material Design 3 Responsive Layout Container
+ * @fileoverview au-layout - Material Design 3 Responsive Layout Container
  * 
  * Main layout container that orchestrates drawer, content, and bottom nav.
  * Provides responsive layout structure with proper spacing.

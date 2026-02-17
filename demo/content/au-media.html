@@ -1,0 +1,148 @@
+<div class="page active">
+    <h1 class="page-title">au-media</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-media&gt;</code> renders children <strong>only when a CSS media query matches</strong>.
+        Like <code>@media</code> in CSS, but for DOM structure. Children are rendered/removed based on
+        screen size, orientation, or any media feature. Uses <code>display: contents</code> for zero layout impact.
+    </p>
+
+    <au-tabs active="0" id="au-media-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <!-- ===== OVERVIEW ===== -->
+    <div id="au-media-overview" class="doc-tab-content">
+
+        <au-example title="Responsive rendering">
+            <div slot="demo">
+                <au-stack gap="md">
+                    <au-chip id="media-status" variant="outlined">Checking...</au-chip>
+                    <au-media id="demo-media" query="(min-width: 768px)">
+                        <au-alert severity="success">🖥️ Desktop layout — you're on a wide screen!</au-alert>
+                    </au-media>
+                    <div id="media-fallback" style="display: none;">
+                        <au-alert severity="info">📱 Mobile layout — screen is narrower than 768px.</au-alert>
+                    </div>
+                </au-stack>
+            </div>
+            <div slot="code">&lt;au-media query="(min-width: 768px)"&gt;
+                &lt;aside class="sidebar"&gt;Desktop sidebar&lt;/aside&gt;
+                &lt;/au-media&gt;
+
+                &lt;au-media query="(max-width: 767px)"&gt;
+                &lt;au-bottom-nav&gt;Mobile nav&lt;/au-bottom-nav&gt;
+                &lt;/au-media&gt;</div>
+        </au-example>
+
+        <div class="component-section"
+            style="background: var(--md-sys-color-primary-container); border-left: 4px solid var(--md-sys-color-primary);">
+            <h2 class="section-title" style="color: var(--md-sys-color-on-primary-container);">CSS @media vs au-media
+            </h2>
+            <p style="color: var(--md-sys-color-on-primary-container); line-height: 1.6;">
+                CSS <code>@media</code> hides elements visually but they remain in the DOM.
+                <code>&lt;au-media&gt;</code>
+                actually removes children when the query doesn't match, saving DOM nodes and reducing memory for complex
+                responsive layouts. Use <code>au-media</code> when you want the DOM itself to be responsive, not just
+                the
+                visuals.
+            </p>
+        </div>
+    </div>
+
+    <!-- ===== API ===== -->
+    <div id="au-media-api" class="doc-tab-content" style="display: none;">
+
+        <div class="component-section">
+            <h2 class="section-title">Selector</h2>
+            <div class="code-block" style="display: inline-block;">&lt;au-media&gt;</div>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Attributes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="query" type="string" default="—">
+                    CSS media query string. Children are rendered only when the query matches.
+                    E.g.: <code>"(min-width: 768px)"</code>, <code>"(prefers-color-scheme: dark)"</code>.
+                </au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Properties</h2>
+            <au-api-table type="properties">
+                <au-api-row name="matches" type="boolean" default="false">
+                    Read-only. Whether the current media query matches.
+                </au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Events</h2>
+            <au-api-table type="events">
+                <au-api-row name="au-match" type="CustomEvent">
+                    Fired when the media query starts matching. Children are rendered.
+                </au-api-row>
+                <au-api-row name="au-unmatch" type="CustomEvent">
+                    Fired when the media query stops matching. Children are removed.
+                </au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <!-- ===== EXAMPLES ===== -->
+    <div id="au-media-examples" class="doc-tab-content" style="display: none;">
+
+        <au-example title="Responsive layout with au-media + au-show">
+            <div slot="demo">
+                <au-alert severity="info">See the code — combining au-media and au-show for adaptive UI.</au-alert>
+            </div>
+            <div slot="code">&lt;!-- Desktop: show sidebar, Mobile: show bottom nav --&gt;
+                &lt;au-media query="(min-width: 768px)"&gt;
+                &lt;aside class="sidebar"&gt;
+                &lt;nav&gt;...&lt;/nav&gt;
+                &lt;/aside&gt;
+                &lt;/au-media&gt;
+
+                &lt;au-media query="(max-width: 767px)"&gt;
+                &lt;au-bottom-nav&gt;
+                &lt;au-nav-item icon="home"&gt;Home&lt;/au-nav-item&gt;
+                &lt;au-nav-item icon="search"&gt;Search&lt;/au-nav-item&gt;
+                &lt;/au-bottom-nav&gt;
+                &lt;/au-media&gt;</div>
+        </au-example>
+    </div>
+</div>
+
+<script>
+    (() => {
+        // ── AbortController for DOM listener cleanup ──
+        const ac = new AbortController();
+        const { signal } = ac;
+
+        const demoMedia = document.getElementById('demo-media');
+        const mediaStatus = document.getElementById('media-status');
+        const mediaFallback = document.getElementById('media-fallback');
+        if (demoMedia && mediaStatus) {
+            function updateMediaStatus() {
+                const matches = demoMedia.matches;
+                mediaStatus.textContent = matches ? '✅ Matches' : '❌ No match';
+                if (mediaFallback) mediaFallback.style.display = matches ? 'none' : 'block';
+            }
+            demoMedia.addEventListener('au-match', updateMediaStatus, { signal });
+            demoMedia.addEventListener('au-unmatch', updateMediaStatus, { signal });
+            // Initial status check (after component upgrade)
+            setTimeout(updateMediaStatus, 100);
+        }
+
+        // ── Register cleanup for page navigation ──
+        const demoBus = window.__demoBus;
+        if (demoBus) {
+            const unsub = demoBus.on('demo:cleanup', () => {
+                ac.abort();
+            });
+            window.__demoCleanups.push(unsub);
+        }
+    })();
+</script>

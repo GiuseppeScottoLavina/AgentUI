@@ -260,4 +260,71 @@ describe('au-progress Unit Tests', () => {
         el.update('indeterminate', null, '');
         expect(progress.classList.contains('au-progress__indeterminate')).toBe(false);
     });
+
+    // ========================================
+    // AUTO ARIA-LABEL (framework-level a11y)
+    // ========================================
+
+    test('should auto-generate aria-label for determinate progress', () => {
+        const el = document.createElement('au-progress');
+        el.setAttribute('value', '50');
+        body.appendChild(el);
+        expect(el.getAttribute('aria-label')).toBe('Progress: 50%');
+    });
+
+    test('should auto-generate aria-label for 0% progress', () => {
+        const el = document.createElement('au-progress');
+        body.appendChild(el);
+        expect(el.getAttribute('aria-label')).toBe('Progress: 0%');
+    });
+
+    test('should auto-generate aria-label for indeterminate', () => {
+        const el = document.createElement('au-progress');
+        el.setAttribute('indeterminate', '');
+        body.appendChild(el);
+        expect(el.getAttribute('aria-label')).toBe('Loading');
+    });
+
+    test('should preserve user-provided aria-label', () => {
+        const el = document.createElement('au-progress');
+        el.setAttribute('value', '50');
+        el.setAttribute('aria-label', 'Uploading file');
+        body.appendChild(el);
+        expect(el.getAttribute('aria-label')).toBe('Uploading file');
+    });
+
+    test('should update auto aria-label when value changes', () => {
+        const el = document.createElement('au-progress');
+        el.setAttribute('value', '25');
+        body.appendChild(el);
+        expect(el.getAttribute('aria-label')).toBe('Progress: 25%');
+
+        el.setAttribute('value', '75');
+        el.update('value', '75', '25');
+        expect(el.getAttribute('aria-label')).toBe('Progress: 75%');
+    });
+
+    test('should update auto aria-label when switching to indeterminate', () => {
+        const el = document.createElement('au-progress');
+        el.setAttribute('value', '50');
+        body.appendChild(el);
+        expect(el.getAttribute('aria-label')).toBe('Progress: 50%');
+
+        el.setAttribute('indeterminate', '');
+        el.update('indeterminate', '', null);
+        expect(el.getAttribute('aria-label')).toBe('Loading');
+    });
+
+    test('should set data-auto-label tracking attribute', () => {
+        const el = document.createElement('au-progress');
+        body.appendChild(el);
+        expect(el.dataset.autoLabel).toBe('1');
+    });
+
+    test('should not set data-auto-label when user provides aria-label', () => {
+        const el = document.createElement('au-progress');
+        el.setAttribute('aria-label', 'Custom label');
+        body.appendChild(el);
+        expect(el.dataset.autoLabel).toBeUndefined();
+    });
 });

@@ -159,9 +159,13 @@ export { AuVirtualList } from './components/au-virtual-list.js';
 export { AuLazy } from './components/au-lazy.js';
 export { AuIf } from './components/au-if.js';
 export { AuRepeat } from './components/au-repeat.js';
+export { AuShow } from './components/au-show.js';
+export { AuPortal } from './components/au-portal.js';
+export { AuIntersection } from './components/au-intersection.js';
+export { AuMedia } from './components/au-media.js';
+export { AuTransition } from './components/au-transition.js';
+export { AuTimer } from './components/au-timer.js';
 export { AuFetch } from './components/au-fetch.js';
-
-// AI-First Components
 export { AuDataTable } from './components/au-datatable.js';
 export { AuSchemaForm } from './components/au-schema-form.js';
 export { AuPromptInput, AuCodeBlock, AuAgentToolbar, AuMessageBubble } from './components/au-prompt-ui.js';
@@ -212,6 +216,12 @@ import './components/au-skeleton.js';
 import './components/au-virtual-list.js';
 import './components/au-lazy.js';
 import './components/au-repeat.js';
+import './components/au-show.js';
+import './components/au-portal.js';
+import './components/au-intersection.js';
+import './components/au-media.js';
+import './components/au-transition.js';
+import './components/au-timer.js';
 import './components/au-confirm.js';
 import './components/au-fetch.js';
 import './components/au-datatable.js';

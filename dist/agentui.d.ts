@@ -305,6 +305,15 @@ export declare class AuLazy extends AuElement { load(): void; }
 export declare class AuIf extends AuElement { condition: boolean; }
 export declare class AuRepeat extends AuElement { items: any[]; keyFn: (item: any, index: number) => any; renderItem: (item: any, index: number) => string; refresh(): void; }
 export declare class AuVirtualList extends AuElement { items: any[]; renderItem: (item: any, index: number) => string; scrollToIndex(index: number): void; }
+
+// Structural Components
+export declare class AuShow extends AuElement { condition: boolean; }
+export declare class AuPortal extends AuElement { }
+export declare class AuIntersection extends AuElement { readonly isVisible: boolean; }
+export declare class AuMedia extends AuElement { readonly matches: boolean; }
+export declare class AuTransition extends AuElement { active: boolean; }
+export declare class AuTimer extends AuElement { readonly count: number; readonly running: boolean; start(): void; stop(): void; reset(): void; }
+
 export declare class AuRouter extends AuElement { }
 export declare class AuComponentTree extends AuElement { }
 export declare class AuAgentToolbar extends AuElement { }

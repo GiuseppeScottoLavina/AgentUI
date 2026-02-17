@@ -23,5 +23,7 @@ export const ALL_COMPONENT_TAGS = [
     'au-splash', 'au-virtual-list', 'au-lazy', 'au-repeat',
     'au-fetch', 'au-confirm', 'au-schema-form', 'au-prompt-ui',
     'au-error-boundary', 'au-code', 'au-callout', 'au-icon',
-    'au-api-table', 'au-example', 'au-doc-page'
+    'au-api-table', 'au-example', 'au-doc-page',
+    'au-show', 'au-portal', 'au-intersection', 'au-media',
+    'au-transition', 'au-timer'
 ];

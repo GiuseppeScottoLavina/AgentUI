@@ -68,6 +68,7 @@ export class AuProgress extends AuElement {
                     progress.classList.remove('au-progress__indeterminate');
                 }
             }
+            this.#updateProgress();
         }
         this.#updateClasses();
     }
@@ -84,6 +85,16 @@ export class AuProgress extends AuElement {
 
         this.setAttribute('aria-valuenow', value.toString());
         this.setAttribute('aria-valuemax', max.toString());
+
+        // Auto-generate aria-label when user hasn't explicitly provided one.
+        // Uses a data attribute to track whether the label was auto-set.
+        if (!this.hasAttribute('aria-label') || this.dataset.autoLabel) {
+            const label = this.hasAttribute('indeterminate')
+                ? 'Loading'
+                : `Progress: ${Math.round(percent)}%`;
+            this.setAttribute('aria-label', label);
+            this.dataset.autoLabel = '1';
+        }
     }
 
     /** @private */

@@ -17,10 +17,10 @@
         <au-example title="Determinate progress">
             <div slot="demo">
                 <au-stack gap="md" style="width: 100%;">
-                    <au-progress value="25"></au-progress>
-                    <au-progress value="50"></au-progress>
-                    <au-progress value="75"></au-progress>
-                    <au-progress value="100"></au-progress>
+                    <au-progress value="25" aria-label="25% progress"></au-progress>
+                    <au-progress value="50" aria-label="50% progress"></au-progress>
+                    <au-progress value="75" aria-label="75% progress"></au-progress>
+                    <au-progress value="100" aria-label="100% complete"></au-progress>
                 </au-stack>
             </div>
         </au-example>
@@ -28,7 +28,7 @@
         <au-example title="Indeterminate progress">
             <div slot="demo">
                 <au-stack gap="md" style="width: 100%;">
-                    <au-progress indeterminate></au-progress>
+                    <au-progress indeterminate aria-label="Loading"></au-progress>
                 </au-stack>
             </div>
         </au-example>
@@ -97,7 +97,7 @@
     <div id="progress-examples" class="doc-tab-content" style="display: none;">
         <au-example title="Indeterminate progress">
             <div slot="demo">
-                <au-progress indeterminate></au-progress>
+                <au-progress indeterminate aria-label="Loading"></au-progress>
             </div>
         </au-example>
 
@@ -106,19 +106,22 @@
                 <au-stack gap="sm" style="width: 100%;">
                     <div style="display: flex; justify-content: space-between; font-size: 13px;">
                         <span>0%</span>
-                        <au-progress value="0" style="flex: 1; margin: 0 12px;"></au-progress>
+                        <au-progress value="0" aria-label="0% progress" style="flex: 1; margin: 0 12px;"></au-progress>
                     </div>
                     <div style="display: flex; justify-content: space-between; font-size: 13px;">
                         <span>33%</span>
-                        <au-progress value="33" style="flex: 1; margin: 0 12px;"></au-progress>
+                        <au-progress value="33" aria-label="33% progress"
+                            style="flex: 1; margin: 0 12px;"></au-progress>
                     </div>
                     <div style="display: flex; justify-content: space-between; font-size: 13px;">
                         <span>66%</span>
-                        <au-progress value="66" style="flex: 1; margin: 0 12px;"></au-progress>
+                        <au-progress value="66" aria-label="66% progress"
+                            style="flex: 1; margin: 0 12px;"></au-progress>
                     </div>
                     <div style="display: flex; justify-content: space-between; font-size: 13px;">
                         <span>100%</span>
-                        <au-progress value="100" style="flex: 1; margin: 0 12px;"></au-progress>
+                        <au-progress value="100" aria-label="100% complete"
+                            style="flex: 1; margin: 0 12px;"></au-progress>
                     </div>
                 </au-stack>
             </div>

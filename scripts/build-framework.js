@@ -407,7 +407,15 @@ const pageRoutes = {
     datatables: ['au-datatable', 'au-stack', 'au-tabs', 'au-example', 'au-code', 'au-api-table'],
     codeblocks: ['au-code', 'au-stack', 'au-tabs', 'au-example', 'au-api-table'],
     'virtual-lists': ['au-virtual-list', 'au-stack', 'au-tabs', 'au-example', 'au-code', 'au-api-table', 'au-alert', 'au-icon', 'au-card', 'au-avatar'],
-    structural: ['au-if', 'au-repeat', 'au-stack', 'au-tabs', 'au-example', 'au-code', 'au-api-table', 'au-alert', 'au-icon', 'au-card', 'au-button', 'au-switch', 'au-input', 'au-avatar', 'au-divider', 'au-checkbox'],
+    structural: ['au-if', 'au-repeat', 'au-show', 'au-portal', 'au-intersection', 'au-media', 'au-transition', 'au-timer', 'au-stack', 'au-tabs', 'au-example', 'au-code', 'au-api-table', 'au-alert', 'au-icon', 'au-card', 'au-button', 'au-switch', 'au-input', 'au-avatar', 'au-divider', 'au-checkbox'],
+    'au-if': ['au-if', 'au-stack', 'au-tabs', 'au-example', 'au-code', 'au-api-table', 'au-alert', 'au-icon', 'au-card', 'au-button', 'au-switch', 'au-avatar'],
+    'au-repeat': ['au-repeat', 'au-stack', 'au-tabs', 'au-example', 'au-code', 'au-api-table', 'au-alert', 'au-icon', 'au-card', 'au-button', 'au-input'],
+    'au-show': ['au-show', 'au-stack', 'au-tabs', 'au-example', 'au-code', 'au-api-table', 'au-alert', 'au-icon', 'au-card', 'au-button', 'au-input'],
+    'au-portal': ['au-portal', 'au-stack', 'au-tabs', 'au-example', 'au-code', 'au-api-table', 'au-alert', 'au-icon', 'au-card', 'au-button'],
+    'au-intersection': ['au-intersection', 'au-stack', 'au-tabs', 'au-example', 'au-code', 'au-api-table', 'au-alert', 'au-icon', 'au-card', 'au-chip'],
+    'au-media': ['au-media', 'au-stack', 'au-tabs', 'au-example', 'au-code', 'au-api-table', 'au-alert', 'au-icon', 'au-card', 'au-chip'],
+    'au-transition': ['au-transition', 'au-stack', 'au-tabs', 'au-example', 'au-code', 'au-api-table', 'au-alert', 'au-icon', 'au-card', 'au-button'],
+    'au-timer': ['au-timer', 'au-stack', 'au-tabs', 'au-example', 'au-code', 'au-api-table', 'au-alert', 'au-icon', 'au-card', 'au-button'],
     enterprise: ['au-router', 'au-page', 'au-error-boundary', 'au-fetch', 'au-lazy', 'au-stack', 'au-tabs', 'au-example', 'au-code', 'au-api-table']
 };
 

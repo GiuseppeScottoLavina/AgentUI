@@ -4,7 +4,7 @@
 > For framework overview and API concepts, see [AGENTS.md](./AGENTS.md).
 > For full API reference, see [AGENTS_REFERENCE.md](./AGENTS_REFERENCE.md).
 
-> **AI-friendly web components framework.** 51 components, zero Shadow DOM.
+> **AI-friendly web components framework.** 57 components, zero Shadow DOM.
 
 ---
 
@@ -899,7 +899,7 @@ This gives you:
 ## 🚀 Modern App Shell Pattern (RECOMMENDED)
 
 > **For production apps, use this pattern instead of Minimal Page Setup.**
-> This is how `demo/index.html` achieves 100/100 Lighthouse with all 51 components.
+> This is how `demo/index.html` achieves 100/100 Lighthouse with all 57 components.
 
 **Why App Shell?**
 | Approach | Initial Load | Lighthouse | DX for Agents |

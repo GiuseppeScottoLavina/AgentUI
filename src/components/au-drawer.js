@@ -1,5 +1,5 @@
 /**
- * au-drawer.js - Material Design 3 Adaptive Navigation Drawer
+ * @fileoverview au-drawer - Material Design 3 Adaptive Navigation Drawer
  * 
  * Responsive drawer that adapts to screen size:
  * - Desktop: Expanded rail or standard drawer

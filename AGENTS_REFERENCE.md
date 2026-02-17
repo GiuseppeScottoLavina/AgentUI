@@ -7,15 +7,16 @@
 
 ## Quick Reference
 
-### All Components (50)
+### All Components (57)
 
 | Category | Components | Common Attributes |
 |----------|------------|-------------------|
 | **Layout** | `au-container`, `au-stack`, `au-grid`, `au-navbar`, `au-sidebar`, `au-divider` | `gap="xs\|sm\|md\|lg"`, `direction="row\|column"` |
 | **Form** | `au-button`, `au-input`, `au-textarea`, `au-checkbox`, `au-switch`, `au-radio`, `au-radio-group`, `au-dropdown`, `au-option`, `au-chip`, `au-form` | `variant`, `disabled`, `required`, `value` |
-| **Display** | `au-card`, `au-tabs`, `au-tab`, `au-table`, `au-avatar`, `au-badge`, `au-progress`, `au-skeleton`, `au-alert`, `au-icon` | `variant="elevated\|outlined\|filled"` |
+| **Display** | `au-card`, `au-tabs`, `au-tab`, `au-table`, `au-avatar`, `au-badge`, `au-callout`, `au-progress`, `au-skeleton`, `au-alert`, `au-icon` | `variant="elevated\|outlined\|filled"` |
 | **Feedback** | `au-modal`, `au-toast`, `au-toast-container`, `au-tooltip`, `au-spinner`, `au-confirm` | `duration`, `position` |
-| **Performance** | `au-virtual-list`, `au-lazy`, `au-repeat` | `items`, `renderItem` |
+| **Structural** | `au-if`, `au-show`, `au-repeat`, `au-portal`, `au-intersection`, `au-media`, `au-transition`, `au-timer` | `condition`, `threshold`, `active` |
+| **Performance** | `au-virtual-list`, `au-lazy` | `items`, `renderItem` |
 | **Data** | `au-fetch` | `url`, `auto`, `interval` |
 | **Enterprise** | `au-error-boundary` | `fallback` |
 | **Utility** | `au-theme-toggle` | - |
@@ -1744,7 +1745,7 @@ npx serve app-dist
 ```
 AgentUI/
 ├── src/                    # Framework source
-│   └── components/         # 51 components
+│   └── components/         # 57 components
 │
 ├── dist/                   # Framework build
 │   ├── agentui.esm.js      # Full bundle
@@ -1986,6 +1987,177 @@ list.addEventListener('click', (e) => {
 </script>
 ```
 
+### au-show (Show/Hide with State Preservation)
+```html
+<au-show id="panel" condition>
+    <form>
+        <!-- Form values, scroll position, timers all survive toggle -->
+        <au-input label="Name" value="Alice"></au-input>
+    </form>
+</au-show>
+
+<script type="module">
+const panel = document.getElementById('panel');
+panel.condition = false; // hidden via display:none, stays in DOM
+panel.condition = true;  // visible again, all state intact
+
+panel.addEventListener('au-show', () => console.log('Visible'));
+panel.addEventListener('au-hide', () => console.log('Hidden'));
+</script>
+```
+
+**Key points:**
+- Children hidden with `display: none` — **not removed** from DOM
+- Internal state (form values, event listeners, timers) **preserved**
+- Use `au-if` when you want true DOM removal; `au-show` when toggling frequently
+- `display: contents` — zero layout impact
+
+### au-portal (DOM Teleportation)
+```html
+<!-- Source: portal lives here but children render elsewhere -->
+<div style="overflow: hidden;">
+    <au-portal target="#modal-container">
+        <au-modal open title="Escaped!">
+            <p>This modal is not clipped by overflow:hidden</p>
+        </au-modal>
+    </au-portal>
+</div>
+
+<!-- Target: teleported content appears here -->
+<div id="modal-container"></div>
+
+<script type="module">
+const portal = document.querySelector('au-portal');
+portal.addEventListener('au-teleport', () => console.log('Moved'));
+portal.addEventListener('au-return', () => console.log('Returned'));
+// Children auto-return on disconnect (cleanup)
+</script>
+```
+
+**Key points:**
+- Children are **moved** (not cloned) — DOM identity preserved
+- Solves `overflow: hidden` and z-index stacking context issues
+- Auto-cleanup: children return to source on disconnect
+- `target` defaults to `document.body` when absent
+
+### au-intersection (Viewport Observer)
+```html
+<!-- Lazy-load pattern -->
+<au-intersection once threshold="0.1">
+    <img data-src="hero.webp" alt="Hero" />
+</au-intersection>
+
+<script type="module">
+document.querySelectorAll('au-intersection').forEach(el => {
+    el.addEventListener('au-visible', (e) => {
+        console.log('Ratio:', e.detail.ratio);
+        const img = el.querySelector('img[data-src]');
+        if (img) { img.src = img.dataset.src; }
+    });
+    el.addEventListener('au-hidden', () => {
+        console.log('Left viewport');
+    });
+});
+</script>
+```
+
+**Key points:**
+- Declarative `IntersectionObserver` — no manual setup/cleanup
+- `once` mode disconnects after first intersection (lazy-load)
+- `threshold` (0–1) controls visibility ratio trigger
+- `root-margin` extends the viewport bounds (e.g. `"200px"` for preloading)
+- Read `el.isVisible` for current state
+
+### au-media (Responsive Rendering)
+```html
+<!-- Desktop-only sidebar -->
+<au-media query="(min-width: 768px)">
+    <aside class="sidebar"><nav>...</nav></aside>
+</au-media>
+
+<!-- Mobile-only bottom nav -->
+<au-media query="(max-width: 767px)">
+    <au-bottom-nav>
+        <au-nav-item icon="home">Home</au-nav-item>
+    </au-bottom-nav>
+</au-media>
+
+<script type="module">
+const media = document.querySelector('au-media');
+console.log(media.matches); // true/false
+media.addEventListener('au-match', () => console.log('Query matches'));
+media.addEventListener('au-unmatch', () => console.log('Query no longer matches'));
+</script>
+```
+
+**Key points:**
+- Children **truly removed** from DOM when query doesn't match (like `au-if`)
+- Same DOM nodes restored on match (identity preserved)
+- More efficient than CSS `display: none` for heavy components
+- Read `el.matches` for current state
+
+### au-transition (Enter/Leave Animations)
+```html
+<style>
+    .fade-enter-active, .fade-leave-active { transition: opacity 0.3s ease; }
+    .fade-enter-from, .fade-leave-active { opacity: 0; }
+</style>
+
+<au-transition name="fade" active>
+    <div>I animate in and out!</div>
+</au-transition>
+
+<script type="module">
+const transition = document.querySelector('au-transition');
+transition.active = true;  // applies fade-enter-from → fade-enter-active
+transition.active = false; // applies fade-leave-from → fade-leave-active
+
+transition.addEventListener('au-enter', () => console.log('Enter started'));
+transition.addEventListener('au-leave', () => console.log('Leave started'));
+</script>
+```
+
+**Key points:**
+- Vue-inspired class naming: `{name}-enter-from`, `{name}-enter-active`, `{name}-leave-from`, `{name}-leave-active`
+- Does **not** define visual CSS — you provide the transition styles
+- `name` attribute sets the class prefix (default: `au`)
+- `display: contents` — zero layout impact
+
+### au-timer (Declarative Timer)
+```html
+<!-- Count-up timer -->
+<au-timer id="stopwatch" interval="1000" autostart></au-timer>
+
+<!-- Countdown timer (30 seconds) -->
+<au-timer id="countdown" interval="1000" countdown="30"></au-timer>
+
+<script type="module">
+const timer = document.getElementById('stopwatch');
+timer.addEventListener('au-tick', (e) => {
+    display.textContent = e.detail.count; // 1, 2, 3...
+});
+timer.start();
+timer.stop();
+timer.reset();
+
+const countdown = document.getElementById('countdown');
+countdown.addEventListener('au-tick', (e) => {
+    display.textContent = e.detail.count; // 30, 29, 28...
+});
+countdown.addEventListener('au-complete', () => {
+    showToast('Time is up!', { severity: 'warning' });
+});
+countdown.start();
+</script>
+```
+
+**Key points:**
+- Automatic `clearInterval` on disconnect — no memory leaks
+- `countdown` attribute enables count-down mode (fires `au-complete` at 0)
+- `autostart` starts timer on connect
+- Interval clamped to ≥100ms for safety
+- Read `el.count` and `el.running` for current state
+
 ### au-table (Data Tables with Sorting)
 ```html
 <au-table id="data-table"></au-table>
@@ -2153,7 +2325,7 @@ export async function render(container) {
 
 ## 📦 Component Quick Reference
 
-> **All 51 AgentUI components at a glance.** Key attributes and copy-paste examples.
+> **All 57 AgentUI components at a glance.** Key attributes and copy-paste examples.
 
 ### Buttons & Actions
 
@@ -2238,6 +2410,12 @@ export async function render(container) {
 | `au-fetch` | `url`, `method` | `<au-fetch url="/api/data"></au-fetch>` |
 | `au-repeat` | `items`, `template` | `<au-repeat items="...">...</au-repeat>` |
 | `au-if` | `condition`, `else` | `<au-if condition>Visible</au-if>` |
+| `au-show` | `condition` | `<au-show condition>Hidden with display:none</au-show>` |
+| `au-portal` | `target` | `<au-portal target="#container">Teleported</au-portal>` |
+| `au-intersection` | `threshold`, `root-margin`, `once` | `<au-intersection once>Lazy load</au-intersection>` |
+| `au-media` | `query` | `<au-media query="(min-width: 768px)">Desktop only</au-media>` |
+| `au-transition` | `name`, `active` | `<au-transition name="fade" active>Animated</au-transition>` |
+| `au-timer` | `interval`, `countdown`, `autostart` | `<au-timer interval="1000" autostart></au-timer>` |
 | `au-virtual-list` | `items`, `item-height` | `<au-virtual-list items="..." item-height="50"></au-virtual-list>` |
 | `au-error-boundary` | `fallback` | `<au-error-boundary fallback="Error">...</au-error-boundary>` |
 
@@ -2277,4 +2455,4 @@ export async function render(container) {
 
 ---
 
-*Last updated: v0.1.117 - 2026-02-11*
+*Last updated: v0.1.150 - 2026-02-17*

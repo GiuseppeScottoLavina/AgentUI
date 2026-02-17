@@ -4,7 +4,7 @@
 > For practical build recipes and templates, see [SKILL.md](./SKILL.md).
 > To develop new components or extend the framework, see [AGENTS_DEV.md](./AGENTS_DEV.md).
 
-> **AI-friendly web components framework.** 50 components, zero Shadow DOM.
+> **AI-friendly web components framework.** 57 components, zero Shadow DOM.
 
 ---
 
@@ -324,7 +324,7 @@ Wait for all components to be registered before manipulating them:
 // Wait for AgentUI to be ready
 document.addEventListener('au-ready', (e) => {
     console.log('AgentUI ready!', e.detail);
-    // { version: '0.1.23', components: 50, timestamp: ... }
+    // { version: '0.1.150', components: 57, timestamp: ... }
     
     // Now safe to manipulate components
     const input = document.querySelector('au-input');

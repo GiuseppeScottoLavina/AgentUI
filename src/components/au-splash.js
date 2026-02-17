@@ -1,5 +1,5 @@
 /**
- * au-splash.js - Instant Splash Screen Component
+ * @fileoverview au-splash - Instant Splash Screen Component
  * 
  * 2026: Eliminates janky first-paint on slow hardware.
  * - Renders immediately with inline critical CSS (zero JS blocking)

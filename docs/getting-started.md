@@ -213,6 +213,6 @@ npx serve dist
 
 ## Next Steps
 
-- [Components Reference](./components.md) - All 50 components
+- [Components Reference](./components.md) - All 57 components
 - [API Reference](./api-reference.md) - JavaScript API
 - [Design System](./design-system.md) - Theming & tokens

@@ -1,0 +1,219 @@
+<div class="page active">
+    <h1 class="page-title">au-if</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-if&gt;</code> conditionally renders its children. When the <code>condition</code> attribute is
+        removed,
+        children are <strong>truly removed from the DOM</strong> (not just hidden).
+        When condition returns, the <em>same DOM nodes</em> are restored (identity preserved).
+        Uses <code>display: contents</code> for zero layout impact.
+    </p>
+
+    <au-tabs active="0" id="au-if-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <!-- ===== OVERVIEW ===== -->
+    <div id="au-if-overview" class="doc-tab-content">
+
+        <au-example title="Basic au-if toggle">
+            <div slot="demo">
+                <au-stack gap="md">
+                    <au-button id="if-toggle-btn" variant="filled">Toggle Condition</au-button>
+                    <au-if id="demo-if" condition>
+                        <au-alert severity="success">✅ I'm visible because <code>condition</code> is present!</au-alert>
+                    </au-if>
+                </au-stack>
+            </div>
+            <div slot="code">&lt;au-if condition&gt;
+                &lt;au-alert severity="success"&gt;Visible!&lt;/au-alert&gt;
+                &lt;/au-if&gt;
+
+                &lt;script&gt;
+                const el = document.querySelector('au-if');
+                el.condition = false; // removes children from DOM
+                el.condition = true; // same nodes restored
+                &lt;/script&gt;</div>
+        </au-example>
+
+        <au-example title="au-if with else template">
+            <div slot="demo">
+                <au-stack gap="md">
+                    <au-stack direction="row" gap="sm" align="center">
+                        <au-switch id="auth-switch" label="Logged in"></au-switch>
+                    </au-stack>
+                    <au-if id="demo-if-else" else="guest-tpl">
+                        <au-card variant="elevated">
+                            <au-stack direction="row" gap="md" align="center">
+                                <au-avatar initials="GS" size="md"></au-avatar>
+                                <div>
+                                    <strong>Welcome back, Giuseppe!</strong>
+                                    <div style="font-size: 13px; opacity: 0.7;">Admin • Last login: today</div>
+                                </div>
+                            </au-stack>
+                        </au-card>
+                    </au-if>
+                    <template id="guest-tpl">
+                        <au-alert severity="info">
+                            <au-stack direction="row" gap="sm" align="center">
+                                <au-icon name="login"></au-icon>
+                                <span>Please log in to continue.</span>
+                            </au-stack>
+                        </au-alert>
+                    </template>
+                </au-stack>
+            </div>
+            <div slot="code">&lt;au-if condition else="guest-tpl"&gt;
+                &lt;p&gt;Welcome back!&lt;/p&gt;
+                &lt;/au-if&gt;
+                &lt;template id="guest-tpl"&gt;
+                &lt;au-alert severity="info"&gt;Please log in.&lt;/au-alert&gt;
+                &lt;/template&gt;</div>
+        </au-example>
+
+        <div class="component-section"
+            style="background: var(--md-sys-color-primary-container); border-left: 4px solid var(--md-sys-color-primary);">
+            <h2 class="section-title" style="color: var(--md-sys-color-on-primary-container);">au-if vs au-show</h2>
+            <p style="color: var(--md-sys-color-on-primary-container); line-height: 1.6;">
+                <code>&lt;au-if&gt;</code> <strong>removes</strong> children from the DOM — use when content is
+                expensive
+                and rarely shown, or when you need <code>else</code> templates.<br>
+                <code>&lt;au-show&gt;</code> <strong>hides</strong> with <code>display: none</code> — use when toggling
+                frequently (tabs, accordions) or when children have state to preserve (forms, video).
+            </p>
+        </div>
+    </div>
+
+    <!-- ===== API ===== -->
+    <div id="au-if-api" class="doc-tab-content" style="display: none;">
+
+        <div class="component-section">
+            <h2 class="section-title">Selector</h2>
+            <div class="code-block" style="display: inline-block;">&lt;au-if&gt;</div>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Attributes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="condition" type="boolean" default="absent">
+                    When present, children are rendered. When removed, children are moved to a
+                    DocumentFragment (true DOM removal). Presence = true.
+                </au-api-row>
+                <au-api-row name="else" type="string" default="—">
+                    ID of a <code>&lt;template&gt;</code> element to render when condition is false.
+                    Safe: uses <code>getElementById</code> only — no innerHTML injection.
+                </au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Properties</h2>
+            <au-api-table type="properties">
+                <au-api-row name="condition" type="boolean" default="false">
+                    Get/set condition programmatically. Reflects the <code>condition</code> attribute.
+                </au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Events</h2>
+            <au-api-table type="events">
+                <au-api-row name="au-show" type="CustomEvent">
+                    Fired when condition becomes true and children are restored to DOM.
+                </au-api-row>
+                <au-api-row name="au-hide" type="CustomEvent">
+                    Fired when condition becomes false and children are removed from DOM.
+                </au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <!-- ===== EXAMPLES ===== -->
+    <div id="au-if-examples" class="doc-tab-content" style="display: none;">
+
+        <au-example title="Auth guard pattern">
+            <div slot="demo">
+                <au-alert severity="info">See the code — common pattern for gating UI behind authentication.</au-alert>
+            </div>
+            <div slot="code">// Auth guard: show different UI based on login state
+                const guard = document.querySelector('au-if#auth-guard');
+
+                bus.on('auth:change', ({ authenticated }) => {
+                guard.condition = authenticated;
+                });
+
+                // HTML:
+                // &lt;au-if id="auth-guard" else="login-form-tpl"&gt;
+                // &lt;!-- Protected content --&gt;
+                // &lt;/au-if&gt;
+                // &lt;template id="login-form-tpl"&gt;
+                // &lt;au-schema-form ...&gt;&lt;/au-schema-form&gt;
+                // &lt;/template&gt;</div>
+        </au-example>
+    </div>
+</div>
+
+<script>
+    (() => {
+        // ── AbortController for DOM listener cleanup ──
+        const ac = new AbortController();
+        const { signal } = ac;
+
+        const store = window.__demoStore;
+
+        // === au-if toggle demo ===
+        const toggleBtn = document.getElementById('if-toggle-btn');
+        const demoIf = document.getElementById('demo-if');
+        if (toggleBtn && demoIf) {
+            // Restore persisted condition state
+            const savedCondition = store?.state.toggles?.['au-if'];
+            if (savedCondition !== undefined) {
+                demoIf.condition = savedCondition;
+                toggleBtn.textContent = savedCondition ? 'Hide Content' : 'Show Content';
+            }
+
+            toggleBtn.addEventListener('click', () => {
+                demoIf.condition = !demoIf.condition;
+                toggleBtn.textContent = demoIf.condition ? 'Hide Content' : 'Show Content';
+                // Persist toggle state
+                if (store) {
+                    const t = { ...store.state.toggles };
+                    t['au-if'] = demoIf.condition;
+                    store.state.toggles = t;
+                }
+            }, { signal });
+        }
+
+        // === au-if else demo ===
+        const authSwitch = document.getElementById('auth-switch');
+        const demoIfElse = document.getElementById('demo-if-else');
+        if (authSwitch && demoIfElse) {
+            // Restore persisted auth state
+            const savedAuth = store?.state.toggles?.['au-if-auth'];
+            if (savedAuth !== undefined) {
+                demoIfElse.condition = savedAuth;
+                authSwitch.checked = savedAuth;
+            }
+
+            authSwitch.addEventListener('au-change', (e) => {
+                demoIfElse.condition = e.detail.checked;
+                // Persist auth state
+                if (store) {
+                    const t = { ...store.state.toggles };
+                    t['au-if-auth'] = e.detail.checked;
+                    store.state.toggles = t;
+                }
+            }, { signal });
+        }
+
+        // ── Register cleanup for page navigation ──
+        const demoBus = window.__demoBus;
+        if (demoBus) {
+            const unsub = demoBus.on('demo:cleanup', () => {
+                ac.abort();
+            });
+            window.__demoCleanups.push(unsub);
+        }
+    })();
+</script>

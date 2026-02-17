@@ -12,6 +12,20 @@
     "layout",
     "tabs"
   ],
+  "au-show": [
+    "alerts",
+    "buttons",
+    "cards",
+    "inputs",
+    "layout",
+    "tabs"
+  ],
+  "au-intersection": [
+    "alerts",
+    "chips",
+    "layout",
+    "tabs"
+  ],
   "navbar": [
     "buttons",
     "tabs"
@@ -28,6 +42,22 @@
     "cards",
     "icons",
     "layout"
+  ],
+  "au-media": [
+    "alerts",
+    "chips",
+    "layout",
+    "tabs"
+  ],
+  "au-if": [
+    "alerts",
+    "avatars",
+    "buttons",
+    "cards",
+    "icons",
+    "layout",
+    "switches",
+    "tabs"
   ],
   "dividers": [
     "cards",
@@ -123,6 +153,13 @@
     "layout",
     "tabs"
   ],
+  "au-timer": [
+    "alerts",
+    "buttons",
+    "cards",
+    "layout",
+    "tabs"
+  ],
   "enterprise": [
     "alerts",
     "buttons",
@@ -132,18 +169,14 @@
     "layout",
     "tabs"
   ],
-  "structural": [
-    "alerts",
-    "avatars",
-    "buttons",
-    "cards",
-    "icons",
-    "inputs",
+  "codeblocks": [
     "layout",
-    "switches",
     "tabs"
   ],
-  "codeblocks": [
+  "au-portal": [
+    "alerts",
+    "buttons",
+    "cards",
     "layout",
     "tabs"
   ],
@@ -162,6 +195,22 @@
     "tabs"
   ],
   "dropdowns": [
+    "tabs"
+  ],
+  "au-repeat": [
+    "alerts",
+    "buttons",
+    "cards",
+    "icons",
+    "inputs",
+    "layout",
+    "tabs"
+  ],
+  "au-transition": [
+    "alerts",
+    "buttons",
+    "cards",
+    "layout",
     "tabs"
   ]
 }

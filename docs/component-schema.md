@@ -1,7 +1,14 @@
 # Component Schema Specification
 
+> [!CAUTION]
+> **This document describes a PROPOSED feature that has NOT been implemented.**
+> AgentUI components are NOT defined via JSON schemas. They extend `AuElement` (a `HTMLElement` subclass)
+> and expose their API via the `.describe()` static method and `AgentUI.discoverAll()`.
+> See [AGENTS.md](../AGENTS.md) for the actual component discovery API.
+> This document is kept for future reference only.
+
 > **Version**: 1.0.0-draft  
-> **Status**: Planning Phase
+> **Status**: Proposed — Not Implemented
 
 ---
 

@@ -1,7 +1,13 @@
 # Utility CSS Classes Architecture
 
+> [!CAUTION]
+> **This document describes a PROPOSED feature that has NOT been implemented.**
+> The utility classes described here (`.au-p-4`, `.au-flex`, etc.) do not exist in the current build.
+> AgentUI uses BEM-style component classes (`au-button`, `au-card__header`, etc.) — not utility classes.
+> This document is kept for future reference only.
+
 > **Version**: 1.0.0-draft  
-> **Status**: Planning Phase
+> **Status**: Proposed — Not Implemented
 
 ---
 

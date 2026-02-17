@@ -21,6 +21,30 @@
     "au-api-table",
     "au-api-row"
   ],
+  "au-show": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-stack",
+    "au-button",
+    "au-show",
+    "au-card",
+    "au-input",
+    "au-api-table",
+    "au-api-row",
+    "au-alert"
+  ],
+  "au-intersection": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-stack",
+    "au-chip",
+    "au-intersection",
+    "au-alert",
+    "au-api-table",
+    "au-api-row"
+  ],
   "navbar": [
     "au-tabs",
     "au-tab",
@@ -56,6 +80,32 @@
     "au-stack",
     "au-card",
     "au-icon"
+  ],
+  "au-media": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-stack",
+    "au-chip",
+    "au-media",
+    "au-alert",
+    "au-api-table",
+    "au-api-row"
+  ],
+  "au-if": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-stack",
+    "au-button",
+    "au-if",
+    "au-alert",
+    "au-switch",
+    "au-card",
+    "au-avatar",
+    "au-icon",
+    "au-api-table",
+    "au-api-row"
   ],
   "dividers": [
     "au-tabs",
@@ -256,6 +306,18 @@
     "au-api-row",
     "au-button"
   ],
+  "au-timer": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-stack",
+    "au-timer",
+    "au-card",
+    "au-button",
+    "au-alert",
+    "au-api-table",
+    "au-api-row"
+  ],
   "enterprise": [
     "au-tabs",
     "au-tab",
@@ -271,30 +333,24 @@
     "au-error-boundary",
     "au-alert"
   ],
-  "structural": [
-    "au-tabs",
-    "au-tab",
-    "au-example",
-    "au-stack",
-    "au-button",
-    "au-if",
-    "au-alert",
-    "au-switch",
-    "au-card",
-    "au-avatar",
-    "au-icon",
-    "au-divider",
-    "au-input",
-    "au-repeat",
-    "au-api-table",
-    "au-api-row"
-  ],
   "codeblocks": [
     "au-tabs",
     "au-tab",
     "au-example",
     "au-code",
     "au-stack",
+    "au-api-table",
+    "au-api-row"
+  ],
+  "au-portal": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-stack",
+    "au-button",
+    "au-card",
+    "au-portal",
+    "au-alert",
     "au-api-table",
     "au-api-row"
   ],
@@ -330,5 +386,31 @@
     "au-option",
     "au-api-table",
     "au-api-row"
+  ],
+  "au-repeat": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-stack",
+    "au-input",
+    "au-button",
+    "au-repeat",
+    "au-api-table",
+    "au-api-row",
+    "au-alert",
+    "au-card",
+    "au-icon"
+  ],
+  "au-transition": [
+    "au-tabs",
+    "au-tab",
+    "au-example",
+    "au-stack",
+    "au-button",
+    "au-transition",
+    "au-card",
+    "au-api-table",
+    "au-api-row",
+    "au-alert"
   ]
 }

@@ -1,0 +1,138 @@
+<div class="page active">
+    <h1 class="page-title">au-portal</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-portal&gt;</code> teleports children to a different part of the DOM tree, solving
+        <code>overflow: hidden</code> and <strong>z-index stacking context</strong> issues. Children are
+        <em>moved</em> (not cloned) — DOM identity and event listeners are preserved.
+        Uses <code>display: contents</code> for zero layout impact.
+    </p>
+
+    <au-tabs active="0" id="au-portal-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <!-- ===== OVERVIEW ===== -->
+    <div id="au-portal-overview" class="doc-tab-content">
+
+        <au-example title="Teleport content to a target container">
+            <div slot="demo">
+                <au-stack gap="md">
+                    <au-stack direction="row" gap="sm">
+                        <au-button id="portal-activate-btn" variant="filled">Teleport →</au-button>
+                        <au-button id="portal-return-btn" variant="outlined">← Return</au-button>
+                    </au-stack>
+                    <au-card variant="outlined" style="padding: 16px;">
+                        <div style="font-size: 13px; opacity: 0.6; margin-bottom: 8px;">Source (au-portal lives here):
+                        </div>
+                        <au-portal id="demo-portal">
+                            <au-alert severity="success">🚀 I move between containers!</au-alert>
+                        </au-portal>
+                    </au-card>
+                    <au-card id="portal-target-box" variant="filled" style="padding: 16px; min-height: 60px;">
+                        <div style="font-size: 13px; opacity: 0.6; margin-bottom: 8px;">Target container (teleported
+                            content appears here):
+                        </div>
+                    </au-card>
+                </au-stack>
+            </div>
+            <div slot="code">&lt;au-portal target="#my-target"&gt;
+                &lt;au-alert&gt;I appear inside #my-target!&lt;/au-alert&gt;
+                &lt;/au-portal&gt;
+
+                &lt;div id="my-target"&gt;
+                &lt;!-- Teleported content lands here --&gt;
+                &lt;/div&gt;</div>
+        </au-example>
+
+        <div class="component-section"
+            style="background: var(--md-sys-color-primary-container); border-left: 4px solid var(--md-sys-color-primary);">
+            <h2 class="section-title" style="color: var(--md-sys-color-on-primary-container);">Common Use Cases</h2>
+            <p style="color: var(--md-sys-color-on-primary-container); line-height: 1.6;">
+                Portals are essential when a component's visual position must differ from its DOM position.
+                Common cases: <strong>modals inside overflow:hidden containers</strong>, tooltips that need to escape
+                clipping, notification toasts that must render at the top of the page, or dropdown menus in scrollable
+                areas.
+            </p>
+        </div>
+    </div>
+
+    <!-- ===== API ===== -->
+    <div id="au-portal-api" class="doc-tab-content" style="display: none;">
+
+        <div class="component-section">
+            <h2 class="section-title">Selector</h2>
+            <div class="code-block" style="display: inline-block;">&lt;au-portal&gt;</div>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Attributes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="target" type="string" default="body">
+                    CSS selector for the teleportation target. Defaults to <code>document.body</code>
+                    when absent. Uses <code>querySelector</code> (XSS-safe).
+                </au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Events</h2>
+            <au-api-table type="events">
+                <au-api-row name="au-teleport" type="CustomEvent">
+                    Fired after children are moved to the target container.
+                </au-api-row>
+                <au-api-row name="au-return" type="CustomEvent">
+                    Fired before children are returned to the source on disconnect.
+                </au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <!-- ===== EXAMPLES ===== -->
+    <div id="au-portal-examples" class="doc-tab-content" style="display: none;">
+
+        <au-example title="Escape overflow:hidden with portal">
+            <div slot="demo">
+                <au-alert severity="info">See the code — teleport modal to body to escape clipping.</au-alert>
+            </div>
+            <div slot="code">&lt;div style="overflow: hidden; height: 100px;"&gt;
+                &lt;!-- This modal would be clipped without a portal --&gt;
+                &lt;au-portal target="body"&gt;
+                &lt;au-modal open title="I escaped overflow!"&gt;
+                &lt;p&gt;Portal moved me to body.&lt;/p&gt;
+                &lt;/au-modal&gt;
+                &lt;/au-portal&gt;
+                &lt;/div&gt;</div>
+        </au-example>
+    </div>
+</div>
+
+<script>
+    (() => {
+        // ── AbortController for DOM listener cleanup ──
+        const ac = new AbortController();
+        const { signal } = ac;
+
+        const portalActivateBtn = document.getElementById('portal-activate-btn');
+        const portalReturnBtn = document.getElementById('portal-return-btn');
+        const demoPortal = document.getElementById('demo-portal');
+        if (portalActivateBtn && portalReturnBtn && demoPortal) {
+            portalActivateBtn.addEventListener('click', () => {
+                demoPortal.setAttribute('target', '#portal-target-box');
+            }, { signal });
+            portalReturnBtn.addEventListener('click', () => {
+                demoPortal.removeAttribute('target');
+            }, { signal });
+        }
+
+        // ── Register cleanup for page navigation ──
+        const demoBus = window.__demoBus;
+        if (demoBus) {
+            const unsub = demoBus.on('demo:cleanup', () => {
+                ac.abort();
+            });
+            window.__demoCleanups.push(unsub);
+        }
+    })();
+</script>

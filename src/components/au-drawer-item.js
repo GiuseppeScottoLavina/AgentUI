@@ -1,5 +1,5 @@
 /**
- * au-drawer-item.js - Material Design 3 Drawer/Nav Item Component
+ * @fileoverview au-drawer-item - Material Design 3 Drawer/Nav Item Component
  * 
  * Navigation item for drawer (horizontal layout) and bottom navigation (vertical).
  * Follows MD3 Navigation Drawer/Rail/Bar item specifications.

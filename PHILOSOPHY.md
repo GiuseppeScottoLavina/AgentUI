@@ -58,7 +58,7 @@ Framework version upgrades are a real cost: dependency breakage, migration effor
 
 - Built on **W3C Web Components** — a standard, not a framework
 - **Zero external dependencies** — no transitive version conflicts
-- **50 components** included — no dependency matrix to manage
+- **57 components** included — no dependency matrix to manage
 
 **Trade-off acknowledged:** Standards evolve too (Web Components v0 → v1 was a breaking change). "Standards-based" reduces churn but doesn't eliminate it.
 
@@ -191,7 +191,7 @@ this.innerHTML = html`
 ## 5. Smart Bundle Architecture (61KB Critical Path)
 
 **The tree-shaking argument:**
-"I only use 3 components, why download all 50?"
+"I only use 3 components, why download all 57?"
 
 **AgentUI's response:**
 
@@ -235,7 +235,7 @@ async function loadRoute(name) {
 item.addEventListener('mouseenter', () => loadRoute(pageId));
 ```
 
-**Result:** 100/100 Lighthouse Performance with all 50 components available.
+**Result:** 100/100 Lighthouse Performance with all 57 components available.
 [**→ Verify it yourself on PageSpeed Insights**](https://pagespeed.web.dev/analysis?url=https://giuseppescottolavina.github.io/AgentUI/demo/)
 
 **Trade-off acknowledged:** The initial 61KB is larger than a minimal tree-shaken app. But the lazy loading architecture means subsequent pages load only what they need, and the developer experience is zero-config.
@@ -359,7 +359,7 @@ See [SECURITY.md](./SECURITY.md) for full audit details.
 
 **Honest answer:** AgentUI doesn't have a large ecosystem, because:
 
-1. **50 components built-in** — Buttons, cards, forms, modals, tables, tabs, tooltips, data tables, schema forms, virtual lists. Most apps need nothing else.
+1. **57 components built-in** — Buttons, cards, forms, modals, tables, tabs, tooltips, data tables, schema forms, virtual lists. Most apps need nothing else.
 
 2. **Built-in EventBus** — Lightweight event bus (LightBus) for inter-component messaging is included, not a separate package.
 
@@ -383,7 +383,7 @@ To stay focused, some things are explicitly **out of scope**:
 | Virtual DOM | Goes against core philosophy — direct DOM is the point |
 | JSX support | Use template literals; no transpilation required |
 | Shadow DOM by default | Light DOM enables AI inspection and global styling |
-| Plugin ecosystem | 50 components built-in; use vanilla JS libraries for the rest |
+| Plugin ecosystem | 57 components built-in; use vanilla JS libraries for the rest |
 
 This isn't stubbornness — it's focus. Every feature has a maintenance cost, and saying "no" to the wrong features is what keeps AgentUI lean.
 

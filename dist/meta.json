@@ -1,7 +1,7 @@
 {
   "inputs": {
     "src/index.js": {
-      "bytes": 13685,
+      "bytes": 14212,
       "imports": [
         {
           "path": "/Users/giuseppescottolavina/Documents/PERSONAL/AgentUI/src/core/AuElement.js",
@@ -304,6 +304,36 @@
           "original": "./components/au-repeat.js"
         },
         {
+          "path": "/Users/giuseppescottolavina/Documents/PERSONAL/AgentUI/src/components/au-show.js",
+          "kind": "import-statement",
+          "original": "./components/au-show.js"
+        },
+        {
+          "path": "/Users/giuseppescottolavina/Documents/PERSONAL/AgentUI/src/components/au-portal.js",
+          "kind": "import-statement",
+          "original": "./components/au-portal.js"
+        },
+        {
+          "path": "/Users/giuseppescottolavina/Documents/PERSONAL/AgentUI/src/components/au-intersection.js",
+          "kind": "import-statement",
+          "original": "./components/au-intersection.js"
+        },
+        {
+          "path": "/Users/giuseppescottolavina/Documents/PERSONAL/AgentUI/src/components/au-media.js",
+          "kind": "import-statement",
+          "original": "./components/au-media.js"
+        },
+        {
+          "path": "/Users/giuseppescottolavina/Documents/PERSONAL/AgentUI/src/components/au-transition.js",
+          "kind": "import-statement",
+          "original": "./components/au-transition.js"
+        },
+        {
+          "path": "/Users/giuseppescottolavina/Documents/PERSONAL/AgentUI/src/components/au-timer.js",
+          "kind": "import-statement",
+          "original": "./components/au-timer.js"
+        },
+        {
           "path": "/Users/giuseppescottolavina/Documents/PERSONAL/AgentUI/src/components/au-fetch.js",
           "kind": "import-statement",
           "original": "./components/au-fetch.js"
@@ -524,6 +554,36 @@
           "original": "./components/au-repeat.js"
         },
         {
+          "path": "/Users/giuseppescottolavina/Documents/PERSONAL/AgentUI/src/components/au-show.js",
+          "kind": "import-statement",
+          "original": "./components/au-show.js"
+        },
+        {
+          "path": "/Users/giuseppescottolavina/Documents/PERSONAL/AgentUI/src/components/au-portal.js",
+          "kind": "import-statement",
+          "original": "./components/au-portal.js"
+        },
+        {
+          "path": "/Users/giuseppescottolavina/Documents/PERSONAL/AgentUI/src/components/au-intersection.js",
+          "kind": "import-statement",
+          "original": "./components/au-intersection.js"
+        },
+        {
+          "path": "/Users/giuseppescottolavina/Documents/PERSONAL/AgentUI/src/components/au-media.js",
+          "kind": "import-statement",
+          "original": "./components/au-media.js"
+        },
+        {
+          "path": "/Users/giuseppescottolavina/Documents/PERSONAL/AgentUI/src/components/au-transition.js",
+          "kind": "import-statement",
+          "original": "./components/au-transition.js"
+        },
+        {
+          "path": "/Users/giuseppescottolavina/Documents/PERSONAL/AgentUI/src/components/au-timer.js",
+          "kind": "import-statement",
+          "original": "./components/au-timer.js"
+        },
+        {
           "path": "/Users/giuseppescottolavina/Documents/PERSONAL/AgentUI/src/components/au-confirm.js",
           "kind": "import-statement",
           "original": "./components/au-confirm.js"
@@ -691,8 +751,28 @@
       ],
       "format": "esm"
     },
+    "src/components/au-timer.js": {
+      "bytes": 5470,
+      "imports": [
+        {
+          "path": "../core/AuElement.js",
+          "kind": "import-statement"
+        }
+      ],
+      "format": "esm"
+    },
     "src/components/au-fetch.js": {
       "bytes": 11761,
+      "imports": [
+        {
+          "path": "../core/AuElement.js",
+          "kind": "import-statement"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/components/au-transition.js": {
+      "bytes": 6302,
       "imports": [
         {
           "path": "../core/AuElement.js",
@@ -745,7 +825,7 @@
       "format": "esm"
     },
     "src/components/au-schema-form.js": {
-      "bytes": 16713,
+      "bytes": 16724,
       "imports": [
         {
           "path": "../core/AuElement.js",
@@ -771,6 +851,16 @@
         },
         {
           "path": "../core/bus.js",
+          "kind": "import-statement"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/components/au-media.js": {
+      "bytes": 4953,
+      "imports": [
+        {
+          "path": "../core/AuElement.js",
           "kind": "import-statement"
         }
       ],
@@ -847,6 +937,16 @@
       ],
       "format": "esm"
     },
+    "src/components/au-show.js": {
+      "bytes": 5576,
+      "imports": [
+        {
+          "path": "../core/AuElement.js",
+          "kind": "import-statement"
+        }
+      ],
+      "format": "esm"
+    },
     "src/components/au-sidebar.js": {
       "bytes": 3146,
       "imports": [
@@ -877,7 +977,7 @@
       "format": "esm"
     },
     "src/components/au-layout.js": {
-      "bytes": 7373,
+      "bytes": 7384,
       "imports": [
         {
           "path": "../core/AuElement.js",
@@ -887,7 +987,7 @@
       "format": "esm"
     },
     "src/components/au-datatable.js": {
-      "bytes": 16581,
+      "bytes": 16819,
       "imports": [
         {
           "path": "../core/AuElement.js",
@@ -906,6 +1006,16 @@
     },
     "src/components/au-skeleton.js": {
       "bytes": 2745,
+      "imports": [
+        {
+          "path": "../core/AuElement.js",
+          "kind": "import-statement"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/components/au-intersection.js": {
+      "bytes": 5576,
       "imports": [
         {
           "path": "../core/AuElement.js",
@@ -933,7 +1043,7 @@
       "format": "esm"
     },
     "src/components/au-drawer.js": {
-      "bytes": 10525,
+      "bytes": 10536,
       "imports": [
         {
           "path": "../core/AuElement.js",
@@ -951,7 +1061,7 @@
       "format": "esm"
     },
     "src/components/au-page.js": {
-      "bytes": 2461,
+      "bytes": 2475,
       "imports": [
         {
           "path": "../core/AuElement.js",
@@ -985,7 +1095,7 @@
       "format": "esm"
     },
     "src/components/au-icon.js": {
-      "bytes": 14353,
+      "bytes": 17076,
       "imports": [
         {
           "path": "../core/AuElement.js",
@@ -1032,7 +1142,7 @@
       "format": "esm"
     },
     "src/components/au-drawer-item.js": {
-      "bytes": 6405,
+      "bytes": 6416,
       "imports": [
         {
           "path": "../core/AuElement.js",
@@ -1102,7 +1212,7 @@
       "format": "esm"
     },
     "src/components/au-router.js": {
-      "bytes": 8487,
+      "bytes": 8501,
       "imports": [
         {
           "path": "../core/AuElement.js",
@@ -1114,6 +1224,16 @@
         },
         {
           "path": "../core/bus.js",
+          "kind": "import-statement"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/components/au-portal.js": {
+      "bytes": 6000,
+      "imports": [
+        {
+          "path": "../core/AuElement.js",
           "kind": "import-statement"
         }
       ],
@@ -1171,7 +1291,7 @@
       "format": "esm"
     },
     "src/components/au-progress.js": {
-      "bytes": 3421,
+      "bytes": 3932,
       "imports": [
         {
           "path": "../core/AuElement.js",
@@ -1236,7 +1356,7 @@
       "format": "esm"
     },
     "src/components/au-prompt-ui.js": {
-      "bytes": 14237,
+      "bytes": 14248,
       "imports": [
         {
           "path": "../core/AuElement.js",
@@ -1278,7 +1398,7 @@
       "format": "esm"
     },
     "src/components/au-bottom-nav.js": {
-      "bytes": 3862,
+      "bytes": 3873,
       "imports": [
         {
           "path": "../core/AuElement.js",
@@ -1335,15 +1455,14 @@
           "kind": "import-statement"
         },
         {
-          "path": "/Users/giuseppescottolavina/Documents/PERSONAL/AgentUI/src/core/form-styles.js",
-          "kind": "import-statement",
-          "original": "../core/form-styles.js"
+          "path": "../core/form-styles.js",
+          "kind": "import-statement"
         }
       ],
       "format": "esm"
     },
     "src/components/au-splash.js": {
-      "bytes": 5278,
+      "bytes": 5289,
       "imports": [
         {
           "path": "../core/AuElement.js",
@@ -1405,7 +1524,7 @@
       "format": "esm"
     },
     "src/core/constants.js": {
-      "bytes": 1086,
+      "bytes": 1178,
       "imports": [],
       "format": "esm"
     },
@@ -1459,8 +1578,9 @@
           "kind": "import-statement"
         },
         {
-          "path": "../core/form-styles.js",
-          "kind": "import-statement"
+          "path": "/Users/giuseppescottolavina/Documents/PERSONAL/AgentUI/src/core/form-styles.js",
+          "kind": "import-statement",
+          "original": "../core/form-styles.js"
         }
       ],
       "format": "esm"
@@ -1483,7 +1603,7 @@
   },
   "outputs": {
     "./agentui.esm.js": {
-      "bytes": 185323,
+      "bytes": 194235,
       "inputs": {
         "src/core/AuElement.js": {
           "bytesInOutput": 6405
@@ -1558,7 +1678,7 @@
           "bytesInOutput": 4536
         },
         "src/components/au-icon.js": {
-          "bytesInOutput": 11047
+          "bytesInOutput": 13655
         },
         "src/components/au-drawer-item.js": {
           "bytesInOutput": 2923
@@ -1612,7 +1732,7 @@
           "bytesInOutput": 500
         },
         "src/components/au-progress.js": {
-          "bytesInOutput": 1523
+          "bytesInOutput": 1737
         },
         "src/components/au-table.js": {
           "bytesInOutput": 1093
@@ -1662,11 +1782,29 @@
         "src/components/au-repeat.js": {
           "bytesInOutput": 1256
         },
+        "src/components/au-show.js": {
+          "bytesInOutput": 854
+        },
+        "src/components/au-portal.js": {
+          "bytesInOutput": 985
+        },
+        "src/components/au-intersection.js": {
+          "bytesInOutput": 932
+        },
+        "src/components/au-media.js": {
+          "bytesInOutput": 910
+        },
+        "src/components/au-transition.js": {
+          "bytesInOutput": 1184
+        },
+        "src/components/au-timer.js": {
+          "bytesInOutput": 947
+        },
         "src/components/au-fetch.js": {
           "bytesInOutput": 3413
         },
         "src/components/au-datatable.js": {
-          "bytesInOutput": 9204
+          "bytesInOutput": 9308
         },
         "src/components/au-schema-form.js": {
           "bytesInOutput": 8670
@@ -1690,7 +1828,7 @@
           "bytesInOutput": 1790
         },
         "src/core/constants.js": {
-          "bytesInOutput": 639
+          "bytesInOutput": 717
         },
         "src/core/discovery.js": {
           "bytesInOutput": 726
@@ -1762,9 +1900,11 @@
         "BreakpointObserver",
         "BREAKPOINTS",
         "AuVirtualList",
+        "AuTransition",
         "AuTr",
         "AuTooltip",
         "AuToast",
+        "AuTimer",
         "AuThemeToggle",
         "AuThead",
         "AuTh",
@@ -1781,6 +1921,7 @@
         "AuSkeleton",
         "AuSidebarItem",
         "AuSidebar",
+        "AuShow",
         "AuSchemaForm",
         "AuRouter",
         "AuRepeat",
@@ -1788,6 +1929,7 @@
         "AuRadio",
         "AuPromptInput",
         "AuProgress",
+        "AuPortal",
         "AuPage",
         "AuOption",
         "AuNavbarLinks",
@@ -1797,8 +1939,10 @@
         "AuNavItem",
         "AuModal",
         "AuMessageBubble",
+        "AuMedia",
         "AuLazy",
         "AuLayout",
+        "AuIntersection",
         "AuInput",
         "AuIf",
         "AuIcon",

@@ -1,6 +1,6 @@
 # Core Utilities Reference
 
-> AgentUI ships 12 utility modules alongside its 50 components.  
+> AgentUI ships 12 utility modules alongside its 57 components.  
 > Import from `agentui-wc` or the direct path shown in each section.
 
 ---

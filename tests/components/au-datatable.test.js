@@ -386,6 +386,34 @@ describe('au-datatable Unit Tests', () => {
         expect(el.innerHTML).toContain('&lt;script&gt;');
     });
 
+    // ─── PROTOTYPE POLLUTION GUARD (SEC-1) ────────────────────────
+    test('should strip __proto__ keys from columns JSON', () => {
+        const el = document.createElement('au-datatable');
+        const malicious = '[{"field":"name","label":"Name","__proto__":{"polluted":true}}]';
+        el.setAttribute('columns', malicious);
+        body.appendChild(el);
+
+        const cols = el.columns;
+        expect(cols.length).toBe(1);
+        expect(cols[0].field).toBe('name');
+        // __proto__ should be stripped by reviver
+        expect(cols[0]).not.toHaveProperty('__proto__', { polluted: true });
+        // Object.prototype should NOT be polluted
+        expect({}.polluted).toBeUndefined();
+    });
+
+    test('should strip constructor and prototype keys from columns JSON', () => {
+        const el = document.createElement('au-datatable');
+        const malicious = '[{"field":"name","constructor":{"prototype":{"evil":true}}}]';
+        el.setAttribute('columns', malicious);
+        body.appendChild(el);
+
+        const cols = el.columns;
+        expect(cols[0].field).toBe('name');
+        // constructor key should be stripped
+        expect(typeof cols[0].constructor).toBe('function'); // native Object constructor, not the injected one
+    });
+
     // ─── RENDER IDEMPOTENCY ────────────────────────────────────────
     test('should be idempotent on re-render', () => {
         const el = document.createElement('au-datatable');

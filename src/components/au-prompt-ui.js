@@ -1,5 +1,5 @@
 /**
- * au-prompt-ui.js - AI Agent Prompt UI Components
+ * @fileoverview au-prompt-ui - AI Agent Prompt UI Components
  * 
  * Specialized components for AI agent interfaces:
  * - au-prompt-input: Enhanced text input with submit button and loading states

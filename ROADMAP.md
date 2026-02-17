@@ -1,6 +1,6 @@
 # Roadmap
 
-AgentUI's foundation — 50 components, agent API, build system — is solid and battle-tested. Here's what's next.
+AgentUI's foundation — 57 components, agent API, build system — is solid and battle-tested. Here's what's next.
 
 ## Phase 1 — Enterprise Essentials
 

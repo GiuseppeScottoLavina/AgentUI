@@ -1,0 +1,236 @@
+<div class="page active">
+    <h1 class="page-title">au-timer</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-timer&gt;</code> provides a <strong>declarative timer</strong> with start/stop/reset controls.
+        Supports both count-up and <strong>countdown</strong> modes, fires tick events at configurable intervals,
+        and emits a completion event when countdown reaches zero.
+        Uses <code>display: contents</code> for zero layout impact.
+    </p>
+
+    <au-tabs active="0" id="au-timer-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <!-- ===== OVERVIEW ===== -->
+    <div id="au-timer-overview" class="doc-tab-content">
+
+        <au-example title="Stopwatch (count-up)">
+            <div slot="demo">
+                <au-stack gap="md">
+                    <au-timer id="demo-timer" interval="1000"></au-timer>
+                    <au-card variant="elevated">
+                        <au-stack align="center" gap="sm">
+                            <div id="timer-display"
+                                style="font-size: 48px; font-weight: 700; font-variant-numeric: tabular-nums;">0</div>
+                            <div style="font-size: 13px; opacity: 0.6;">seconds elapsed</div>
+                        </au-stack>
+                    </au-card>
+                    <au-stack direction="row" gap="sm" justify="center">
+                        <au-button id="timer-start-btn" variant="filled">Start</au-button>
+                        <au-button id="timer-stop-btn" variant="outlined">Stop</au-button>
+                        <au-button id="timer-reset-btn" variant="text">Reset</au-button>
+                    </au-stack>
+                </au-stack>
+            </div>
+            <div slot="code">&lt;au-timer id="timer" interval="1000"&gt;&lt;/au-timer&gt;
+
+                &lt;script&gt;
+                const timer = document.getElementById('timer');
+
+                timer.addEventListener('au-tick', (e) =&gt; {
+                display.textContent = e.detail.count;
+                });
+
+                timer.start(); // Begin counting
+                timer.stop(); // Pause
+                timer.reset(); // Reset to 0
+                &lt;/script&gt;</div>
+        </au-example>
+
+        <au-example title="Countdown timer">
+            <div slot="demo">
+                <au-stack gap="md">
+                    <au-timer id="demo-countdown" interval="1000" countdown="10"></au-timer>
+                    <au-card variant="elevated">
+                        <au-stack align="center" gap="sm">
+                            <div id="countdown-display"
+                                style="font-size: 48px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--md-sys-color-primary);">
+                                10</div>
+                            <div style="font-size: 13px; opacity: 0.6;">seconds remaining</div>
+                        </au-stack>
+                    </au-card>
+                    <div id="countdown-complete" style="display: none;">
+                        <au-alert severity="success">⏰ Countdown complete!</au-alert>
+                    </div>
+                    <au-stack direction="row" gap="sm" justify="center">
+                        <au-button id="countdown-start-btn" variant="filled">Start Countdown</au-button>
+                        <au-button id="countdown-reset-btn" variant="outlined">Reset</au-button>
+                    </au-stack>
+                </au-stack>
+            </div>
+            <div slot="code">&lt;au-timer interval="1000" countdown="10"&gt;&lt;/au-timer&gt;
+
+                &lt;script&gt;
+                const timer = document.querySelector('au-timer');
+
+                timer.addEventListener('au-tick', (e) =&gt; {
+                display.textContent = e.detail.count; // 10, 9, 8...
+                });
+
+                timer.addEventListener('au-complete', () =&gt; {
+                console.log('Countdown finished!');
+                });
+
+                timer.start();
+                &lt;/script&gt;</div>
+        </au-example>
+    </div>
+
+    <!-- ===== API ===== -->
+    <div id="au-timer-api" class="doc-tab-content" style="display: none;">
+
+        <div class="component-section">
+            <h2 class="section-title">Selector</h2>
+            <div class="code-block" style="display: inline-block;">&lt;au-timer&gt;</div>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Attributes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="interval" type="number" default="1000">
+                    Tick interval in milliseconds.
+                </au-api-row>
+                <au-api-row name="countdown" type="number" default="—">
+                    Initial countdown value. Timer counts down to 0 and fires
+                    <code>au-complete</code>. Omit for count-up mode.
+                </au-api-row>
+                <au-api-row name="autostart" type="boolean" default="false">
+                    Start the timer automatically when connected to the DOM.
+                </au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Methods</h2>
+            <au-api-table type="methods">
+                <au-api-row name="start()" type="void">
+                    Start or resume the timer.
+                </au-api-row>
+                <au-api-row name="stop()" type="void">
+                    Pause the timer (preserves current count).
+                </au-api-row>
+                <au-api-row name="reset()" type="void">
+                    Reset the timer to its initial value (stops the timer).
+                </au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Events</h2>
+            <au-api-table type="events">
+                <au-api-row name="au-tick" type="CustomEvent">
+                    Fired on each tick. <code>e.detail.count</code> = current count.
+                </au-api-row>
+                <au-api-row name="au-complete" type="CustomEvent">
+                    Fired when countdown reaches 0 (countdown mode only).
+                </au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <!-- ===== EXAMPLES ===== -->
+    <div id="au-timer-examples" class="doc-tab-content" style="display: none;">
+
+        <au-example title="Pomodoro with auto-reset">
+            <div slot="demo">
+                <au-alert severity="info">See the code — self-resetting pomodoro countdown pattern.</au-alert>
+            </div>
+            <div slot="code">&lt;au-timer id="pomodoro" interval="1000" countdown="1500"&gt;
+                &lt;/au-timer&gt;
+
+                &lt;script type="module"&gt;
+                const timer = document.getElementById('pomodoro');
+
+                timer.addEventListener('au-tick', (e) =&gt; {
+                const remaining = e.detail.count;
+                const mins = Math.floor(remaining / 60);
+                const secs = remaining % 60;
+                display.textContent = `${mins}:${String(secs).padStart(2, '0')}`;
+                });
+
+                timer.addEventListener('au-complete', () =&gt; {
+                showToast('Pomodoro complete! 🍅', { severity: 'success' });
+                timer.reset();
+                timer.start(); // Auto-restart
+                });
+
+                timer.start();
+                &lt;/script&gt;</div>
+        </au-example>
+    </div>
+</div>
+
+<script>
+    (() => {
+        // ── AbortController for DOM listener cleanup ──
+        const ac = new AbortController();
+        const { signal } = ac;
+
+        // === Stopwatch demo ===
+        const demoTimer = document.getElementById('demo-timer');
+        const timerDisplay = document.getElementById('timer-display');
+        const timerStartBtn = document.getElementById('timer-start-btn');
+        const timerStopBtn = document.getElementById('timer-stop-btn');
+        const timerResetBtn = document.getElementById('timer-reset-btn');
+
+        if (demoTimer) {
+            demoTimer.addEventListener('au-tick', (e) => {
+                if (timerDisplay) timerDisplay.textContent = e.detail.count;
+            }, { signal });
+            timerStartBtn?.addEventListener('click', () => demoTimer.start(), { signal });
+            timerStopBtn?.addEventListener('click', () => demoTimer.stop(), { signal });
+            timerResetBtn?.addEventListener('click', () => {
+                demoTimer.reset();
+                if (timerDisplay) timerDisplay.textContent = '0';
+            }, { signal });
+        }
+
+        // === Countdown demo ===
+        const demoCountdown = document.getElementById('demo-countdown');
+        const countdownDisplay = document.getElementById('countdown-display');
+        const countdownStartBtn = document.getElementById('countdown-start-btn');
+        const countdownResetBtn = document.getElementById('countdown-reset-btn');
+        const countdownComplete = document.getElementById('countdown-complete');
+
+        if (demoCountdown) {
+            demoCountdown.addEventListener('au-tick', (e) => {
+                if (countdownDisplay) countdownDisplay.textContent = e.detail.count;
+            }, { signal });
+            demoCountdown.addEventListener('au-complete', () => {
+                if (countdownComplete) countdownComplete.style.display = 'block';
+            }, { signal });
+            countdownStartBtn?.addEventListener('click', () => {
+                if (countdownComplete) countdownComplete.style.display = 'none';
+                demoCountdown.start();
+            }, { signal });
+            countdownResetBtn?.addEventListener('click', () => {
+                demoCountdown.reset();
+                if (countdownDisplay) countdownDisplay.textContent = '10';
+                if (countdownComplete) countdownComplete.style.display = 'none';
+            }, { signal });
+        }
+
+        // ── Register cleanup for page navigation ──
+        const demoBus = window.__demoBus;
+        if (demoBus) {
+            const unsub = demoBus.on('demo:cleanup', () => {
+                ac.abort();
+                if (demoTimer) demoTimer.stop();
+                if (demoCountdown) demoCountdown.stop();
+            });
+            window.__demoCleanups.push(unsub);
+        }
+    })();
+</script>

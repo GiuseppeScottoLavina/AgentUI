@@ -1,0 +1,163 @@
+<div class="page active">
+    <h1 class="page-title">au-intersection</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-intersection&gt;</code> wraps the <strong>IntersectionObserver</strong> API into a declarative
+        element. It fires events when children enter or leave the viewport.
+        Perfect for lazy loading, scroll-based animations, and analytics tracking.
+        Uses <code>display: contents</code> for zero layout impact.
+    </p>
+
+    <au-tabs active="0" id="au-intersection-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <!-- ===== OVERVIEW ===== -->
+    <div id="au-intersection-overview" class="doc-tab-content">
+
+        <au-example title="Viewport detection">
+            <div slot="demo">
+                <au-stack gap="md">
+                    <au-chip id="intersection-status" variant="outlined">Scroll to check...</au-chip>
+                    <div
+                        style="height: 150px; overflow-y: auto; border: 1px solid var(--md-sys-color-outline-variant); border-radius: 8px; padding: 16px;">
+                        <div style="height: 200px;">
+                            <p style="opacity: 0.5;">↓ Scroll down to reveal the observed element</p>
+                        </div>
+                        <au-intersection id="demo-intersection">
+                            <au-alert severity="success" style="margin-bottom: 16px;">
+                                👋 I'm being observed by au-intersection!
+                            </au-alert>
+                        </au-intersection>
+                        <div style="height: 100px;"></div>
+                    </div>
+                </au-stack>
+            </div>
+            <div slot="code">&lt;au-intersection&gt;
+                &lt;div class="hero-section"&gt;...&lt;/div&gt;
+                &lt;/au-intersection&gt;
+
+                &lt;script&gt;
+                const obs = document.querySelector('au-intersection');
+                obs.addEventListener('au-visible', () =&gt; {
+                console.log('Element is in viewport');
+                });
+                obs.addEventListener('au-hidden', () =&gt; {
+                console.log('Element left viewport');
+                });
+                &lt;/script&gt;</div>
+        </au-example>
+
+        <div class="component-section"
+            style="background: var(--md-sys-color-primary-container); border-left: 4px solid var(--md-sys-color-primary);">
+            <h2 class="section-title" style="color: var(--md-sys-color-on-primary-container);">Performance</h2>
+            <p style="color: var(--md-sys-color-on-primary-container); line-height: 1.6;">
+                <code>IntersectionObserver</code> is much more efficient than scroll event listeners. The browser
+                handles
+                observation natively and only fires callbacks when thresholds are crossed. Use the <code>once</code>
+                attribute when you only need the first intersection (e.g., lazy-loading images).
+            </p>
+        </div>
+    </div>
+
+    <!-- ===== API ===== -->
+    <div id="au-intersection-api" class="doc-tab-content" style="display: none;">
+
+        <div class="component-section">
+            <h2 class="section-title">Selector</h2>
+            <div class="code-block" style="display: inline-block;">&lt;au-intersection&gt;</div>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Attributes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="once" type="boolean" default="false">
+                    Fire <code>au-visible</code> only once, then disconnect. Ideal for lazy loading.
+                </au-api-row>
+                <au-api-row name="threshold" type="string" default="0">
+                    Visibility threshold (0–1). <code>"0.5"</code> = fire when 50% visible.
+                </au-api-row>
+                <au-api-row name="root-margin" type="string" default="0px">
+                    Margin around root. E.g., <code>"200px"</code> to trigger 200px before entering viewport.
+                </au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Properties</h2>
+            <au-api-table type="properties">
+                <au-api-row name="visible" type="boolean" default="false">
+                    Read-only. Whether the element is currently intersecting the viewport.
+                </au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Events</h2>
+            <au-api-table type="events">
+                <au-api-row name="au-visible" type="CustomEvent">
+                    Fired when the element enters the viewport/intersection area.
+                </au-api-row>
+                <au-api-row name="au-hidden" type="CustomEvent">
+                    Fired when the element leaves the viewport/intersection area.
+                </au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <!-- ===== EXAMPLES ===== -->
+    <div id="au-intersection-examples" class="doc-tab-content" style="display: none;">
+
+        <au-example title="Lazy-loading images with au-intersection">
+            <div slot="demo">
+                <au-alert severity="info">See the code — lazy load images on scroll.</au-alert>
+            </div>
+            <div slot="code">&lt;au-intersection once&gt;
+                &lt;img data-src="hero.webp" alt="Hero" /&gt;
+                &lt;/au-intersection&gt;
+
+                &lt;script type="module"&gt;
+                document.querySelectorAll('au-intersection').forEach(el =&gt; {
+                el.addEventListener('au-visible', () =&gt; {
+                const img = el.querySelector('img[data-src]');
+                if (img) {
+                img.src = img.dataset.src;
+                img.removeAttribute('data-src');
+                }
+                });
+                });
+                &lt;/script&gt;</div>
+        </au-example>
+    </div>
+</div>
+
+<script>
+    (() => {
+        // ── AbortController for DOM listener cleanup ──
+        const ac = new AbortController();
+        const { signal } = ac;
+
+        const demoIntersection = document.getElementById('demo-intersection');
+        const intersectionStatus = document.getElementById('intersection-status');
+        if (demoIntersection && intersectionStatus) {
+            demoIntersection.addEventListener('au-visible', () => {
+                intersectionStatus.textContent = '👁️ Visible';
+                intersectionStatus.setAttribute('variant', 'filled');
+            }, { signal });
+            demoIntersection.addEventListener('au-hidden', () => {
+                intersectionStatus.textContent = '🙈 Hidden';
+                intersectionStatus.setAttribute('variant', 'outlined');
+            }, { signal });
+        }
+
+        // ── Register cleanup for page navigation ──
+        const demoBus = window.__demoBus;
+        if (demoBus) {
+            const unsub = demoBus.on('demo:cleanup', () => {
+                ac.abort();
+            });
+            window.__demoCleanups.push(unsub);
+        }
+    })();
+</script>

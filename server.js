@@ -147,8 +147,8 @@ function startServer(initialPort) {
 User-agent: *
 Allow: /
 
-# Sitemap
-Sitemap: https://agentui.dev/sitemap.xml
+# Sitemap (uncomment when deployed with actual sitemap)
+# Sitemap: https://agentui.dev/sitemap.xml
 `;
                         return new Response(robotsTxt, {
                             headers: {

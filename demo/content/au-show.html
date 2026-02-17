@@ -1,0 +1,188 @@
+<div class="page active">
+    <h1 class="page-title">au-show</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-show&gt;</code> toggles children visibility with <code>display: none</code> instead of removing
+        them from the DOM.
+        Unlike <code>au-if</code>, children <strong>keep their internal state</strong> (form values, scroll position,
+        timers) because they remain in the DOM tree.
+        Uses <code>display: contents</code> when visible for zero layout impact.
+    </p>
+
+    <au-tabs active="0" id="au-show-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <!-- ===== OVERVIEW ===== -->
+    <div id="au-show-overview" class="doc-tab-content">
+
+        <au-example title="au-show preserves state (try typing, then toggle)">
+            <div slot="demo">
+                <au-stack gap="md">
+                    <au-button id="show-toggle-btn" variant="filled">Toggle Visibility</au-button>
+                    <au-show id="demo-show" condition>
+                        <au-card variant="outlined">
+                            <au-stack gap="sm">
+                                <au-input id="show-preserved-input" label="Type here — your text survives toggle!"
+                                    value="I persist!"></au-input>
+                                <div style="font-size: 13px; opacity: 0.6;">
+                                    Counter: <span id="show-counter">0</span> (increments every second while visible)
+                                </div>
+                            </au-stack>
+                        </au-card>
+                    </au-show>
+                </au-stack>
+            </div>
+            <div slot="code">&lt;au-show condition&gt;
+                &lt;p&gt;I'm hidden with display:none — my state is preserved!&lt;/p&gt;
+                &lt;/au-show&gt;
+
+                &lt;script&gt;
+                const el = document.querySelector('au-show');
+                el.condition = false; // hidden (display:none), still in DOM
+                el.condition = true; // visible again, state intact
+                &lt;/script&gt;</div>
+        </au-example>
+
+        <div class="component-section"
+            style="background: var(--md-sys-color-primary-container); border-left: 4px solid var(--md-sys-color-primary);">
+            <h2 class="section-title" style="color: var(--md-sys-color-on-primary-container);">When to use au-show vs
+                au-if</h2>
+            <p style="color: var(--md-sys-color-on-primary-container); line-height: 1.6;">
+                Use <code>&lt;au-show&gt;</code> when toggling <strong>frequently</strong> (tabs, accordions) or when
+                children have <strong>state to preserve</strong> (forms, video players, scroll positions).<br>
+                Use <code>&lt;au-if&gt;</code> when content is <strong>expensive</strong> and rarely shown, or when you
+                need <code>else</code> templates.
+            </p>
+        </div>
+    </div>
+
+    <!-- ===== API ===== -->
+    <div id="au-show-api" class="doc-tab-content" style="display: none;">
+
+        <div class="component-section">
+            <h2 class="section-title">Selector</h2>
+            <div class="code-block" style="display: inline-block;">&lt;au-show&gt;</div>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Attributes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="condition" type="boolean" default="absent">
+                    When present, children are visible. When removed, children are hidden via
+                    <code>display: none</code>. Children remain in the DOM (state preserved).
+                </au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Properties</h2>
+            <au-api-table type="properties">
+                <au-api-row name="condition" type="boolean" default="false">
+                    Get/set condition programmatically. Reflects the <code>condition</code> attribute.
+                </au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Events</h2>
+            <au-api-table type="events">
+                <au-api-row name="au-show" type="CustomEvent">
+                    Fired when children become visible (display restored).
+                </au-api-row>
+                <au-api-row name="au-hide" type="CustomEvent">
+                    Fired when children are hidden (display: none applied).
+                </au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <!-- ===== EXAMPLES ===== -->
+    <div id="au-show-examples" class="doc-tab-content" style="display: none;">
+
+        <au-example title="au-show vs au-if — comparison">
+            <div slot="demo">
+                <au-alert severity="info">See the code — comparison of au-show (state-preserving) vs au-if
+                    (DOM-removing).</au-alert>
+            </div>
+            <div slot="code">// au-if: Truly removes children from DOM
+                // ✅ Use when: content is expensive and rarely shown
+                // ✅ Use when: you need else templates
+                &lt;au-if condition&gt;
+                &lt;heavy-component&gt;&lt;/heavy-component&gt;
+                &lt;/au-if&gt;
+
+                // au-show: Hides with display:none (stays in DOM)
+                // ✅ Use when: toggling frequently (tabs, accordions)
+                // ✅ Use when: children have state to preserve (forms, video)
+                &lt;au-show condition&gt;
+                &lt;form&gt;&lt;!-- user input preserved --&gt;&lt;/form&gt;
+                &lt;/au-show&gt;</div>
+        </au-example>
+    </div>
+</div>
+
+<script>
+    (() => {
+        const showToggleBtn = document.getElementById('show-toggle-btn');
+        const demoShow = document.getElementById('demo-show');
+        if (!showToggleBtn || !demoShow) return;
+
+        // ── AbortController for DOM listener cleanup ──
+        const ac = new AbortController();
+        const { signal } = ac;
+
+        // ── Restore persisted state ──
+        const store = window.__demoStore;
+        let showCounter = store?.state.counters?.['au-show'] ?? 0;
+        const counterEl = document.getElementById('show-counter');
+        if (counterEl) counterEl.textContent = showCounter;
+
+        // ── Interval management ──
+        let intervalId = null;
+
+        function startCounter() {
+            if (intervalId) return;
+            intervalId = setInterval(() => {
+                showCounter++;
+                const el = document.getElementById('show-counter');
+                if (el) el.textContent = showCounter;
+                // Persist counter value
+                if (store) {
+                    const c = { ...store.state.counters };
+                    c['au-show'] = showCounter;
+                    store.state.counters = c;
+                }
+            }, 1000);
+        }
+
+        function stopCounter() {
+            if (intervalId) {
+                clearInterval(intervalId);
+                intervalId = null;
+            }
+        }
+
+        // Start counter (au-show starts visible)
+        startCounter();
+
+        // ── DOM listeners (all use AbortController signal) ──
+        showToggleBtn.addEventListener('click', () => {
+            demoShow.condition = !demoShow.condition;
+            showToggleBtn.textContent = demoShow.condition ? 'Hide Content' : 'Show Content';
+            if (demoShow.condition) startCounter();
+            else stopCounter();
+        }, { signal });
+
+        // ── Register cleanup for page navigation ──
+        const demoBus = window.__demoBus;
+        if (demoBus) {
+            const unsub = demoBus.on('demo:cleanup', () => {
+                ac.abort();       // Remove all DOM listeners
+                stopCounter();    // Clear interval
+            });
+            window.__demoCleanups.push(unsub);
+        }
+    })();
+</script>

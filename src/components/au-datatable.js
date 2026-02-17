@@ -1,5 +1,5 @@
 /**
- * au-datatable.js - Smart Data Table Component
+ * @fileoverview au-datatable - Smart Data Table Component
  * 
  * AI-First data table with built-in sorting, pagination, and filtering.
  * Designed to minimize boilerplate code when displaying tabular data.
@@ -65,7 +65,10 @@ export class AuDataTable extends AuElement {
         const attr = this.getAttribute('columns');
         if (attr) {
             try {
-                return JSON.parse(attr);
+                return JSON.parse(attr, (key, value) => {
+                    if (key === '__proto__' || key === 'constructor' || key === 'prototype') return undefined;
+                    return value;
+                });
             } catch (e) {
                 console.warn('[au-datatable] Invalid columns JSON:', e);
                 return [];
@@ -425,9 +428,9 @@ export class AuDataTable extends AuElement {
 
     /** @private */
     _renderFooter(page, totalPages, totalRows) {
-        return `
+        return html`
             <div class="au-datatable-footer">
-                ${this._renderFooterContent(page, totalPages, totalRows)}
+                ${safe(this._renderFooterContent(page, totalPages, totalRows))}
             </div>
         `;
     }
@@ -435,24 +438,24 @@ export class AuDataTable extends AuElement {
     /** @private */
     _renderFooterContent(page, totalPages, totalRows) {
         const selectedCount = this._selectedRows.size;
-        const selectionBadge = selectedCount > 0 ? `<span class="au-datatable-selected-count">${selectedCount} selected</span>` : '';
+        const selectionBadge = selectedCount > 0 ? html`<span class="au-datatable-selected-count">${selectedCount} selected</span>` : '';
 
         if (totalPages <= 1) {
-            return `
+            return html`
                 <span class="au-datatable-footer-info">${totalRows} row${totalRows !== 1 ? 's' : ''}</span>
-                ${selectionBadge}
+                ${safe(selectionBadge)}
             `;
         }
 
-        return `
-            ${selectionBadge}
+        return html`
+            ${safe(selectionBadge)}
             <span class="au-datatable-footer-info">${(page - 1) * this.pageSize + 1}–${Math.min(page * this.pageSize, totalRows)} of ${totalRows}</span>
-            <button class="au-datatable-nav-btn" data-page="prev" ${page <= 1 ? 'disabled' : ''} aria-label="Previous page">
+            ${safe(`<button class="au-datatable-nav-btn" data-page="prev" ${page <= 1 ? 'disabled' : ''} aria-label="Previous page">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
             </button>
             <button class="au-datatable-nav-btn" data-page="next" ${page >= totalPages ? 'disabled' : ''} aria-label="Next page">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
-            </button>
+            </button>`)}
         `;
     }
 

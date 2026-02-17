@@ -110,6 +110,13 @@ au-layout[full-bleed][has-bottom-nav] .au-layout-content {
     au-layout[full-bleed][has-bottom-nav] .au-layout-content {
         padding-bottom: 0;
     }
+
+    /* Footer is hidden behind fixed bottom-nav on mobile.
+       Without this, footer height creates a dead zone above the
+       bottom-nav where content cannot scroll. */
+    au-layout[has-bottom-nav] .au-layout-footer {
+        display: none;
+    }
 }
 
 .au-layout-footer {

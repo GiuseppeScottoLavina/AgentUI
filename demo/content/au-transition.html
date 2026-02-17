@@ -1,0 +1,176 @@
+<div class="page active">
+    <h1 class="page-title">au-transition</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-transition&gt;</code> applies <strong>enter/leave CSS transitions</strong> declaratively.
+        Toggle the <code>active</code> attribute and it automatically applies transition classes, waits for
+        <code>transitionend</code>/<code>animationend</code>, then cleans up. Uses <code>display: contents</code> for
+        zero layout impact.
+    </p>
+
+    <au-tabs active="0" id="au-transition-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <!-- ===== OVERVIEW ===== -->
+    <div id="au-transition-overview" class="doc-tab-content">
+
+        <au-example title="Fade transition">
+            <div slot="demo">
+                <au-stack gap="md">
+                    <au-button id="transition-toggle-btn" variant="filled">Leave Animation</au-button>
+                    <au-transition id="demo-transition" name="fade" active>
+                        <au-card variant="elevated">
+                            <au-stack gap="sm">
+                                <strong>Animated Card</strong>
+                                <p style="font-size: 13px; opacity: 0.7;">This card fades in/out using CSS transitions.
+                                    No
+                                    JavaScript animation needed — pure CSS powered by au-transition.</p>
+                            </au-stack>
+                        </au-card>
+                    </au-transition>
+                    <style>
+                        .fade-enter-active,
+                        .fade-leave-active {
+                            transition: opacity 0.3s ease, transform 0.3s ease;
+                        }
+
+                        .fade-enter-from {
+                            opacity: 0;
+                            transform: translateY(-10px);
+                        }
+
+                        .fade-leave-to {
+                            opacity: 0;
+                            transform: translateY(10px);
+                        }
+                    </style>
+                </au-stack>
+            </div>
+            <div slot="code">&lt;au-transition name="fade" active&gt;
+                &lt;au-card&gt;Animated!&lt;/au-card&gt;
+                &lt;/au-transition&gt;
+
+                &lt;style&gt;
+                .fade-enter-active, .fade-leave-active {
+                transition: opacity 0.3s ease;
+                }
+                .fade-enter-from { opacity: 0; }
+                .fade-leave-to { opacity: 0; }
+                &lt;/style&gt;</div>
+        </au-example>
+
+        <div class="component-section"
+            style="background: var(--md-sys-color-primary-container); border-left: 4px solid var(--md-sys-color-primary);">
+            <h2 class="section-title" style="color: var(--md-sys-color-on-primary-container);">Class Lifecycle</h2>
+            <p style="color: var(--md-sys-color-on-primary-container); line-height: 1.6;">
+                <strong>Enter</strong>: <code>{name}-enter-from</code> → <code>{name}-enter-active</code> →
+                <code>{name}-enter-to</code><br>
+                <strong>Leave</strong>: <code>{name}-leave-from</code> → <code>{name}-leave-active</code> →
+                <code>{name}-leave-to</code><br>
+                Classes are added/removed automatically. The element waits for <code>transitionend</code> before
+                cleanup.
+            </p>
+        </div>
+    </div>
+
+    <!-- ===== API ===== -->
+    <div id="au-transition-api" class="doc-tab-content" style="display: none;">
+
+        <div class="component-section">
+            <h2 class="section-title">Selector</h2>
+            <div class="code-block" style="display: inline-block;">&lt;au-transition&gt;</div>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Attributes</h2>
+            <au-api-table type="attributes">
+                <au-api-row name="name" type="string" default="v">
+                    Prefix for CSS transition class names. E.g., <code>"fade"</code> →
+                    <code>.fade-enter-from</code>, <code>.fade-enter-active</code>, etc.
+                </au-api-row>
+                <au-api-row name="active" type="boolean" default="false">
+                    Toggle to trigger enter/leave transitions. Setting = enter, removing = leave.
+                </au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Properties</h2>
+            <au-api-table type="properties">
+                <au-api-row name="active" type="boolean" default="false">
+                    Get/set the active state. Reflects the <code>active</code> attribute.
+                </au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Events</h2>
+            <au-api-table type="events">
+                <au-api-row name="au-enter" type="CustomEvent">
+                    Fired when the enter transition starts.
+                </au-api-row>
+                <au-api-row name="au-after-enter" type="CustomEvent">
+                    Fired after the enter transition completes.
+                </au-api-row>
+                <au-api-row name="au-leave" type="CustomEvent">
+                    Fired when the leave transition starts.
+                </au-api-row>
+                <au-api-row name="au-after-leave" type="CustomEvent">
+                    Fired after the leave transition completes.
+                </au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <!-- ===== EXAMPLES ===== -->
+    <div id="au-transition-examples" class="doc-tab-content" style="display: none;">
+
+        <au-example title="Slide transition">
+            <div slot="demo">
+                <au-alert severity="info">See the code — slide-down transition example.</au-alert>
+            </div>
+            <div slot="code">&lt;au-transition name="slide"&gt;
+                &lt;div class="dropdown-menu"&gt;...&lt;/div&gt;
+                &lt;/au-transition&gt;
+
+                &lt;style&gt;
+                .slide-enter-active, .slide-leave-active {
+                transition: transform 0.2s ease, opacity 0.2s ease;
+                transform-origin: top;
+                }
+                .slide-enter-from, .slide-leave-to {
+                transform: scaleY(0);
+                opacity: 0;
+                }
+                &lt;/style&gt;</div>
+        </au-example>
+    </div>
+</div>
+
+<script>
+    (() => {
+        // ── AbortController for DOM listener cleanup ──
+        const ac = new AbortController();
+        const { signal } = ac;
+
+        const transitionToggleBtn = document.getElementById('transition-toggle-btn');
+        const demoTransition = document.getElementById('demo-transition');
+        if (transitionToggleBtn && demoTransition) {
+            transitionToggleBtn.addEventListener('click', () => {
+                demoTransition.active = !demoTransition.active;
+                transitionToggleBtn.textContent = demoTransition.active ? 'Leave Animation' : 'Enter Animation';
+            }, { signal });
+        }
+
+        // ── Register cleanup for page navigation ──
+        const demoBus = window.__demoBus;
+        if (demoBus) {
+            const unsub = demoBus.on('demo:cleanup', () => {
+                ac.abort();
+            });
+            window.__demoCleanups.push(unsub);
+        }
+    })();
+</script>

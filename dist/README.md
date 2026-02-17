@@ -5,7 +5,7 @@
 <h1 align="center">AgentUI</h1>
 
 <p align="center">
-  <strong>51 production-ready web components. Zero dependencies. One script tag.</strong>
+  <strong>57 production-ready web components. Zero dependencies. One script tag.</strong>
 </p>
 
 <p align="center">
@@ -26,7 +26,7 @@
   <a href="./SECURITY.md"><img src="https://img.shields.io/badge/XSS-Safe-2ea44f?logo=shieldsdotio&logoColor=white" alt="XSS Safe"></a>
   <img src="https://img.shields.io/badge/CSP-Compatible-2ea44f?logo=shieldsdotio&logoColor=white" alt="CSP Compatible">
   <img src="https://img.shields.io/badge/eval()-None-2ea44f" alt="No eval()">
-  <img src="https://img.shields.io/badge/tests-1949-blue" alt="1949 Tests">
+  <img src="https://img.shields.io/badge/tests-2436-blue" alt="2436 Tests">
 </p>
 
 ---
@@ -44,16 +44,17 @@
 
 ## What's Included
 
-51 components covering everything you need:
+57 components covering everything you need:
 
 | Category | Components |
 |----------|------------|
-| **Layout** | `au-stack`, `au-grid`, `au-container`, `au-layout`, `au-page`, `au-navbar`, `au-sidebar`, `au-drawer`, `au-bottom-nav`, `au-divider` |
+| **Layout** | `au-stack`, `au-grid`, `au-container`, `au-layout`, `au-page`, `au-navbar`, `au-sidebar`, `au-drawer`, `au-drawer-item`, `au-bottom-nav`, `au-divider` |
 | **Form** | `au-button`, `au-input`, `au-textarea`, `au-form`, `au-dropdown`, `au-checkbox`, `au-switch`, `au-radio`, `au-chip`, `au-prompt-input` |
 | **Display** | `au-card`, `au-tabs`, `au-alert`, `au-badge`, `au-callout`, `au-progress`, `au-table`, `au-datatable`, `au-avatar`, `au-skeleton`, `au-code`, `au-message-bubble` |
 | **Feedback** | `au-spinner`, `au-modal`, `au-confirm`, `au-toast`, `au-tooltip`, `au-error-boundary`, `au-splash` |
-| **Structural** | `au-if`, `au-repeat`, `au-lazy`, `au-virtual-list`, `au-fetch`, `au-router` |
+| **Structural** | `au-if`, `au-show`, `au-repeat`, `au-lazy`, `au-virtual-list`, `au-fetch`, `au-router`, `au-portal`, `au-intersection`, `au-media`, `au-transition`, `au-timer` |
 | **Utility** | `au-icon`, `au-theme-toggle`, `au-schema-form` |
+| **Dev Tools** | `au-api-table`, `au-doc-page`, `au-example` |
 
 ---
 
@@ -61,7 +62,7 @@
 
 No Virtual DOM. No runtime framework overhead. Just native Custom Elements.
 
-- **61KB total** — All 51 components, JS + CSS, gzipped. Smaller than most frameworks' "hello world".
+- **61KB total** — All 57 components, JS + CSS, gzipped. Smaller than most frameworks' "hello world".
 - **Lighthouse 100/100/100/100** — [Verify it yourself →](https://pagespeed.web.dev/analysis?url=https://giuseppescottolavina.github.io/AgentUI/demo/)
 - **DOM Speed** — 500 instantiations <8ms, 500 updates <3ms.
 - **Zero Config** — One `<script>` tag. No bundler, no build step, no npm required.
@@ -88,7 +89,7 @@ Built on W3C Web Components — native browser APIs with zero abstraction tax.
 
 | Decision | AgentUI Approach | Trade-off |
 |---|---|---|
-| **Bundle** | All 51 components in 61KB gzipped | No tree-shaking — you load everything |
+| **Bundle** | All 57 components in 61KB gzipped | No tree-shaking — you load everything |
 | **XSS** | Auto-escape `html` tagged template | Custom template syntax, not JSX |
 | **Dependencies** | Zero | No ecosystem — you build what you need |
 | **DOM** | Light DOM (no Shadow DOM) | Full access, but no style encapsulation |
@@ -124,7 +125,7 @@ Built on W3C Web Components — native browser APIs with zero abstraction tax.
 
 | Metric | Value |
 |--------|-------|
-| **Tests** | 1949 (unit + E2E), 0 failures, 103 isolated test files |
+| **Tests** | 2436 (unit + E2E), 0 failures, 141 isolated test files |
 | **Security** | XSS-audited, CSP-compatible, no `eval()`, [full policy →](./SECURITY.md) |
 | **Memory** | Managed listeners (AbortController), zero leaks verified |
 | **DOM Speed** | 500 instantiations <8ms, 500 updates <3ms |
@@ -156,7 +157,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) to get started, or [open a discussion](
 
 ## Status
 
-AgentUI is an **experimental** library (v0.1.x) — 51 components, 1949 tests, built by a single developer. Functional and tested, but still a work in progress.
+AgentUI is an **experimental** library (v0.1.x) — 57 components, 2436 tests, built by a single developer. Functional and tested, but still a work in progress.
 
 Feedback, criticism, and stress-testing are welcome — [open a discussion](https://github.com/GiuseppeScottoLavina/AgentUI/discussions).
 

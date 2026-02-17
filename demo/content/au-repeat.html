@@ -1,0 +1,203 @@
+<div class="page active">
+    <h1 class="page-title">au-repeat</h1>
+    <p class="page-subtitle">
+        <code>&lt;au-repeat&gt;</code> renders arrays efficiently with <strong>keyed reconciliation</strong>.
+        Only changed items update — like React/Vue keyed lists.
+        Uses <code>display: contents</code> for zero layout impact.
+    </p>
+
+    <au-tabs active="0" id="au-repeat-doc-tabs" style="margin-bottom: 24px;">
+        <au-tab>OVERVIEW</au-tab>
+        <au-tab>API</au-tab>
+        <au-tab>EXAMPLES</au-tab>
+    </au-tabs>
+
+    <!-- ===== OVERVIEW ===== -->
+    <div id="au-repeat-overview" class="doc-tab-content">
+
+        <au-example title="Dynamic list with au-repeat">
+            <div slot="demo">
+                <au-stack gap="md">
+                    <au-stack direction="row" gap="sm" align="center">
+                        <au-input id="repeat-input" label="Add item" style="flex: 1;"></au-input>
+                        <au-button id="repeat-add-btn" variant="filled">Add</au-button>
+                    </au-stack>
+                    <au-repeat id="demo-repeat"></au-repeat>
+                    <div id="repeat-empty" style="text-align: center; padding: 24px; opacity: 0.5; font-style: italic;">
+                        No items yet — add one above!
+                    </div>
+                </au-stack>
+            </div>
+            <div slot="code">const list = document.querySelector('au-repeat');
+
+                list.keyFn = (item) =&gt; item.id;
+                list.renderItem = (item) =&gt; `
+                &lt;au-card variant="outlined"&gt;
+                &lt;au-stack direction="row" gap="md" align="center"&gt;
+                &lt;span&gt;${item.name}&lt;/span&gt;
+                &lt;au-button variant="text" data-id="${item.id}"&gt;
+                &lt;au-icon name="delete"&gt;&lt;/au-icon&gt;
+                &lt;/au-button&gt;
+                &lt;/au-stack&gt;
+                &lt;/au-card&gt;
+                `;
+
+                list.items = [
+                { id: 1, name: 'First item' },
+                { id: 2, name: 'Second item' }
+                ];</div>
+        </au-example>
+
+        <div class="component-section"
+            style="background: var(--md-sys-color-primary-container); border-left: 4px solid var(--md-sys-color-primary);">
+            <h2 class="section-title" style="color: var(--md-sys-color-on-primary-container);">Keyed Reconciliation</h2>
+            <p style="color: var(--md-sys-color-on-primary-container); line-height: 1.6;">
+                Always provide a <code>keyFn</code> that returns a unique, stable identifier for each item.
+                This enables efficient DOM updates: only items that actually changed are re-rendered.
+                Without keys, the entire list is re-created on every update.
+            </p>
+        </div>
+    </div>
+
+    <!-- ===== API ===== -->
+    <div id="au-repeat-api" class="doc-tab-content" style="display: none;">
+
+        <div class="component-section">
+            <h2 class="section-title">Selector</h2>
+            <div class="code-block" style="display: inline-block;">&lt;au-repeat&gt;</div>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Properties</h2>
+            <au-api-table type="properties">
+                <au-api-row name="items" type="Array" default="[]">
+                    The array of data items. Setting this triggers efficient reconciliation.
+                </au-api-row>
+                <au-api-row name="keyFn" type="Function" default="(item, i) =&gt; i">
+                    Key extraction function for reconciliation. Use unique IDs for best performance.
+                </au-api-row>
+                <au-api-row name="renderItem" type="Function" default="JSON.stringify">
+                    Render function: <code>(item, index) =&gt; htmlString</code>. Use <code>html``</code> tagged
+                    template for XSS safety.
+                </au-api-row>
+            </au-api-table>
+        </div>
+
+        <div class="component-section">
+            <h2 class="section-title">Methods</h2>
+            <au-api-table type="methods">
+                <au-api-row name="getElement(key)" type="Element|undefined">
+                    Returns the DOM element for a given key.
+                </au-api-row>
+                <au-api-row name="refresh()" type="void">
+                    Forces a full re-render, clearing all cached DOM nodes.
+                </au-api-row>
+            </au-api-table>
+        </div>
+    </div>
+
+    <!-- ===== EXAMPLES ===== -->
+    <div id="au-repeat-examples" class="doc-tab-content" style="display: none;">
+
+        <au-example title="Task list with createStore">
+            <div slot="demo">
+                <au-alert severity="info">See the code — reactive task list using store + repeat.</au-alert>
+            </div>
+            <div slot="code">import { createStore } from 'agentui-wc';
+
+                const store = createStore(
+                { tasks: [] },
+                { persist: 'my-tasks' }
+                );
+
+                const list = document.querySelector('au-repeat');
+                list.keyFn = (task) =&gt; task.id;
+                list.renderItem = (task) =&gt; `
+                &lt;au-card variant="outlined"&gt;
+                &lt;au-checkbox ${task.done ? 'checked' : ''}
+                label="${task.title}"
+                data-id="${task.id}"&gt;
+                &lt;/au-checkbox&gt;
+                &lt;/au-card&gt;
+                `;
+
+                // Reactive: store changes -> list updates
+                store.subscribe('tasks', (tasks) =&gt; {
+                list.items = tasks;
+                });</div>
+        </au-example>
+    </div>
+</div>
+
+<script>
+    (() => {
+        // ── AbortController for DOM listener cleanup ──
+        const ac = new AbortController();
+        const { signal } = ac;
+
+        const repeatInput = document.getElementById('repeat-input');
+        const repeatAddBtn = document.getElementById('repeat-add-btn');
+        const demoRepeat = document.getElementById('demo-repeat');
+        const repeatEmpty = document.getElementById('repeat-empty');
+
+        if (demoRepeat && repeatAddBtn) {
+            let nextId = 1;
+            let items = [];
+
+            demoRepeat.keyFn = (item) => item.id;
+            demoRepeat.renderItem = (item) => `
+            <au-card variant="outlined" style="margin-bottom: 8px;">
+                <au-stack direction="row" gap="md" align="center" justify="space-between">
+                    <au-stack direction="row" gap="sm" align="center">
+                        <au-icon name="fiber_manual_record" style="font-size: 8px; color: var(--md-sys-color-primary);"></au-icon>
+                        <span>${item.name}</span>
+                    </au-stack>
+                    <au-button variant="text" size="sm" data-delete-id="${item.id}" aria-label="Delete ${item.name}">
+                        <au-icon name="delete"></au-icon>
+                    </au-button>
+                </au-stack>
+            </au-card>
+        `;
+
+            function updateList() {
+                demoRepeat.items = [...items];
+                if (repeatEmpty) {
+                    repeatEmpty.style.display = items.length === 0 ? 'block' : 'none';
+                }
+            }
+
+            repeatAddBtn.addEventListener('click', () => {
+                const name = repeatInput?.value?.trim();
+                if (!name) return;
+                items.push({ id: nextId++, name });
+                updateList();
+                if (repeatInput) repeatInput.value = '';
+            }, { signal });
+
+            demoRepeat.addEventListener('click', (e) => {
+                const btn = e.target.closest('[data-delete-id]');
+                if (btn) {
+                    const id = Number(btn.dataset.deleteId);
+                    items = items.filter(i => i.id !== id);
+                    updateList();
+                }
+            }, { signal });
+
+            items = [
+                { id: nextId++, name: 'Buy groceries' },
+                { id: nextId++, name: 'Review pull requests' },
+                { id: nextId++, name: 'Deploy to staging' }
+            ];
+            updateList();
+        }
+
+        // ── Register cleanup for page navigation ──
+        const demoBus = window.__demoBus;
+        if (demoBus) {
+            const unsub = demoBus.on('demo:cleanup', () => {
+                ac.abort();
+            });
+            window.__demoCleanups.push(unsub);
+        }
+    })();
+</script>

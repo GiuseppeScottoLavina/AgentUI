@@ -1,5 +1,5 @@
 /**
- * au-page - Self-contained page component
+ * @fileoverview au-page - Self-contained page component
  * 
  * Features:
  * - Declares route and title

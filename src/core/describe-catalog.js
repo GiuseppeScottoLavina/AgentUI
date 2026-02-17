@@ -1006,6 +1006,41 @@ export const catalog = {
             "For show/hide without DOM removal, use CSS hidden attribute instead"
         ]
     },
+    "au-intersection": {
+        "name": "au-intersection",
+        "description": "Declarative IntersectionObserver wrapper — fires events when children enter or leave the viewport. Supports once mode for lazy-loading and configurable threshold/root-margin.",
+        "props": {
+            "threshold": {
+                "type": "number",
+                "default": 0,
+                "description": "Visibility ratio (0–1) required to trigger events"
+            },
+            "root-margin": {
+                "type": "string",
+                "default": "0px",
+                "description": "Margin around the root viewport, same syntax as CSS margin"
+            },
+            "once": {
+                "type": "boolean",
+                "default": false,
+                "description": "Disconnect observer after first intersection"
+            }
+        },
+        "events": {
+            "au-visible": { "detail": { "ratio": "number" } },
+            "au-hidden": { "detail": {} }
+        },
+        "examples": [
+            "<au-intersection once threshold=\"0.5\">\n  <img data-src=\"hero.webp\" alt=\"Hero\" />\n</au-intersection>",
+            "const el = document.querySelector('au-intersection');\nel.addEventListener('au-visible', (e) => console.log('Ratio:', e.detail.ratio));\nconsole.log(el.isVisible);"
+        ],
+        "tips": [
+            "Use once for lazy-loading — observer disconnects after first intersection",
+            "threshold=0.5 means element must be 50% visible to trigger",
+            "root-margin extends viewport bounds, e.g. '200px' for preloading",
+            "Read el.isVisible for current intersection state"
+        ]
+    },
     "au-input": {
         "name": "au-input",
         "description": "Material Design 3 text field with floating label",
@@ -1143,6 +1178,30 @@ export const catalog = {
             "Use for below-the-fold content to improve initial load time"
         ]
     },
+    "au-media": {
+        "name": "au-media",
+        "description": "Responsive rendering — children are removed from DOM when CSS media query doesn't match, and restored (same nodes) when it does. More efficient than display:none for heavy components.",
+        "props": {
+            "query": {
+                "type": "string",
+                "description": "CSS media query string, e.g. (min-width: 768px) or (prefers-color-scheme: dark)"
+            }
+        },
+        "events": {
+            "au-match": { "detail": {} },
+            "au-unmatch": { "detail": {} }
+        },
+        "examples": [
+            "<au-media query=\"(min-width: 768px)\">\n  <aside>Desktop sidebar</aside>\n</au-media>",
+            "const media = document.querySelector('au-media');\nconsole.log(media.matches); // true/false\nmedia.addEventListener('au-match', () => console.log('Wide viewport'));"
+        ],
+        "tips": [
+            "Children are truly removed from DOM when query doesn't match (like au-if)",
+            "Same DOM nodes restored on match — identity preserved",
+            "Read el.matches for current state",
+            "display: contents — zero layout impact"
+        ]
+    },
     "au-modal": {
         "name": "au-modal",
         "description": "Material Design 3 dialog using native <dialog>",
@@ -1225,6 +1284,31 @@ export const catalog = {
         ],
         "tips": [
             "Content can be inline or loaded dynamically by au-router"
+        ]
+    },
+    "au-portal": {
+        "name": "au-portal",
+        "description": "DOM teleportation — moves children to a different part of the DOM tree, solving overflow:hidden and z-index stacking context issues. Children are moved (not cloned), preserving DOM identity and event listeners.",
+        "props": {
+            "target": {
+                "type": "string",
+                "default": "body",
+                "description": "CSS selector for the teleportation target container"
+            }
+        },
+        "events": {
+            "au-teleport": { "detail": {} },
+            "au-return": { "detail": {} }
+        },
+        "examples": [
+            "<au-portal target=\"#modal-container\">\n  <au-modal open>I escaped overflow:hidden!</au-modal>\n</au-portal>\n<div id=\"modal-container\"></div>",
+            "const portal = document.querySelector('au-portal');\nportal.addEventListener('au-teleport', () => console.log('Moved'));\n// Children auto-return on disconnect"
+        ],
+        "tips": [
+            "Children are moved, not cloned — DOM identity and listeners preserved",
+            "Auto-cleanup: children return to source on disconnect",
+            "target defaults to document.body when absent",
+            "display: contents — zero layout impact"
         ]
     },
     "au-progress": {
@@ -1413,6 +1497,31 @@ export const catalog = {
             "THE killer feature for AI agents: generate forms from JSON schema without writing HTML",
             "Set schema property (not attribute) to configure the form",
             "Supports string, number, boolean, enum types with automatic widget selection"
+        ]
+    },
+    "au-show": {
+        "name": "au-show",
+        "description": "Show/hide children with display:none instead of removing from DOM. Unlike au-if, children keep their internal state (form values, scroll position, timers) because they remain in the DOM tree.",
+        "props": {
+            "condition": {
+                "type": "boolean",
+                "default": false,
+                "description": "When present, children are visible. When absent, children hidden via display:none."
+            }
+        },
+        "events": {
+            "au-show": { "detail": {} },
+            "au-hide": { "detail": {} }
+        },
+        "examples": [
+            "<au-show condition>\n  <form><!-- input values survive toggle --></form>\n</au-show>",
+            "const el = document.querySelector('au-show');\nel.condition = false; // hidden (display:none), still in DOM\nel.condition = true;  // visible again, state intact"
+        ],
+        "tips": [
+            "Use au-show when toggling frequently (tabs, accordions) to preserve state",
+            "Use au-if when content is expensive and rarely shown (true DOM removal)",
+            "display: contents — zero layout impact",
+            "Use .condition property for JS control"
         ]
     },
     "au-sidebar": {
@@ -1731,6 +1840,41 @@ export const catalog = {
             "au-input fires on keystroke, au-change on blur"
         ]
     },
+    "au-timer": {
+        "name": "au-timer",
+        "description": "Declarative timer with automatic cleanup on disconnect. Supports count-up and countdown modes with configurable intervals and programmatic control (start/stop/reset).",
+        "props": {
+            "interval": {
+                "type": "number",
+                "default": 1000,
+                "description": "Tick interval in milliseconds (clamped to minimum 100ms)"
+            },
+            "countdown": {
+                "type": "number",
+                "description": "When set, counts down from this value to 0 and fires au-complete"
+            },
+            "autostart": {
+                "type": "boolean",
+                "default": false,
+                "description": "Start timer automatically on connect"
+            }
+        },
+        "events": {
+            "au-tick": { "detail": { "count": "number" } },
+            "au-complete": { "detail": {} }
+        },
+        "examples": [
+            "<au-timer interval=\"1000\" autostart></au-timer>",
+            "<au-timer interval=\"1000\" countdown=\"30\"></au-timer>",
+            "const timer = document.querySelector('au-timer');\ntimer.addEventListener('au-tick', (e) => console.log(e.detail.count));\ntimer.start(); timer.stop(); timer.reset();"
+        ],
+        "tips": [
+            "Automatic clearInterval on disconnect — no memory leaks",
+            "countdown mode fires au-complete when reaching 0",
+            "Read el.count and el.running for current state",
+            "Interval clamped to minimum 100ms for safety"
+        ]
+    },
     "au-theme-toggle": {
         "name": "au-theme-toggle",
         "description": "Dark/light mode toggle button with sun/moon icon",
@@ -1788,6 +1932,36 @@ export const catalog = {
         "tips": [
             "Use duration=\"0\" to prevent auto-dismiss",
             "Call .dismiss() to close programmatically"
+        ]
+    },
+    "au-transition": {
+        "name": "au-transition",
+        "description": "CSS class lifecycle manager for enter/leave animations. Applies Vue-inspired class names ({name}-enter-from, {name}-enter-active, {name}-leave-from, {name}-leave-active) that you style with your own CSS transitions.",
+        "props": {
+            "name": {
+                "type": "string",
+                "default": "au",
+                "description": "Class name prefix for transition classes"
+            },
+            "active": {
+                "type": "boolean",
+                "default": false,
+                "description": "When toggled on, applies enter classes. When toggled off, applies leave classes."
+            }
+        },
+        "events": {
+            "au-enter": { "detail": {} },
+            "au-leave": { "detail": {} }
+        },
+        "examples": [
+            "<au-transition name=\"fade\" active>\n  <div>I animate!</div>\n</au-transition>",
+            "const el = document.querySelector('au-transition');\nel.active = true;  // enter classes\nel.active = false; // leave classes"
+        ],
+        "tips": [
+            "Does NOT define visual CSS — you provide the transition styles",
+            "Class naming follows Vue convention: {name}-enter-from, {name}-enter-active, etc.",
+            "display: contents — zero layout impact",
+            "Use .active property for JS control"
         ]
     },
     "au-tooltip": {

@@ -1,5 +1,5 @@
 /**
- * au-schema-form.js - Auto-Generated Forms from JSON Schema
+ * @fileoverview au-schema-form - Auto-Generated Forms from JSON Schema
  * 
  * AI-First form component that generates AgentUI form fields automatically
  * from a JSON Schema definition. Dramatically reduces boilerplate for form creation.

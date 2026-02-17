@@ -3,9 +3,9 @@
   "$id": "https://agentui.dev/component-schema.json",
   "title": "AgentUI Component Schema",
   "description": "Machine-readable schema for AI agent component discovery",
-  "version": "0.1.149",
-  "generatedAt": "2026-02-16T11:40:41.605Z",
-  "componentCount": 51,
+  "version": "0.1.150",
+  "generatedAt": "2026-02-17T07:55:53.792Z",
+  "componentCount": 57,
   "components": {
     "au-card": {
       "tag": "au-card",
@@ -292,6 +292,26 @@
       "hasDescribeMethod": true,
       "events": []
     },
+    "au-portal": {
+      "tag": "au-portal",
+      "baseClass": "au-portal",
+      "props": [
+        "target"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-intersection": {
+      "tag": "au-intersection",
+      "baseClass": "au-intersection",
+      "props": [
+        "threshold",
+        "root-margin",
+        "once"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
     "au-drawer": {
       "tag": "au-drawer",
       "baseClass": "au-drawer",
@@ -369,6 +389,15 @@
       "hasDescribeMethod": true,
       "events": []
     },
+    "au-show": {
+      "tag": "au-show",
+      "baseClass": "au-show",
+      "props": [
+        "condition"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
     "au-router": {
       "tag": "au-router",
       "baseClass": "au-router",
@@ -403,6 +432,16 @@
       "hasDescribeMethod": true,
       "events": []
     },
+    "au-transition": {
+      "tag": "au-transition",
+      "baseClass": "au-transition",
+      "props": [
+        "name",
+        "active"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
     "au-skeleton": {
       "tag": "au-skeleton",
       "baseClass": "au-skeleton",
@@ -412,6 +451,17 @@
         "height",
         "size",
         "lines"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-timer": {
+      "tag": "au-timer",
+      "baseClass": "au-timer",
+      "props": [
+        "interval",
+        "autostart",
+        "countdown"
       ],
       "hasDescribeMethod": true,
       "events": []
@@ -491,6 +541,15 @@
       "baseClass": "au-error-boundary",
       "props": [
         "fallback"
+      ],
+      "hasDescribeMethod": true,
+      "events": []
+    },
+    "au-media": {
+      "tag": "au-media",
+      "baseClass": "au-media",
+      "props": [
+        "query"
       ],
       "hasDescribeMethod": true,
       "events": []

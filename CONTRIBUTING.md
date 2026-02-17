@@ -60,7 +60,7 @@ bun run build:framework
 ```
 AgentUI/
 ├── src/
-│   ├── components/     # 50 components (MD3 application + dev tools)
+│   ├── components/     # 57 components (MD3 application + dev tools)
 │   ├── core/           # AuElement base, utils, scheduler
 │   └── styles/         # CSS design tokens (MD3)
 ├── tests/
